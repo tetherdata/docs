@@ -1,0 +1,311 @@
+---
+title: Editing SKUs
+description: How to modify SKU information in Tether
+---
+
+# Editing SKUs
+
+Tether provides multiple ways to edit SKU information, from quick inline edits to comprehensive detail views. This guide covers all editing methods.
+
+<Note>
+  Editing SKUs requires Admin access. Sales Rep users have view-only access.
+</Note>
+
+## Inline Editing
+
+The fastest way to make quick changes is directly in the SKU dashboard.
+
+### Editable Columns
+
+The following columns support inline editing:
+
+| Column | Edit Type | Notes |
+|--------|-----------|-------|
+| **Name** | Text input | Click to edit |
+| **SKU Code** | Text input | Must remain unique |
+| **UPC** | Text input | Barcode number |
+| **Amazon ID** | Text input | ASIN or Amazon identifier |
+| **Type** | Dropdown | Select from SKU types |
+| **Status** | Dropdown | Active or Archived |
+| **Dimension Values** | Dropdown | Select from available values |
+
+### How to Inline Edit
+
+<Steps>
+  <Step title="Locate the Cell">
+    Find the SKU and column you want to edit. Editable cells show a subtle highlight on hover.
+  </Step>
+
+  <Step title="Click to Edit">
+    Click the cell to enter edit mode:
+    - **Text fields**: A text input appears
+    - **Dropdowns**: A selection menu appears
+  </Step>
+
+  <Step title="Make Your Change">
+    Type the new value or select from the dropdown.
+  </Step>
+
+  <Step title="Save or Cancel">
+    - Press **Enter** or click away to save
+    - Press **Escape** to cancel without saving
+  </Step>
+</Steps>
+
+<Tip>
+  Use `Tab` to move to the next editable cell after saving. This speeds up bulk editing.
+</Tip>
+
+### Inline Edit Indicators
+
+| Indicator | Meaning |
+|-----------|---------|
+| Blue border | Cell is in edit mode |
+| Green flash | Change saved successfully |
+| Red border | Validation error |
+| Spinner | Save in progress |
+
+## Detail Page Editing
+
+For comprehensive edits, open the SKU detail page by clicking on a SKU row.
+
+### Overview Tab
+
+The Overview tab contains basic SKU information:
+
+**Editable Fields:**
+- Name
+- SKU Code
+- Description
+- UPC
+- Amazon ID
+- Status
+
+**Read-Only Fields:**
+- Created date
+- Last modified date
+- Collection
+
+<Steps>
+  <Step title="Open the SKU">
+    Click on a SKU row to open its detail page
+  </Step>
+
+  <Step title="Navigate to Overview">
+    Select the **Overview** tab (usually the default)
+  </Step>
+
+  <Step title="Edit Fields">
+    Click on any editable field to modify it
+  </Step>
+
+  <Step title="Save Changes">
+    Click **Save** or changes may auto-save depending on the field
+  </Step>
+</Steps>
+
+### Pricing Tab
+
+Configure SKU pricing and unit conversions:
+
+**What You Can Edit:**
+- Base price
+- Channel-specific pricing
+- Unit of measure
+- Conversion factors
+
+<Info>
+  Pricing changes may affect demand forecasts and reporting. Review the impact before making significant price changes.
+</Info>
+
+### Inventory Tab
+
+View inventory levels (read-only from this tab):
+
+- Current stock by warehouse
+- Inventory states (sellable, committed, on-hand)
+- Health status
+
+<Note>
+  To adjust inventory, use the Inventory dashboard or create inventory adjustment transactions.
+</Note>
+
+### Suppliers Tab
+
+Manage supplier relationships for this SKU:
+
+**What You Can Configure:**
+- Assigned suppliers
+- Supplier-specific SKU codes
+- Cost per unit
+- Lead times
+- Minimum order quantities
+
+<Steps>
+  <Step title="Add a Supplier">
+    Click **Add Supplier** and select from your supplier list
+  </Step>
+
+  <Step title="Configure Details">
+    Enter supplier-specific information:
+    - Their SKU code for this product
+    - Cost and pricing
+    - Lead time in days
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to store the supplier relationship
+  </Step>
+</Steps>
+
+### BOM Tab (Bill of Materials)
+
+For composite SKUs, manage the component structure:
+
+**What You Can Edit:**
+- Component SKUs
+- Quantities required
+- Assembly instructions
+
+<Warning>
+  Changing BOM affects production planning and inventory calculations. Verify changes before saving.
+</Warning>
+
+## Bulk Editing
+
+For editing multiple SKUs at once:
+
+### Using Filters + Export/Import
+
+1. Filter to the SKUs you want to edit
+2. Export the filtered list to CSV
+3. Make changes in your spreadsheet
+4. Re-import the updated file
+
+### Multi-Select Actions
+
+1. Use checkboxes to select multiple SKUs
+2. Access bulk actions from the toolbar:
+   - Change status (Archive/Activate)
+   - Move to collection
+   - Apply tags
+
+## Changing SKU Type
+
+Changing a SKU's type has implications:
+
+| From | To | Considerations |
+|------|-----|----------------|
+| Finished Good | Component | SKU won't appear in demand forecasts |
+| Component | Finished Good | May need to set up channel availability |
+| Any | Bundle | Need to configure component relationships |
+
+<Warning>
+  Changing SKU type can affect forecasting, inventory tracking, and channel availability. Review all implications before making this change.
+</Warning>
+
+## Archiving SKUs
+
+To hide a SKU without deleting it:
+
+<Steps>
+  <Step title="Select the SKU">
+    Either click to open details or find it in the list
+  </Step>
+
+  <Step title="Change Status">
+    Set the **Status** field to **Archived**
+  </Step>
+
+  <Step title="Confirm">
+    The SKU will be hidden from default views
+  </Step>
+</Steps>
+
+### What Happens When You Archive
+
+- SKU is hidden from standard lists
+- Historical data is preserved
+- Inventory records remain
+- Forecasts are excluded from active views
+- SKU can be restored by changing status back to Active
+
+### Finding Archived SKUs
+
+1. Go to the SKU dashboard
+2. Open the filter panel
+3. In the **Status** filter, select **Archived**
+4. Archived SKUs will appear
+
+## Editing Dimension Values
+
+To change a SKU's dimension values (e.g., correct a wrong size):
+
+<Steps>
+  <Step title="Open the SKU Detail">
+    Click on the SKU to open its detail page
+  </Step>
+
+  <Step title="Locate Dimension Fields">
+    Find the dimension fields in the Overview section or use inline editing
+  </Step>
+
+  <Step title="Select New Value">
+    Choose the correct value from the dropdown
+  </Step>
+
+  <Step title="Save">
+    Confirm the change
+  </Step>
+</Steps>
+
+<Info>
+  Dimension values must exist in the collection's dimension configuration. If you need a new value, add it to the collection's dimensions first.
+</Info>
+
+## Validation and Errors
+
+### Common Validation Errors
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| "SKU code already exists" | Duplicate code | Use a unique code |
+| "Required field missing" | Empty required field | Fill in the required data |
+| "Invalid dimension value" | Value not in collection | Add value to collection dimensions |
+| "Cannot change type" | Active constraints | Resolve dependencies first |
+
+### Handling Errors
+
+When you see a validation error:
+
+1. Read the error message carefully
+2. Correct the issue
+3. Try saving again
+4. If stuck, cancel and review the SKU's relationships
+
+## Edit History
+
+Tether tracks changes to SKUs:
+
+- Who made the change
+- When the change was made
+- What was changed
+
+This audit trail helps with troubleshooting and compliance.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Filtering SKUs" icon="filter" href="/product-catalog/skus/filtering">
+    Find SKUs quickly with powerful filters
+  </Card>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/managing">
+    Manage SKUs within collections
+  </Card>
+  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
+    Learn about bulk editing capabilities
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Manage supplier relationships
+  </Card>
+</CardGroup>

@@ -1,0 +1,357 @@
+---
+title: Product Hierarchy
+description: Organizing products with multi-level categorization
+---
+
+# Product Hierarchy
+
+Product hierarchy provides a multi-level categorization system for organizing your products for reporting, filtering, and analysis. Unlike dimensions (which vary within a product), hierarchy defines how products are categorized.
+
+## What is Product Hierarchy?
+
+Product hierarchy is a tree structure that categorizes your products. It's commonly used for:
+
+- **Reporting** - Aggregate data at different levels
+- **Filtering** - Find products by category
+- **Organization** - Logical grouping of products
+- **Analysis** - Compare performance across categories
+
+### Example Hierarchy
+
+```
+Level 1: Category
+└── Level 2: Subcategory
+    └── Level 3: Product Line
+        └── Level 4: Sub-Line
+            └── Level 5: Specific Type
+
+Example:
+Apparel
+└── Tops
+    └── T-Shirts
+        └── Graphic Tees
+            └── Band Tees
+```
+
+## Hierarchy vs. Collections vs. Dimensions
+
+Understanding when to use each:
+
+| Feature | Purpose | Example |
+|---------|---------|---------|
+| **Hierarchy** | Categorization for reporting | Category > Subcategory |
+| **Collections** | Group products with shared dimensions | "T-Shirts" collection |
+| **Dimensions** | Product variants | Size, Color |
+
+<Info>
+  A product can belong to one collection but be categorized in multiple hierarchy paths if needed.
+</Info>
+
+## Configuring Product Hierarchy
+
+### Access Hierarchy Settings
+
+Navigate to **SKUs** → **Product Hierarchy** (or through Settings).
+
+### Setting Up Hierarchy Levels
+
+Tether supports up to 5 hierarchy levels:
+
+<Steps>
+  <Step title="Define Level Names">
+    Name each level of your hierarchy:
+
+    | Level | Example Name |
+    |-------|--------------|
+    | Level 1 | Category |
+    | Level 2 | Subcategory |
+    | Level 3 | Product Line |
+    | Level 4 | Sub-Line |
+    | Level 5 | Type |
+  </Step>
+
+  <Step title="Create Values for Each Level">
+    Add possible values at each level:
+
+    **Level 1 (Category):**
+    - Apparel
+    - Accessories
+    - Footwear
+
+    **Level 2 (Subcategory):**
+    - Tops
+    - Bottoms
+    - Outerwear
+  </Step>
+
+  <Step title="Define Valid Paths">
+    Specify which level 2 values can appear under each level 1:
+    - Apparel → Tops, Bottoms, Outerwear
+    - Accessories → Bags, Hats, Jewelry
+  </Step>
+
+  <Step title="Save Configuration">
+    Save the hierarchy structure
+  </Step>
+</Steps>
+
+### Hierarchy Value Configuration
+
+For each value, you can configure:
+
+| Property | Description |
+|----------|-------------|
+| **Name** | Display name for the value |
+| **Code** | Short identifier |
+| **Parent** | Which value this belongs under |
+| **Sort Order** | Position in lists |
+
+## Assigning Hierarchy to Products
+
+### Collection-Level Assignment
+
+Assign hierarchy values to a collection:
+
+<Steps>
+  <Step title="Open Collection">
+    Navigate to the collection's detail page
+  </Step>
+
+  <Step title="Go to Hierarchy Tab">
+    Select the **Hierarchy** tab
+  </Step>
+
+  <Step title="Select Values">
+    For each hierarchy level, select the appropriate value:
+    - Category: Apparel
+    - Subcategory: Tops
+    - Product Line: T-Shirts
+  </Step>
+
+  <Step title="Save">
+    All SKUs in the collection inherit these values
+  </Step>
+</Steps>
+
+### SKU-Level Override
+
+Individual SKUs can have different hierarchy values than their collection:
+
+1. Open the SKU detail page
+2. Navigate to the hierarchy section
+3. Select different values as needed
+4. Save the override
+
+<Note>
+  SKU-level hierarchy takes precedence over collection-level settings.
+</Note>
+
+## Using Hierarchy in Tether
+
+### Filtering by Hierarchy
+
+Hierarchy appears in filter panels throughout Tether:
+
+1. Expand the hierarchy filter section
+2. Select values at any level
+3. View all products in that branch
+
+**Example:** Selecting "Apparel" shows all products under Apparel, including all subcategories.
+
+### Reporting with Hierarchy
+
+Hierarchy enables multi-level reporting:
+
+- **Top Level**: Total sales for Apparel
+- **Drill Down**: Sales by Subcategory within Apparel
+- **Detail**: Sales by Product Line within Subcategory
+
+### Demand Forecasting
+
+In demand forecasting, group by hierarchy levels to:
+- View forecasts at category level
+- Drill down to specific product lines
+- Compare performance across categories
+
+## Hierarchy Design Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with Business Needs">
+    Design hierarchy based on how you need to report and analyze:
+    - How does leadership want to see performance?
+    - What comparisons are meaningful?
+    - How is the business organized?
+  </Accordion>
+
+  <Accordion title="Keep It Balanced">
+    Avoid hierarchies that are too deep or too shallow:
+    - 3-4 levels is common
+    - Very deep hierarchies (5+ levels) can be hard to navigate
+    - Very shallow hierarchies (1-2 levels) limit analysis
+  </Accordion>
+
+  <Accordion title="Use Clear, Mutually Exclusive Values">
+    Each product should fit clearly into one path:
+    - Avoid overlapping categories
+    - "Active" vs "Casual" might overlap—be specific
+  </Accordion>
+
+  <Accordion title="Plan for Growth">
+    Consider future product lines:
+    - Leave room for new categories
+    - Don't make current structure too specific
+    - Values can be added later
+  </Accordion>
+
+  <Accordion title="Align with External Systems">
+    If you use hierarchy in other systems:
+    - Align naming where possible
+    - Map values for integrations
+    - Document any differences
+  </Accordion>
+</AccordionGroup>
+
+## Common Hierarchy Patterns
+
+### Fashion / Apparel
+
+```
+Gender
+└── Category
+    └── Subcategory
+        └── Style
+
+Example:
+Women's
+└── Tops
+    └── Blouses
+        └── Silk Blouses
+```
+
+### Consumer Electronics
+
+```
+Division
+└── Category
+    └── Product Family
+        └── Product Type
+
+Example:
+Computing
+└── Laptops
+    └── MacBook
+        └── MacBook Pro
+```
+
+### Food & Beverage
+
+```
+Category
+└── Subcategory
+    └── Brand
+        └── Product Line
+
+Example:
+Beverages
+└── Coffee
+    └── Premium Roast
+        └── Single Origin
+```
+
+### Home Goods
+
+```
+Room
+└── Category
+    └── Style
+        └── Material
+
+Example:
+Bedroom
+└── Bedding
+    └── Modern
+        └── Cotton
+```
+
+## Managing Hierarchy Changes
+
+### Adding New Values
+
+Adding values is straightforward:
+1. Navigate to hierarchy configuration
+2. Add the new value at the appropriate level
+3. Assign to collections/SKUs as needed
+
+### Renaming Values
+
+Renaming updates displays but preserves relationships:
+1. Edit the value's name
+2. All products using this value update automatically
+3. Historical data remains linked
+
+### Restructuring Hierarchy
+
+Larger changes require more care:
+
+<Warning>
+  Restructuring hierarchy can affect historical reporting. Plan carefully and consider the impact on year-over-year comparisons.
+</Warning>
+
+**Steps for restructuring:**
+1. Document current structure
+2. Plan new structure
+3. Update hierarchy configuration
+4. Reassign products to new values
+5. Verify reports work correctly
+
+## Troubleshooting
+
+### Products Not Appearing in Hierarchy Filter
+
+**Possible causes:**
+- Product doesn't have hierarchy values assigned
+- Collection doesn't have hierarchy values
+- Filter is set to a different branch
+
+**Solution:**
+1. Check product/collection hierarchy settings
+2. Verify values are assigned at all required levels
+3. Clear and reset filters
+
+### Hierarchy Levels Not Showing
+
+**Possible causes:**
+- Level isn't configured
+- No values exist for that level
+- Permissions restrict access
+
+**Solution:**
+1. Verify hierarchy configuration includes all needed levels
+2. Add values to empty levels
+3. Check user permissions
+
+### Can't Delete Hierarchy Value
+
+**Cause:** Products are assigned to this value
+
+**Solution:**
+1. Find products using this value
+2. Reassign them to another value
+3. Then delete the unused value
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/overview">
+    Organize products with collections
+  </Card>
+  <Card title="Dimensions" icon="ruler-combined" href="/product-catalog/dimensions">
+    Set up product attributes
+  </Card>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/filtering">
+    Use hierarchy in forecast analysis
+  </Card>
+  <Card title="SKU Filtering" icon="filter" href="/product-catalog/skus/filtering">
+    Filter products by hierarchy
+  </Card>
+</CardGroup>

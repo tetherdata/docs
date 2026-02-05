@@ -1,0 +1,360 @@
+---
+title: Integration Setup
+description: Connect Tether to your e-commerce and ERP systems
+---
+
+# Integration Setup
+
+Integrations connect Tether to your existing systems, automatically syncing orders, inventory, and product data.
+
+<Note>
+  Integration setup requires Admin access. Contact your administrator if you need to set up integrations.
+</Note>
+
+## Why Integrate?
+
+| Benefit | Description |
+|---------|-------------|
+| **Automated Data Flow** | No manual data entry |
+| **Real-Time Sync** | Up-to-date information |
+| **Reduced Errors** | Eliminate manual mistakes |
+| **Time Savings** | Focus on analysis, not data entry |
+
+## Available Integrations
+
+### E-Commerce Platforms
+
+| Platform | Data Synced |
+|----------|-------------|
+| **Shopify** | Orders, products, inventory |
+| **WooCommerce** | Orders, products |
+| **BigCommerce** | Orders, products |
+| **Magento** | Orders, products |
+
+### Marketplaces
+
+| Platform | Data Synced |
+|----------|-------------|
+| **Amazon** | Orders, inventory |
+| **eBay** | Orders |
+| **Walmart** | Orders |
+| **Etsy** | Orders |
+
+### ERP Systems
+
+| System | Data Synced |
+|--------|-------------|
+| **NetSuite** | Full ERP data |
+| **QuickBooks** | Orders, inventory |
+| **SAP** | Inventory, orders |
+
+### Other Systems
+
+| Type | Examples |
+|------|----------|
+| **3PL/WMS** | ShipBob, Flexport |
+| **Accounting** | QuickBooks, Xero |
+| **Custom** | API integrations |
+
+## Setting Up an Integration
+
+### General Setup Flow
+
+<Steps>
+  <Step title="Navigate to Integrations">
+    Go to **Settings** → **Integrations** (or **Integrations** in sidebar)
+  </Step>
+
+  <Step title="Select Integration">
+    Choose the platform you want to connect
+  </Step>
+
+  <Step title="Authenticate">
+    Connect your account:
+    - OAuth login
+    - API credentials
+    - Both methods depending on platform
+  </Step>
+
+  <Step title="Configure Settings">
+    Set up sync preferences:
+    - What data to sync
+    - How often to sync
+    - Field mappings
+  </Step>
+
+  <Step title="Test Connection">
+    Verify the integration works
+  </Step>
+
+  <Step title="Enable">
+    Activate the integration
+  </Step>
+</Steps>
+
+### Shopify Integration
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to integration settings
+  </Step>
+
+  <Step title="Select Shopify">
+    Choose Shopify from available integrations
+  </Step>
+
+  <Step title="Connect Store">
+    Enter your Shopify store URL and authorize access
+  </Step>
+
+  <Step title="Map Fields">
+    Configure how Shopify data maps to Tether:
+    - Products → SKUs
+    - Locations → Warehouses
+    - Orders → Sales Orders
+  </Step>
+
+  <Step title="Set Sync Schedule">
+    Choose sync frequency:
+    - Real-time
+    - Hourly
+    - Daily
+  </Step>
+
+  <Step title="Enable">
+    Start syncing data
+  </Step>
+</Steps>
+
+### Amazon Integration
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to integration settings
+  </Step>
+
+  <Step title="Select Amazon">
+    Choose Amazon Seller Central
+  </Step>
+
+  <Step title="Authorize Access">
+    Log in to Amazon and grant permissions
+  </Step>
+
+  <Step title="Select Marketplaces">
+    Choose which Amazon marketplaces to sync
+  </Step>
+
+  <Step title="Configure Settings">
+    Set up sync options:
+    - Order sync
+    - Inventory sync
+    - FBA vs. FBM handling
+  </Step>
+
+  <Step title="Enable">
+    Activate the integration
+  </Step>
+</Steps>
+
+## Integration Configuration
+
+### Data Sync Settings
+
+| Setting | Options |
+|---------|---------|
+| **Sync Direction** | One-way or bidirectional |
+| **Sync Frequency** | Real-time, hourly, daily |
+| **Historical Data** | How far back to sync |
+| **Data Types** | Which entities to sync |
+
+### Field Mapping
+
+Map external fields to Tether fields:
+
+| External Field | Tether Field |
+|----------------|--------------|
+| Product Title | SKU Name |
+| Product SKU | SKU Code |
+| Location | Warehouse |
+| Order Number | Sales Order ID |
+
+### Channel Assignment
+
+Connect integrations to channels:
+
+1. Integration syncs orders
+2. Orders assigned to a channel
+3. Channel used for forecasting
+
+## Managing Integrations
+
+### Viewing Integration Status
+
+The integration dashboard shows:
+
+| Status | Meaning |
+|--------|---------|
+| **Connected** | Active and syncing |
+| **Paused** | Temporarily stopped |
+| **Error** | Issue needs attention |
+| **Disconnected** | Not connected |
+
+### Pausing an Integration
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to integration settings
+  </Step>
+
+  <Step title="Select Integration">
+    Choose the integration to pause
+  </Step>
+
+  <Step title="Click Pause">
+    Temporarily stop syncing
+  </Step>
+</Steps>
+
+**When to pause:**
+- During system maintenance
+- When troubleshooting
+- During bulk data changes
+
+### Editing Integration Settings
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to integration settings
+  </Step>
+
+  <Step title="Select Integration">
+    Choose the integration to edit
+  </Step>
+
+  <Step title="Modify Settings">
+    Change configuration as needed
+  </Step>
+
+  <Step title="Save">
+    Apply changes
+  </Step>
+</Steps>
+
+### Disconnecting an Integration
+
+<Warning>
+  Disconnecting stops all data sync. Historical data remains in Tether.
+</Warning>
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to integration settings
+  </Step>
+
+  <Step title="Select Integration">
+    Choose the integration to disconnect
+  </Step>
+
+  <Step title="Click Disconnect">
+    Remove the connection
+  </Step>
+
+  <Step title="Confirm">
+    Confirm the disconnection
+  </Step>
+</Steps>
+
+## Authentication Methods
+
+### OAuth
+
+Most integrations use OAuth:
+
+1. Click "Connect"
+2. Redirected to platform login
+3. Authorize Tether access
+4. Redirected back to Tether
+
+### API Credentials
+
+Some integrations require API keys:
+
+| Credential | Where to Find |
+|------------|---------------|
+| API Key | Platform developer settings |
+| API Secret | Platform developer settings |
+| Store URL | Your platform URL |
+
+<Warning>
+  Keep API credentials secure. Never share them publicly.
+</Warning>
+
+## Integration Best Practices
+
+<AccordionGroup>
+  <Accordion title="Test Before Enabling">
+    Before going live:
+    - Test with sample data
+    - Verify mappings are correct
+    - Check sync direction
+  </Accordion>
+
+  <Accordion title="Monitor Initially">
+    After enabling:
+    - Watch first few syncs
+    - Verify data accuracy
+    - Check for errors
+  </Accordion>
+
+  <Accordion title="Document Configuration">
+    Keep records of:
+    - Integration settings
+    - Field mappings
+    - Custom configurations
+  </Accordion>
+
+  <Accordion title="Regular Review">
+    Periodically check:
+    - Sync status
+    - Error logs
+    - Data quality
+  </Accordion>
+</AccordionGroup>
+
+## Multiple Integrations
+
+### Managing Multiple Sources
+
+When connecting multiple platforms:
+
+- Each becomes a separate channel
+- Data flows to appropriate channel
+- Consolidated in Tether
+
+### Avoiding Duplicates
+
+Prevent duplicate records:
+
+| Strategy | Description |
+|----------|-------------|
+| **Unique Identifiers** | Use external IDs |
+| **Channel Separation** | Keep sources distinct |
+| **Deduplication Rules** | Configure matching logic |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Sync Sessions" icon="rotate" href="/integrations/sync-sessions">
+    Monitor sync activity
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/integrations/troubleshooting">
+    Resolve integration issues
+  </Card>
+  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
+    Manage sales channels
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Control integration access
+  </Card>
+</CardGroup>

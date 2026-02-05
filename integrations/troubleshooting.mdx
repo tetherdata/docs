@@ -1,0 +1,342 @@
+---
+title: Integration Troubleshooting
+description: Resolve common integration issues
+---
+
+# Integration Troubleshooting
+
+This guide helps you identify and resolve common integration issues.
+
+## Common Issues
+
+### Authentication Errors
+
+**Symptoms:**
+- "Authentication failed" error
+- "Invalid credentials" message
+- Sync fails immediately
+
+**Causes:**
+- Expired OAuth token
+- Changed password
+- Revoked API access
+- Invalid API credentials
+
+**Solutions:**
+
+<Steps>
+  <Step title="Re-authorize Connection">
+    Go to integration settings and click "Reconnect" or "Re-authorize"
+  </Step>
+
+  <Step title="Verify Credentials">
+    If using API keys, verify they're correct
+  </Step>
+
+  <Step title="Check Platform Status">
+    Ensure the external platform is accessible
+  </Step>
+
+  <Step title="Generate New Credentials">
+    If needed, create new API credentials
+  </Step>
+</Steps>
+
+### Connection Timeout
+
+**Symptoms:**
+- Sync takes too long
+- "Connection timeout" error
+- Partial data sync
+
+**Causes:**
+- Network issues
+- Large data volume
+- Platform overload
+- Slow API response
+
+**Solutions:**
+
+| Action | Description |
+|--------|-------------|
+| **Retry** | Wait and try again |
+| **Reduce Scope** | Sync smaller date range |
+| **Off-Peak** | Sync during low-traffic hours |
+| **Contact Support** | If persists |
+
+### Data Not Syncing
+
+**Symptoms:**
+- New orders not appearing
+- Inventory not updating
+- Products missing
+
+**Causes:**
+- Integration paused
+- Filter excluding data
+- Mapping issues
+- Data format problems
+
+**Solutions:**
+
+<Steps>
+  <Step title="Check Integration Status">
+    Verify integration is active (not paused)
+  </Step>
+
+  <Step title="Review Filters">
+    Check if filters are excluding data
+  </Step>
+
+  <Step title="Verify Mapping">
+    Ensure field mappings are correct
+  </Step>
+
+  <Step title="Check Source Data">
+    Verify data exists in source system
+  </Step>
+
+  <Step title="Trigger Manual Sync">
+    Force a sync to see specific errors
+  </Step>
+</Steps>
+
+### Duplicate Records
+
+**Symptoms:**
+- Same order appears multiple times
+- Duplicate SKUs
+- Inflated counts
+
+**Causes:**
+- Multiple syncs of same data
+- Missing unique identifiers
+- Channel overlap
+- Mapping issues
+
+**Solutions:**
+
+| Action | Description |
+|--------|-------------|
+| **Review Mappings** | Ensure unique IDs are mapped |
+| **Check Channels** | Verify no overlap |
+| **Merge Duplicates** | Combine duplicate records |
+| **Adjust Filters** | Prevent re-syncing old data |
+
+### Missing Historical Data
+
+**Symptoms:**
+- Only recent data synced
+- Historical orders missing
+- Incomplete history
+
+**Causes:**
+- Date range filter
+- Platform limitations
+- Initial sync settings
+
+**Solutions:**
+
+<Steps>
+  <Step title="Check Date Range">
+    Review historical sync settings
+  </Step>
+
+  <Step title="Adjust Settings">
+    Extend the date range if possible
+  </Step>
+
+  <Step title="Manual Import">
+    Import historical data separately if needed
+  </Step>
+</Steps>
+
+## Platform-Specific Issues
+
+### Shopify
+
+| Issue | Solution |
+|-------|----------|
+| **Rate limit exceeded** | Wait 1 minute, retry |
+| **Location not syncing** | Verify location is active in Shopify |
+| **Variants missing** | Check variant visibility settings |
+| **Fulfillment issues** | Verify fulfillment service configuration |
+
+### Amazon
+
+| Issue | Solution |
+|-------|----------|
+| **Access denied** | Re-authorize through Amazon Seller Central |
+| **Marketplace not showing** | Add marketplace in Tether settings |
+| **FBA data missing** | Verify FBA permissions granted |
+| **Order delay** | Amazon API can have 15-30 min delay |
+
+### NetSuite
+
+| Issue | Solution |
+|-------|----------|
+| **Script execution error** | Check NetSuite script logs |
+| **Permission denied** | Verify role has required permissions |
+| **Field not mapping** | Ensure custom field is exposed to API |
+| **Saved search issues** | Verify saved search criteria |
+
+## Diagnostic Steps
+
+### Step 1: Check Integration Status
+
+1. Go to **Settings** → **Integrations**
+2. Verify status is "Connected"
+3. Note any error messages
+
+### Step 2: Review Recent Syncs
+
+1. View sync session history
+2. Look for failed or partial syncs
+3. Check error details
+
+### Step 3: Verify Configuration
+
+| Check | How |
+|-------|-----|
+| **Credentials** | Re-enter or re-authorize |
+| **Mappings** | Review field mappings |
+| **Filters** | Check date/data filters |
+| **Permissions** | Verify platform permissions |
+
+### Step 4: Test Connection
+
+1. Trigger a manual sync
+2. Watch for immediate errors
+3. Check if any data syncs
+
+### Step 5: Review Logs
+
+1. Access detailed sync logs
+2. Look for specific error messages
+3. Identify affected records
+
+## Error Message Reference
+
+| Error | Meaning | Action |
+|-------|---------|--------|
+| **401 Unauthorized** | Authentication failed | Re-authorize |
+| **403 Forbidden** | Permission denied | Check permissions |
+| **404 Not Found** | Resource doesn't exist | Verify configuration |
+| **429 Too Many Requests** | Rate limited | Wait and retry |
+| **500 Internal Error** | Server issue | Retry later |
+| **503 Service Unavailable** | Platform down | Wait for recovery |
+
+## Preventing Issues
+
+### Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Monitoring">
+    Check integrations regularly:
+    - Daily status check
+    - Weekly sync review
+    - Monthly full audit
+  </Accordion>
+
+  <Accordion title="Keep Credentials Updated">
+    Maintain authentication:
+    - Update before expiration
+    - Don't share credentials
+    - Use service accounts
+  </Accordion>
+
+  <Accordion title="Document Configuration">
+    Keep records of:
+    - Integration settings
+    - Field mappings
+    - Custom configurations
+    - Change history
+  </Accordion>
+
+  <Accordion title="Test After Changes">
+    After any changes:
+    - Trigger test sync
+    - Verify data accuracy
+    - Monitor for errors
+  </Accordion>
+</AccordionGroup>
+
+### Setting Up Alerts
+
+Configure notifications for:
+
+| Alert | When Triggered |
+|-------|----------------|
+| **Sync Failed** | Any sync failure |
+| **Error Threshold** | Errors exceed limit |
+| **Sync Delayed** | Sync not running on schedule |
+| **Data Discrepancy** | Counts don't match |
+
+## When to Contact Support
+
+Contact Tether support when:
+
+- Issue persists after troubleshooting
+- Error message is unclear
+- Data corruption suspected
+- Platform-specific issue
+
+### Information to Provide
+
+| Information | Why Needed |
+|-------------|------------|
+| **Integration type** | Identify platform |
+| **Error message** | Understand issue |
+| **When it started** | Timeline context |
+| **Steps tried** | Avoid duplication |
+| **Sync session ID** | Locate specific sync |
+
+## Recovery Procedures
+
+### After Extended Outage
+
+<Steps>
+  <Step title="Check Integration Status">
+    Verify connection is restored
+  </Step>
+
+  <Step title="Review Missed Period">
+    Identify date range not synced
+  </Step>
+
+  <Step title="Trigger Manual Sync">
+    Sync missed data
+  </Step>
+
+  <Step title="Verify Completeness">
+    Check record counts match
+  </Step>
+</Steps>
+
+### After Data Corruption
+
+<Warning>
+  Contact support before attempting data recovery.
+</Warning>
+
+1. Stop automatic syncs
+2. Document the issue
+3. Contact Tether support
+4. Follow recovery guidance
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
+    Configure integrations
+  </Card>
+  <Card title="Sync Sessions" icon="rotate" href="/integrations/sync-sessions">
+    Monitor sync activity
+  </Card>
+  <Card title="Data Exports" icon="download" href="/tips/exports">
+    Manual data handling
+  </Card>
+  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
+    Channel management
+  </Card>
+</CardGroup>

@@ -1,0 +1,311 @@
+---
+title: Lead Time Configuration
+description: Setting up transfer times between warehouses
+---
+
+# Lead Time Configuration
+
+Lead times determine how long it takes to move inventory between locations. Accurate lead times are essential for Tether to recommend orders at the right time.
+
+## What Are Lead Times?
+
+Lead time is the total time from when an order is placed until inventory is available at the destination.
+
+### Lead Time Components
+
+| Component | Description |
+|-----------|-------------|
+| **Processing Time** | Time to prepare the order |
+| **Transit Time** | Shipping duration |
+| **Receiving Time** | Time to receive and stock |
+| **Total Lead Time** | Sum of all components |
+
+### Example Lead Time
+
+```
+Order placed Monday
++ 1 day processing
++ 3 days transit
++ 1 day receiving
+= 5 days total lead time
+= Available Saturday
+```
+
+## Types of Lead Times
+
+### Supplier Lead Times
+
+Time for orders from suppliers to reach your warehouse.
+
+Configured in: **Supplier Settings** → **Capabilities**
+
+### Transfer Lead Times
+
+Time to move inventory between your warehouses.
+
+Configured in: **Warehouse Settings** → **Lead Time**
+
+### Production Lead Times
+
+Time to manufacture products internally.
+
+Configured in: **Transaction Settings** → **Production**
+
+## Configuring Transfer Lead Times
+
+### Accessing Lead Time Settings
+
+<Steps>
+  <Step title="Navigate to Warehouse">
+    Go to **Inventory** → **Warehouses**
+  </Step>
+
+  <Step title="Open Warehouse Detail">
+    Click on a warehouse to open its settings
+  </Step>
+
+  <Step title="Go to Lead Time Tab">
+    Select the **Lead Time Settings** tab
+  </Step>
+</Steps>
+
+### Setting Lead Times
+
+Configure the time to transfer TO this warehouse from other locations:
+
+<Steps>
+  <Step title="Select Source Warehouse">
+    Choose the warehouse you're transferring FROM
+  </Step>
+
+  <Step title="Enter Lead Time">
+    Specify the number of days:
+    - **Total Days** - Combined lead time
+    - Or break down by component if needed
+  </Step>
+
+  <Step title="Save">
+    Save the lead time configuration
+  </Step>
+
+  <Step title="Repeat">
+    Configure for each source warehouse
+  </Step>
+</Steps>
+
+### Example Configuration
+
+For a warehouse in New York receiving from other locations:
+
+| From | To NYC | Lead Time |
+|------|--------|-----------|
+| LA Warehouse | NYC | 5 days |
+| Chicago DC | NYC | 3 days |
+| Atlanta | NYC | 4 days |
+
+## The Lead Time Matrix
+
+The lead time matrix shows transfer times between all warehouses.
+
+### Accessing the Matrix
+
+Navigate to **Inventory** → **Lead Times** (or through Settings).
+
+### Matrix View
+
+```
+          To:   NYC    LA    CHI   ATL
+From:
+NYC             -      5     3     4
+LA              5      -     4     5
+CHI             3      4     -     3
+ATL             4      5     3     -
+```
+
+### Editing in Matrix View
+
+1. Click on any cell to edit
+2. Enter the lead time in days
+3. Changes save automatically
+
+<Tip>
+  Lead times are directional. NYC → LA might be different from LA → NYC due to shipping routes.
+</Tip>
+
+## Lead Times and Supply Planning
+
+Lead times directly impact supply recommendations:
+
+### How Tether Uses Lead Times
+
+1. **Calculates order timing** - When to place orders to arrive on time
+2. **Projects inventory** - When incoming stock will be available
+3. **Generates alerts** - Warns when lead time exceeds coverage
+
+### Example Calculation
+
+```
+Stockout projected: March 15
+Transfer lead time: 5 days
+Order should be placed by: March 10
+```
+
+If coverage drops below lead time, you'll see an urgent alert.
+
+## Factors Affecting Lead Times
+
+Consider these factors when setting lead times:
+
+| Factor | Impact |
+|--------|--------|
+| **Distance** | Longer distance = longer transit |
+| **Shipping Method** | Ground vs. air vs. expedited |
+| **Carrier Reliability** | Add buffer for unreliable routes |
+| **Processing Capacity** | Larger orders take longer to process |
+| **Receiving Capacity** | Busy warehouses take longer to receive |
+| **Seasonality** | Holiday periods may have delays |
+
+## Buffer Time
+
+Consider adding buffer to lead times:
+
+### Why Add Buffer
+
+- Account for delays
+- Provide safety margin
+- Handle variability
+
+### How Much Buffer
+
+| Situation | Suggested Buffer |
+|-----------|------------------|
+| Reliable routes | 0-1 days |
+| Standard routes | 1-2 days |
+| Unreliable routes | 2-3 days |
+| International | 3-5 days |
+
+### Example with Buffer
+
+Actual transit time: 3 days
++ Processing: 1 day
++ Receiving: 1 day
++ Buffer: 1 day
+= **Configured lead time: 6 days**
+
+## Lead Time by SKU
+
+Some configurations allow SKU-specific lead times:
+
+### When to Use
+
+- Bulky items that ship differently
+- Special handling requirements
+- Different suppliers for different SKUs
+
+### Configuration
+
+Set in supplier capabilities or SKU settings.
+
+## Monitoring Lead Time Accuracy
+
+Track actual vs. configured lead times:
+
+### Review Process
+
+1. Check transaction history for actual times
+2. Compare to configured lead times
+3. Adjust if consistently off
+
+### Signs of Incorrect Lead Times
+
+- Frequent stockouts despite orders in transit
+- Inventory arriving earlier/later than projected
+- Alerts don't align with actual urgency
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start Conservative">
+    When uncertain, use longer lead times:
+    - Orders arrive early = extra safety stock
+    - Orders arrive late = potential stockout
+    - Better to have buffer than shortfall
+  </Accordion>
+
+  <Accordion title="Review Regularly">
+    Update lead times periodically:
+    - Seasonal changes (holiday delays)
+    - New shipping contracts
+    - Route changes
+    - Performance trends
+  </Accordion>
+
+  <Accordion title="Document Assumptions">
+    Keep notes on lead time configurations:
+    - What components are included
+    - What buffer is added
+    - Why certain routes are longer
+  </Accordion>
+
+  <Accordion title="Consider Variability">
+    For routes with high variability:
+    - Use the longer end of the range
+    - Consider expedited shipping for urgent orders
+    - Monitor closely during peak periods
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Orders Always Late
+
+**Possible causes:**
+- Lead time configured too short
+- Not accounting for all components
+- Carrier performance degraded
+
+**Solutions:**
+1. Review actual transit times
+2. Add appropriate buffer
+3. Consider faster shipping methods
+
+### Orders Always Early
+
+**Possible causes:**
+- Lead time configured too long
+- Carrier improved performance
+- Processing time reduced
+
+**Solutions:**
+1. If consistently early, reduce lead time slightly
+2. Early arrivals are usually acceptable
+3. Don't over-correct—keep some buffer
+
+### Inconsistent Results
+
+**Possible causes:**
+- High route variability
+- Seasonal fluctuations
+- Different carriers used
+
+**Solutions:**
+1. Use longer lead time to cover worst case
+2. Review carrier selection
+3. Consider average + buffer approach
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Warehouses Overview" icon="warehouse" href="/inventory/warehouses/overview">
+    Manage warehouse settings
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Configure supplier lead times
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    See lead times in action
+  </Card>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure fulfillment rules
+  </Card>
+</CardGroup>

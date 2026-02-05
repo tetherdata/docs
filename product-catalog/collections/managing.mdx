@@ -1,0 +1,409 @@
+---
+title: Managing Collections
+description: Configure and maintain collections in Tether
+---
+
+# Managing Collections
+
+This guide covers the detailed configuration options available for collections, including dimensions, pricing, suppliers, and more.
+
+<Note>
+  Managing collections requires Admin access.
+</Note>
+
+## Accessing Collection Settings
+
+<Steps>
+  <Step title="Navigate to Collections">
+    Go to **SKUs** → **Collections** tab
+  </Step>
+
+  <Step title="Open a Collection">
+    Click on a collection name to open its detail view
+  </Step>
+
+  <Step title="Navigate Tabs">
+    Use the tabs to access different configuration areas
+  </Step>
+</Steps>
+
+## SKUs Tab
+
+The SKUs tab shows all products in this collection.
+
+### Viewing SKUs
+
+- See all SKUs with their codes, names, and attributes
+- Filter by status, dimensions, or search
+- Click a SKU to open its detail page
+
+### Adding SKUs Manually
+
+1. Click **Add SKU** or use the global Create SKU function
+2. Select this collection when creating
+
+### Using the SKU Generator
+
+The SKU Generator creates all variant combinations automatically:
+
+<Steps>
+  <Step title="Click SKU Generator">
+    Open the generator from the SKUs tab toolbar
+  </Step>
+
+  <Step title="Configure Templates">
+    **Name Template:**
+    ```
+    {collection_name} - {Size} - {Color}
+    ```
+    Result: "T-Shirts - Medium - Blue"
+
+    **Code Template:**
+    ```
+    {collection_code}-{Size}-{Color}
+    ```
+    Result: "TSH-M-BLU"
+  </Step>
+
+  <Step title="Select Dimension Values">
+    Check which values to include for each dimension
+  </Step>
+
+  <Step title="Preview">
+    Review the SKUs that will be created
+  </Step>
+
+  <Step title="Generate">
+    Click Generate to create all SKUs
+  </Step>
+</Steps>
+
+<Tip>
+  Use consistent abbreviations in code templates. "M" for Medium, "BLU" for Blue keeps codes short but readable.
+</Tip>
+
+### Removing SKUs
+
+SKUs can be:
+- **Moved** to another collection
+- **Archived** (hidden but preserved)
+- **Deleted** (permanent - use with caution)
+
+## Dimensions Tab
+
+Configure product attributes for this collection.
+
+### What Are Dimensions?
+
+Dimensions define variable attributes of products:
+
+| Dimension | Example Values |
+|-----------|----------------|
+| Size | XS, S, M, L, XL, XXL |
+| Color | Red, Blue, Black, White, Green |
+| Material | Cotton, Polyester, Silk |
+| Length | Short, Regular, Long |
+
+### Creating a Dimension
+
+<Steps>
+  <Step title="Click Add Dimension">
+    In the Dimensions tab, click **Add Dimension**
+  </Step>
+
+  <Step title="Configure Dimension">
+    - **Name**: Display name (e.g., "Size")
+    - **Code**: Short identifier (e.g., "SZ")
+  </Step>
+
+  <Step title="Add Values">
+    Add the possible values for this dimension:
+    - Click **Add Value**
+    - Enter the value name and optional code
+    - Repeat for all values
+  </Step>
+
+  <Step title="Save">
+    Save the dimension configuration
+  </Step>
+</Steps>
+
+### Managing Dimension Values
+
+**Adding Values:**
+- Open the dimension
+- Click **Add Value**
+- Enter the new value
+
+**Editing Values:**
+- Click on a value to edit its name or code
+- Changes don't affect existing SKUs
+
+**Removing Values:**
+- Values can only be removed if no SKUs use them
+- Archive SKUs first if needed
+
+<Warning>
+  Deleting a dimension value will fail if any SKUs use that value. Update or archive those SKUs first.
+</Warning>
+
+### Multi-Level Dimensions
+
+Some dimensions support hierarchical values:
+
+```
+Color
+├── Blue
+│   ├── Navy Blue
+│   ├── Sky Blue
+│   └── Royal Blue
+├── Red
+│   ├── Crimson
+│   └── Burgundy
+└── Black
+```
+
+This allows filtering at any level.
+
+## Hierarchy Tab
+
+Configure how this collection fits into your product hierarchy.
+
+### Setting Hierarchy Values
+
+1. For each hierarchy level, select the appropriate value
+2. This categorizes all SKUs in the collection
+3. Used for reporting and filtering
+
+### Example
+
+If your hierarchy is: `Category > Subcategory > Line`
+
+Set values like:
+- Category: "Apparel"
+- Subcategory: "Tops"
+- Line: "T-Shirts"
+
+## Inventory Tab
+
+View aggregate inventory for the collection.
+
+### What's Shown
+
+- Total inventory across all warehouses
+- Breakdown by warehouse
+- Health status summary
+- Coverage days
+
+<Info>
+  This is a read-only view. To adjust inventory, use the Inventory dashboard or transactions.
+</Info>
+
+## Suppliers Tab
+
+Manage suppliers who provide products in this collection.
+
+### Collection-Level Suppliers
+
+Assign suppliers at the collection level when:
+- A supplier provides all products in the collection
+- Pricing and lead times are consistent
+
+### Adding a Supplier
+
+<Steps>
+  <Step title="Click Add Supplier">
+    In the Suppliers tab, click **Add Supplier**
+  </Step>
+
+  <Step title="Select Supplier">
+    Choose from your supplier list
+  </Step>
+
+  <Step title="Configure Details">
+    - Default lead time
+    - Default pricing/cost
+    - Minimum order quantities
+  </Step>
+
+  <Step title="Save">
+    Save the supplier relationship
+  </Step>
+</Steps>
+
+### SKU-Level Override
+
+Individual SKUs can have different supplier configurations that override collection defaults.
+
+## Pricing Tab
+
+Configure pricing for products in the collection.
+
+### Pricing Matrix
+
+The pricing matrix lets you set prices based on dimensions:
+
+```
+           | Small | Medium | Large | XL    |
+Red        | $20   | $22    | $24   | $26   |
+Blue       | $20   | $22    | $24   | $26   |
+Premium    | $30   | $33    | $36   | $39   |
+```
+
+### Setting Up the Matrix
+
+<Steps>
+  <Step title="Open Pricing Tab">
+    Navigate to the collection's Pricing tab
+  </Step>
+
+  <Step title="Select Dimensions">
+    Choose which dimensions affect pricing
+  </Step>
+
+  <Step title="Enter Prices">
+    Fill in prices for each combination
+  </Step>
+
+  <Step title="Save">
+    Prices are applied to SKUs in the collection
+  </Step>
+</Steps>
+
+### Channel-Specific Pricing
+
+Prices can vary by sales channel:
+- Base price for all channels
+- Override for specific channels (e.g., higher on Amazon)
+
+## BOM Tab
+
+Bill of Materials for collections with manufactured products.
+
+### What is BOM?
+
+BOM defines what components make up a finished product:
+
+```
+T-Shirt (Finished Good)
+├── Fabric - 0.5 meters
+├── Thread - 1 spool
+├── Label - 1 piece
+└── Packaging - 1 bag
+```
+
+### Collection-Level BOM
+
+Set up BOM at the collection level when products share components:
+- All t-shirts use the same fabric
+- Quantities may vary by size
+
+### Configuring BOM
+
+<Steps>
+  <Step title="Add Component">
+    Click **Add Component** in the BOM tab
+  </Step>
+
+  <Step title="Select SKU">
+    Choose the component SKU (must be type Component or Raw Material)
+  </Step>
+
+  <Step title="Set Quantity">
+    Enter how much of this component is needed
+  </Step>
+
+  <Step title="Add More">
+    Repeat for all components
+  </Step>
+
+  <Step title="Save">
+    BOM is applied to products in the collection
+  </Step>
+</Steps>
+
+## Settings Tab
+
+General collection configuration.
+
+### Available Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | Collection display name |
+| **Description** | Detailed description |
+| **Code** | Short identifier |
+| **Status** | Active or Archived |
+
+### Archiving a Collection
+
+<Steps>
+  <Step title="Open Settings">
+    Go to the collection's Settings tab
+  </Step>
+
+  <Step title="Change Status">
+    Set Status to **Archived**
+  </Step>
+
+  <Step title="Confirm">
+    Confirm the archive action
+  </Step>
+</Steps>
+
+**Effects of archiving:**
+- Collection hidden from default lists
+- SKUs remain active (unless individually archived)
+- No new SKUs can be added
+- Historical data preserved
+
+### Restoring a Collection
+
+1. Find the collection (use filters to show archived)
+2. Open Settings tab
+3. Change Status back to **Active**
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Plan Before Creating">
+    Map out your dimensions and structure before creating collections. It's easier to set up correctly than to reorganize later.
+  </Accordion>
+
+  <Accordion title="Use Consistent Naming">
+    Establish naming conventions for:
+    - Collection names
+    - Dimension values
+    - SKU codes
+
+    Consistency makes searching and reporting easier.
+  </Accordion>
+
+  <Accordion title="Document Your Structure">
+    Keep notes on why collections are organized a certain way. This helps onboard new team members.
+  </Accordion>
+
+  <Accordion title="Regular Maintenance">
+    Periodically review collections:
+    - Archive unused collections
+    - Clean up old dimension values
+    - Verify supplier information
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Dimensions" icon="ruler-combined" href="/product-catalog/dimensions">
+    Deep dive into dimension configuration
+  </Card>
+  <Card title="Product Hierarchy" icon="sitemap" href="/product-catalog/hierarchy">
+    Set up product categorization
+  </Card>
+  <Card title="SKU Generation" icon="wand-magic-sparkles" href="/product-catalog/skus/creating-skus">
+    Create SKUs from dimensions
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Manage supplier relationships
+  </Card>
+</CardGroup>

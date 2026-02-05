@@ -1,0 +1,336 @@
+---
+title: Sales History
+description: View historical sales data in Tether
+---
+
+# Sales History
+
+The Sales History view shows your actual historical sales data. It's essential for understanding past performance, validating forecasts, and identifying trends.
+
+## Accessing Sales History
+
+Navigate to **Demand Forecast** → **Sales History** (or **Sales History** in the sidebar for Sales Rep users).
+
+<Note>
+  Sales History is available to both Admin and Sales Rep users, making it accessible for the entire team.
+</Note>
+
+## What is Sales History?
+
+Sales History displays actual sales transactions that have occurred:
+
+| Data Point | Description |
+|------------|-------------|
+| **Units Sold** | Quantity sold |
+| **Revenue** | Sales value (if tracked) |
+| **By SKU** | Broken down by product |
+| **By Channel** | Broken down by sales channel |
+| **By Period** | Daily, weekly, or monthly |
+
+## Sales History View
+
+### Layout
+
+The Sales History view uses a similar layout to the Forecast Dashboard:
+
+- **Filter Panel** (left) - Filter by channel, product, etc.
+- **Data Table** (center) - Historical sales by period
+- **Time Controls** (top) - Date range and aggregation
+
+### Table Columns
+
+| Column Type | Content |
+|-------------|---------|
+| **Row Identifiers** | SKU, Channel, Collection |
+| **Period Columns** | Sales for each time period |
+| **Totals** | Row and column sums |
+
+## Viewing Historical Data
+
+### Date Range Selection
+
+<Steps>
+  <Step title="Click Date Range">
+    Open the date range picker
+  </Step>
+
+  <Step title="Select History Period">
+    Choose how far back to look:
+    - Last 30 days
+    - Last 90 days
+    - Last 12 months
+    - Custom range
+  </Step>
+
+  <Step title="Apply">
+    Data refreshes to show selected period
+  </Step>
+</Steps>
+
+### Aggregation Levels
+
+| Level | Best For |
+|-------|----------|
+| **Daily** | Recent detailed analysis |
+| **Weekly** | Short-term trends |
+| **Monthly** | Long-term patterns |
+| **Quarterly** | Strategic overview |
+
+### Grouping Options
+
+Group historical data by:
+- Channel
+- Collection
+- Product hierarchy
+- SKU
+
+## Filtering Sales History
+
+### By Channel
+
+View sales for specific channels:
+
+1. Open Channel filter
+2. Select channels
+3. See only sales from those channels
+
+### By Product
+
+Focus on specific products:
+
+1. Use Collection or SKU filters
+2. Select products to view
+3. Data shows only selected items
+
+### By Time Period
+
+Beyond date range, filter by:
+- Day of week
+- Specific months
+- Comparable periods (same month last year)
+
+## Comparing to Forecasts
+
+### Side-by-Side View
+
+To compare sales history with forecasts:
+
+1. Go to the Forecast Dashboard
+2. Enable both "Sales History" and "Forecast" metrics
+3. View actual vs. predicted in the same table
+
+### Variance Analysis
+
+| Column | Description |
+|--------|-------------|
+| **Forecast** | What was predicted |
+| **Actual** | What actually sold |
+| **Variance** | Difference (Actual - Forecast) |
+| **Variance %** | Percentage difference |
+
+### Reading Variances
+
+| Variance | Meaning | Action |
+|----------|---------|--------|
+| **Positive** | Sold more than forecast | Good news, may need supply |
+| **Negative** | Sold less than forecast | Review why, check inventory |
+| **Zero/Small** | Forecast was accurate | Forecasting is working well |
+
+## Sales Trends
+
+### Identifying Patterns
+
+Look for:
+
+**Seasonal Patterns:**
+- Higher sales in certain months
+- Holiday peaks
+- Weather-related changes
+
+**Growth/Decline:**
+- Consistent month-over-month changes
+- Year-over-year comparisons
+- Product lifecycle stages
+
+**Channel Patterns:**
+- Channel-specific seasonality
+- Promotional impacts by channel
+- Channel growth rates
+
+### Trend Indicators
+
+| Pattern | What It Looks Like |
+|---------|-------------------|
+| **Growth** | Values increasing over time |
+| **Decline** | Values decreasing over time |
+| **Seasonal** | Regular peaks and valleys |
+| **Steady** | Consistent values period to period |
+
+## Year-over-Year Comparison
+
+Compare current period to same period last year:
+
+### Setting Up YoY View
+
+<Steps>
+  <Step title="Select This Year's Period">
+    Choose the current period you're analyzing
+  </Step>
+
+  <Step title="Add Comparison">
+    Enable "Compare to Prior Year" option
+  </Step>
+
+  <Step title="View Results">
+    See both years' data side by side
+  </Step>
+</Steps>
+
+### YoY Metrics
+
+| Metric | Description |
+|--------|-------------|
+| **This Year** | Current period sales |
+| **Last Year** | Same period prior year |
+| **Change** | Difference in units |
+| **% Change** | Percentage growth/decline |
+
+## Exporting Sales Data
+
+### Export Options
+
+<Steps>
+  <Step title="Set Filters">
+    Configure view with desired filters and date range
+  </Step>
+
+  <Step title="Click Export">
+    Click the **Export** button
+  </Step>
+
+  <Step title="Choose Format">
+    Select:
+    - **CSV** - For data analysis
+    - **Excel** - For formatted reports
+  </Step>
+
+  <Step title="Download">
+    File includes all visible data
+  </Step>
+</Steps>
+
+### Export Uses
+
+- Detailed analysis in Excel
+- Input to other planning tools
+- Sharing with stakeholders
+- Archive for records
+
+## Period Completion Status
+
+Some views show period completion:
+
+| Status | Meaning |
+|--------|---------|
+| **Complete** | Full period, all data in |
+| **In Progress** | Current period, data still coming |
+| **Estimated** | Some data may be delayed |
+
+<Info>
+  Recent periods may show incomplete data if sales are still being processed or synced.
+</Info>
+
+## Integration with Forecasts
+
+Sales history feeds into forecasting:
+
+### How Forecasts Use History
+
+1. **Baseline** - Historical patterns establish baseline
+2. **Trends** - Growth/decline rates inform projections
+3. **Seasonality** - Past seasonal patterns project forward
+4. **Model Training** - Algorithms learn from history
+
+### Data Quality Impact
+
+Better history data = better forecasts:
+
+- Complete data improves accuracy
+- Consistent tracking helps patterns
+- Flagged anomalies prevent distortion
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Review">
+    Check sales history regularly:
+    - Weekly: Recent performance
+    - Monthly: Trend analysis
+    - Quarterly: Strategic review
+  </Accordion>
+
+  <Accordion title="Investigate Anomalies">
+    When you see unusual patterns:
+    - Was there a promotion?
+    - Were there supply issues?
+    - Market event?
+    - Document for future reference
+  </Accordion>
+
+  <Accordion title="Compare Year-over-Year">
+    Use YoY comparisons to:
+    - Understand seasonal patterns
+    - Measure growth
+    - Validate forecasts
+  </Accordion>
+
+  <Accordion title="Export for Analysis">
+    Export data for deeper analysis:
+    - Create charts and visualizations
+    - Perform statistical analysis
+    - Share with leadership
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Missing Sales Data
+
+**Possible causes:**
+- Integration sync delay
+- Date range doesn't include data
+- Data wasn't imported
+
+**Solutions:**
+1. Check integration status
+2. Expand date range
+3. Verify data import completed
+
+### Data Doesn't Match Source
+
+**Possible causes:**
+- Returns not processed
+- Timing differences
+- Aggregation method differs
+
+**Solutions:**
+1. Check if returns are included
+2. Verify period definitions match
+3. Confirm aggregation logic
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    Compare history to forecasts
+  </Card>
+  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
+    Compare forecast models
+  </Card>
+  <Card title="Filtering" icon="filter" href="/demand-forecasting/filtering">
+    Learn to filter data effectively
+  </Card>
+  <Card title="Integrations" icon="plug" href="/integrations/setup">
+    Set up sales data sync
+  </Card>
+</CardGroup>

@@ -1,0 +1,364 @@
+---
+title: What-If Scenarios
+description: Run scenario analysis for supply chain planning
+---
+
+# What-If Scenarios
+
+What-if analysis lets you test different scenarios before making decisions. See how changes in demand, lead times, or supplier availability would affect your supply chain.
+
+## What is What-If Analysis?
+
+What-if scenarios modify simulation parameters to answer questions like:
+
+- "What if demand increases 20%?"
+- "What if lead times double?"
+- "What if a supplier can't deliver?"
+- "What if we expedite an order?"
+
+## Why Use What-If Analysis?
+
+| Benefit | Description |
+|---------|-------------|
+| **Risk Assessment** | Understand potential issues |
+| **Decision Support** | Test options before committing |
+| **Contingency Planning** | Prepare for disruptions |
+| **Optimization** | Find the best approach |
+
+## Running What-If Scenarios
+
+### Basic What-If Flow
+
+<Steps>
+  <Step title="Run Baseline">
+    First, run a standard simulation as your baseline
+  </Step>
+
+  <Step title="Configure Scenario">
+    Set up what-if parameters
+  </Step>
+
+  <Step title="Run Scenario">
+    Execute the what-if simulation
+  </Step>
+
+  <Step title="Compare Results">
+    Review baseline vs. scenario differences
+  </Step>
+</Steps>
+
+### Accessing What-If Mode
+
+1. Navigate to **Inventory** → **Supply Simulation**
+2. Select **What-If Mode** or **Scenario Analysis**
+3. Configure parameters
+4. Run simulation
+
+## Scenario Types
+
+### Demand Scenarios
+
+Test changes in customer demand:
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| **Demand Multiplier** | Scale all demand | 1.2 = 20% increase |
+| **Specific SKU Adjustment** | Change individual products | Double SKU-001 demand |
+| **Channel Change** | Modify by channel | Wholesale +50% |
+
+**Use cases:**
+- Preparing for promotions
+- Planning for growth
+- Testing downside scenarios
+
+### Lead Time Scenarios
+
+Test changes in delivery times:
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| **Lead Time Multiplier** | Scale all lead times | 1.5 = 50% longer |
+| **Specific Supplier** | Change one supplier | Supplier A +30 days |
+| **Route Change** | Modify specific routes | Asia +14 days |
+
+**Use cases:**
+- Shipping disruptions
+- Supplier delays
+- Port congestion
+
+### Supplier Scenarios
+
+Test supplier availability issues:
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| **Supplier Constraint** | Limit supplier output | Max 1000 units |
+| **Supplier Unavailable** | Remove supplier entirely | No orders from Supplier B |
+| **New Supplier** | Add capability | Add backup supplier |
+
+**Use cases:**
+- Supplier bankruptcy
+- Quality issues
+- Capacity constraints
+
+## Configuring Scenarios
+
+### Demand Multiplier
+
+<Steps>
+  <Step title="Enter What-If Mode">
+    Select scenario analysis option
+  </Step>
+
+  <Step title="Set Demand Multiplier">
+    Enter multiplier value:
+    - 1.0 = No change
+    - 1.2 = 20% increase
+    - 0.8 = 20% decrease
+  </Step>
+
+  <Step title="Run Simulation">
+    Execute with modified demand
+  </Step>
+</Steps>
+
+### Lead Time Multiplier
+
+<Steps>
+  <Step title="Enter What-If Mode">
+    Select scenario analysis option
+  </Step>
+
+  <Step title="Set Lead Time Multiplier">
+    Enter multiplier value:
+    - 1.0 = No change
+    - 1.5 = 50% longer
+    - 2.0 = Double the time
+  </Step>
+
+  <Step title="Run Simulation">
+    Execute with modified lead times
+  </Step>
+</Steps>
+
+### Supplier Constraints
+
+<Steps>
+  <Step title="Enter What-If Mode">
+    Select scenario analysis option
+  </Step>
+
+  <Step title="Add Constraint">
+    Specify supplier limitations:
+    - Select supplier
+    - Set constraint type
+    - Define parameters
+  </Step>
+
+  <Step title="Run Simulation">
+    Execute with constraints applied
+  </Step>
+</Steps>
+
+## Interpreting Results
+
+### Baseline vs. Scenario Comparison
+
+| Metric | Baseline | Scenario | Change |
+|--------|----------|----------|--------|
+| Stockouts | 5 SKUs | 12 SKUs | +7 |
+| Coverage Days | 45 | 28 | -17 |
+| Order Value | $100K | $150K | +$50K |
+| Urgent Orders | 3 | 8 | +5 |
+
+### Key Metrics to Compare
+
+| Metric | What It Shows |
+|--------|---------------|
+| **Stockout Count** | How many SKUs run out |
+| **Stockout Days** | Duration of stockouts |
+| **Additional Orders** | Extra orders needed |
+| **Cost Impact** | Financial effect |
+| **Coverage Change** | Inventory buffer change |
+
+### Visual Comparison
+
+Use charts to see differences:
+
+1. View baseline projection
+2. Overlay scenario projection
+3. Identify where they diverge
+4. Understand the impact
+
+## Common Scenarios
+
+### Growth Planning
+
+"What if sales grow 25% next quarter?"
+
+```
+Demand Multiplier: 1.25
+Time Period: Next quarter
+```
+
+**Review:**
+- Additional inventory needed
+- Earlier order dates
+- Budget impact
+
+### Disruption Planning
+
+"What if shipping from Asia takes 2 weeks longer?"
+
+```
+Lead Time Multiplier: 1.5 (or +14 days for specific routes)
+Affected Routes: Asia origins
+```
+
+**Review:**
+- Which SKUs at risk
+- Safety stock adequacy
+- Alternative sources
+
+### Supplier Risk
+
+"What if Supplier X can't deliver in Q4?"
+
+```
+Supplier Constraint: Supplier X
+Constraint: 0 capacity for Q4
+```
+
+**Review:**
+- Impact on inventory
+- Alternative suppliers
+- Expedite options
+
+### Seasonal Demand
+
+"What if holiday demand doubles?"
+
+```
+Demand Multiplier: 2.0
+Time Period: November-December
+```
+
+**Review:**
+- Order timing
+- Inventory buildup
+- Capacity constraints
+
+## Using Scenarios for Decisions
+
+### When to Run Scenarios
+
+| Situation | Scenario to Run |
+|-----------|-----------------|
+| **Before promotions** | Increased demand |
+| **Supply chain news** | Lead time changes |
+| **Supplier issues** | Supplier constraints |
+| **Budget planning** | Growth scenarios |
+| **Risk assessment** | Multiple disruptions |
+
+### Making Decisions
+
+1. **Run multiple scenarios** - Test optimistic, expected, pessimistic
+2. **Identify breaking points** - Where does supply chain fail?
+3. **Compare costs** - Extra safety stock vs. stockout risk
+4. **Choose strategy** - Balance cost and risk
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with Baseline">
+    Always understand current state first:
+    - Run baseline simulation
+    - Document key metrics
+    - Use as comparison point
+  </Accordion>
+
+  <Accordion title="Test Realistic Scenarios">
+    Focus on likely situations:
+    - Historical disruptions
+    - Known risks
+    - Planned changes
+  </Accordion>
+
+  <Accordion title="Combine Factors">
+    Real disruptions often compound:
+    - Demand increase + lead time delay
+    - Supplier issue + increased demand
+    - Multiple simultaneous challenges
+  </Accordion>
+
+  <Accordion title="Document and Share">
+    Keep records of analysis:
+    - Screenshot results
+    - Note assumptions
+    - Share with stakeholders
+  </Accordion>
+</AccordionGroup>
+
+## Scenario Analysis Workflow
+
+### Comprehensive Analysis
+
+For major decisions, run multiple scenarios:
+
+| Scenario | Demand | Lead Time | Purpose |
+|----------|--------|-----------|---------|
+| **Optimistic** | -10% | -20% | Best case |
+| **Expected** | 0% | 0% | Baseline |
+| **Moderate Risk** | +20% | +25% | Likely challenge |
+| **Worst Case** | +30% | +50% | Stress test |
+
+### Document Findings
+
+| Finding | Current Plan | Recommendation |
+|---------|--------------|----------------|
+| Stockout risk if lead times +50% | 30-day safety stock | Increase to 45 days |
+| Can handle +20% demand | Current inventory | No change needed |
+| Supplier X failure = 12 stockouts | Single source | Add backup supplier |
+
+## Troubleshooting
+
+### Unexpected Scenario Results
+
+**Possible causes:**
+- Incorrect parameters
+- Missing data
+- Configuration issues
+
+**Solutions:**
+1. Verify multiplier values
+2. Check affected items
+3. Review constraints
+
+### Can't Compare to Baseline
+
+**Possible causes:**
+- Baseline not saved
+- Different time periods
+- Data changed
+
+**Solutions:**
+1. Run fresh baseline
+2. Use same time period
+3. Compare immediately
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Running Simulations" icon="play" href="/supply-simulation/running">
+    Execute simulations
+  </Card>
+  <Card title="Configurations" icon="gear" href="/supply-simulation/configurations">
+    Configure parameters
+  </Card>
+  <Card title="Charts" icon="chart-area" href="/supply-simulation/charts">
+    Visualize results
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Manage orders
+  </Card>
+</CardGroup>

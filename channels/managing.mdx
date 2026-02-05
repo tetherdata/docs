@@ -1,0 +1,248 @@
+---
+title: Managing Channels
+description: Configure and maintain sales channels
+---
+
+# Managing Channels
+
+This guide covers channel configuration and maintenance tasks.
+
+## Channel Detail View
+
+Click on a channel to open its detail page.
+
+### Channel Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | Display name |
+| **Code** | Short identifier |
+| **Type** | Channel category |
+| **Status** | Active or Archived |
+| **Description** | Additional notes |
+
+### Editing Channel Information
+
+<Steps>
+  <Step title="Open Channel">
+    Click on the channel from the list
+  </Step>
+
+  <Step title="Edit Fields">
+    Modify any editable field:
+    - Name
+    - Description
+    - Type
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to apply changes
+  </Step>
+</Steps>
+
+## Channel Configuration
+
+### Fulfillment Settings
+
+Configure how orders from this channel are fulfilled:
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to **Settings** → **Inventory Forecast**
+  </Step>
+
+  <Step title="Find Fulfillment Mapping">
+    Locate the fulfillment configuration section
+  </Step>
+
+  <Step title="Map Channel to Warehouse">
+    Select which warehouse(s) fulfill this channel
+  </Step>
+
+  <Step title="Save">
+    Apply the configuration
+  </Step>
+</Steps>
+
+### SKU Availability
+
+Control which products are available on the channel:
+
+| Setting | Description |
+|---------|-------------|
+| **All SKUs** | Every active SKU available |
+| **Collection-Based** | Specific collections only |
+| **Individual** | Hand-picked SKUs |
+
+### Channel-Specific Pricing
+
+If pricing varies by channel:
+
+1. Go to SKU or Collection pricing
+2. Add channel-specific prices
+3. Default price used if no override
+
+## Archiving Channels
+
+To hide a channel without deleting data:
+
+<Steps>
+  <Step title="Open Channel">
+    Navigate to the channel detail page
+  </Step>
+
+  <Step title="Change Status">
+    Set Status to **Archived**
+  </Step>
+
+  <Step title="Confirm">
+    Confirm the archive action
+  </Step>
+</Steps>
+
+**Effects of archiving:**
+
+- Channel hidden from active lists
+- Historical data preserved
+- Forecasts excluded from active views
+- Can be restored later
+
+### Restoring Archived Channels
+
+1. Filter channels to show Archived
+2. Open the archived channel
+3. Change Status to **Active**
+4. Save
+
+## Channel Integration
+
+For automated channels, configure integrations:
+
+### Integrated Channels
+
+| Integration Type | Examples |
+|-----------------|----------|
+| **E-commerce** | Shopify, WooCommerce |
+| **Marketplace** | Amazon, eBay |
+| **ERP** | NetSuite, SAP |
+
+### Integration Settings
+
+1. Go to **Integrations**
+2. Create integration for the channel
+3. Map fields appropriately
+4. Configure sync settings
+
+See [Integrations](/integrations/setup) for details.
+
+## Channel Metrics
+
+Track channel performance:
+
+### Available Metrics
+
+| Metric | Description |
+|--------|-------------|
+| **Sales Volume** | Units sold |
+| **Revenue** | Sales value |
+| **Forecast Accuracy** | How accurate forecasts are |
+| **Growth Rate** | Period-over-period change |
+
+### Accessing Metrics
+
+1. Go to **Analytics** → **Metrics**
+2. Filter by channel
+3. Select time period
+4. View channel-specific data
+
+## Multi-Channel Considerations
+
+### Channel Overlap
+
+When selling same products on multiple channels:
+
+- Inventory allocated across channels
+- Forecast separately per channel
+- Monitor for cannibalization
+
+### Channel Prioritization
+
+Configure priority for inventory allocation:
+
+| Priority | Behavior |
+|----------|----------|
+| **Equal** | Inventory shared proportionally |
+| **Ranked** | Higher priority channels served first |
+| **Reserved** | Specific inventory reserved per channel |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Review">
+    Periodically review channels:
+    - Are all channels still active?
+    - Is performance being tracked?
+    - Are integrations working?
+  </Accordion>
+
+  <Accordion title="Clean Up">
+    Maintain channel hygiene:
+    - Archive unused channels
+    - Consolidate similar channels
+    - Update descriptions
+  </Accordion>
+
+  <Accordion title="Document Configuration">
+    Keep records of:
+    - Why channels were created
+    - Special settings
+    - Integration details
+  </Accordion>
+
+  <Accordion title="Test Changes">
+    Before major changes:
+    - Understand the impact
+    - Test in limited scope if possible
+    - Communicate to team
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Channel Not Showing in Forecasts
+
+**Possible causes:**
+- Channel is archived
+- No SKUs available on channel
+- Filter excluding channel
+
+**Solutions:**
+1. Check channel status
+2. Verify SKU availability
+3. Clear forecast filters
+
+### Data Not Syncing
+
+**For integrated channels:**
+- Check integration status
+- Verify credentials
+- Review sync logs
+
+See [Integration Troubleshooting](/integrations/troubleshooting).
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">
+    Organize channels
+  </Card>
+  <Card title="Integrations" icon="plug" href="/integrations/setup">
+    Set up channel integrations
+  </Card>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure fulfillment
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Control channel access
+  </Card>
+</CardGroup>

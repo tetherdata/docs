@@ -1,0 +1,383 @@
+---
+title: Transaction Workflow
+description: Understanding the transaction lifecycle in Tether
+---
+
+# Transaction Workflow
+
+Transactions follow a structured workflow from creation to completion. Understanding this workflow helps you manage orders efficiently and keep your supply chain running smoothly.
+
+## Workflow Overview
+
+All transactions follow a similar lifecycle:
+
+```
+Creation → Draft → Submit → In Progress → Complete
+                      ↓
+                   Cancel
+```
+
+## Workflow Stages
+
+### Stage 1: Creation
+
+**What Happens:**
+- Transaction is initiated
+- Basic information entered
+- Line items added
+
+**Sources:**
+| Source | Description |
+|--------|-------------|
+| **Manual** | User creates from scratch |
+| **Supply Plan** | Convert from recommendation |
+| **Copy** | Duplicate existing transaction |
+
+### Stage 2: Draft
+
+**What Happens:**
+- Transaction saved but not active
+- Can be freely edited
+- No inventory impact
+- No external communication
+
+**Available Actions:**
+- Edit all fields
+- Add/remove line items
+- Change supplier/warehouse
+- Submit
+- Delete
+
+### Stage 3: Submission
+
+**What Happens:**
+- Validation runs
+- Status changes to "In Progress"
+- Inventory effects begin
+- Workflow steps created
+
+**Validation Checks:**
+| Check | Failure Action |
+|-------|----------------|
+| Required fields | Block submission |
+| Quantity validation | Show error |
+| Availability (transfers) | Block submission |
+| Component availability (production) | Block or warn |
+
+### Stage 4: In Progress
+
+**What Happens:**
+- Transaction is active
+- Steps are tracked
+- Inventory committed/reserved
+- Documents can be added
+
+**Status Updates:**
+| Action | Trigger |
+|--------|---------|
+| Step completion | Manual update |
+| Partial receipt | Receiving action |
+| Issues | Notes and flags |
+
+### Stage 5: Completion
+
+**What Happens:**
+- Final receiving/confirmation
+- Inventory fully updated
+- Transaction becomes read-only
+- Historical record created
+
+**Completion Types:**
+| Type | Description |
+|------|-------------|
+| **Full** | All items received/completed |
+| **Partial** | Some items, closed as complete |
+| **Cancelled** | Order terminated |
+
+## Workflow by Transaction Type
+
+### Purchase Order Workflow
+
+```
+Draft
+  ↓
+Submitted (Order Placed)
+  ↓
+Supplier Confirmed
+  ↓
+In Production (if applicable)
+  ↓
+Ready to Ship
+  ↓
+Shipped
+  ↓
+In Transit
+  ↓
+Delivered
+  ↓
+Received
+  ↓
+Completed
+```
+
+#### PO-Specific Steps
+
+| Step | Description | Inventory Impact |
+|------|-------------|------------------|
+| **Order Placed** | PO sent to supplier | None |
+| **Confirmed** | Supplier acknowledges | None |
+| **Shipped** | Left supplier | None |
+| **Received** | Arrived at warehouse | Inventory added |
+
+### Transfer Order Workflow
+
+```
+Draft
+  ↓
+Submitted
+  ↓
+Pick Started
+  ↓
+Picked
+  ↓
+Shipped
+  ↓
+In Transit
+  ↓
+Delivered
+  ↓
+Received
+  ↓
+Completed
+```
+
+#### Transfer-Specific Steps
+
+| Step | Description | Inventory Impact |
+|------|-------------|------------------|
+| **Submitted** | Transfer initiated | Source: Committed |
+| **Picked** | Items collected | Source: Ready to ship |
+| **Shipped** | Left source | Source: Deducted |
+| **Received** | Arrived at destination | Destination: Added |
+
+### Production Order Workflow
+
+```
+Draft
+  ↓
+Submitted
+  ↓
+Materials Allocated
+  ↓
+Materials Consumed
+  ↓
+In Production
+  ↓
+Quality Check
+  ↓
+Completed
+```
+
+#### Production-Specific Steps
+
+| Step | Description | Inventory Impact |
+|------|-------------|------------------|
+| **Submitted** | Order approved | None |
+| **Allocated** | Components reserved | Components: Reserved |
+| **Consumed** | Production started | Components: Deducted |
+| **Completed** | Production finished | Finished goods: Added |
+
+## Step Management
+
+### Updating Steps
+
+<Steps>
+  <Step title="Navigate to Transaction">
+    Open the transaction detail view
+  </Step>
+
+  <Step title="Go to Steps Tab">
+    Click on the Steps tab
+  </Step>
+
+  <Step title="Find Current Step">
+    Locate the next pending step
+  </Step>
+
+  <Step title="Mark Complete">
+    Click to complete the step:
+    - Enter completion date/time
+    - Add notes if needed
+    - Attach documents if relevant
+  </Step>
+
+  <Step title="Save">
+    Step is recorded, next step activates
+  </Step>
+</Steps>
+
+### Step Details
+
+Each step can include:
+
+| Field | Description |
+|-------|-------------|
+| **Completion Date** | When step was completed |
+| **Completed By** | User who updated |
+| **Notes** | Additional information |
+| **Documents** | Attached files |
+
+### Skipping Steps
+
+Some workflows allow skipping steps:
+
+- Steps can be skipped if not applicable
+- Provide reason when skipping
+- Affects lead time calculations
+
+<Warning>
+  Skipping steps may impact reporting accuracy. Only skip when legitimately not applicable.
+</Warning>
+
+## Handling Issues
+
+### Delays
+
+When steps take longer than expected:
+
+1. Add notes explaining delay
+2. Update expected completion dates
+3. Communicate with stakeholders
+4. Consider impact on inventory
+
+### Partial Fulfillment
+
+When not all quantities are received:
+
+| Option | When to Use |
+|--------|-------------|
+| **Wait** | More expected to arrive |
+| **Backorder** | Order remainder separately |
+| **Close Short** | Accept partial, close transaction |
+
+### Cancellation
+
+To cancel a transaction:
+
+<Steps>
+  <Step title="Review Impact">
+    Understand what will be reversed
+  </Step>
+
+  <Step title="Initiate Cancel">
+    Click Cancel from transaction actions
+  </Step>
+
+  <Step title="Provide Reason">
+    Document why cancellation is necessary
+  </Step>
+
+  <Step title="Confirm">
+    System reverses inventory effects
+  </Step>
+</Steps>
+
+**What Gets Reversed:**
+- Committed inventory released
+- Reserved components freed
+- Incoming inventory removed
+
+## Inventory Effects by Stage
+
+### Purchase Orders
+
+| Stage | Inventory Effect |
+|-------|------------------|
+| Draft | None |
+| Submitted | None (or "On Order" view) |
+| In Transit | Shows as incoming |
+| Received | Added to sellable |
+
+### Transfers
+
+| Stage | Source | Destination |
+|-------|--------|-------------|
+| Draft | None | None |
+| Submitted | Committed | None |
+| Shipped | Deducted | In Transit |
+| Received | - | Added |
+
+### Production
+
+| Stage | Components | Finished Goods |
+|-------|------------|----------------|
+| Draft | None | None |
+| Allocated | Reserved | None |
+| Consumed | Deducted | None |
+| Completed | - | Added |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Update Steps Promptly">
+    Keep workflow current:
+    - Update as events happen
+    - Don't batch updates
+    - Accuracy helps planning
+  </Accordion>
+
+  <Accordion title="Document Issues">
+    When problems occur:
+    - Add notes immediately
+    - Attach evidence if available
+    - Flag for follow-up
+  </Accordion>
+
+  <Accordion title="Complete Transactions">
+    Don't leave transactions hanging:
+    - Complete when done
+    - Close partial as needed
+    - Cancel if not proceeding
+  </Accordion>
+
+  <Accordion title="Use Workflow for Communication">
+    Steps create visibility:
+    - Team sees progress
+    - Reduces status inquiries
+    - Provides audit trail
+  </Accordion>
+</AccordionGroup>
+
+## Workflow Reporting
+
+### Lead Time Analysis
+
+Track actual vs. expected:
+- Step durations
+- Total order time
+- Supplier performance
+- Transit times
+
+### Bottleneck Identification
+
+Find where delays occur:
+- Which steps take longest?
+- Which suppliers are slow?
+- Which warehouses are slow to receive?
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Transaction Details" icon="file-lines" href="/transactions/detail-view">
+    Navigate detail pages
+  </Card>
+  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
+    Create new transactions
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Manage replenishment orders
+  </Card>
+  <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
+    Monitor inventory impact
+  </Card>
+</CardGroup>

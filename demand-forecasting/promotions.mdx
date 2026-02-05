@@ -1,0 +1,374 @@
+---
+title: Promotions
+description: Managing promotional events and their forecast impact
+---
+
+# Promotions
+
+Promotions are marketing events that affect demand. Tether allows you to define promotions so their impact on forecasts can be properly accounted for.
+
+<Note>
+  Managing promotions requires Admin access.
+</Note>
+
+## Why Track Promotions?
+
+Promotions cause demand spikes that disrupt normal patterns:
+
+| Without Promotion Tracking | With Promotion Tracking |
+|---------------------------|------------------------|
+| Forecast assumes normal demand | Forecast adjusts for promotion |
+| May stockout during event | Adequate inventory planned |
+| May overstock after event | Smooth transition back to normal |
+| Hard to measure promo impact | Clear lift measurement |
+
+## Promotions Dashboard
+
+Navigate to **Demand Forecast** → **Promotions**.
+
+### Dashboard Features
+
+| Feature | Description |
+|---------|-------------|
+| **Promotion List** | All promotions with status |
+| **Calendar View** | Visual timeline of promotions |
+| **Status Filters** | Active, Upcoming, Past |
+| **Create Button** | Add new promotions |
+
+### Promotion Status
+
+| Status | Description |
+|--------|-------------|
+| **Active** | Currently running |
+| **Upcoming** | Scheduled for future |
+| **Past** | Completed |
+| **Draft** | Not yet finalized |
+
+## Creating a Promotion
+
+<Steps>
+  <Step title="Click Create Promotion">
+    From the promotions dashboard, click **Create Promotion**
+  </Step>
+
+  <Step title="Basic Information">
+    Enter promotion details:
+    - **Name**: "Summer Sale 2024"
+    - **Description**: Details about the promotion
+    - **Promotion Type**: Category (see types below)
+  </Step>
+
+  <Step title="Date Range">
+    Set when the promotion runs:
+    - **Start Date**: When promotion begins
+    - **End Date**: When promotion ends
+    - Consider lead time for inventory
+  </Step>
+
+  <Step title="Affected Products">
+    Select which SKUs are in the promotion:
+    - Individual SKUs
+    - Entire collections
+    - By dimension (e.g., all "Blue" products)
+  </Step>
+
+  <Step title="Affected Channels">
+    Choose where the promotion runs:
+    - All channels
+    - Specific channels only
+  </Step>
+
+  <Step title="Impact Settings">
+    Configure expected demand impact:
+    - Lift percentage
+    - Or absolute quantity increase
+  </Step>
+
+  <Step title="Save">
+    Save the promotion
+  </Step>
+</Steps>
+
+## Promotion Types
+
+### Managing Promotion Types
+
+Create categories for your promotions:
+
+<Steps>
+  <Step title="Access Type Manager">
+    Click **Manage Types** in the promotions dashboard
+  </Step>
+
+  <Step title="Add New Type">
+    Click **Add Type**
+  </Step>
+
+  <Step title="Configure Type">
+    - Name: "Flash Sale"
+    - Default lift: 50%
+    - Color: For calendar display
+  </Step>
+
+  <Step title="Save">
+    Type is available for promotions
+  </Step>
+</Steps>
+
+### Common Promotion Types
+
+| Type | Typical Lift | Duration |
+|------|--------------|----------|
+| **Flash Sale** | 50-100% | 1-3 days |
+| **Weekly Deal** | 20-30% | 1 week |
+| **Seasonal Sale** | 30-50% | 2-4 weeks |
+| **Holiday Event** | 40-80% | Varies |
+| **Clearance** | 50-100% | Until sold out |
+| **New Launch** | Varies | 2-4 weeks |
+| **BOGO** | 80-120% | As configured |
+
+## Promotion Detail View
+
+Click on a promotion to see full details:
+
+### Overview Section
+
+- Name and description
+- Date range
+- Status
+- Type
+
+### Affected Products Section
+
+List of SKUs included:
+- SKU name and code
+- Collection
+- Individual lift settings (if different from default)
+
+### Channel Section
+
+Channels where promotion runs:
+- Channel name
+- Channel-specific settings
+
+### Impact Analysis
+
+- Expected total lift
+- Units increase projection
+- Revenue impact (if calculated)
+
+## Promotion Impact on Forecasts
+
+### How Tether Uses Promotions
+
+1. **Identifies Promotion Period** - Start and end dates
+2. **Applies Lift** - Increases forecast by specified percentage
+3. **Limits to Scope** - Only affects specified SKUs/channels
+4. **Maintains History** - Past promotions inform similar future events
+
+### Lift Calculation
+
+**Example:**
+- Base forecast: 100 units/day
+- Promotion lift: 40%
+- Promoted forecast: 140 units/day
+
+### Pre and Post Effects
+
+Consider effects outside the promotion window:
+
+| Period | Effect |
+|--------|--------|
+| **Pre-promotion** | Customers may wait to buy |
+| **During promotion** | Lift occurs |
+| **Post-promotion** | Demand may dip below normal |
+
+<Tip>
+  For major promotions, extend the date range or manually adjust the surrounding periods.
+</Tip>
+
+## Editing Promotions
+
+### Modifying a Promotion
+
+1. Click on the promotion
+2. Edit any field
+3. Save changes
+
+### What You Can Change
+
+| Field | Editable | Notes |
+|-------|----------|-------|
+| Name/Description | Always | |
+| Dates | Before start | Extend end after start |
+| Products | Before start | Or carefully during |
+| Lift percentage | Always | |
+| Type | Always | |
+
+### Canceling a Promotion
+
+To cancel a promotion:
+
+1. Open the promotion
+2. Click **Cancel Promotion**
+3. Confirm cancellation
+4. Forecasts revert to baseline
+
+## Recurring Promotions
+
+For promotions that repeat:
+
+### Creating Recurring Promotions
+
+<Steps>
+  <Step title="Create Base Promotion">
+    Set up the promotion with all details
+  </Step>
+
+  <Step title="Enable Recurrence">
+    Check "Recurring promotion"
+  </Step>
+
+  <Step title="Set Pattern">
+    - Weekly: Same day each week
+    - Monthly: Same date or day
+    - Annual: Same dates each year
+  </Step>
+
+  <Step title="Set End Condition">
+    - Number of occurrences
+    - End by date
+    - No end (manual management)
+  </Step>
+</Steps>
+
+### Managing Recurrences
+
+Each occurrence can be:
+- Modified individually
+- Canceled without affecting others
+- Part of bulk updates
+
+## Promotion Calendar
+
+### Calendar View
+
+The calendar shows promotions visually:
+
+- Color-coded by type
+- Shows overlapping promotions
+- Click to see details
+
+### Using the Calendar
+
+- **Navigate**: Use arrows to move between months
+- **Filter**: Show/hide by type or status
+- **Zoom**: Day, week, or month view
+
+### Identifying Conflicts
+
+The calendar helps spot:
+- Overlapping promotions on same products
+- Back-to-back promotions
+- Promotion-free periods
+
+## Measuring Promotion Performance
+
+### Post-Promotion Analysis
+
+After a promotion ends:
+
+1. Compare actual vs. forecasted lift
+2. Document findings
+3. Update lift assumptions for future
+
+### Metrics to Track
+
+| Metric | Calculation |
+|--------|-------------|
+| **Actual Lift** | Promo sales / baseline sales |
+| **Forecast Accuracy** | Actual lift / predicted lift |
+| **Incremental Units** | Promo sales - baseline |
+| **ROI** | Incremental margin / promo cost |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Plan Ahead">
+    Enter promotions early:
+    - Before inventory planning cycles
+    - Allow time for supply chain response
+    - At least lead time + safety buffer
+  </Accordion>
+
+  <Accordion title="Be Specific">
+    Define scope carefully:
+    - Only include affected SKUs
+    - Specify correct channels
+    - Use accurate date ranges
+  </Accordion>
+
+  <Accordion title="Validate Lift Estimates">
+    Base lifts on data:
+    - Historical promotion performance
+    - Similar promotion results
+    - Conservative if uncertain
+  </Accordion>
+
+  <Accordion title="Review Past Performance">
+    Learn from previous promotions:
+    - Compare predicted vs. actual
+    - Adjust future estimates
+    - Document patterns
+  </Accordion>
+
+  <Accordion title="Coordinate with Teams">
+    Communicate promotion plans:
+    - Marketing: Timing and scope
+    - Operations: Inventory needs
+    - Sales: Channel specifics
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Promotion Not Affecting Forecasts
+
+**Possible causes:**
+- Promotion in draft status
+- Date range doesn't match forecast period
+- Products not correctly selected
+
+**Solutions:**
+1. Verify promotion status is active
+2. Check date ranges overlap
+3. Review product selection
+
+### Unexpected Forecast Values
+
+**Possible causes:**
+- Multiple promotions overlapping
+- Lift applied incorrectly
+- Products in multiple promotions
+
+**Solutions:**
+1. Check for overlapping promotions
+2. Verify lift percentage
+3. Review calendar for conflicts
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View promotion-adjusted forecasts
+  </Card>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Make additional adjustments
+  </Card>
+  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
+    Analyze promotion performance
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Plan inventory for promotions
+  </Card>
+</CardGroup>

@@ -1,0 +1,166 @@
+---
+title: SKUs Overview
+description: Understanding and navigating the SKU dashboard in Tether
+---
+
+# SKUs Overview
+
+SKUs (Stock Keeping Units) are the foundation of your product catalog in Tether. Each SKU represents a unique product variant that can be tracked, forecasted, and managed throughout your supply chain.
+
+## What is a SKU?
+
+A SKU is a unique identifier for a specific product. In Tether, SKUs contain:
+
+- **Basic Information**: Name, code, UPC, and identifiers
+- **Classification**: Type, collection, and status
+- **Attributes**: Dimension values (Size, Color, etc.)
+- **Relationships**: Suppliers, pricing, and bill of materials
+
+## SKU Types
+
+Tether supports multiple SKU types to model your product structure:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **Finished Good** | Products sold to customers | "Blue T-Shirt, Size M" |
+| **Raw Material** | Components used in production | "Cotton Fabric" |
+| **Packaging** | Packaging materials | "Shipping Box 12x12" |
+| **Component** | Parts that make up other products | "Button Set" |
+| **Bundle** | A group of SKUs sold together | "Gift Set" |
+| **Kit** | Assembled from components | "DIY Kit" |
+| **Virtual Bundle** | Logical grouping (not physically assembled) | "Buy 2 Get 1 Free" |
+
+## The SKU Dashboard
+
+The SKU dashboard is your central hub for managing products.
+
+### Dashboard Layout
+
+The dashboard consists of:
+
+1. **Filter Panel** (left side) - Narrow down the SKU list
+2. **Data Table** (center) - View and edit SKUs
+3. **Actions Bar** (top) - Create SKUs, manage views, export data
+
+### Key Columns
+
+| Column | Description |
+|--------|-------------|
+| **Name** | The display name of the SKU |
+| **SKU Code** | Unique identifier code |
+| **UPC** | Universal Product Code (barcode) |
+| **Amazon ID** | Amazon ASIN or identifier |
+| **Type** | SKU type classification |
+| **Collection** | Parent collection |
+| **Status** | Active or Archived |
+| **Dimensions** | Attribute values (Size, Color, etc.) |
+
+### Quick Actions
+
+From the dashboard, you can:
+
+- **Create SKU**: Add a new product manually
+- **Export**: Download SKU data as CSV/Excel
+- **Manage Views**: Save and load filter configurations
+- **Inline Edit**: Click cells to edit directly
+
+## Navigating to SKU Details
+
+Click on any SKU row to open its detail page, where you can access:
+
+<CardGroup cols={2}>
+  <Card title="Overview Tab" icon="info-circle">
+    Basic SKU information and metadata
+  </Card>
+  <Card title="Pricing Tab" icon="tag">
+    Configure pricing and unit conversions
+  </Card>
+  <Card title="Inventory Tab" icon="boxes-stacked">
+    View inventory levels across warehouses
+  </Card>
+  <Card title="Suppliers Tab" icon="truck">
+    Manage supplier relationships and costs
+  </Card>
+  <Card title="BOM Tab" icon="sitemap">
+    Bill of Materials - component hierarchies
+  </Card>
+</CardGroup>
+
+## SKU Status
+
+SKUs can have two statuses:
+
+| Status | Description |
+|--------|-------------|
+| **Active** | SKU is in use and available for operations |
+| **Archived** | SKU is hidden from most views but data is retained |
+
+<Info>
+  Archiving a SKU doesn't delete any historical data. You can always restore an archived SKU if needed.
+</Info>
+
+## Understanding SKU Relationships
+
+### SKUs and Collections
+
+Every SKU belongs to a collection. Collections define:
+
+- Shared dimensions (Size, Color, etc.)
+- Product hierarchy
+- Bulk settings and configurations
+
+### SKUs and Channels
+
+SKUs are made available on channels through availability settings. A SKU might be:
+
+- Available on all channels
+- Restricted to specific channels
+- Channel-specific pricing
+
+### SKUs and Warehouses
+
+Inventory is tracked per SKU per warehouse. A single SKU can have inventory in multiple warehouses.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Naming Conventions">
+    Use consistent naming patterns:
+    - Include key attributes: "Product Name - Size - Color"
+    - Keep names concise but descriptive
+    - Avoid special characters that might cause issues in exports
+  </Accordion>
+
+  <Accordion title="SKU Codes">
+    Create meaningful SKU codes:
+    - Use a consistent format across all products
+    - Include category or collection indicators
+    - Make codes human-readable when possible
+    - Example: `TSH-BLU-M` for T-Shirt, Blue, Medium
+  </Accordion>
+
+  <Accordion title="Using Types Effectively">
+    Choose the right SKU type:
+    - Use **Finished Good** for anything you sell directly
+    - Use **Component** for items that go into other products
+    - Use **Bundle** when you physically assemble products together
+    - Use **Virtual Bundle** for promotional groupings
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Creating SKUs" icon="plus" href="/product-catalog/skus/creating-skus">
+    Learn how to add new products to your catalog
+  </Card>
+  <Card title="Editing SKUs" icon="pen" href="/product-catalog/skus/editing-skus">
+    Modify existing SKU information
+  </Card>
+  <Card title="Filtering SKUs" icon="filter" href="/product-catalog/skus/filtering">
+    Find SKUs quickly with powerful filters
+  </Card>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/overview">
+    Organize SKUs into collections
+  </Card>
+</CardGroup>

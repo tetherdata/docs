@@ -1,0 +1,314 @@
+---
+title: Filtering & Saved Views
+description: Find and organize SKUs with powerful filtering tools
+---
+
+# Filtering & Saved Views
+
+With potentially thousands of SKUs, finding the right products quickly is essential. Tether's filtering system helps you narrow down your view and save common filter combinations for reuse.
+
+## The Filter Panel
+
+The filter panel appears on the left side of the SKU dashboard. It contains multiple filter sections that work together.
+
+### Filter Sections
+
+| Filter | Description |
+|--------|-------------|
+| **Search** | Text search across name and code |
+| **SKU Type** | Filter by product type |
+| **Status** | Active or Archived |
+| **Collections** | Filter by parent collection |
+| **Collection Hierarchy** | Filter by hierarchy levels |
+| **Dimensions** | Filter by attribute values |
+
+## Text Search
+
+The quickest way to find a specific SKU:
+
+1. Type in the search box at the top of the filter panel
+2. Results filter as you type
+3. Search matches against:
+   - SKU Name
+   - SKU Code
+   - UPC
+   - Amazon ID
+
+<Tip>
+  Use the search for quick lookups. Combine with other filters for more refined results.
+</Tip>
+
+## Filter by SKU Type
+
+Filter products by their classification:
+
+| Type | Shows |
+|------|-------|
+| Finished Good | Sellable products |
+| Raw Material | Production inputs |
+| Component | Parts and sub-assemblies |
+| Bundle | Product bundles |
+| Kit | Assembly kits |
+| Virtual Bundle | Logical groupings |
+
+**To use:**
+1. Expand the **SKU Type** section
+2. Check the types you want to see
+3. Results update immediately
+
+## Filter by Status
+
+Show or hide archived products:
+
+| Option | Result |
+|--------|--------|
+| **Active** | Show only active SKUs |
+| **Archived** | Show only archived SKUs |
+| **Both** | Show all SKUs regardless of status |
+
+<Info>
+  By default, only Active SKUs are shown. Remember to include Archived if you need to find historical products.
+</Info>
+
+## Filter by Collection
+
+Narrow down to SKUs within specific collections:
+
+<Steps>
+  <Step title="Expand Collections Filter">
+    Click on the **Collections** section header
+  </Step>
+
+  <Step title="Select Collections">
+    - Check collections you want to include
+    - Use the search box to find specific collections
+  </Step>
+
+  <Step title="View Results">
+    Only SKUs in the selected collections will appear
+  </Step>
+</Steps>
+
+## Collection Hierarchy Filtering
+
+If you've set up collection hierarchies, filter by hierarchy levels:
+
+**Example Hierarchy:**
+```
+Category → Subcategory → Product Line
+Apparel → T-Shirts → Summer Collection
+```
+
+Filter at any level to see all SKUs below that point in the hierarchy.
+
+## Dimension Filtering
+
+Filter by product attributes like Size, Color, or Material.
+
+### Available Dimensions
+
+Dimensions shown depend on your collection configuration. Common examples:
+
+| Dimension | Example Values |
+|-----------|----------------|
+| Size | S, M, L, XL, XXL |
+| Color | Red, Blue, Black, White |
+| Material | Cotton, Polyester, Blend |
+| Style | Regular, Slim, Relaxed |
+
+### Using Dimension Filters
+
+<Steps>
+  <Step title="Expand the Dimension Section">
+    Click on the dimension name (e.g., "Size")
+  </Step>
+
+  <Step title="Select Values">
+    Check the values you want to see
+  </Step>
+
+  <Step title="Combine Dimensions">
+    Use multiple dimensions together:
+    - Size: M, L
+    - Color: Blue, Black
+    - Shows: Medium Blue, Medium Black, Large Blue, Large Black
+  </Step>
+</Steps>
+
+## Tri-State Selection
+
+Some filters support three states for more precise control:
+
+| State | Visual | Behavior |
+|-------|--------|----------|
+| **Include** | ✓ Checked | Show items matching this value |
+| **Exclude** | ✗ Crossed | Hide items matching this value |
+| **Indifferent** | Empty | Don't filter by this value |
+
+### Example Use Case
+
+Find all T-Shirts that are NOT Blue:
+
+1. Select the "T-Shirts" collection (Include)
+2. In the Color filter, set "Blue" to Exclude
+3. Results show all T-Shirts except blue ones
+
+<Tip>
+  Click once to Include, twice to Exclude, three times to return to Indifferent.
+</Tip>
+
+## Combining Filters
+
+Filters work together using AND logic:
+
+- SKU Type = Finished Good **AND**
+- Collection = T-Shirts **AND**
+- Size = M, L **AND**
+- Status = Active
+
+This shows active finished goods in T-Shirts that are Medium or Large.
+
+## Clearing Filters
+
+### Clear Individual Filters
+
+Click the **X** or **Clear** button next to each filter section.
+
+### Clear All Filters
+
+Click the **Clear All** button at the top of the filter panel to reset everything.
+
+## Saved Views
+
+Save your frequently used filter combinations for quick access.
+
+### Creating a Saved View
+
+<Steps>
+  <Step title="Set Up Your Filters">
+    Configure all the filters you want to save
+  </Step>
+
+  <Step title="Click Save View">
+    Look for the **Save View** button in the filter panel or toolbar
+  </Step>
+
+  <Step title="Name Your View">
+    Enter a descriptive name:
+    - "Active T-Shirts - Medium/Large"
+    - "Low Stock Items"
+    - "Summer 2024 Collection"
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to store the view
+  </Step>
+</Steps>
+
+### Loading a Saved View
+
+<Steps>
+  <Step title="Open the Views Dropdown">
+    Click the **Views** dropdown in the toolbar
+  </Step>
+
+  <Step title="Select a View">
+    Click on your saved view name
+  </Step>
+
+  <Step title="Filters Applied">
+    All filters from the saved view are applied automatically
+  </Step>
+</Steps>
+
+### Managing Saved Views
+
+| Action | How |
+|--------|-----|
+| **Edit** | Load the view, modify filters, save with same name |
+| **Rename** | Access view management and change the name |
+| **Delete** | Remove views you no longer need |
+| **Share** | Views are personal by default; check settings for sharing |
+
+### Default View
+
+You can set a default view that loads when you first open the SKU dashboard:
+
+1. Load or create your preferred view
+2. Click **Set as Default**
+3. This view loads automatically on future visits
+
+## Column Visibility
+
+Customize which columns appear in the data table:
+
+<Steps>
+  <Step title="Open Column Settings">
+    Click the column visibility icon (usually looks like columns or a grid)
+  </Step>
+
+  <Step title="Toggle Columns">
+    Check or uncheck columns to show or hide them
+  </Step>
+
+  <Step title="Reorder Columns">
+    Drag columns to change their order
+  </Step>
+
+  <Step title="Save with View">
+    Column settings can be saved as part of a view
+  </Step>
+</Steps>
+
+## Export Filtered Results
+
+Export only the SKUs matching your current filters:
+
+1. Set up your filters
+2. Click **Export**
+3. Choose format (CSV, Excel)
+4. Download includes only filtered results
+
+<Info>
+  Exports respect both filters and column visibility. What you see is what you export.
+</Info>
+
+## Tips for Effective Filtering
+
+<AccordionGroup>
+  <Accordion title="Start Broad, Then Narrow">
+    Begin with larger filters (collection, type) then narrow down with specific attributes. This helps you understand the scope before diving into details.
+  </Accordion>
+
+  <Accordion title="Use Search for Known Items">
+    If you know the SKU code or name, text search is fastest. Use filters when browsing or analyzing groups of SKUs.
+  </Accordion>
+
+  <Accordion title="Create Views for Workflows">
+    Set up saved views for your common tasks:
+    - "Weekly Review - Low Stock"
+    - "New Products This Month"
+    - "Active Summer Items"
+  </Accordion>
+
+  <Accordion title="Remember Archived SKUs">
+    If you can't find a SKU, check if it's archived. Include the Archived status in your filter to see all products.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="SKU Overview" icon="box" href="/product-catalog/skus/overview">
+    Learn about SKU fundamentals
+  </Card>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/overview">
+    Understand how collections organize SKUs
+  </Card>
+  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
+    Work with multiple SKUs at once
+  </Card>
+  <Card title="Export Features" icon="download" href="/tips/exports">
+    Export your SKU data
+  </Card>
+</CardGroup>

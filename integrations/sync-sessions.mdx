@@ -1,0 +1,318 @@
+---
+title: Sync Sessions
+description: Monitor and manage data synchronization
+---
+
+# Sync Sessions
+
+Sync sessions show when data synchronizes between Tether and your connected platforms. Monitor sync activity to ensure data stays current and identify issues.
+
+## What is a Sync Session?
+
+A sync session is a data synchronization event:
+
+- Tether connects to external platform
+- Data is fetched or pushed
+- Records are created or updated
+- Session completes or fails
+
+## Viewing Sync Sessions
+
+### Accessing Sync History
+
+<Steps>
+  <Step title="Go to Integrations">
+    Navigate to **Settings** → **Integrations**
+  </Step>
+
+  <Step title="Select Integration">
+    Choose the integration to view
+  </Step>
+
+  <Step title="View Sync History">
+    See list of sync sessions
+  </Step>
+</Steps>
+
+### Sync Session List
+
+| Column | Description |
+|--------|-------------|
+| **Date/Time** | When sync occurred |
+| **Type** | Full sync, incremental, manual |
+| **Status** | Completed, failed, in progress |
+| **Records** | Number of records processed |
+| **Duration** | How long sync took |
+
+## Sync Types
+
+### Full Sync
+
+Complete data synchronization:
+
+| Aspect | Description |
+|--------|-------------|
+| **When** | Initial setup, manual trigger |
+| **What** | All available data |
+| **Duration** | Longer (depends on data volume) |
+| **Use** | First sync, recovery |
+
+### Incremental Sync
+
+Only changes since last sync:
+
+| Aspect | Description |
+|--------|-------------|
+| **When** | Scheduled intervals |
+| **What** | New and modified records |
+| **Duration** | Shorter (only changes) |
+| **Use** | Regular updates |
+
+### Manual Sync
+
+User-triggered synchronization:
+
+<Steps>
+  <Step title="Go to Integration">
+    Navigate to the integration
+  </Step>
+
+  <Step title="Click Sync Now">
+    Trigger immediate sync
+  </Step>
+
+  <Step title="Monitor Progress">
+    Watch sync complete
+  </Step>
+</Steps>
+
+## Sync Session Details
+
+Click on a sync session to see details:
+
+### Summary
+
+| Field | Description |
+|-------|-------------|
+| **Started** | Start time |
+| **Completed** | End time |
+| **Duration** | Total time |
+| **Status** | Final status |
+
+### Records Processed
+
+| Type | Count |
+|------|-------|
+| **Created** | New records added |
+| **Updated** | Existing records modified |
+| **Skipped** | Records not processed |
+| **Errors** | Records with issues |
+
+### Error Details
+
+If errors occurred:
+
+- Error message
+- Affected records
+- Suggested resolution
+
+## Sync Status
+
+### Successful Sync
+
+A successful sync shows:
+
+- ✅ Status: Completed
+- Records processed without errors
+- Duration within expected range
+
+### Failed Sync
+
+A failed sync shows:
+
+- ❌ Status: Failed
+- Error message explaining issue
+- Partial progress (if any)
+
+### Partial Sync
+
+Sometimes syncs partially complete:
+
+- ⚠️ Status: Completed with errors
+- Most records processed
+- Some records failed
+
+## Monitoring Sync Health
+
+### Key Metrics
+
+| Metric | Healthy | Warning |
+|--------|---------|---------|
+| **Success Rate** | >95% | <90% |
+| **Sync Delay** | <5 min | >30 min |
+| **Error Count** | 0-2 | >5 |
+
+### Sync Schedule
+
+Track if syncs run on schedule:
+
+| Schedule | Expected |
+|----------|----------|
+| Real-time | Within minutes of change |
+| Hourly | Every hour |
+| Daily | Once per day |
+
+## Managing Sync Issues
+
+### Retrying Failed Syncs
+
+<Steps>
+  <Step title="Find Failed Sync">
+    Locate the failed sync session
+  </Step>
+
+  <Step title="Review Error">
+    Understand what went wrong
+  </Step>
+
+  <Step title="Fix Issue">
+    Address the underlying problem
+  </Step>
+
+  <Step title="Retry">
+    Trigger a new sync
+  </Step>
+</Steps>
+
+### Common Sync Issues
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| **Authentication Failed** | Expired credentials | Re-authorize integration |
+| **Rate Limited** | Too many requests | Wait and retry |
+| **Data Mapping Error** | Invalid data format | Review field mappings |
+| **Timeout** | Large data volume | Retry or contact support |
+
+## Sync Configuration
+
+### Adjusting Sync Frequency
+
+<Steps>
+  <Step title="Go to Integration Settings">
+    Navigate to the integration
+  </Step>
+
+  <Step title="Find Sync Settings">
+    Locate frequency configuration
+  </Step>
+
+  <Step title="Choose Frequency">
+    Select desired interval:
+    - Real-time
+    - Hourly
+    - Daily
+  </Step>
+
+  <Step title="Save">
+    Apply changes
+  </Step>
+</Steps>
+
+### Selecting Sync Scope
+
+Control what data syncs:
+
+| Option | Description |
+|--------|-------------|
+| **Orders** | Sales order data |
+| **Products** | Product/SKU data |
+| **Inventory** | Stock levels |
+| **All** | Everything available |
+
+## Sync Logs
+
+### Accessing Detailed Logs
+
+For troubleshooting, access detailed logs:
+
+1. Go to sync session
+2. Click "View Logs"
+3. See record-by-record details
+
+### Log Information
+
+| Log Entry | Shows |
+|-----------|-------|
+| **Timestamp** | When action occurred |
+| **Action** | What happened |
+| **Record** | Which record affected |
+| **Result** | Success or error |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Monitor Regularly">
+    Check sync status routinely:
+    - Daily quick check
+    - Weekly detailed review
+    - Immediate check after changes
+  </Accordion>
+
+  <Accordion title="Set Up Alerts">
+    Get notified of issues:
+    - Failed sync alerts
+    - Error threshold alerts
+    - Delay notifications
+  </Accordion>
+
+  <Accordion title="Investigate Errors Promptly">
+    Don't let errors accumulate:
+    - Check error details
+    - Fix root cause
+    - Retry failed records
+  </Accordion>
+
+  <Accordion title="Document Changes">
+    Track sync configuration changes:
+    - When changed
+    - Why changed
+    - Impact observed
+  </Accordion>
+</AccordionGroup>
+
+## Sync Sessions and Data Quality
+
+### Ensuring Data Accuracy
+
+| Check | How |
+|-------|-----|
+| **Record Counts** | Match source system |
+| **Sample Records** | Spot check data |
+| **Totals** | Compare aggregates |
+
+### Handling Discrepancies
+
+If data doesn't match:
+
+1. Identify affected records
+2. Check sync session details
+3. Review error logs
+4. Trigger manual sync if needed
+5. Contact support if persists
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
+    Configure integrations
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/integrations/troubleshooting">
+    Resolve sync issues
+  </Card>
+  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
+    Manage channels
+  </Card>
+  <Card title="Data Exports" icon="download" href="/tips/exports">
+    Export data manually
+  </Card>
+</CardGroup>

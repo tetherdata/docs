@@ -1,0 +1,267 @@
+---
+title: Warehouses Overview
+description: Managing warehouse locations in Tether
+---
+
+# Warehouses Overview
+
+Warehouses are the physical locations where your inventory is stored. In Tether, warehouses are essential for tracking stock levels, planning replenishment, and managing transfers.
+
+## What is a Warehouse?
+
+A warehouse represents any location that holds inventory:
+
+- Distribution centers
+- Retail stores
+- 3PL facilities
+- Manufacturing plants
+- Fulfillment centers
+
+## The Warehouses Dashboard
+
+Navigate to **Inventory** → **Warehouses** to access the warehouse dashboard.
+
+### Dashboard Features
+
+| Feature | Description |
+|---------|-------------|
+| **Warehouse List** | All warehouses with key information |
+| **Search** | Find warehouses by name or code |
+| **Status Filter** | Show active, inactive, or all |
+| **Create Button** | Add new warehouses |
+
+### Warehouse Information
+
+Each warehouse shows:
+
+| Column | Description |
+|--------|-------------|
+| **Name** | Warehouse display name |
+| **Code** | Short identifier |
+| **Description** | Optional details |
+| **Address** | Physical location |
+| **Status** | Active or Inactive |
+| **Created Date** | When added to system |
+
+## Creating a Warehouse
+
+<Steps>
+  <Step title="Navigate to Warehouses">
+    Go to **Inventory** → **Warehouses**
+  </Step>
+
+  <Step title="Click Create Warehouse">
+    Click the **Create Warehouse** button
+  </Step>
+
+  <Step title="Enter Basic Information">
+    | Field | Required | Description |
+    |-------|----------|-------------|
+    | **Name** | Yes | Descriptive name |
+    | **Code** | Yes | Short identifier (used in orders) |
+    | **Description** | No | Additional details |
+  </Step>
+
+  <Step title="Add Address (Optional)">
+    Enter the physical location:
+    - Street address
+    - City, State/Province
+    - Country
+    - Postal code
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to create the warehouse
+  </Step>
+</Steps>
+
+<Tip>
+  Use clear, consistent naming. "NYC-01" is better than "Warehouse 1" when you have multiple locations.
+</Tip>
+
+## Warehouse Detail View
+
+Click on a warehouse to open its detail page with multiple tabs:
+
+### Overview Tab
+
+Basic warehouse information:
+
+- Name and code
+- Description
+- Address
+- Status
+- Metadata (created date, etc.)
+
+### Inventory Tab
+
+View inventory at this warehouse:
+
+- All SKUs with stock
+- Inventory levels by state (sellable, committed, etc.)
+- Health status indicators
+- Quick filters
+
+### Transactions Tab
+
+Transaction history for this warehouse:
+
+- Incoming orders
+- Outgoing transfers
+- Recent activity
+- Pending transactions
+
+### Lead Time Settings Tab
+
+Configure transfer times to/from this warehouse. See [Lead Time Configuration](/inventory/warehouses/lead-times).
+
+## Warehouse Types
+
+Tether supports different warehouse purposes:
+
+| Type | Purpose | Typical Use |
+|------|---------|-------------|
+| **Distribution Center** | Main storage | Primary inventory holding |
+| **Retail Store** | Customer-facing | Store inventory |
+| **3PL** | Third-party logistics | Outsourced fulfillment |
+| **Manufacturing** | Production facility | Raw materials and WIP |
+| **Virtual** | Non-physical | Dropship or pre-orders |
+
+## Warehouse Status
+
+Warehouses can be Active or Inactive:
+
+| Status | Behavior |
+|--------|----------|
+| **Active** | Available for inventory and operations |
+| **Inactive** | Hidden from operations, data preserved |
+
+<Warning>
+  Deactivating a warehouse doesn't move its inventory. Transfer inventory before deactivating.
+</Warning>
+
+## Multi-Warehouse Operations
+
+When you have multiple warehouses:
+
+### Inventory Allocation
+
+- Each SKU can have inventory in multiple warehouses
+- Inventory is tracked separately by location
+- Supply plan considers warehouse-specific needs
+
+### Transfers
+
+Move inventory between warehouses:
+
+1. Create a Transfer Order
+2. Specify source and destination
+3. Select SKUs and quantities
+4. Submit the transfer
+
+### Fulfillment Rules
+
+Configure which warehouses fulfill which channels:
+
+- Warehouse A → Shopify US
+- Warehouse B → Amazon
+- Warehouse C → Wholesale
+
+See [Inventory Settings](/administration/inventory-settings) for configuration.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Naming Conventions">
+    Use consistent, meaningful names:
+    - Include location: "Chicago DC", "LA Warehouse"
+    - Include type: "3PL-ShipBob", "Retail-NYC"
+    - Use codes: "CHI-01", "LA-01"
+  </Accordion>
+
+  <Accordion title="Code Standards">
+    Keep codes short and systematic:
+    - 3-6 characters
+    - Uppercase letters
+    - Include region if multi-location
+  </Accordion>
+
+  <Accordion title="Address Accuracy">
+    Maintain accurate addresses:
+    - Used for lead time calculations
+    - Needed for shipping integrations
+    - Important for reporting
+  </Accordion>
+
+  <Accordion title="Regular Audits">
+    Periodically verify warehouse data:
+    - Is inventory accurate?
+    - Are addresses current?
+    - Are inactive warehouses cleaned up?
+  </Accordion>
+</AccordionGroup>
+
+## Common Operations
+
+### Viewing Warehouse Inventory
+
+1. Open warehouse detail page
+2. Go to **Inventory** tab
+3. See all SKUs with stock at this location
+
+### Checking Warehouse Health
+
+1. Go to **Inventory** → **Overview**
+2. Filter by the warehouse
+3. Review alerts and health status
+
+### Creating a Transfer
+
+1. Go to **Transactions**
+2. Create new Transfer Order
+3. Select source and destination warehouses
+4. Add SKUs and quantities
+5. Submit
+
+## Troubleshooting
+
+### Warehouse Not Showing in Dropdowns
+
+**Possible causes:**
+- Warehouse is inactive
+- No inventory at warehouse
+- Filter is excluding it
+
+**Solutions:**
+1. Check warehouse status
+2. Verify filters include all warehouses
+3. Ensure warehouse is configured for the operation
+
+### Inventory Mismatch
+
+**Possible causes:**
+- Pending transactions not completed
+- Sync delay from integrations
+- Data entry error
+
+**Solutions:**
+1. Check pending transactions
+2. Wait for sync to complete
+3. Review transaction history for discrepancies
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Lead Time Configuration" icon="clock" href="/inventory/warehouses/lead-times">
+    Set up transfer times
+  </Card>
+  <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
+    Monitor warehouse inventory
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    Create transfers and orders
+  </Card>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure fulfillment rules
+  </Card>
+</CardGroup>

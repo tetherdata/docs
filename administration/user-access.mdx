@@ -1,0 +1,331 @@
+---
+title: User Access
+description: Manage users and permissions
+---
+
+# User Access
+
+Control who has access to Tether and what they can do. User access management ensures the right people have the right permissions.
+
+<Note>
+  User access management requires Admin permissions.
+</Note>
+
+## Understanding User Roles
+
+Tether has two primary roles:
+
+| Role | Description |
+|------|-------------|
+| **Admin** | Full access to all features |
+| **Sales Rep** | Limited access based on assignments |
+
+### Admin Capabilities
+
+Admins have full access:
+
+- All SKUs and collections
+- All channels and warehouses
+- All transactions
+- All settings and configuration
+- User management
+- Integrations
+
+### Sales Rep Capabilities
+
+Sales Reps have restricted access:
+
+- View assigned channels only
+- View forecasts for assigned scope
+- Limited or no transaction management
+- No settings access
+- No user management
+
+## Managing Users
+
+### Accessing User Management
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to **Settings** in the sidebar
+  </Step>
+
+  <Step title="Select User Access">
+    Click on **User Access** section
+  </Step>
+
+  <Step title="View Users">
+    See list of all users
+  </Step>
+</Steps>
+
+### User List
+
+| Column | Description |
+|--------|-------------|
+| **Name** | User's display name |
+| **Email** | User's email address |
+| **Role** | Admin or Sales Rep |
+| **Status** | Active or Inactive |
+| **Last Active** | Recent activity date |
+
+## Inviting Users
+
+### Adding a New User
+
+<Steps>
+  <Step title="Click Invite User">
+    From User Access, click **Invite User**
+  </Step>
+
+  <Step title="Enter Details">
+    Provide user information:
+    - Email address
+    - Name (optional)
+    - Role
+  </Step>
+
+  <Step title="Configure Access">
+    For Sales Rep role:
+    - Assign channels
+    - Set permissions
+  </Step>
+
+  <Step title="Send Invitation">
+    Click **Send Invite**
+  </Step>
+</Steps>
+
+### Invitation Process
+
+1. User receives email invitation
+2. User clicks link to accept
+3. User creates password
+4. User can access Tether
+
+## Configuring Permissions
+
+### Channel-Based Access
+
+Control which channels users can see:
+
+<Steps>
+  <Step title="Select User">
+    Click on user to edit
+  </Step>
+
+  <Step title="Find Channel Access">
+    Locate channel assignment section
+  </Step>
+
+  <Step title="Assign Channels">
+    Select channels user can access
+  </Step>
+
+  <Step title="Save">
+    Apply changes
+  </Step>
+</Steps>
+
+### Hierarchy-Based Access
+
+Assign access at hierarchy levels:
+
+| Level | Access Granted |
+|-------|----------------|
+| **All Channels** | Everything |
+| **Channel Type** | All channels of that type |
+| **Region** | All channels in region |
+| **Individual** | Specific channels only |
+
+See [Channel Hierarchy](/channels/hierarchy) for more.
+
+## Editing Users
+
+### Changing User Role
+
+<Steps>
+  <Step title="Select User">
+    Click on user to edit
+  </Step>
+
+  <Step title="Change Role">
+    Update role from dropdown
+  </Step>
+
+  <Step title="Adjust Access">
+    Update permissions if needed
+  </Step>
+
+  <Step title="Save">
+    Apply changes
+  </Step>
+</Steps>
+
+<Warning>
+  Changing from Admin to Sales Rep removes access to settings and user management.
+</Warning>
+
+### Updating Channel Access
+
+<Steps>
+  <Step title="Select User">
+    Click on user to edit
+  </Step>
+
+  <Step title="Modify Channels">
+    Add or remove channel assignments
+  </Step>
+
+  <Step title="Save">
+    Apply changes
+  </Step>
+</Steps>
+
+## Deactivating Users
+
+### When to Deactivate
+
+- Employee leaves company
+- Role change doesn't require access
+- Temporary suspension
+
+### Deactivation Process
+
+<Steps>
+  <Step title="Select User">
+    Click on user to deactivate
+  </Step>
+
+  <Step title="Click Deactivate">
+    Choose deactivate option
+  </Step>
+
+  <Step title="Confirm">
+    Confirm the deactivation
+  </Step>
+</Steps>
+
+**Effects of deactivation:**
+- User cannot log in
+- User retains in system for records
+- Can be reactivated later
+
+### Reactivating Users
+
+1. Find deactivated user
+2. Click Reactivate
+3. Confirm reactivation
+
+## Access Control Best Practices
+
+<AccordionGroup>
+  <Accordion title="Principle of Least Privilege">
+    Grant minimum necessary access:
+    - Only needed channels
+    - Only needed features
+    - Review regularly
+  </Accordion>
+
+  <Accordion title="Regular Access Reviews">
+    Periodically review users:
+    - Check active users still need access
+    - Verify role assignments
+    - Update channel access
+  </Accordion>
+
+  <Accordion title="Prompt Deactivation">
+    When employees leave:
+    - Deactivate immediately
+    - Don't wait for cleanup
+    - Document the change
+  </Accordion>
+
+  <Accordion title="Document Access Decisions">
+    Keep records of:
+    - Why access was granted
+    - Who approved
+    - When reviewed
+  </Accordion>
+</AccordionGroup>
+
+## Security Considerations
+
+### Password Requirements
+
+Users must create secure passwords:
+
+- Minimum length requirements
+- Complexity requirements
+- No password reuse
+
+### Session Security
+
+| Feature | Description |
+|---------|-------------|
+| **Session Timeout** | Auto logout after inactivity |
+| **Single Session** | One active session per user |
+| **Secure Connection** | HTTPS required |
+
+### Audit Trail
+
+User actions are logged:
+
+- Login/logout events
+- Data changes
+- Settings modifications
+
+## Troubleshooting
+
+### User Can't Log In
+
+**Possible causes:**
+- Incorrect password
+- Account deactivated
+- Invitation not accepted
+
+**Solutions:**
+1. Verify account is active
+2. Check invitation was accepted
+3. Reset password if needed
+
+### User Missing Data
+
+**Possible causes:**
+- Channel not assigned
+- Filters applied
+- Role restrictions
+
+**Solutions:**
+1. Review channel assignments
+2. Check user's filters
+3. Verify role permissions
+
+### Invitation Not Received
+
+**Possible causes:**
+- Email in spam
+- Incorrect email address
+- Email delivery issues
+
+**Solutions:**
+1. Check spam folder
+2. Verify email address
+3. Resend invitation
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Roles & Permissions" icon="user-shield" href="/getting-started/roles-permissions">
+    Understand role capabilities
+  </Card>
+  <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">
+    Configure access hierarchy
+  </Card>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure system settings
+  </Card>
+  <Card title="Terminology" icon="book" href="/administration/terminology">
+    Customize terminology
+  </Card>
+</CardGroup>

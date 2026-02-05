@@ -1,0 +1,221 @@
+---
+title: Navigation & Interface
+description: Learn how to navigate the Tether interface effectively
+---
+
+# Navigation & Interface Overview
+
+Tether's interface is designed for efficiency, with intuitive navigation and powerful data management capabilities. This guide helps you understand the layout and key interface patterns.
+
+## Main Layout
+
+The Tether interface consists of these primary areas:
+
+- **Top Navigation Bar** - Logo, search, and user menu
+- **Sidebar Navigation** - Main feature navigation (collapsible)
+- **Main Content Area** - Where you'll do most of your work
+
+## Sidebar Navigation
+
+The sidebar is your primary navigation tool. It can be expanded or collapsed to maximize screen space.
+
+### Admin Navigation
+
+Admin users see the full navigation menu:
+
+| Section | Description |
+|---------|-------------|
+| **SKUs** | Product catalog management |
+| **Inventory** | Inventory levels, warehouses, and supply planning |
+| **Demand Forecast** | Forecasting dashboard and configuration |
+| **Integrations** | Data sync and external connections |
+| **Channels** | Sales channel management |
+| **Transactions** | Purchase orders, transfers, and production |
+
+### Sales Rep Navigation
+
+Sales Rep users see a simplified menu:
+
+| Section | Description |
+|---------|-------------|
+| **SKUs** | View product catalog (limited editing) |
+| **Demand Forecast** | View forecasts and sales history |
+| **Channels** | View channel information |
+
+### Collapsing the Sidebar
+
+Click the collapse button at the bottom of the sidebar to minimize it. This gives you more screen space for data-heavy views like the SKU dashboard or forecast tables.
+
+## Top Navigation Bar
+
+The top bar provides:
+
+- **Logo/Home**: Click to return to the main dashboard
+- **Search**: Quick access to the command palette (also `Cmd+K` / `Ctrl+K`)
+- **User Menu**: Access settings, view your role, and log out
+
+## Page Layouts
+
+### Tab-Based Pages
+
+Many pages use tabs to organize related content. For example, the Inventory page has:
+
+- **Overview** - Alerts and health status
+- **Supply Plan** - Scheduled orders
+- **Forecast** - Inventory projections
+- **Flow** - Visual replenishment diagram
+
+<Tip>
+  Tab selection is preserved in the URL, so you can bookmark or share links to specific tabs.
+</Tip>
+
+### Detail Pages
+
+When you click into a specific item (SKU, warehouse, transaction, etc.), you'll see a detail page with:
+
+- **Header**: Name, status, and quick actions
+- **Tabs**: Different aspects of the item
+- **Content Area**: Forms, tables, or visualizations
+
+## Data Tables
+
+Tether uses powerful data tables throughout the application. Here's how to use them effectively:
+
+### Column Features
+
+| Feature | How to Use |
+|---------|------------|
+| **Sort** | Click column header to sort ascending/descending |
+| **Resize** | Drag column borders to adjust width |
+| **Reorder** | Drag column headers to rearrange |
+| **Pin** | Right-click header to pin columns left or right |
+| **Hide** | Use column visibility controls to show/hide columns |
+
+### Inline Editing
+
+Many tables support inline editing:
+
+1. Click on an editable cell (indicated by subtle highlighting on hover)
+2. Make your changes
+3. Press `Enter` to save or `Escape` to cancel
+4. Changes are saved automatically
+
+<Warning>
+  Some fields may require specific formats (dates, numbers, etc.). Invalid entries will show an error.
+</Warning>
+
+### Filtering
+
+Tables typically include a filter panel on the left side:
+
+- **Text Search**: Type to search across visible columns
+- **Multi-Select Filters**: Check/uncheck values to filter
+- **Tri-State Selection**: Some filters support Include/Exclude/Indifferent states
+- **Date Ranges**: Select start and end dates for time-based filtering
+
+### Row Selection
+
+- **Single Select**: Click a row to select it
+- **Multi-Select**: Hold `Cmd` (Mac) or `Ctrl` (Windows) and click multiple rows
+- **Range Select**: Click first row, hold `Shift`, click last row
+
+## Modal Dialogs
+
+Modals appear for:
+
+- Creating new items
+- Editing details
+- Confirming actions
+- Viewing additional information
+
+### Modal Controls
+
+- **Close**: Click the X button or press `Escape`
+- **Save**: Click the primary action button (usually blue)
+- **Cancel**: Click Cancel or close the modal
+
+<Info>
+  Some modals have multiple steps. Look for "Next" and "Back" buttons to navigate.
+</Info>
+
+## Filters & Saved Views
+
+### Using Filters
+
+1. Open the filter panel (usually on the left side of data tables)
+2. Expand filter sections by clicking the headers
+3. Select values to include or exclude
+4. Results update automatically
+
+### Tri-State Filtering
+
+Some filters support three states:
+
+| State | Icon | Meaning |
+|-------|------|---------|
+| **Include** | ✓ | Show only items matching this value |
+| **Exclude** | ✗ | Hide items matching this value |
+| **Indifferent** | - | Don't filter by this value |
+
+### Saving Views
+
+If you frequently use the same filter combination:
+
+1. Set up your desired filters
+2. Click **Save View**
+3. Enter a name for the view
+4. Access saved views from the dropdown
+
+## Command Palette
+
+The command palette provides quick access to navigation and search:
+
+<Steps>
+  <Step title="Open Command Palette">
+    Press `Cmd+K` (Mac) or `Ctrl+K` (Windows)
+  </Step>
+  <Step title="Search">
+    Type to search for:
+    - Pages and navigation items
+    - SKUs by name or code
+    - Warehouses
+    - Suppliers
+    - Transactions
+  </Step>
+  <Step title="Navigate">
+    Use arrow keys to select, `Enter` to navigate
+  </Step>
+</Steps>
+
+## Responsive Design
+
+Tether works on various screen sizes:
+
+- **Desktop**: Full sidebar and expanded data tables
+- **Tablet**: Collapsible sidebar, scrollable tables
+- **Mobile**: Simplified navigation, stacked layouts
+
+<Tip>
+  For the best experience with data-heavy features like forecasting, use a desktop or large tablet display.
+</Tip>
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd/Ctrl + K` | Open command palette |
+| `Escape` | Close modal or cancel editing |
+| `Enter` | Confirm/save in forms |
+| `Tab` | Move to next field |
+| `Shift + Tab` | Move to previous field |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="User Roles" icon="users" href="/roles-permissions">
+    Understand what you can access based on your role
+  </Card>
+  <Card title="Command Palette" icon="keyboard" href="/tips/command-palette">
+    Master quick navigation with keyboard shortcuts
+  </Card>
+</CardGroup>

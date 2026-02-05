@@ -1,0 +1,290 @@
+---
+title: Creating SKUs
+description: How to add new products to your Tether catalog
+---
+
+# Creating SKUs
+
+There are multiple ways to create SKUs in Tether, from adding individual products to generating hundreds of variants at once. This guide covers all creation methods.
+
+<Note>
+  Creating SKUs requires Admin access. Sales Rep users can only view existing SKUs.
+</Note>
+
+## Creating a Single SKU
+
+The most straightforward way to add a product:
+
+<Steps>
+  <Step title="Open the Create SKU Dialog">
+    1. Navigate to **SKUs** in the sidebar
+    2. Click the **Create SKU** button in the top-right
+  </Step>
+
+  <Step title="Enter Basic Information">
+    Fill in the required fields:
+
+    | Field | Required | Description |
+    |-------|----------|-------------|
+    | **Name** | Yes | Display name for the SKU |
+    | **SKU Code** | Yes | Unique identifier (must be unique) |
+    | **Type** | Yes | Select the appropriate SKU type |
+    | **Collection** | Recommended | Parent collection for the SKU |
+    | **UPC** | No | Universal Product Code |
+    | **Amazon ID** | No | Amazon ASIN identifier |
+  </Step>
+
+  <Step title="Add Dimension Values (if applicable)">
+    If you selected a collection with dimensions:
+    - Select the appropriate value for each dimension
+    - Example: Size = "Medium", Color = "Blue"
+  </Step>
+
+  <Step title="Save the SKU">
+    Click **Save** to create the SKU. It will appear in your SKU list immediately.
+  </Step>
+</Steps>
+
+## Using the SKU Generator
+
+For products with multiple variants (size/color combinations, etc.), the SKU Generator can create all combinations automatically.
+
+### Prerequisites
+
+Before using the SKU Generator:
+
+1. Create a collection for your products
+2. Set up dimensions with values (Size: S, M, L, XL; Color: Red, Blue, Black)
+
+### Generating SKUs
+
+<Steps>
+  <Step title="Open the Collection">
+    Navigate to your collection and go to the **SKUs** tab
+  </Step>
+
+  <Step title="Launch the SKU Generator">
+    Click the **SKU Generator** button
+  </Step>
+
+  <Step title="Configure the Generator">
+    **Naming Template**
+    Define how SKU names will be generated:
+    - Use placeholders: `{collection} - {Size} - {Color}`
+    - Example result: "T-Shirts - Medium - Blue"
+
+    **SKU Code Template**
+    Define the code format:
+    - Example: `{collection_code}-{Size}-{Color}`
+    - Result: "TSH-M-BLU"
+  </Step>
+
+  <Step title="Select Dimension Values">
+    Check which dimension values to include:
+
+    ```
+    Size:
+    ☑ Small
+    ☑ Medium
+    ☑ Large
+    ☐ XL (excluded)
+
+    Color:
+    ☑ Red
+    ☑ Blue
+    ☑ Black
+    ```
+
+    This would generate 9 SKUs (3 sizes × 3 colors)
+  </Step>
+
+  <Step title="Preview and Generate">
+    - Review the preview of SKUs to be created
+    - Click **Generate** to create all SKUs
+    - SKUs are created immediately
+  </Step>
+</Steps>
+
+<Tip>
+  The SKU Generator is ideal when launching new product lines with many variants. It ensures consistent naming and coding across all variants.
+</Tip>
+
+## Batch Creation from Import
+
+For large-scale SKU creation, you can import from a spreadsheet:
+
+<Steps>
+  <Step title="Prepare Your Data">
+    Create a CSV or Excel file with columns:
+    - `name` (required)
+    - `sku_code` (required)
+    - `type` (required)
+    - `collection_id` or `collection_name`
+    - `upc`
+    - Dimension columns as needed
+  </Step>
+
+  <Step title="Navigate to Import">
+    Go to **Integrations** → **Create Integration** → **SKU Import**
+  </Step>
+
+  <Step title="Upload and Map Fields">
+    - Upload your file
+    - Map columns to Tether fields
+    - Review the preview
+  </Step>
+
+  <Step title="Execute Import">
+    Click **Import** to create all SKUs
+  </Step>
+</Steps>
+
+## SKU Type Selection Guide
+
+Choosing the right SKU type is important for accurate inventory and forecasting:
+
+<AccordionGroup>
+  <Accordion title="Finished Good">
+    **Use when**: The product is sold directly to customers
+
+    **Examples**:
+    - Apparel items
+    - Consumer electronics
+    - Any retail product
+
+    **Characteristics**:
+    - Has demand forecasts
+    - Tracked in sellable inventory
+    - Available on channels
+  </Accordion>
+
+  <Accordion title="Raw Material">
+    **Use when**: The item is used to produce other products
+
+    **Examples**:
+    - Fabric for clothing
+    - Electronic components
+    - Raw ingredients
+
+    **Characteristics**:
+    - Consumed during production
+    - Linked via BOM to finished goods
+    - Ordered from suppliers
+  </Accordion>
+
+  <Accordion title="Component">
+    **Use when**: The item is a part that goes into other products
+
+    **Examples**:
+    - Buttons for shirts
+    - Screws for furniture
+    - Straps for bags
+
+    **Characteristics**:
+    - Similar to raw materials
+    - Often reusable across products
+  </Accordion>
+
+  <Accordion title="Bundle">
+    **Use when**: Multiple products are physically packaged together
+
+    **Examples**:
+    - Gift sets
+    - Starter kits
+    - Multi-packs
+
+    **Characteristics**:
+    - Contains other SKUs
+    - Inventory is assembled
+    - Component inventory is consumed
+  </Accordion>
+
+  <Accordion title="Kit">
+    **Use when**: Products are assembled on-demand
+
+    **Examples**:
+    - Build-your-own kits
+    - Made-to-order bundles
+
+    **Characteristics**:
+    - Components are picked at order time
+    - No pre-assembled inventory
+  </Accordion>
+
+  <Accordion title="Virtual Bundle">
+    **Use when**: Products are sold together but not physically assembled
+
+    **Examples**:
+    - "Buy 2 Get 1 Free" promotions
+    - Logical product groupings
+
+    **Characteristics**:
+    - No physical inventory
+    - Components shipped separately
+  </Accordion>
+</AccordionGroup>
+
+## Required vs. Optional Fields
+
+### Required Fields
+
+| Field | Description |
+|-------|-------------|
+| **Name** | Display name shown throughout Tether |
+| **SKU Code** | Must be unique across your organization |
+| **Type** | Determines how the SKU behaves |
+
+### Recommended Fields
+
+| Field | Why It's Useful |
+|-------|-----------------|
+| **Collection** | Enables dimension management and bulk operations |
+| **UPC** | Required for retail channels and barcode scanning |
+| **Dimensions** | Powers filtering and reporting |
+
+### Optional Fields
+
+| Field | Use Case |
+|-------|----------|
+| **Amazon ID** | Required for Amazon integration |
+| **Description** | Internal notes and details |
+| **Custom Fields** | Organization-specific data |
+
+## Validation Rules
+
+When creating SKUs, Tether validates:
+
+- **SKU Code uniqueness**: No duplicates allowed
+- **Required fields**: Name, code, and type must be provided
+- **Dimension consistency**: Values must exist in the collection's dimensions
+- **Format requirements**: Codes cannot contain certain special characters
+
+<Warning>
+  If a SKU code already exists, you'll see an error. Each SKU code must be unique across your entire organization.
+</Warning>
+
+## After Creating SKUs
+
+Once SKUs are created, you'll typically want to:
+
+1. **Set up inventory** - Configure initial inventory levels
+2. **Add suppliers** - Link suppliers who provide the product
+3. **Configure pricing** - Set up channel-specific pricing
+4. **Enable on channels** - Make SKUs available for sale
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Editing SKUs" icon="pen" href="/product-catalog/skus/editing-skus">
+    Learn how to modify SKU information
+  </Card>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/overview">
+    Organize SKUs into collections
+  </Card>
+  <Card title="Dimensions" icon="ruler-combined" href="/product-catalog/dimensions">
+    Configure product dimensions
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Add supplier information for SKUs
+  </Card>
+</CardGroup>

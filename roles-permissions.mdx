@@ -1,0 +1,275 @@
+---
+title: User Roles & Permissions
+description: Understanding access levels and permissions in Tether
+---
+
+# User Roles & Permissions
+
+Tether uses role-based access control (RBAC) to ensure users have appropriate access to features and data. This guide explains the different roles and their capabilities.
+
+## Available Roles
+
+Tether has two primary user roles:
+
+<CardGroup cols={2}>
+  <Card title="Admin" icon="user-shield">
+    Full access to all features, settings, and data management capabilities.
+  </Card>
+  <Card title="Sales Rep" icon="user">
+    Focused access to sales-related features with read-only access to most areas.
+  </Card>
+</CardGroup>
+
+## Permission Matrix
+
+### Feature Access by Role
+
+| Feature | Admin | Sales Rep |
+|---------|:-----:|:---------:|
+| **Product Catalog** | | |
+| View SKUs | ✓ | ✓ |
+| Create/Edit SKUs | ✓ | - |
+| Manage Collections | ✓ | - |
+| Configure Dimensions | ✓ | - |
+| **Inventory** | | |
+| View Inventory Dashboard | ✓ | - |
+| View Inventory Alerts | ✓ | - |
+| Manage Supply Plan | ✓ | - |
+| Create/Edit Warehouses | ✓ | - |
+| Manage Suppliers | ✓ | - |
+| **Demand Forecasting** | | |
+| View Forecasts | ✓ | ✓ |
+| Edit Forecasts | ✓ | Limited |
+| View Sales History | ✓ | ✓ |
+| Forecast Administration | ✓ | - |
+| Manage Promotions | ✓ | - |
+| **Transactions** | | |
+| View Transactions | ✓ | - |
+| Create/Edit Transactions | ✓ | - |
+| **Channels** | | |
+| View Channels | ✓ | ✓ |
+| Create/Edit Channels | ✓ | - |
+| **Integrations** | | |
+| View Integrations | ✓ | - |
+| Configure Integrations | ✓ | - |
+| **Supply Simulation** | | |
+| Run Simulations | ✓ | - |
+| **Analytics** | | |
+| View Metrics | ✓ | ✓ |
+| **Administration** | | |
+| Manage Users | ✓ | - |
+| Configure Settings | ✓ | - |
+
+## Admin Role
+
+Admins have complete access to Tether's functionality.
+
+### Admin Capabilities
+
+<AccordionGroup>
+  <Accordion title="Product Management">
+    - Create, edit, and archive SKUs
+    - Manage collections and their settings
+    - Configure dimensions and values
+    - Set up product hierarchies
+    - Use the SKU generator for bulk creation
+  </Accordion>
+
+  <Accordion title="Inventory Control">
+    - View and manage inventory across all warehouses
+    - Monitor and respond to inventory alerts
+    - Manage the supply plan
+    - Create and configure warehouses
+    - Add and manage suppliers
+    - Configure lead times and fulfillment rules
+  </Accordion>
+
+  <Accordion title="Demand Planning">
+    - View and edit demand forecasts
+    - Configure forecast models
+    - Upload bulk forecast data
+    - Manage forecast versions
+    - Create and manage promotions
+    - Access the edit log for audit trails
+  </Accordion>
+
+  <Accordion title="Transaction Management">
+    - Create purchase orders, production orders, and transfers
+    - Submit and track transactions
+    - Manage transaction workflows
+    - View transaction analytics
+  </Accordion>
+
+  <Accordion title="System Administration">
+    - Add and remove users
+    - Assign roles to users
+    - Configure channel access rules
+    - Customize terminology
+    - Set up and manage integrations
+    - Configure inventory forecast settings
+  </Accordion>
+</AccordionGroup>
+
+### When to Use Admin Role
+
+Assign Admin access to:
+
+- Operations managers
+- Supply chain planners
+- Inventory managers
+- System administrators
+- Team leads who need full data access
+
+## Sales Rep Role
+
+Sales Reps have focused access to sales-related features.
+
+### Sales Rep Capabilities
+
+<AccordionGroup>
+  <Accordion title="Product Viewing">
+    - View SKUs and product information
+    - Browse collections
+    - Search the product catalog
+
+    **Cannot**: Create, edit, or archive products
+  </Accordion>
+
+  <Accordion title="Sales Data Access">
+    - View sales history
+    - Access demand forecasts (view and limited editing)
+    - See channel information
+    - View relevant metrics
+
+    **Cannot**: Configure forecasts, manage promotions, or access admin settings
+  </Accordion>
+
+  <Accordion title="Channel Access">
+    Sales Reps may have access restricted to specific channels based on access rules configured by an Admin.
+  </Accordion>
+</AccordionGroup>
+
+### When to Use Sales Rep Role
+
+Assign Sales Rep access to:
+
+- Sales team members
+- Account managers
+- Business development representatives
+- External partners who need limited access
+
+## Channel Access Rules
+
+Beyond roles, Admins can configure granular channel access to control which data users can see.
+
+### How Channel Access Works
+
+1. **Admin creates access rules** in Settings → User Access
+2. **Rules define** which channels and/or collections a user can access
+3. **Sales Reps** see only data for their assigned channels
+4. **Admins** always have access to all channels
+
+### Example Access Configuration
+
+| User | Role | Channel Access |
+|------|------|----------------|
+| Sarah | Admin | All channels |
+| Mike | Sales Rep | Shopify US, Shopify CA |
+| Lisa | Sales Rep | Amazon US |
+| Tom | Sales Rep | Wholesale |
+
+### Configuring Channel Access
+
+<Steps>
+  <Step title="Navigate to Settings">
+    Go to **Settings** → **User Access**
+  </Step>
+  <Step title="Select User">
+    Find the user in the list and click to edit
+  </Step>
+  <Step title="Configure Access Rules">
+    - Select which channels the user can access
+    - Optionally restrict to specific collections
+    - Preview effective permissions
+  </Step>
+  <Step title="Save Changes">
+    Click **Save** to apply the access rules
+  </Step>
+</Steps>
+
+## Navigation Differences
+
+### Admin Sidebar
+
+Admins see the full navigation menu:
+
+```
+├── SKUs
+├── Inventory
+├── Demand Forecast
+├── Integrations
+├── Channels
+├── Transactions
+└── Settings
+```
+
+### Sales Rep Sidebar
+
+Sales Reps see a simplified menu:
+
+```
+├── SKUs
+├── Sales History
+├── Demand Forecast
+└── Channels
+```
+
+<Info>
+  The navigation automatically adjusts based on the user's role. You'll only see menu items you have access to.
+</Info>
+
+## Best Practices
+
+### Role Assignment
+
+<CardGroup cols={2}>
+  <Card title="Principle of Least Privilege" icon="shield-check">
+    Assign the minimum role needed for each user's job function. Start with Sales Rep and upgrade to Admin only if needed.
+  </Card>
+  <Card title="Regular Review" icon="clock">
+    Periodically review user roles and access to ensure they're still appropriate as team members change positions.
+  </Card>
+</CardGroup>
+
+### Access Control Tips
+
+1. **Document your access rules** - Keep a record of who has access to what and why
+2. **Use channel access** - Even for Admins, consider using channel access to prevent accidental changes to unrelated data
+3. **Onboard carefully** - When adding new users, start with restricted access and expand as needed
+
+## Checking Your Access
+
+To see your current role and permissions:
+
+1. Click your **user avatar** in the top-right corner
+2. Your role badge is displayed next to your name
+3. The navigation menu shows only features you can access
+
+## Need More Access?
+
+If you need access to features you can't see:
+
+1. Contact your Tether administrator
+2. Explain what you need access to and why
+3. They can adjust your role or channel access as appropriate
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="User Access Management" icon="users-gear" href="/administration/user-access">
+    Learn how to manage users and configure access (Admin only)
+  </Card>
+  <Card title="Quick Start Guide" icon="rocket" href="/quickstart">
+    Get started with Tether's core features
+  </Card>
+</CardGroup>

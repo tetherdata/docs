@@ -1,0 +1,346 @@
+---
+title: Creating Transactions
+description: How to create purchase orders, transfers, and production orders
+---
+
+# Creating Transactions
+
+This guide walks you through creating each type of transaction in Tether, from drafts to submitted orders.
+
+## Creating from Supply Plan
+
+The easiest way to create transactions is from system recommendations:
+
+<Steps>
+  <Step title="Go to Supply Plan">
+    Navigate to **Inventory** → **Supply Plan**
+  </Step>
+
+  <Step title="Review Recommendations">
+    Look at system-recommended orders
+  </Step>
+
+  <Step title="Create Draft">
+    Click **Create Draft** on a recommendation
+  </Step>
+
+  <Step title="Review and Submit">
+    Review the pre-filled draft and submit
+  </Step>
+</Steps>
+
+See [Supply Plan](/inventory/supply-plan) for details on working with recommendations.
+
+## Creating Manually
+
+### Creating a Purchase Order
+
+<Steps>
+  <Step title="Start New Transaction">
+    Go to **Transactions** → Click **Create** → Select **Purchase Order**
+  </Step>
+
+  <Step title="Select Supplier">
+    Choose the supplier for this order:
+    - Use search to find supplier
+    - See supplier's configured lead time
+    - Review terms and conditions
+  </Step>
+
+  <Step title="Select Destination">
+    Choose which warehouse will receive the order
+  </Step>
+
+  <Step title="Add Line Items">
+    Add products to order:
+
+    | Field | Description |
+    |-------|-------------|
+    | **SKU** | Search and select product |
+    | **Quantity** | How many to order |
+    | **Unit Cost** | Price per unit (may auto-fill from supplier) |
+    | **Expected Date** | When you expect delivery |
+  </Step>
+
+  <Step title="Review Totals">
+    Check order summary:
+    - Total units
+    - Total cost
+    - Expected delivery dates
+  </Step>
+
+  <Step title="Save or Submit">
+    - **Save as Draft**: Keep for later review
+    - **Submit**: Send order to processing
+  </Step>
+</Steps>
+
+### Creating a Transfer Order
+
+<Steps>
+  <Step title="Start New Transaction">
+    Go to **Transactions** → Click **Create** → Select **Transfer Order**
+  </Step>
+
+  <Step title="Select Source Warehouse">
+    Choose where inventory will come from:
+    - See available inventory
+    - Check current stock levels
+  </Step>
+
+  <Step title="Select Destination Warehouse">
+    Choose where inventory will go
+  </Step>
+
+  <Step title="Add Line Items">
+    Add products to transfer:
+
+    | Field | Description |
+    |-------|-------------|
+    | **SKU** | Search and select product |
+    | **Quantity** | How many to transfer |
+    | **Available** | Shows available at source |
+  </Step>
+
+  <Step title="Set Expected Dates">
+    - **Ship Date**: When transfer will leave source
+    - **Arrival Date**: When expected at destination
+  </Step>
+
+  <Step title="Save or Submit">
+    Save as draft or submit to start transfer
+  </Step>
+</Steps>
+
+<Warning>
+  You cannot transfer more than available inventory. The system will warn you if quantity exceeds availability.
+</Warning>
+
+### Creating a Production Order
+
+<Steps>
+  <Step title="Start New Transaction">
+    Go to **Transactions** → Click **Create** → Select **Production Order**
+  </Step>
+
+  <Step title="Select Product to Produce">
+    Choose the finished good to manufacture:
+    - Must have a BOM configured
+    - See component requirements
+  </Step>
+
+  <Step title="Select Warehouse">
+    Choose where production will occur
+  </Step>
+
+  <Step title="Set Quantity">
+    Enter how many units to produce:
+    - System calculates component needs
+    - Shows component availability
+  </Step>
+
+  <Step title="Review Components">
+    Verify component requirements:
+
+    | Component | Qty Needed | Available | Status |
+    |-----------|------------|-----------|--------|
+    | Part A | 100 | 500 | ✓ OK |
+    | Part B | 50 | 45 | ⚠ Short |
+  </Step>
+
+  <Step title="Set Dates">
+    - **Start Date**: When production begins
+    - **Completion Date**: Expected finish date
+  </Step>
+
+  <Step title="Save or Submit">
+    Save as draft or submit to start production
+  </Step>
+</Steps>
+
+## Working with Drafts
+
+### What is a Draft?
+
+A draft is a saved transaction that hasn't been submitted yet. Use drafts to:
+
+- Prepare orders for review
+- Build orders over time
+- Get approval before submitting
+
+### Editing Drafts
+
+1. Go to **Transactions**
+2. Filter to "Draft" status
+3. Click on the draft to open
+4. Make changes
+5. Save or Submit
+
+### Draft Actions
+
+| Action | Description |
+|--------|-------------|
+| **Edit** | Modify any field |
+| **Submit** | Start order processing |
+| **Delete** | Remove the draft |
+| **Duplicate** | Copy to create similar order |
+
+## Adding Line Items
+
+### Individual Item Add
+
+1. Click **Add Line Item**
+2. Search for SKU
+3. Enter quantity
+4. Enter cost (for POs)
+5. Set dates if different from header
+
+### Bulk Add
+
+For multiple items:
+
+1. Click **Bulk Add**
+2. Either:
+   - Paste from spreadsheet
+   - Import from file
+   - Select from list
+3. Review and confirm
+
+### Line Item Fields
+
+| Field | PO | Transfer | Production |
+|-------|-----|----------|------------|
+| SKU | ✓ | ✓ | Auto (from BOM) |
+| Quantity | ✓ | ✓ | ✓ |
+| Unit Cost | ✓ | - | - |
+| Expected Date | ✓ | ✓ | ✓ |
+
+## Validation
+
+Tether validates transactions before submission:
+
+### Purchase Order Validation
+
+| Check | Requirement |
+|-------|-------------|
+| Supplier | Must be selected |
+| Destination | Warehouse required |
+| Line Items | At least one item |
+| Quantities | Must be positive |
+
+### Transfer Validation
+
+| Check | Requirement |
+|-------|-------------|
+| Source | Must be selected |
+| Destination | Different from source |
+| Availability | Sufficient inventory |
+| Quantities | Positive and within available |
+
+### Production Validation
+
+| Check | Requirement |
+|-------|-------------|
+| Product | Must have BOM |
+| Components | All available |
+| Warehouse | Must be selected |
+| Quantity | Positive |
+
+## Submitting Transactions
+
+### What Happens on Submit
+
+When you submit a transaction:
+
+1. **Validation** runs
+2. **Status** changes to "In Progress"
+3. **Inventory** is affected:
+   - PO: No immediate impact
+   - Transfer: Source inventory committed
+   - Production: Components reserved
+4. **Steps** are created
+5. **Notifications** sent (if configured)
+
+### Submit Options
+
+| Option | Behavior |
+|--------|----------|
+| **Submit** | Standard submission |
+| **Submit & Create Another** | Submit and open new form |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Verify Before Submit">
+    Always review before submitting:
+    - Correct supplier/warehouse
+    - Quantities are right
+    - Costs are accurate
+    - Dates are reasonable
+  </Accordion>
+
+  <Accordion title="Use Drafts for Review">
+    Create drafts when:
+    - Order needs approval
+    - Waiting for information
+    - Building complex orders
+  </Accordion>
+
+  <Accordion title="Check Availability">
+    For transfers and production:
+    - Verify source inventory
+    - Consider committed quantities
+    - Plan for safety stock
+  </Accordion>
+
+  <Accordion title="Document Special Instructions">
+    Add notes for:
+    - Supplier instructions
+    - Shipping requirements
+    - Special handling
+  </Accordion>
+</AccordionGroup>
+
+## Common Issues
+
+### Can't Submit - Validation Error
+
+**Possible issues:**
+- Missing required fields
+- Invalid quantities
+- Insufficient inventory (transfers)
+
+**Solution:** Review error messages and fix highlighted fields
+
+### Supplier Not Available
+
+**Possible issues:**
+- Supplier not configured for SKU
+- Supplier is inactive
+
+**Solution:** Check supplier capabilities in supplier settings
+
+### Component Shortage
+
+**For production orders:**
+- Not enough components available
+- Components committed to other orders
+
+**Solution:** Create purchase orders for components first, or reduce production quantity
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Transaction Details" icon="file-lines" href="/transactions/detail-view">
+    Navigate transaction detail pages
+  </Card>
+  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
+    Understand the transaction lifecycle
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Create from recommendations
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Configure supplier information
+  </Card>
+</CardGroup>

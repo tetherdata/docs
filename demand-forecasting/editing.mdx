@@ -1,0 +1,356 @@
+---
+title: Editing Forecasts
+description: How to modify demand forecast values in Tether
+---
+
+# Editing Forecasts
+
+While Tether generates forecasts automatically, you often need to make adjustments based on business knowledge, planned promotions, or other factors. This guide covers all the ways to edit forecast values.
+
+<Note>
+  Editing capabilities depend on your role. Admins have full access; Sales Reps may have limited editing rights.
+</Note>
+
+## Why Edit Forecasts?
+
+Common reasons to adjust forecasts:
+
+| Reason | Example |
+|--------|---------|
+| **Planned Promotions** | Marketing campaign will drive extra demand |
+| **Product Launches** | New product with no history |
+| **Seasonal Events** | Holiday peak not captured in model |
+| **Market Changes** | Competitor exit, trend shift |
+| **Known Issues** | Supply constraints, discontinuation |
+
+## Inline Cell Editing
+
+The quickest way to make changes is directly in the forecast table.
+
+### Making an Edit
+
+<Steps>
+  <Step title="Navigate to the Cell">
+    Find the SKU/channel and time period you want to edit
+  </Step>
+
+  <Step title="Click the Cell">
+    Click to enter edit mode. The cell becomes an input field.
+  </Step>
+
+  <Step title="Enter New Value">
+    Type the new forecast quantity
+  </Step>
+
+  <Step title="Save">
+    Press **Enter** to save or **Escape** to cancel
+  </Step>
+</Steps>
+
+### Edit Indicators
+
+| Indicator | Meaning |
+|-----------|---------|
+| Yellow highlight | Cell has been edited |
+| Blue border | Currently editing |
+| Green flash | Save successful |
+| Red border | Validation error |
+
+### Bulk Inline Editing
+
+Edit multiple cells quickly:
+
+1. Edit a cell and press **Tab** to move to next
+2. Continue editing and tabbing
+3. All changes save automatically
+
+## Numeric Value Changes
+
+### Absolute Values
+
+Enter exact quantities:
+
+- Current: 100
+- Type: 150
+- Result: Forecast is now 150
+
+### Clearing Values
+
+To remove a forecast:
+- Enter 0 or leave blank
+- Save the change
+
+## Percentage Adjustments
+
+Adjust by percentage instead of absolute values:
+
+### Single Cell Percentage
+
+1. Click on a cell
+2. Click the percentage icon (%) or enter with % symbol
+3. Enter: +10% or -20%
+4. Applies percentage change to current value
+
+**Example:**
+- Current: 100
+- Enter: +10%
+- Result: 110
+
+### Row Percentage Edit
+
+Adjust all periods for a row:
+
+<Steps>
+  <Step title="Select the Row">
+    Click on the row you want to adjust
+  </Step>
+
+  <Step title="Open Row Edit">
+    Click **Row Edit** or right-click and select "Edit Row"
+  </Step>
+
+  <Step title="Enter Percentage">
+    Enter the percentage change:
+    - +15% to increase all periods by 15%
+    - -10% to decrease all periods by 10%
+  </Step>
+
+  <Step title="Select Date Range">
+    Choose which periods to affect:
+    - All visible periods
+    - Specific date range
+  </Step>
+
+  <Step title="Apply">
+    Review preview and apply changes
+  </Step>
+</Steps>
+
+## Quick Edit Modal
+
+For more control, use the Quick Edit Modal:
+
+<Steps>
+  <Step title="Select Cell or Row">
+    Click on the item you want to edit
+  </Step>
+
+  <Step title="Open Quick Edit">
+    Click the **Quick Edit** button or press a keyboard shortcut
+  </Step>
+
+  <Step title="See Details">
+    The modal shows:
+    - Current value
+    - Historical context
+    - Recent trends
+  </Step>
+
+  <Step title="Make Adjustment">
+    Enter new value or percentage change
+  </Step>
+
+  <Step title="Add Reason">
+    Enter a reason for the change (recommended)
+  </Step>
+
+  <Step title="Save">
+    Apply the change
+  </Step>
+</Steps>
+
+## Change Reasons
+
+Documenting why you made changes helps with analysis and audit.
+
+### Adding a Reason
+
+When editing:
+
+1. Make your value change
+2. Click **Add Reason** or the reason icon
+3. Enter a brief explanation:
+   - "Holiday promotion expected"
+   - "New marketing campaign"
+   - "Product phase-out"
+4. Save with the change
+
+### Save Reason Modal
+
+For important changes, the Save Reason Modal provides more structure:
+
+| Field | Description |
+|-------|-------------|
+| **Category** | Type of change (promotion, seasonal, market, etc.) |
+| **Description** | Detailed explanation |
+| **Impact Period** | How long the change affects |
+| **Confidence** | How certain you are about the adjustment |
+
+### Why Reasons Matter
+
+- **Accountability** - Know who changed what and why
+- **Learning** - Review if adjustments were accurate
+- **Communication** - Team understands the reasoning
+- **Compliance** - Audit trail for regulated industries
+
+## Editing Grouped Data
+
+When data is grouped, editing works at different levels:
+
+### Editing Detail Rows
+
+1. Expand the group
+2. Edit individual SKU/channel cells
+3. Group totals update automatically
+
+### Editing Group Totals
+
+Some views allow editing at the group level:
+
+1. Edit the group total
+2. System distributes change to detail rows
+3. Distribution method depends on configuration
+
+<Warning>
+  Editing group totals may distribute changes in ways you don't expect. Review detail rows after group-level edits.
+</Warning>
+
+## Copying and Pasting
+
+### Copy from Spreadsheet
+
+1. Copy cells from Excel or Sheets
+2. Select target cells in Tether
+3. Paste (Ctrl/Cmd + V)
+4. Values populate
+
+### Copy Within Tether
+
+1. Select cells to copy
+2. Copy (Ctrl/Cmd + C)
+3. Select destination
+4. Paste (Ctrl/Cmd + V)
+
+<Info>
+  Copy/paste respects the data structure. Ensure source and target have compatible formats.
+</Info>
+
+## Reverting Changes
+
+### Undo Recent Edit
+
+- Press **Ctrl/Cmd + Z** to undo
+- Works for recent changes in current session
+
+### Revert to Original
+
+To restore the system forecast:
+
+1. Select the edited cell(s)
+2. Click **Revert** or right-click → "Revert to Original"
+3. Confirm the revert
+
+### Check Edit Log
+
+To see what was changed:
+
+1. Go to **Edit Log**
+2. Find the specific change
+3. See original and current values
+
+## Edit Permissions
+
+### By Role
+
+| Role | Capability |
+|------|------------|
+| **Admin** | Full edit access |
+| **Sales Rep** | Limited - may be view-only or restricted periods |
+
+### By Time Period
+
+Some configurations restrict editing:
+
+- **Historical**: Cannot edit past periods
+- **Locked**: Certain periods may be locked
+- **Future**: Usually editable
+
+### By Channel
+
+Channel access rules may limit which forecasts you can edit.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Always Add Reasons">
+    Document every significant change. Future you (and your team) will thank you.
+  </Accordion>
+
+  <Accordion title="Check the Impact">
+    Before saving:
+    - Review the change in context
+    - Consider ripple effects on inventory
+    - Verify it makes sense
+  </Accordion>
+
+  <Accordion title="Use Percentage for Trends">
+    When adjusting for general factors (growth, promotion multiplier), use percentages rather than absolute values.
+  </Accordion>
+
+  <Accordion title="Review Regularly">
+    Check edited forecasts against actuals:
+    - Were your adjustments accurate?
+    - Learn from over/under estimates
+    - Refine your adjustment approach
+  </Accordion>
+
+  <Accordion title="Coordinate with Team">
+    If multiple people edit forecasts:
+    - Communicate about changes
+    - Avoid conflicting adjustments
+    - Use change reasons for visibility
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Can't Edit Cell
+
+**Possible causes:**
+- Historical period (locked)
+- Insufficient permissions
+- Cell is calculated/read-only
+
+**Solutions:**
+1. Verify you're in an editable period
+2. Check your role permissions
+3. Try editing a different cell type
+
+### Changes Not Saving
+
+**Possible causes:**
+- Validation error
+- Network issue
+- Session timeout
+
+**Solutions:**
+1. Check for error messages
+2. Verify internet connection
+3. Refresh and try again
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
+    Track all forecast changes
+  </Card>
+  <Card title="Promotions" icon="tag" href="/demand-forecasting/promotions">
+    Manage promotional impacts on forecasts
+  </Card>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Configure forecast settings
+  </Card>
+  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
+    Compare forecasts to actuals
+  </Card>
+</CardGroup>

@@ -1,0 +1,347 @@
+---
+title: Transaction Detail View
+description: Navigating and using transaction detail pages
+---
+
+# Transaction Detail View
+
+The transaction detail view provides comprehensive information about a single transaction. This guide explains each tab and how to use them effectively.
+
+## Accessing Transaction Details
+
+Click on any transaction in the transactions list to open its detail view.
+
+## Detail View Layout
+
+The transaction detail page includes:
+
+- **Header**: Name, status, type, and quick actions
+- **Tabs**: Different aspects of the transaction
+- **Action Buttons**: Status-appropriate actions
+
+## Header Section
+
+### Key Information
+
+| Element | Description |
+|---------|-------------|
+| **Transaction Name** | Auto-generated or custom name |
+| **Status Badge** | Current status (Draft, In Progress, etc.) |
+| **Type Badge** | Purchase, Transfer, or Production |
+| **Source/Supplier** | Where goods come from |
+| **Destination** | Where goods are going |
+| **Dates** | Key dates (order, expected, etc.) |
+
+### Quick Actions
+
+Available actions depend on status:
+
+| Status | Available Actions |
+|--------|-------------------|
+| **Draft** | Edit, Submit, Delete |
+| **In Progress** | Update Steps, Add Documents, Cancel |
+| **Completed** | View Only, Export |
+| **Cancelled** | View Only |
+
+## Tabs Overview
+
+### Overview Tab
+
+General transaction information:
+
+- **Basic Details**: Name, reference number, dates
+- **Source/Destination**: Supplier or warehouse information
+- **Summary Metrics**: Total items, total value
+- **Notes**: Any comments or instructions
+- **Metadata**: Created date, created by, last modified
+
+### Line Items Tab
+
+Products included in the transaction:
+
+| Column | Description |
+|--------|-------------|
+| **SKU** | Product name and code |
+| **Quantity** | Ordered/transferred amount |
+| **Unit Cost** | Cost per unit (POs) |
+| **Total** | Line total |
+| **Status** | Item-level status |
+
+#### Line Item Actions
+
+| Action | Description |
+|--------|-------------|
+| **Add** | Add new line item (if draft) |
+| **Edit** | Modify quantity or details |
+| **Remove** | Delete line item (if draft) |
+| **View SKU** | Navigate to SKU detail |
+
+### Steps Tab
+
+Workflow progress tracking:
+
+#### Step List
+
+```
+✓ Order Created         2024-01-15 09:00
+✓ Supplier Confirmed    2024-01-15 14:30
+○ Shipped               (pending)
+○ In Transit            (pending)
+○ Received              (pending)
+○ Completed             (pending)
+```
+
+#### Updating Steps
+
+<Steps>
+  <Step title="Find Current Step">
+    Locate the next pending step
+  </Step>
+
+  <Step title="Click to Update">
+    Click the step or the update button
+  </Step>
+
+  <Step title="Enter Details">
+    - Completion date/time
+    - Notes (optional)
+    - Attachments (optional)
+  </Step>
+
+  <Step title="Save">
+    Step is marked complete, next step becomes active
+  </Step>
+</Steps>
+
+### Documents Tab
+
+Attached files and documents:
+
+#### Document Types
+
+| Type | Examples |
+|------|----------|
+| **Purchase Order** | PO PDF sent to supplier |
+| **Invoice** | Supplier invoice |
+| **Packing Slip** | Shipping documentation |
+| **Proof of Delivery** | Delivery confirmation |
+| **Custom** | Any other relevant files |
+
+#### Adding Documents
+
+<Steps>
+  <Step title="Click Add Document">
+    Open the document upload dialog
+  </Step>
+
+  <Step title="Select File">
+    Choose file from your computer
+  </Step>
+
+  <Step title="Add Details">
+    - Document type
+    - Description
+    - Date (if relevant)
+  </Step>
+
+  <Step title="Upload">
+    File is attached to transaction
+  </Step>
+</Steps>
+
+### Analysis Tab
+
+Cost breakdown and analytics:
+
+#### Cost Breakdown
+
+For purchase orders:
+
+| Category | Amount |
+|----------|--------|
+| **Subtotal** | Sum of line item costs |
+| **Shipping** | Shipping charges |
+| **Taxes/Duties** | Import fees |
+| **Total** | Grand total |
+
+#### Cost Breakdown Popover
+
+Click on cost categories for detailed breakdown:
+
+- By SKU
+- By cost category
+- By supplier terms
+
+### Gantt View Tab
+
+Timeline visualization of the transaction:
+
+#### Gantt Features
+
+- **Timeline**: Visual representation of steps
+- **Dependencies**: How steps relate
+- **Progress**: Current vs. planned
+- **Delays**: Visual indication of delays
+
+#### Using the Gantt View
+
+| Action | How |
+|--------|-----|
+| **Zoom** | Use controls to zoom in/out |
+| **Pan** | Click and drag to move |
+| **Details** | Click step for details |
+| **Print** | Export or print timeline |
+
+## Working with Different Statuses
+
+### Draft Transactions
+
+When in draft status:
+
+- All fields are editable
+- Can add/remove line items
+- Can change supplier/warehouse
+- Not affecting inventory
+
+### In Progress Transactions
+
+When submitted:
+
+- Limited editing (quantity adjustments)
+- Can update steps
+- Can add documents
+- Can add notes
+- Inventory is affected
+
+### Completed Transactions
+
+When finished:
+
+- Read-only
+- Full history available
+- Can export data
+- Used for reference
+
+### Cancelled Transactions
+
+When cancelled:
+
+- Read-only
+- Shows reason for cancellation
+- Inventory effects reversed
+- Maintained for records
+
+## Common Actions
+
+### Editing Transaction Details
+
+<Steps>
+  <Step title="Click Edit">
+    From the Overview tab, click **Edit**
+  </Step>
+
+  <Step title="Make Changes">
+    Modify available fields
+  </Step>
+
+  <Step title="Save">
+    Save your changes
+  </Step>
+</Steps>
+
+### Receiving Partial Quantities
+
+When not all items arrive:
+
+<Steps>
+  <Step title="Go to Line Items">
+    Open the Line Items tab
+  </Step>
+
+  <Step title="Update Received Quantity">
+    Enter actual received amount
+  </Step>
+
+  <Step title="Note Discrepancy">
+    Add notes about shortage
+  </Step>
+
+  <Step title="Decide Next Steps">
+    - Wait for remainder
+    - Create backorder
+    - Close as short
+  </Step>
+</Steps>
+
+### Cancelling a Transaction
+
+<Steps>
+  <Step title="Click Cancel">
+    From actions menu, select **Cancel**
+  </Step>
+
+  <Step title="Provide Reason">
+    Enter reason for cancellation
+  </Step>
+
+  <Step title="Confirm">
+    Confirm cancellation
+  </Step>
+
+  <Step title="Inventory Reverts">
+    Committed/reserved inventory is released
+  </Step>
+</Steps>
+
+<Warning>
+  Cancelling a transaction reverses its inventory effects. Ensure this is intended before confirming.
+</Warning>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Keep Steps Updated">
+    Update steps as they complete:
+    - Provides accurate tracking
+    - Helps team visibility
+    - Improves lead time data
+  </Accordion>
+
+  <Accordion title="Attach Documents">
+    Keep relevant documents attached:
+    - POs for reference
+    - Invoices for accounting
+    - Shipping docs for disputes
+  </Accordion>
+
+  <Accordion title="Add Notes">
+    Document important information:
+    - Special handling instructions
+    - Communication with suppliers
+    - Issues encountered
+  </Accordion>
+
+  <Accordion title="Use Gantt for Complex Orders">
+    For multi-step orders:
+    - Visualize timeline
+    - Identify delays
+    - Communicate with stakeholders
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
+    Understand the full transaction lifecycle
+  </Card>
+  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
+    Create new transactions
+  </Card>
+  <Card title="Transaction Types" icon="list" href="/transactions/types">
+    Learn about different transaction types
+  </Card>
+  <Card title="Transactions Overview" icon="file-invoice" href="/transactions/overview">
+    Return to transactions overview
+  </Card>
+</CardGroup>

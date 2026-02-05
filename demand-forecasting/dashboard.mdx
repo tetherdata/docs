@@ -1,0 +1,240 @@
+---
+title: Forecast Dashboard
+description: View and manage demand forecasts in Tether
+---
+
+# Forecast Dashboard
+
+The Demand Forecast Dashboard is where you view, analyze, and adjust demand predictions for your products. Accurate forecasts are essential for inventory planning and supply chain efficiency.
+
+## Accessing the Dashboard
+
+Navigate to **Demand Forecast** in the sidebar.
+
+<Note>
+  Both Admin and Sales Rep users can access the forecast dashboard. Editing capabilities may vary by role.
+</Note>
+
+## Dashboard Layout
+
+The forecast dashboard consists of:
+
+1. **Filter Panel** (left) - Narrow down the data
+2. **Toolbar** (top) - Actions, grouping, and view options
+3. **Data Table** (center) - Forecast values by period
+4. **Summary Bar** (bottom) - Aggregate totals
+
+## Understanding the Data Table
+
+The data table shows forecasts in a grid format:
+
+### Rows
+
+Each row represents a unique combination of:
+- SKU
+- Channel
+- Other grouping dimensions
+
+### Columns
+
+Columns represent time periods:
+- Days (for short-term view)
+- Weeks (for medium-term)
+- Months (for longer horizons)
+
+### Cell Values
+
+Each cell shows the forecasted quantity for that SKU/channel/period combination.
+
+| Cell State | Meaning |
+|------------|---------|
+| **Number** | Forecasted units |
+| **-** | No forecast (zero or null) |
+| **Highlighted** | Recently edited |
+| **Grayed** | Historical (past period) |
+
+## Time Period Selection
+
+Control which periods are displayed:
+
+### Date Range Picker
+
+1. Click the date range selector
+2. Choose start and end dates
+3. Apply to update the view
+
+### Quick Presets
+
+| Preset | Shows |
+|--------|-------|
+| **This Week** | Current week days |
+| **This Month** | Current month |
+| **This Quarter** | Current 3 months |
+| **This Year** | Full current year |
+| **Next 30 Days** | Coming month |
+| **Next 90 Days** | Coming quarter |
+
+### Aggregation Levels
+
+Choose how to aggregate periods:
+
+| Level | View |
+|-------|------|
+| **Daily** | Each day as a column |
+| **Weekly** | Each week as a column |
+| **Monthly** | Each month as a column |
+
+<Tip>
+  Use daily for operational planning, weekly for near-term, and monthly for strategic views.
+</Tip>
+
+## Metrics Displayed
+
+Toggle which metrics appear in the table:
+
+### Available Metrics
+
+| Metric | Description |
+|--------|-------------|
+| **Forecast** | Predicted future demand |
+| **Sales History** | Actual historical sales |
+| **Actuals** | Confirmed current period data |
+
+### Toggling Metrics
+
+1. Click the metrics toggle in the toolbar
+2. Check/uncheck metrics to show/hide
+3. View updates immediately
+
+### Comparing Forecast vs. Actuals
+
+Show both metrics to compare:
+- How accurate are forecasts?
+- Where are significant variances?
+- Which products need forecast adjustment?
+
+## Grouping Options
+
+Organize the data by different hierarchies:
+
+### Standard Groupings
+
+| Grouping | Organization |
+|----------|--------------|
+| **By SKU** | One row per SKU |
+| **By Channel** | Grouped by sales channel |
+| **By Collection** | Grouped by product collection |
+| **By Hierarchy** | Product hierarchy levels |
+
+### Custom Grouping
+
+Create custom grouping configurations:
+
+1. Click **Grouping** in the toolbar
+2. Select primary, secondary, tertiary groups
+3. Apply the configuration
+4. Data reorganizes accordingly
+
+### Expanding/Collapsing Groups
+
+- Click the arrow (▶) to expand a group
+- Click (▼) to collapse
+- Use "Expand All" / "Collapse All" for bulk control
+
+## Reading Forecast Data
+
+### Interpreting Values
+
+| Pattern | Indicates |
+|---------|-----------|
+| Steady numbers | Stable demand |
+| Increasing trend | Growing demand |
+| Decreasing trend | Declining demand |
+| Spikes | Promotional or seasonal peaks |
+| Zeros | No expected demand |
+
+### Color Coding
+
+Cells may be color-coded:
+
+| Color | Meaning |
+|-------|---------|
+| **White/Default** | Standard forecast |
+| **Yellow** | User-edited value |
+| **Blue** | System-generated |
+| **Gray** | Historical period |
+
+## Dashboard Actions
+
+### Export Data
+
+Export the current view:
+
+1. Click **Export**
+2. Choose format (CSV, Excel)
+3. Download includes current filters and grouping
+
+### Quick Edit
+
+Make fast inline edits:
+
+1. Click on a cell
+2. Enter new value
+3. Press Enter to save
+
+See [Editing Forecasts](/demand-forecasting/editing) for more detail.
+
+### View Edit Log
+
+Access the audit trail:
+
+1. Click **Edit Log** or navigate to the edit log page
+2. See all changes with timestamps and users
+
+## Performance Tips
+
+For large datasets:
+
+<AccordionGroup>
+  <Accordion title="Use Filters">
+    Filter to specific collections or channels instead of viewing all data at once.
+  </Accordion>
+
+  <Accordion title="Limit Date Range">
+    Show only the periods you're actively working with.
+  </Accordion>
+
+  <Accordion title="Use Appropriate Aggregation">
+    Monthly view loads faster than daily for long time ranges.
+  </Accordion>
+
+  <Accordion title="Collapse Groups">
+    Keep groups collapsed when not actively reviewing details.
+  </Accordion>
+</AccordionGroup>
+
+## Dashboard vs. Other Views
+
+| View | Best For |
+|------|----------|
+| **Dashboard** | Daily operations, editing forecasts |
+| **Sales History** | Viewing actual historical performance |
+| **Forecast Comparison** | Comparing forecast models |
+| **Forecast Admin** | Configuration and uploads |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Filtering Forecasts" icon="filter" href="/demand-forecasting/filtering">
+    Learn to filter and group forecast data
+  </Card>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Make adjustments to forecast values
+  </Card>
+  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
+    View historical sales data
+  </Card>
+  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
+    Track forecast changes
+  </Card>
+</CardGroup>

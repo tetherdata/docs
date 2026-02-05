@@ -1,0 +1,384 @@
+---
+title: Dimensions
+description: Configuring product dimensions and attributes in Tether
+---
+
+# Dimensions
+
+Dimensions define the variable attributes of your products. They're the backbone of variant management, enabling you to create and organize products with different sizes, colors, materials, and more.
+
+## What Are Dimensions?
+
+A dimension is a product attribute that varies across SKUs within a collection. Common examples:
+
+| Dimension | Purpose | Example Values |
+|-----------|---------|----------------|
+| **Size** | Physical size | XS, S, M, L, XL, XXL |
+| **Color** | Visual appearance | Red, Blue, Black, White |
+| **Material** | Composition | Cotton, Polyester, Leather |
+| **Length** | Measurement variant | Short, Regular, Long |
+| **Width** | Fit type | Narrow, Standard, Wide |
+| **Flavor** | Product variety | Vanilla, Chocolate, Strawberry |
+| **Scent** | Fragrance type | Lavender, Citrus, Unscented |
+
+## Dimensions vs. Other Attributes
+
+Understanding when to use dimensions:
+
+| Use Dimensions When | Use Other Fields When |
+|---------------------|----------------------|
+| Attribute varies within a product line | Attribute is unique to each SKU |
+| You need to filter by this attribute | It's just informational |
+| Products share the attribute values | Values are product-specific |
+| You want to generate SKU variants | You're describing a single product |
+
+**Example:**
+- "Size" should be a dimension (T-Shirts come in S, M, L)
+- "Weight" might be a SKU field (each product has one specific weight)
+
+## The Dimensions Dashboard
+
+Access the dimensions dashboard at **SKUs** → **Dimensions** tab.
+
+### Dashboard Features
+
+| Feature | Description |
+|---------|-------------|
+| **Dimension List** | All dimensions across collections |
+| **Search** | Find dimensions by name |
+| **Filter by Collection** | Show dimensions for specific collections |
+| **Create Button** | Add new dimensions |
+
+## Creating Dimensions
+
+### From the Dimensions Dashboard
+
+<Steps>
+  <Step title="Navigate to Dimensions">
+    Go to **SKUs** → **Dimensions** tab
+  </Step>
+
+  <Step title="Click Create Dimension">
+    Click the **Create Dimension** button
+  </Step>
+
+  <Step title="Configure the Dimension">
+    Enter dimension details:
+    - **Name**: Display name (e.g., "Size")
+    - **Code**: Short identifier (e.g., "SZ")
+    - **Collection**: Which collection this belongs to
+  </Step>
+
+  <Step title="Add Values">
+    Add possible values for this dimension (covered below)
+  </Step>
+
+  <Step title="Save">
+    Save the dimension
+  </Step>
+</Steps>
+
+### From a Collection
+
+<Steps>
+  <Step title="Open the Collection">
+    Navigate to the collection's detail page
+  </Step>
+
+  <Step title="Go to Dimensions Tab">
+    Select the **Dimensions** tab
+  </Step>
+
+  <Step title="Add Dimension">
+    Click **Add Dimension** and configure
+  </Step>
+</Steps>
+
+## Managing Dimension Values
+
+Values are the specific options for a dimension.
+
+### Adding Values
+
+<Steps>
+  <Step title="Open the Dimension">
+    Click on a dimension to open its detail view
+  </Step>
+
+  <Step title="Click Add Value">
+    In the values section, click **Add Value**
+  </Step>
+
+  <Step title="Enter Value Details">
+    - **Name**: Display name (e.g., "Medium")
+    - **Code**: Short code (e.g., "M")
+    - **Sort Order**: Position in lists (optional)
+  </Step>
+
+  <Step title="Save">
+    Value is added to the dimension
+  </Step>
+</Steps>
+
+### Editing Values
+
+1. Click on a value to edit
+2. Modify name, code, or sort order
+3. Save changes
+
+<Info>
+  Changing a value's name doesn't change existing SKUs that use it. The relationship is by ID, not name.
+</Info>
+
+### Deleting Values
+
+Values can only be deleted if:
+- No SKUs currently use the value
+- No active references exist
+
+<Warning>
+  If SKUs use a dimension value, you must update or archive those SKUs before deleting the value.
+</Warning>
+
+### Reordering Values
+
+Set the sort order to control how values appear:
+- In dropdowns
+- In filter lists
+- In generated SKU names
+
+**Example sort order for sizes:**
+| Value | Sort Order |
+|-------|------------|
+| XS | 1 |
+| S | 2 |
+| M | 3 |
+| L | 4 |
+| XL | 5 |
+| XXL | 6 |
+
+## Multi-Level Dimensions
+
+Some dimensions benefit from hierarchical organization.
+
+### When to Use Multi-Level
+
+Use hierarchical values when:
+- Values have natural groupings
+- You need to filter at different levels
+- Reporting requires rollup capabilities
+
+**Example - Color with shades:**
+```
+Color
+├── Blue
+│   ├── Navy
+│   ├── Royal Blue
+│   └── Sky Blue
+├── Red
+│   ├── Crimson
+│   ├── Burgundy
+│   └── Scarlet
+└── Green
+    ├── Forest
+    ├── Olive
+    └── Mint
+```
+
+### Creating Multi-Level Values
+
+<Steps>
+  <Step title="Create Parent Value">
+    Add the top-level value (e.g., "Blue")
+  </Step>
+
+  <Step title="Add Child Values">
+    When adding new values, select the parent:
+    - Name: "Navy"
+    - Parent: "Blue"
+  </Step>
+
+  <Step title="Continue Building Hierarchy">
+    Add all child values under their parents
+  </Step>
+</Steps>
+
+### Using Multi-Level Dimensions
+
+- SKUs are assigned to the most specific (leaf) value
+- Filtering by "Blue" shows all SKUs in any shade of blue
+- Reports can aggregate at any level
+
+## Dimension Codes
+
+Codes are short identifiers used in:
+- SKU code generation
+- System integrations
+- Compact displays
+
+### Best Practices for Codes
+
+| Guideline | Good | Bad |
+|-----------|------|-----|
+| Keep short | "M", "BLU" | "MEDIUM", "BLUECOLOR" |
+| Be consistent | All 2-3 chars | Mix of lengths |
+| Avoid special chars | "NVY" | "N/B" |
+| Use uppercase | "XL" | "xl" |
+
+### Code Examples
+
+| Dimension | Value | Code |
+|-----------|-------|------|
+| Size | Extra Small | XS |
+| Size | Small | S |
+| Size | Medium | M |
+| Color | Navy Blue | NVY |
+| Color | Forest Green | FGR |
+| Material | 100% Cotton | COT |
+
+## Dimensions and SKU Generation
+
+Dimensions power the SKU Generator, which creates variant combinations automatically.
+
+### How It Works
+
+1. Define dimensions with values
+2. Open SKU Generator
+3. Select which values to include
+4. Generator creates all combinations
+
+**Example:**
+- Size: S, M, L (3 values)
+- Color: Red, Blue (2 values)
+- Result: 6 SKUs (3 × 2)
+
+### Naming Templates
+
+Use dimension codes in templates:
+
+```
+Name: {collection} - {Size} - {Color}
+Code: {collection_code}-{Size}-{Color}
+```
+
+Result:
+- Name: "T-Shirts - Medium - Blue"
+- Code: "TSH-M-BLU"
+
+## Dimension Filtering
+
+Dimensions appear as filters throughout Tether:
+
+### SKU Dashboard
+Filter products by any dimension value.
+
+### Demand Forecasting
+Group and filter forecasts by dimensions.
+
+### Inventory Views
+See inventory broken down by dimension.
+
+### Tri-State Filtering
+
+Dimension filters support three states:
+
+| State | Action |
+|-------|--------|
+| **Include** | Show only SKUs with this value |
+| **Exclude** | Hide SKUs with this value |
+| **Indifferent** | Don't filter by this value |
+
+## Common Dimension Patterns
+
+<AccordionGroup>
+  <Accordion title="Apparel">
+    **Typical dimensions:**
+    - Size (XS through XXL)
+    - Color (brand-specific palette)
+    - Length (Short, Regular, Long)
+    - Fit (Slim, Regular, Relaxed)
+
+    **Tips:**
+    - Use consistent size scales
+    - Include size charts in documentation
+    - Consider regional size variations
+  </Accordion>
+
+  <Accordion title="Food & Beverage">
+    **Typical dimensions:**
+    - Flavor (Vanilla, Chocolate, etc.)
+    - Size (Small, Medium, Large or oz/ml)
+    - Pack Size (Single, 6-pack, 12-pack)
+
+    **Tips:**
+    - Include unit information
+    - Consider dietary variants (Regular, Sugar-Free)
+  </Accordion>
+
+  <Accordion title="Electronics">
+    **Typical dimensions:**
+    - Storage (64GB, 128GB, 256GB)
+    - Color (Space Gray, Silver, Gold)
+    - Configuration (Base, Pro, Max)
+
+    **Tips:**
+    - Use technical specifications in codes
+    - Be precise with measurements
+  </Accordion>
+
+  <Accordion title="Home Goods">
+    **Typical dimensions:**
+    - Size (Twin, Full, Queen, King)
+    - Color/Pattern (Solid, Striped, Floral)
+    - Material (Cotton, Linen, Microfiber)
+
+    **Tips:**
+    - Include standard measurements
+    - Note regional naming differences
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Cannot Delete Dimension Value
+
+**Cause:** SKUs are using this value
+
+**Solution:**
+1. Find SKUs using this value (filter by dimension)
+2. Either update SKUs to use a different value
+3. Or archive the SKUs
+4. Then delete the value
+
+### Dimension Not Appearing in Filters
+
+**Cause:** No SKUs have values for this dimension
+
+**Solution:**
+1. Assign dimension values to SKUs
+2. Or use SKU Generator to create variants
+
+### Duplicate Codes
+
+**Cause:** Same code used in multiple dimensions
+
+**Solution:**
+- Codes only need to be unique within a dimension
+- If this causes confusion, use more specific codes
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Collections" icon="folder" href="/product-catalog/collections/managing">
+    Manage collections that use dimensions
+  </Card>
+  <Card title="Creating SKUs" icon="plus" href="/product-catalog/skus/creating-skus">
+    Use dimensions to generate SKU variants
+  </Card>
+  <Card title="Product Hierarchy" icon="sitemap" href="/product-catalog/hierarchy">
+    Set up categorization for reporting
+  </Card>
+  <Card title="Filtering" icon="filter" href="/product-catalog/skus/filtering">
+    Use dimensions in filters
+  </Card>
+</CardGroup>

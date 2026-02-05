@@ -1,0 +1,330 @@
+---
+title: Bulk Operations
+description: Work efficiently with multiple items at once
+---
+
+# Bulk Operations
+
+Bulk operations let you work with multiple items simultaneously, saving time on repetitive tasks.
+
+## What Are Bulk Operations?
+
+Bulk operations apply actions to multiple items at once:
+
+| Without Bulk | With Bulk |
+|--------------|-----------|
+| Edit items one by one | Edit all selected at once |
+| Slow and tedious | Fast and efficient |
+| Risk of inconsistency | Consistent changes |
+
+## Selecting Multiple Items
+
+### Selection Methods
+
+| Method | How | Use When |
+|--------|-----|----------|
+| **Click** | Single click on row | Select one item |
+| **Shift + Click** | Click first, shift-click last | Select range |
+| **Cmd/Ctrl + Click** | Click while holding modifier | Select specific items |
+| **Select All** | Checkbox in header or Cmd/Ctrl + A | Select all visible |
+
+### Selection Tips
+
+- Selection persists while filtering
+- Selected count shown in toolbar
+- Clear selection with Esc or button
+
+## Available Bulk Operations
+
+### SKU Operations
+
+| Operation | Description |
+|-----------|-------------|
+| **Bulk Edit** | Change fields for multiple SKUs |
+| **Add to Collection** | Add SKUs to a collection |
+| **Remove from Collection** | Remove from collection |
+| **Change Status** | Activate/archive multiple |
+| **Export** | Export selected SKUs |
+
+### Forecast Operations
+
+| Operation | Description |
+|-----------|-------------|
+| **Bulk Edit** | Adjust forecasts together |
+| **Percentage Change** | Apply % increase/decrease |
+| **Copy Values** | Copy from one period to others |
+| **Reset** | Revert to model values |
+
+### Transaction Operations
+
+| Operation | Description |
+|-----------|-------------|
+| **Bulk Submit** | Submit multiple drafts |
+| **Bulk Cancel** | Cancel multiple transactions |
+| **Create from Recommendations** | Create multiple orders |
+
+### Inventory Operations
+
+| Operation | Description |
+|-----------|-------------|
+| **Bulk Update** | Update stock levels |
+| **Adjust Quantities** | Make adjustments |
+| **Transfer** | Create bulk transfers |
+
+## Performing Bulk Edits
+
+### Basic Bulk Edit
+
+<Steps>
+  <Step title="Select Items">
+    Use selection methods to choose items
+  </Step>
+
+  <Step title="Click Bulk Action">
+    Click the bulk action button or menu
+  </Step>
+
+  <Step title="Choose Operation">
+    Select the operation to perform
+  </Step>
+
+  <Step title="Configure">
+    Set values for the bulk operation
+  </Step>
+
+  <Step title="Review">
+    Review items that will be affected
+  </Step>
+
+  <Step title="Apply">
+    Confirm and execute the operation
+  </Step>
+</Steps>
+
+### Bulk Edit Fields
+
+When bulk editing, you can typically change:
+
+| Field Type | Behavior |
+|------------|----------|
+| **Set Value** | Same value for all selected |
+| **Increment** | Add/subtract amount |
+| **Percentage** | Increase/decrease by % |
+| **Clear** | Remove value from all |
+
+## Bulk Operations by Feature
+
+### SKUs: Bulk Edit
+
+<Steps>
+  <Step title="Go to SKUs">
+    Navigate to the SKU list
+  </Step>
+
+  <Step title="Select SKUs">
+    Choose the SKUs to edit
+  </Step>
+
+  <Step title="Click Edit">
+    Open bulk edit panel
+  </Step>
+
+  <Step title="Set Values">
+    Change desired fields:
+    - Status
+    - Collection
+    - Dimensions
+  </Step>
+
+  <Step title="Apply">
+    Save changes to all selected
+  </Step>
+</Steps>
+
+### Forecasts: Percentage Adjustment
+
+<Steps>
+  <Step title="Go to Forecasts">
+    Navigate to demand forecasting
+  </Step>
+
+  <Step title="Select Rows">
+    Choose SKU/channel combinations
+  </Step>
+
+  <Step title="Choose Percentage">
+    Click percentage adjustment
+  </Step>
+
+  <Step title="Enter Value">
+    Enter percentage (e.g., +10% or -5%)
+  </Step>
+
+  <Step title="Apply">
+    Apply to all selected periods
+  </Step>
+</Steps>
+
+### Transactions: Create from Recommendations
+
+<Steps>
+  <Step title="Go to Supply Plan">
+    Navigate to scheduled orders
+  </Step>
+
+  <Step title="Select Recommendations">
+    Choose orders to create
+  </Step>
+
+  <Step title="Click Create Drafts">
+    Generate draft transactions
+  </Step>
+
+  <Step title="Review">
+    Check created drafts
+  </Step>
+
+  <Step title="Submit">
+    Submit drafts as needed
+  </Step>
+</Steps>
+
+## Bulk Export
+
+### Exporting Selected Items
+
+<Steps>
+  <Step title="Select Items">
+    Choose items to export
+  </Step>
+
+  <Step title="Click Export">
+    Open export menu
+  </Step>
+
+  <Step title="Choose Format">
+    Select CSV, Excel, or PDF
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+### Export Options
+
+| Option | Description |
+|--------|-------------|
+| **Selected Only** | Only export selected items |
+| **All Visible** | Export filtered results |
+| **All Data** | Export everything |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Review Before Applying">
+    Always check before bulk operations:
+    - Verify selection count
+    - Preview affected items
+    - Understand the change
+  </Accordion>
+
+  <Accordion title="Start Small">
+    Test with a few items first:
+    - Select small subset
+    - Apply operation
+    - Verify results
+    - Then do full set
+  </Accordion>
+
+  <Accordion title="Use Filters First">
+    Filter before selecting:
+    - Narrow to relevant items
+    - Easier to select all
+    - Reduces errors
+  </Accordion>
+
+  <Accordion title="Document Changes">
+    Keep track of bulk operations:
+    - Note what was changed
+    - When it was done
+    - Why the change
+  </Accordion>
+</AccordionGroup>
+
+## Undo and Recovery
+
+### Undoing Bulk Operations
+
+| Scenario | Recovery |
+|----------|----------|
+| **Recent Edit** | Cmd/Ctrl + Z may undo |
+| **Saved Changes** | Use edit log to track |
+| **Major Mistake** | Contact administrator |
+
+### Prevention
+
+- Double-check selections
+- Review before confirming
+- Start with smaller batches
+
+## Limitations
+
+### What Can't Be Bulk Edited
+
+| Item | Reason |
+|------|--------|
+| **Unique Fields** | Must be unique per item |
+| **System Fields** | Calculated automatically |
+| **Locked Records** | Protected from changes |
+
+### Size Limits
+
+| Limit | Value |
+|-------|-------|
+| **Selection** | Usually 1000+ items |
+| **Export** | Depends on data size |
+| **Processing** | Larger sets take longer |
+
+## Troubleshooting
+
+### Operation Takes Too Long
+
+**Possible causes:**
+- Large selection
+- Complex operation
+- Network latency
+
+**Solutions:**
+1. Wait for completion
+2. Try smaller batches
+3. Check network connection
+
+### Not All Items Updated
+
+**Possible causes:**
+- Validation errors
+- Permission issues
+- Data conflicts
+
+**Solutions:**
+1. Check error messages
+2. Review failed items
+3. Fix issues and retry
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Keyboard Shortcuts" icon="keyboard" href="/tips/shortcuts">
+    Speed up with shortcuts
+  </Card>
+  <Card title="Command Palette" icon="terminal" href="/tips/command-palette">
+    Quick commands
+  </Card>
+  <Card title="Exports" icon="download" href="/tips/exports">
+    Export data
+  </Card>
+  <Card title="Filtering" icon="filter" href="/product-catalog/skus/filtering">
+    Filter and find items
+  </Card>
+</CardGroup>

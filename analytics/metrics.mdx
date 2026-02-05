@@ -1,0 +1,345 @@
+---
+title: Analytics & Metrics
+description: Track performance and gain insights
+---
+
+# Analytics & Metrics
+
+Tether provides analytics and metrics to help you understand performance, track trends, and make data-driven decisions.
+
+<Note>
+  Analytics access may vary by user role. Contact your administrator if you need additional access.
+</Note>
+
+## Analytics Overview
+
+### What Tether Tracks
+
+| Category | Metrics |
+|----------|---------|
+| **Sales** | Volume, revenue, trends |
+| **Inventory** | Levels, turns, coverage |
+| **Forecasting** | Accuracy, bias, error |
+| **Supply Chain** | Lead times, fill rates |
+
+### Accessing Analytics
+
+Navigate to **Analytics** → **Metrics** in the sidebar.
+
+## Key Metrics
+
+### Sales Metrics
+
+| Metric | Description | Use |
+|--------|-------------|-----|
+| **Sales Volume** | Units sold | Demand tracking |
+| **Revenue** | Sales value | Financial performance |
+| **Growth Rate** | Period-over-period change | Trend analysis |
+| **Units per Order** | Average order size | Customer behavior |
+
+### Inventory Metrics
+
+| Metric | Description | Use |
+|--------|-------------|-----|
+| **Coverage Days** | Days of inventory on hand | Stockout risk |
+| **Inventory Turns** | How often inventory cycles | Efficiency |
+| **Fill Rate** | % of demand fulfilled | Service level |
+| **Stockout Rate** | % of time out of stock | Issue tracking |
+
+### Forecast Metrics
+
+| Metric | Description | Use |
+|--------|-------------|-----|
+| **MAPE** | Mean Absolute Percentage Error | Forecast accuracy |
+| **Bias** | Systematic over/under forecast | Model tuning |
+| **Weighted Accuracy** | Volume-weighted accuracy | Overall performance |
+
+## Using the Metrics Dashboard
+
+### Dashboard Layout
+
+| Component | Description |
+|-----------|-------------|
+| **KPI Cards** | Key metrics at a glance |
+| **Trend Charts** | Performance over time |
+| **Comparison Tables** | Side-by-side analysis |
+| **Filters** | Narrow by dimension |
+
+### Filtering Metrics
+
+Filter to focus on specific data:
+
+| Filter | Options |
+|--------|---------|
+| **Date Range** | Select time period |
+| **Channel** | Specific sales channels |
+| **Product** | SKU, collection, or category |
+| **Warehouse** | Specific locations |
+
+### Viewing Trends
+
+Charts show metrics over time:
+
+1. Select metric to display
+2. Choose time period
+3. Select grouping (day, week, month)
+4. Compare to prior period (optional)
+
+## Metric Categories in Detail
+
+### Forecast Accuracy Metrics
+
+Understanding forecast performance:
+
+#### MAPE (Mean Absolute Percentage Error)
+
+Measures average forecast error:
+
+| MAPE | Interpretation |
+|------|----------------|
+| < 10% | Excellent |
+| 10-20% | Good |
+| 20-30% | Fair |
+| > 30% | Needs improvement |
+
+#### Forecast Bias
+
+Shows systematic error direction:
+
+| Bias | Meaning | Action |
+|------|---------|--------|
+| **Positive** | Over-forecasting | May have excess inventory |
+| **Negative** | Under-forecasting | Risk of stockouts |
+| **Near Zero** | Balanced | Good model fit |
+
+#### Weighted MAPE
+
+Weighted by sales volume—larger products count more:
+
+- Better reflects business impact
+- High-volume items weighted appropriately
+- Use for overall accuracy assessment
+
+### Inventory Health Metrics
+
+#### Coverage Days
+
+Days of inventory remaining at current consumption:
+
+| Coverage | Status |
+|----------|--------|
+| < 7 days | Critical - order urgently |
+| 7-14 days | Low - order soon |
+| 14-60 days | Healthy |
+| > 90 days | Overstock risk |
+
+#### Inventory Turns
+
+How many times inventory cycles per year:
+
+| Turns | Interpretation |
+|-------|----------------|
+| < 2 | Slow moving |
+| 2-4 | Average |
+| 4-8 | Good |
+| > 8 | Fast moving |
+
+#### Fill Rate
+
+Percentage of demand fulfilled from stock:
+
+| Fill Rate | Service Level |
+|-----------|---------------|
+| > 98% | Excellent |
+| 95-98% | Good |
+| 90-95% | Acceptable |
+| < 90% | Needs improvement |
+
+## Creating Reports
+
+### Standard Reports
+
+Access pre-built reports:
+
+1. Go to **Analytics** → **Metrics**
+2. Select report type
+3. Configure filters
+4. View or export
+
+### Custom Views
+
+Create custom metric views:
+
+<Steps>
+  <Step title="Select Metrics">
+    Choose which metrics to include
+  </Step>
+
+  <Step title="Configure Filters">
+    Set default filters
+  </Step>
+
+  <Step title="Arrange Layout">
+    Position metrics as desired
+  </Step>
+
+  <Step title="Save View">
+    Save for future use
+  </Step>
+</Steps>
+
+## Exporting Data
+
+### Export Options
+
+| Format | Use Case |
+|--------|----------|
+| **CSV** | Spreadsheet analysis |
+| **Excel** | Detailed reporting |
+| **PDF** | Sharing, printing |
+
+### Exporting Metrics
+
+<Steps>
+  <Step title="Configure View">
+    Set up the metrics you want
+  </Step>
+
+  <Step title="Click Export">
+    Choose export option
+  </Step>
+
+  <Step title="Select Format">
+    Choose file format
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+## Metric Calculations
+
+### How Metrics Are Calculated
+
+| Metric | Formula |
+|--------|---------|
+| **MAPE** | Average of |Actual - Forecast| / Actual |
+| **Bias** | Average of (Forecast - Actual) / Actual |
+| **Coverage Days** | Current Inventory / Daily Consumption |
+| **Turns** | Annual Sales / Average Inventory |
+
+### Time Periods
+
+Metrics can be viewed by:
+
+- Daily
+- Weekly
+- Monthly
+- Quarterly
+- Yearly
+
+### Aggregation Levels
+
+Roll up or drill down:
+
+- Total business
+- By channel
+- By product category
+- By individual SKU
+- By warehouse
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Monitor Key Metrics">
+    Track critical metrics regularly:
+    - Forecast accuracy weekly
+    - Inventory health daily
+    - Sales trends weekly
+  </Accordion>
+
+  <Accordion title="Set Benchmarks">
+    Establish targets:
+    - Based on historical performance
+    - Industry standards
+    - Business objectives
+  </Accordion>
+
+  <Accordion title="Investigate Anomalies">
+    When metrics deviate:
+    - Identify root cause
+    - Take corrective action
+    - Document learnings
+  </Accordion>
+
+  <Accordion title="Share Insights">
+    Communicate findings:
+    - Regular reports to stakeholders
+    - Alerts for issues
+    - Celebrate improvements
+  </Accordion>
+</AccordionGroup>
+
+## Metrics and Decision Making
+
+### Using Metrics Effectively
+
+| Metric | Decision Support |
+|--------|------------------|
+| **Low Coverage** | Order more inventory |
+| **High MAPE** | Review forecast model |
+| **Low Fill Rate** | Increase safety stock |
+| **High Turns** | Maintain current levels |
+| **Positive Bias** | Adjust forecasts down |
+
+### Connecting Metrics to Actions
+
+1. **Observe** - Track metric values
+2. **Analyze** - Understand why
+3. **Decide** - Choose action
+4. **Act** - Implement change
+5. **Measure** - Track impact
+
+## Troubleshooting
+
+### Metrics Not Updating
+
+**Possible causes:**
+- Data sync delay
+- Filter excluding data
+- Calculation timing
+
+**Solutions:**
+1. Wait for scheduled refresh
+2. Check filter settings
+3. Verify source data exists
+
+### Unexpected Values
+
+**Possible causes:**
+- Data quality issues
+- Calculation errors
+- Missing data
+
+**Solutions:**
+1. Review underlying data
+2. Check for outliers
+3. Verify completeness
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
+    Forecast performance
+  </Card>
+  <Card title="Inventory Dashboard" icon="warehouse" href="/inventory/dashboard">
+    Inventory health
+  </Card>
+  <Card title="Sales History" icon="clock-rotate-left" href="/demand-forecasting/sales-history">
+    Historical analysis
+  </Card>
+  <Card title="Exports" icon="download" href="/tips/exports">
+    Export data
+  </Card>
+</CardGroup>

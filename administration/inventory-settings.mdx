@@ -1,0 +1,344 @@
+---
+title: Inventory Settings
+description: Configure inventory management parameters
+---
+
+# Inventory Settings
+
+Configure how Tether manages inventory, including safety stock rules, fulfillment mappings, and inventory states.
+
+<Note>
+  Inventory settings require Admin access.
+</Note>
+
+## Accessing Inventory Settings
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to **Settings** in the sidebar
+  </Step>
+
+  <Step title="Select Inventory Forecast">
+    Click on **Inventory Forecast** section
+  </Step>
+
+  <Step title="View Configuration">
+    See current inventory settings
+  </Step>
+</Steps>
+
+## Safety Stock Configuration
+
+### What is Safety Stock?
+
+Safety stock is buffer inventory to protect against:
+
+- Demand variability
+- Supply delays
+- Forecast errors
+
+### Configuration Methods
+
+| Method | Description | Best For |
+|--------|-------------|----------|
+| **Fixed Quantity** | Set number of units | Stable demand products |
+| **Days of Cover** | X days of average demand | Most products |
+| **Percentage** | % of period demand | Seasonal products |
+
+### Setting Up Safety Stock
+
+<Steps>
+  <Step title="Go to Inventory Settings">
+    Navigate to inventory configuration
+  </Step>
+
+  <Step title="Find Safety Stock Section">
+    Locate safety stock configuration
+  </Step>
+
+  <Step title="Choose Method">
+    Select how to calculate safety stock
+  </Step>
+
+  <Step title="Set Values">
+    Enter values by SKU/warehouse or globally
+  </Step>
+
+  <Step title="Save">
+    Apply configuration
+  </Step>
+</Steps>
+
+### Safety Stock Levels
+
+| Setting | Description |
+|---------|-------------|
+| **Minimum** | Lowest acceptable level |
+| **Target** | Ideal inventory level |
+| **Maximum** | Upper limit (overstock threshold) |
+
+## Fulfillment Mapping
+
+### What is Fulfillment Mapping?
+
+Defines which warehouses fulfill demand from which channels:
+
+```
+Channel → Warehouse(s)
+```
+
+### Why Fulfillment Mapping Matters
+
+| Purpose | Benefit |
+|---------|---------|
+| **Inventory Allocation** | Know where to stock |
+| **Forecast Consumption** | Project inventory at right location |
+| **Order Recommendations** | Replenish correct warehouse |
+
+### Configuring Fulfillment
+
+<Steps>
+  <Step title="Go to Inventory Settings">
+    Navigate to inventory configuration
+  </Step>
+
+  <Step title="Find Fulfillment Mapping">
+    Locate fulfillment configuration
+  </Step>
+
+  <Step title="Map Channels to Warehouses">
+    For each channel, select fulfilling warehouse(s)
+  </Step>
+
+  <Step title="Set Priority">
+    If multiple warehouses, set priority order
+  </Step>
+
+  <Step title="Save">
+    Apply mapping
+  </Step>
+</Steps>
+
+### Example Mapping
+
+| Channel | Primary Warehouse | Secondary |
+|---------|-------------------|-----------|
+| Shopify US | East Coast DC | West Coast DC |
+| Amazon FBA | Amazon Fulfillment | - |
+| Wholesale | Central Warehouse | - |
+| Website CA | Canada DC | East Coast DC |
+
+### Multi-Warehouse Fulfillment
+
+When multiple warehouses can fulfill:
+
+| Setting | Behavior |
+|---------|----------|
+| **Primary Only** | Always use primary |
+| **Fallback** | Use secondary if primary out of stock |
+| **Split** | Distribute across warehouses |
+
+## Inventory States
+
+### Understanding Inventory States
+
+Tether tracks inventory in multiple states:
+
+| State | Description |
+|-------|-------------|
+| **On Hand** | Physically in warehouse |
+| **Available** | On hand minus committed |
+| **Committed** | Reserved for orders |
+| **Incoming** | In transit to warehouse |
+| **Sellable** | Available for new orders |
+
+### State Calculations
+
+```
+Sellable = On Hand - Committed + Incoming
+Available = On Hand - Committed
+```
+
+### Configuring State Display
+
+Choose which states to display:
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to inventory settings
+  </Step>
+
+  <Step title="Find Display Options">
+    Locate inventory state configuration
+  </Step>
+
+  <Step title="Select States">
+    Choose which states to show in dashboards
+  </Step>
+
+  <Step title="Save">
+    Apply preferences
+  </Step>
+</Steps>
+
+## Overstock Settings
+
+### Configuring Overstock Alerts
+
+Define when inventory is excessive:
+
+| Method | Description |
+|--------|-------------|
+| **Days of Cover** | Alert if > X days inventory |
+| **Multiple of Safety** | Alert if > X times safety stock |
+| **Fixed Quantity** | Alert if > specific amount |
+
+### Setting Overstock Thresholds
+
+<Steps>
+  <Step title="Go to Inventory Settings">
+    Navigate to configuration
+  </Step>
+
+  <Step title="Find Overstock Section">
+    Locate overstock threshold settings
+  </Step>
+
+  <Step title="Set Threshold">
+    Define when to alert for overstock
+  </Step>
+
+  <Step title="Save">
+    Apply settings
+  </Step>
+</Steps>
+
+## Lead Time Defaults
+
+### Default Lead Times
+
+Set fallback lead times when not specified:
+
+| Type | Default Use |
+|------|-------------|
+| **Supplier** | When supplier capability not set |
+| **Transit** | When warehouse-to-warehouse not configured |
+| **Production** | For manufacturing orders |
+
+### Configuring Defaults
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to inventory settings
+  </Step>
+
+  <Step title="Find Lead Time Defaults">
+    Locate default lead time section
+  </Step>
+
+  <Step title="Set Values">
+    Enter default days for each type
+  </Step>
+
+  <Step title="Save">
+    Apply defaults
+  </Step>
+</Steps>
+
+## Inventory Health Rules
+
+### Health Status Configuration
+
+Define thresholds for health status:
+
+| Status | Default Rule |
+|--------|--------------|
+| **Out of Stock** | Sellable = 0 |
+| **Low Inventory** | Below safety stock |
+| **Healthy** | Between safety and overstock |
+| **Overstock** | Above overstock threshold |
+
+### Customizing Health Rules
+
+Adjust thresholds based on your business:
+
+| Parameter | Adjustment |
+|-----------|------------|
+| **Critical Days** | When to show urgent |
+| **Low Days** | When to show warning |
+| **Overstock Days** | When excess starts |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start Conservative">
+    Begin with higher safety stocks:
+    - Learn demand patterns
+    - Reduce gradually
+    - Better to have excess initially
+  </Accordion>
+
+  <Accordion title="Segment by Product">
+    Different settings for different products:
+    - High-value: higher safety stock
+    - Fast-moving: more buffer
+    - Slow-moving: lower buffer
+  </Accordion>
+
+  <Accordion title="Review Regularly">
+    Update settings as business changes:
+    - Seasonal adjustments
+    - After supply chain changes
+    - When adding new products
+  </Accordion>
+
+  <Accordion title="Document Decisions">
+    Keep records of configuration choices:
+    - Why settings were chosen
+    - Who approved
+    - When to review
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Incorrect Inventory Projections
+
+**Possible causes:**
+- Wrong fulfillment mapping
+- Missing lead times
+- Incorrect safety stock
+
+**Solutions:**
+1. Review fulfillment configuration
+2. Verify lead times set
+3. Check safety stock levels
+
+### Missing Alerts
+
+**Possible causes:**
+- Thresholds too high/low
+- SKU not configured
+- Filter hiding alerts
+
+**Solutions:**
+1. Review threshold settings
+2. Verify SKU configuration
+3. Clear filters
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
+    Configure warehouses
+  </Card>
+  <Card title="Lead Times" icon="clock" href="/inventory/warehouses/lead-times">
+    Set up lead times
+  </Card>
+  <Card title="Supply Simulation" icon="flask" href="/supply-simulation/configurations">
+    Simulation settings
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Manage permissions
+  </Card>
+</CardGroup>

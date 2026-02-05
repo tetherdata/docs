@@ -1,0 +1,390 @@
+---
+title: Filtering & Grouping
+description: Navigate forecast data with filters and custom groupings
+---
+
+# Filtering & Grouping
+
+With potentially thousands of SKU/channel combinations, effective filtering and grouping is essential for working with forecast data efficiently.
+
+## Filter Panel
+
+The filter panel appears on the left side of the forecast dashboard.
+
+### Available Filters
+
+| Filter | Description |
+|--------|-------------|
+| **Search** | Text search across SKU names and codes |
+| **Channel** | Filter by sales channel |
+| **Channel Hierarchy** | Filter by channel groupings |
+| **Collection** | Filter by product collection |
+| **Product Hierarchy** | Filter by product categories |
+| **SKU** | Select specific SKUs |
+| **Dimensions** | Filter by product attributes |
+
+## Filtering by Channel
+
+Focus on specific sales channels:
+
+<Steps>
+  <Step title="Expand Channel Filter">
+    Click on the **Channel** section in the filter panel
+  </Step>
+
+  <Step title="Select Channels">
+    Check the channels you want to view:
+    - Shopify US
+    - Amazon
+    - Wholesale
+    - etc.
+  </Step>
+
+  <Step title="View Results">
+    Table shows only forecasts for selected channels
+  </Step>
+</Steps>
+
+### Channel Hierarchy
+
+If you have channel groupings configured:
+
+```
+All Channels
+├── Direct to Consumer
+│   ├── Shopify US
+│   └── Shopify CA
+├── Marketplaces
+│   ├── Amazon US
+│   └── Amazon UK
+└── Wholesale
+    └── B2B Portal
+```
+
+Filter at any level to see all channels below that point.
+
+## Filtering by Product
+
+### Collection Filter
+
+Filter by product collections:
+
+1. Expand the **Collection** filter
+2. Select collections to include
+3. See only SKUs from those collections
+
+### Product Hierarchy Filter
+
+Filter using your product categorization:
+
+1. Expand **Product Hierarchy**
+2. Select values at any level
+3. All products in that category are shown
+
+### Specific SKU Selection
+
+To view only certain SKUs:
+
+1. Use the **SKU** filter
+2. Search or browse for specific SKUs
+3. Check the SKUs you want
+4. Only selected SKUs appear
+
+## Combining Filters
+
+Filters work together using AND logic:
+
+**Example:**
+- Channel = "Shopify US" AND
+- Collection = "T-Shirts" AND
+- Product Hierarchy > Category = "Apparel"
+
+Shows: T-Shirts in Apparel category sold on Shopify US
+
+<Info>
+  All filters must match for a row to appear. If results are empty, try removing some filters.
+</Info>
+
+## Grouping Options
+
+Grouping organizes how data is displayed in the table.
+
+### Standard Groupings
+
+| Option | Result |
+|--------|--------|
+| **No Grouping** | Flat list of all SKU/channel combinations |
+| **By Channel** | Groups rows by channel first |
+| **By Collection** | Groups rows by collection first |
+| **By SKU** | Groups by SKU (shows channels within) |
+| **By Hierarchy** | Uses product hierarchy levels |
+
+### Setting Grouping
+
+<Steps>
+  <Step title="Open Grouping Modal">
+    Click **Grouping** in the toolbar
+  </Step>
+
+  <Step title="Select Grouping Levels">
+    Choose:
+    - **Primary**: First level grouping
+    - **Secondary**: Nested within primary
+    - **Tertiary**: Further nesting (optional)
+  </Step>
+
+  <Step title="Apply">
+    Click **Apply** to reorganize the table
+  </Step>
+</Steps>
+
+### Example Groupings
+
+**By Channel, then Collection:**
+```
+▼ Shopify US
+  ▼ T-Shirts
+    - Blue T-Shirt M
+    - Blue T-Shirt L
+  ▼ Pants
+    - Jeans 32
+    - Jeans 34
+▼ Amazon
+  ▼ T-Shirts
+    - Blue T-Shirt M
+    ...
+```
+
+**By Collection, then SKU:**
+```
+▼ T-Shirts
+  ▼ Blue T-Shirt M
+    - Shopify US
+    - Amazon
+  ▼ Blue T-Shirt L
+    - Shopify US
+    - Amazon
+```
+
+### Expanding and Collapsing
+
+| Action | Method |
+|--------|--------|
+| Expand one group | Click the ▶ arrow |
+| Collapse one group | Click the ▼ arrow |
+| Expand all | Click "Expand All" in toolbar |
+| Collapse all | Click "Collapse All" in toolbar |
+
+## Custom Hierarchy Grouping
+
+For advanced analysis, create custom grouping configurations:
+
+<Steps>
+  <Step title="Open Grouping Modal">
+    Click **Grouping** in the toolbar
+  </Step>
+
+  <Step title="Select Custom">
+    Choose "Custom Configuration"
+  </Step>
+
+  <Step title="Build Your Hierarchy">
+    Drag and drop dimensions to create your grouping:
+    1. Product Hierarchy Level 1
+    2. Channel Hierarchy Level 1
+    3. Collection
+    4. SKU
+  </Step>
+
+  <Step title="Save (Optional)">
+    Save as a preset for future use
+  </Step>
+
+  <Step title="Apply">
+    Apply to update the view
+  </Step>
+</Steps>
+
+## Time Period Filtering
+
+Control which dates are shown:
+
+### Date Range Selection
+
+1. Click the date range picker
+2. Select start date
+3. Select end date
+4. Apply
+
+### Relative Date Options
+
+| Option | Shows |
+|--------|-------|
+| Last 7 days | Past week (historical) |
+| Last 30 days | Past month |
+| Next 30 days | Coming month |
+| Next 90 days | Coming quarter |
+| This month | Current month |
+| This quarter | Current quarter |
+
+### Aggregation Level
+
+Change how time is grouped:
+
+| Level | Columns Show |
+|-------|--------------|
+| Daily | Each day |
+| Weekly | Week totals |
+| Monthly | Month totals |
+
+<Tip>
+  Match aggregation to your planning horizon. Daily for next 2 weeks, weekly for next quarter, monthly for annual planning.
+</Tip>
+
+## Saving Filter Configurations
+
+Save frequently used filter/grouping combinations:
+
+### Creating a Saved View
+
+<Steps>
+  <Step title="Set Up Filters">
+    Configure all desired filters and groupings
+  </Step>
+
+  <Step title="Click Save View">
+    Look for "Save View" in the toolbar
+  </Step>
+
+  <Step title="Name the View">
+    Enter a descriptive name:
+    - "Weekly Shopify Review"
+    - "Monthly Collection Summary"
+  </Step>
+
+  <Step title="Save">
+    View is saved for future use
+  </Step>
+</Steps>
+
+### Loading a Saved View
+
+1. Click the Views dropdown
+2. Select your saved view
+3. Filters and groupings apply automatically
+
+### Managing Views
+
+- **Edit**: Load, modify, save with same name
+- **Rename**: Change the view name
+- **Delete**: Remove views you don't need
+- **Set Default**: Load automatically on page open
+
+## Column Visibility
+
+Control which columns appear:
+
+### Hiding Columns
+
+1. Click column visibility control
+2. Uncheck columns to hide
+3. Table updates immediately
+
+### Showing Metrics
+
+Toggle forecast metrics:
+- Forecast values
+- Historical sales
+- Actuals
+- Variance
+
+### Reordering Columns
+
+Drag column headers to reorder (if supported).
+
+## Search Functionality
+
+Quick text search:
+
+### Global Search
+
+1. Use the search box at the top
+2. Type SKU name, code, or other text
+3. Results filter as you type
+
+### Search Scope
+
+Search matches against:
+- SKU name
+- SKU code
+- Collection name
+- Channel name
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start Filtered">
+    Don't try to view everything at once. Start with filters for your current task.
+  </Accordion>
+
+  <Accordion title="Match Grouping to Purpose">
+    - Reviewing a channel? Group by channel first
+    - Analyzing a product line? Group by collection
+    - Planning for one SKU? Filter to that SKU
+  </Accordion>
+
+  <Accordion title="Use Saved Views">
+    Create views for regular tasks:
+    - Weekly channel review
+    - Monthly planning session
+    - Product line deep-dive
+  </Accordion>
+
+  <Accordion title="Combine with Time Aggregation">
+    Adjust time aggregation with your grouping:
+    - Detailed analysis: daily + specific SKUs
+    - Big picture: monthly + collection grouping
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### No Results After Filtering
+
+**Causes:**
+- Filters are too restrictive
+- Data doesn't exist for the combination
+- Date range has no forecasts
+
+**Solutions:**
+1. Remove some filters
+2. Verify data exists for selected channels/SKUs
+3. Expand the date range
+
+### Slow Performance
+
+**Causes:**
+- Too much data displayed
+- Complex grouping with large dataset
+
+**Solutions:**
+1. Add filters to reduce data volume
+2. Use higher aggregation (monthly vs. daily)
+3. Collapse groups when not needed
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    Return to dashboard overview
+  </Card>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Learn to modify forecast values
+  </Card>
+  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
+    View historical performance
+  </Card>
+  <Card title="Product Hierarchy" icon="sitemap" href="/product-catalog/hierarchy">
+    Configure product categorization
+  </Card>
+</CardGroup>

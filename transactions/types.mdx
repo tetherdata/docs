@@ -1,0 +1,291 @@
+---
+title: Transaction Types
+description: Understanding purchase orders, transfers, and production orders
+---
+
+# Transaction Types
+
+Tether supports three main transaction types, each serving a different purpose in your supply chain.
+
+## Purchase Orders
+
+Purchase orders are orders placed with external suppliers.
+
+### When to Use
+
+- Buying products from suppliers
+- Replenishing inventory from external sources
+- Ordering raw materials for production
+
+### Key Information
+
+| Field | Description |
+|-------|-------------|
+| **Supplier** | Who you're ordering from |
+| **Destination Warehouse** | Where items will be received |
+| **Line Items** | SKUs and quantities to order |
+| **Unit Cost** | Price per unit |
+| **Lead Time** | Expected delivery time |
+
+### Purchase Order Workflow
+
+```
+Draft → Submitted → Confirmed → Shipped → Received → Completed
+```
+
+### Steps in a Purchase Order
+
+| Step | Description |
+|------|-------------|
+| **Order Placed** | PO sent to supplier |
+| **Supplier Confirmed** | Supplier acknowledges order |
+| **In Production** | Supplier manufacturing (if applicable) |
+| **Shipped** | Items left supplier |
+| **In Transit** | Items being transported |
+| **Delivered** | Items arrived at warehouse |
+| **Received** | Items inspected and stocked |
+
+### Cost Tracking
+
+Purchase orders track:
+
+- Unit costs per SKU
+- Shipping costs
+- Duties and taxes (if applicable)
+- Total order value
+
+## Transfer Orders
+
+Transfer orders move inventory between your warehouses.
+
+### When to Use
+
+- Rebalancing inventory across locations
+- Sending stock to fulfill demand elsewhere
+- Consolidating inventory
+- Moving to a different storage location
+
+### Key Information
+
+| Field | Description |
+|-------|-------------|
+| **Source Warehouse** | Where items are coming from |
+| **Destination Warehouse** | Where items are going |
+| **Line Items** | SKUs and quantities to transfer |
+| **Lead Time** | Transit time between locations |
+
+### Transfer Order Workflow
+
+```
+Draft → Submitted → Picked → Shipped → In Transit → Received → Completed
+```
+
+### Steps in a Transfer Order
+
+| Step | Description |
+|------|-------------|
+| **Order Created** | Transfer initiated |
+| **Pick Started** | Items being collected |
+| **Picked** | Items collected from source |
+| **Shipped** | Items left source warehouse |
+| **In Transit** | Items being transported |
+| **Delivered** | Items arrived at destination |
+| **Received** | Items stocked at destination |
+
+### Inventory Impact
+
+Transfer orders affect inventory at both locations:
+
+**Source Warehouse:**
+- Committed when order created
+- Deducted when shipped
+
+**Destination Warehouse:**
+- Incoming when in transit
+- Available when received
+
+## Production Orders
+
+Production orders are for internal manufacturing.
+
+### When to Use
+
+- Manufacturing finished goods from components
+- Assembling kits or bundles
+- Converting raw materials
+- Any internal production process
+
+### Key Information
+
+| Field | Description |
+|-------|-------------|
+| **Produced SKU** | What you're making |
+| **Components** | Raw materials/parts needed |
+| **Quantity** | How many to produce |
+| **Warehouse** | Where production occurs |
+| **BOM** | Bill of Materials defining inputs |
+
+### Production Order Workflow
+
+```
+Draft → Submitted → Materials Allocated → In Production → QC → Completed
+```
+
+### Steps in a Production Order
+
+| Step | Description |
+|------|-------------|
+| **Order Created** | Production planned |
+| **Materials Allocated** | Components reserved |
+| **Materials Consumed** | Components pulled from inventory |
+| **In Production** | Manufacturing in progress |
+| **Quality Check** | Inspection of finished goods |
+| **Completed** | Finished goods added to inventory |
+
+### Inventory Impact
+
+Production orders affect multiple SKUs:
+
+**Components (consumed):**
+- Reserved when allocated
+- Deducted when consumed
+
+**Finished Goods (produced):**
+- Added when production completes
+
+### Bill of Materials (BOM)
+
+Production uses BOM to determine components:
+
+```
+Finished Good: T-Shirt Bundle (3-pack)
+├── Blue T-Shirt M × 1
+├── Blue T-Shirt L × 1
+├── Blue T-Shirt XL × 1
+└── Packaging Box × 1
+```
+
+## Comparing Transaction Types
+
+| Aspect | Purchase Order | Transfer Order | Production Order |
+|--------|---------------|----------------|------------------|
+| **External/Internal** | External (supplier) | Internal | Internal |
+| **Cost Tracking** | Yes (supplier cost) | No (internal) | Yes (component cost) |
+| **Source** | Supplier | Warehouse | Components |
+| **Destination** | Warehouse | Warehouse | Warehouse |
+| **Lead Time** | Supplier + shipping | Transit time | Production time |
+
+## Choosing the Right Type
+
+### Use Purchase Order When:
+
+- Inventory comes from outside your organization
+- You're paying an external supplier
+- Items don't exist in your inventory yet
+
+### Use Transfer Order When:
+
+- Inventory already exists in your warehouses
+- You need to move stock between locations
+- No external purchase is needed
+
+### Use Production Order When:
+
+- You manufacture or assemble products
+- Finished goods are made from components
+- You need to track production costs
+
+## Transaction Type Details
+
+### Purchase Order Specifics
+
+<AccordionGroup>
+  <Accordion title="Supplier Selection">
+    When creating a PO:
+    - Choose from configured suppliers
+    - System shows supplier's lead time and costs
+    - Can have multiple suppliers for same SKU
+  </Accordion>
+
+  <Accordion title="Cost Information">
+    Purchase orders include:
+    - Unit cost per SKU
+    - Shipping estimates
+    - Currency handling
+    - Volume discounts
+  </Accordion>
+
+  <Accordion title="Receiving">
+    When PO arrives:
+    - Can receive partial quantities
+    - Log discrepancies
+    - Update actual costs if different
+  </Accordion>
+</AccordionGroup>
+
+### Transfer Order Specifics
+
+<AccordionGroup>
+  <Accordion title="Availability Check">
+    When creating a transfer:
+    - System verifies source has inventory
+    - Shows available vs. committed quantities
+    - Alerts if insufficient stock
+  </Accordion>
+
+  <Accordion title="Lead Time">
+    Transit time depends on:
+    - Configured warehouse lead times
+    - Distance between locations
+    - Shipping method
+  </Accordion>
+
+  <Accordion title="Partial Transfers">
+    Can handle partial shipments:
+    - Ship what's available
+    - Complete remainder later
+    - Track multiple shipments
+  </Accordion>
+</AccordionGroup>
+
+### Production Order Specifics
+
+<AccordionGroup>
+  <Accordion title="BOM Verification">
+    Before production:
+    - Verify BOM is configured
+    - Check component availability
+    - Reserve components
+  </Accordion>
+
+  <Accordion title="Yield Tracking">
+    During production:
+    - Track actual vs. planned output
+    - Log waste or scrap
+    - Calculate yield rates
+  </Accordion>
+
+  <Accordion title="Costing">
+    Production costing includes:
+    - Component costs
+    - Labor (if tracked)
+    - Overhead allocation
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
+    Step-by-step transaction creation
+  </Card>
+  <Card title="Transaction Details" icon="file-lines" href="/transactions/detail-view">
+    Navigate transaction pages
+  </Card>
+  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
+    Understand the transaction lifecycle
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Configure supplier information
+  </Card>
+</CardGroup>

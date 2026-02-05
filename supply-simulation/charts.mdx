@@ -1,0 +1,358 @@
+---
+title: Simulation Charts
+description: Visualize supply simulation results
+---
+
+# Simulation Charts
+
+Tether provides visual charts to help you understand simulation results, identify inventory issues, and make informed decisions.
+
+## Chart Types
+
+### Inventory Forecast Chart
+
+The primary visualization showing projected inventory over time:
+
+| Element | Description |
+|---------|-------------|
+| **Blue Line** | Current inventory projection |
+| **Green Line** | Projection with recommended orders |
+| **Red Zone** | Stockout periods |
+| **Yellow Zone** | Low inventory (below safety stock) |
+| **Horizontal Lines** | Safety stock and overstock thresholds |
+
+### Order Flow Diagram
+
+Visualizes replenishment orders between suppliers and warehouses:
+
+| Element | Description |
+|---------|-------------|
+| **Nodes** | Suppliers and warehouses |
+| **Arrows** | Order flow direction |
+| **Labels** | Order quantities and dates |
+
+## Reading the Inventory Chart
+
+### Understanding the Timeline
+
+The x-axis shows time from today forward:
+
+```
+Today -----> Future
+  |           |
+Start       End of
+Date        Simulation
+```
+
+### Understanding Inventory Levels
+
+The y-axis shows quantity:
+
+```
+Overstock ─────── Too much inventory
+Target ─────────── Ideal level
+Safety Stock ───── Minimum acceptable
+Zero ──────────── Stockout
+```
+
+### Key Points to Identify
+
+| Pattern | Meaning |
+|---------|---------|
+| **Declining Line** | Inventory being consumed |
+| **Sudden Drop** | Large order fulfilled |
+| **Sudden Rise** | Replenishment received |
+| **Flat at Zero** | Stockout period |
+| **Line Crossing Safety Stock** | Low inventory alert |
+
+## Chart Interactions
+
+### Zooming
+
+- Scroll to zoom in/out
+- Click and drag to pan
+- Double-click to reset
+
+### Hovering
+
+Hover over the chart to see:
+
+- Date
+- Projected quantity
+- Demand for that day
+- Orders arriving
+
+### Filtering
+
+Control what's displayed:
+
+| Filter | Effect |
+|--------|--------|
+| **SKU** | Show specific product |
+| **Warehouse** | Show specific location |
+| **Date Range** | Adjust time horizon |
+
+## Accessing Charts
+
+### From Supply Simulation
+
+<Steps>
+  <Step title="Run Simulation">
+    Execute a supply simulation
+  </Step>
+
+  <Step title="View Results">
+    Navigate to simulation results
+  </Step>
+
+  <Step title="Click Charts Tab">
+    Access visualization options
+  </Step>
+
+  <Step title="Select SKU/Warehouse">
+    Choose what to visualize
+  </Step>
+</Steps>
+
+### From Inventory Dashboard
+
+<Steps>
+  <Step title="Go to Inventory">
+    Navigate to Inventory Dashboard
+  </Step>
+
+  <Step title="Select SKU">
+    Click on a SKU to see details
+  </Step>
+
+  <Step title="View Forecast Flow">
+    Access the Forecasts & Flow view
+  </Step>
+</Steps>
+
+## Chart Types in Detail
+
+### Current Projection Chart
+
+Shows what happens without any new orders:
+
+**Use to understand:**
+- When stockouts will occur
+- How quickly inventory depletes
+- Impact of current demand
+
+### Recommended Projection Chart
+
+Shows what happens with recommended orders:
+
+**Use to understand:**
+- Impact of recommendations
+- Whether recommendations solve issues
+- Timing of improvement
+
+### Comparison View
+
+Side-by-side or overlay comparison:
+
+| View | Shows |
+|------|-------|
+| **Side by Side** | Two separate charts |
+| **Overlay** | Both lines on same chart |
+
+## Generating Chart Files
+
+Export charts for reports or sharing:
+
+<Steps>
+  <Step title="Configure View">
+    Set up the chart you want to export
+  </Step>
+
+  <Step title="Click Export">
+    Choose export option
+  </Step>
+
+  <Step title="Select Format">
+    Choose SVG or PNG format
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+### Export Formats
+
+| Format | Best For |
+|--------|----------|
+| **SVG** | High quality, scalable |
+| **PNG** | Easy sharing, presentations |
+
+## Understanding Chart Patterns
+
+### Healthy Inventory
+
+```
+          ───────────
+         /           \
+────────/             \────────
+        ↑              ↑
+     Restock        Restock
+```
+
+- Regular replenishment cycles
+- Never hits zero
+- Stays above safety stock
+
+### Trending to Stockout
+
+```
+────────────
+            \
+             \
+              \────────
+               ↑
+            Stockout!
+```
+
+- Declining without replenishment
+- Will hit zero
+- Needs urgent order
+
+### Overstock Situation
+
+```
+────────────────────
+                    Overstock threshold
+      ─────────────
+     /
+────/
+    ↑
+ Large order
+```
+
+- Above optimal levels
+- Ties up capital
+- May need to reduce orders
+
+## Using Charts for Decisions
+
+### Identifying Issues
+
+| Chart Signal | Action |
+|--------------|--------|
+| Crosses safety stock | Review recommendations |
+| Reaches zero | Order immediately |
+| Above overstock | Reduce planned orders |
+| Erratic pattern | Review forecast accuracy |
+
+### Validating Recommendations
+
+Before accepting recommendations:
+
+1. View the "with recommendations" chart
+2. Verify issues are resolved
+3. Check timing makes sense
+4. Confirm no new issues created
+
+### Communicating Status
+
+Use charts to communicate:
+
+- Share with stakeholders
+- Include in reports
+- Present in planning meetings
+
+## Chart Customization
+
+### Display Options
+
+| Option | Description |
+|--------|-------------|
+| **Show Safety Stock** | Display threshold line |
+| **Show Overstock** | Display upper threshold |
+| **Show Orders** | Mark order arrival points |
+| **Show Demand** | Overlay demand forecast |
+
+### Time Scale Options
+
+| Scale | View |
+|-------|------|
+| **Daily** | Day-by-day detail |
+| **Weekly** | Aggregated by week |
+| **Monthly** | High-level trend |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Check Critical SKUs">
+    Regularly review charts for:
+    - High-value products
+    - Long lead time items
+    - Fast-moving SKUs
+  </Accordion>
+
+  <Accordion title="Compare Scenarios">
+    Use charts to compare:
+    - Current vs. recommended
+    - Different what-if scenarios
+    - Historical accuracy
+  </Accordion>
+
+  <Accordion title="Share Visuals">
+    Charts communicate better than numbers:
+    - Export for presentations
+    - Include in status updates
+    - Use for alignment
+  </Accordion>
+
+  <Accordion title="Set Up Alerts">
+    Don't rely only on charts:
+    - Configure inventory alerts
+    - Get notified of issues
+    - Review charts for details
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Chart Not Loading
+
+**Possible causes:**
+- Simulation not complete
+- No data for selection
+- Browser issue
+
+**Solutions:**
+1. Wait for simulation to complete
+2. Verify SKU/warehouse has data
+3. Refresh the page
+
+### Unexpected Pattern
+
+**Possible causes:**
+- Data quality issues
+- Missing orders
+- Configuration problems
+
+**Solutions:**
+1. Review underlying data
+2. Check open orders
+3. Verify settings
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Running Simulations" icon="play" href="/supply-simulation/running">
+    Execute simulations
+  </Card>
+  <Card title="Configurations" icon="gear" href="/supply-simulation/configurations">
+    Configure parameters
+  </Card>
+  <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
+    Test scenarios
+  </Card>
+  <Card title="Forecasts & Flow" icon="chart-line" href="/inventory/forecasts-flow">
+    Inventory flow view
+  </Card>
+</CardGroup>

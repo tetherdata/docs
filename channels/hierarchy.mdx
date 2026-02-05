@@ -1,0 +1,278 @@
+---
+title: Channel Hierarchy
+description: Organizing channels with hierarchies
+---
+
+# Channel Hierarchy
+
+Channel hierarchy lets you organize channels into logical groups for better reporting and analysis.
+
+## What is Channel Hierarchy?
+
+Channel hierarchy creates a tree structure for grouping channels:
+
+```
+All Channels
+├── Direct to Consumer
+│   ├── Shopify US
+│   ├── Shopify CA
+│   └── Website
+├── Marketplaces
+│   ├── Amazon US
+│   ├── Amazon UK
+│   └── eBay
+└── Wholesale
+    ├── Distributor A
+    └── Distributor B
+```
+
+## Why Use Channel Hierarchy?
+
+| Benefit | Description |
+|---------|-------------|
+| **Reporting** | Aggregate data at any level |
+| **Filtering** | Filter by category, not individual channels |
+| **Organization** | Logical grouping for navigation |
+| **Analysis** | Compare performance across groups |
+
+## Configuring Channel Hierarchy
+
+### Accessing Configuration
+
+Navigate to **Channels** → **Hierarchy** (or through Settings).
+
+### Setting Up Hierarchy Levels
+
+Tether supports multiple hierarchy levels:
+
+<Steps>
+  <Step title="Define Level Names">
+    Name each level:
+
+    | Level | Example |
+    |-------|---------|
+    | Level 1 | Channel Type |
+    | Level 2 | Region |
+    | Level 3 | Specific Channel |
+  </Step>
+
+  <Step title="Create Values">
+    Add values for each level:
+
+    **Level 1 (Type):**
+    - Direct to Consumer
+    - Marketplace
+    - Wholesale
+
+    **Level 2 (Region):**
+    - North America
+    - Europe
+    - Asia Pacific
+  </Step>
+
+  <Step title="Define Relationships">
+    Specify which Level 2 values belong under Level 1:
+    - DTC → North America, Europe
+    - Marketplace → North America, Europe, Asia Pacific
+  </Step>
+
+  <Step title="Save">
+    Apply the hierarchy configuration
+  </Step>
+</Steps>
+
+### Assigning Channels to Hierarchy
+
+<Steps>
+  <Step title="Open Channel">
+    Navigate to the channel detail page
+  </Step>
+
+  <Step title="Find Hierarchy Settings">
+    Locate hierarchy assignment section
+  </Step>
+
+  <Step title="Select Values">
+    For each level, select the appropriate value:
+    - Type: Marketplace
+    - Region: North America
+  </Step>
+
+  <Step title="Save">
+    Channel is now part of the hierarchy
+  </Step>
+</Steps>
+
+## Using Channel Hierarchy
+
+### Filtering by Hierarchy
+
+In forecasts and reports:
+
+1. Open the Channel filter
+2. See hierarchy tree structure
+3. Select at any level:
+   - Select "Marketplace" to see all marketplace channels
+   - Select "Amazon US" for just that channel
+
+### Reporting at Different Levels
+
+| Level | View |
+|-------|------|
+| **All Channels** | Total business |
+| **Type** | DTC vs Marketplace vs Wholesale |
+| **Region** | North America vs Europe |
+| **Channel** | Individual channel detail |
+
+### Drill-Down Analysis
+
+Start high, drill down:
+
+1. View total sales by Type
+2. Click on "Marketplace" to expand
+3. See breakdown by individual marketplace
+4. Click on "Amazon US" for full detail
+
+## Common Hierarchy Patterns
+
+### By Business Model
+
+```
+Channel Type
+├── Direct to Consumer
+├── Wholesale / B2B
+├── Marketplace
+└── Retail
+```
+
+### By Geography
+
+```
+Region
+├── North America
+│   ├── United States
+│   └── Canada
+├── Europe
+│   ├── UK
+│   ├── Germany
+│   └── France
+└── Asia Pacific
+    ├── Australia
+    └── Japan
+```
+
+### By Platform
+
+```
+Platform
+├── Shopify
+│   ├── Shopify US
+│   ├── Shopify CA
+│   └── Shopify UK
+├── Amazon
+│   ├── Amazon US
+│   └── Amazon UK
+└── Custom
+    └── B2B Portal
+```
+
+### Combined Approach
+
+```
+Type
+├── DTC
+│   ├── North America
+│   │   ├── Shopify US
+│   │   └── Shopify CA
+│   └── Europe
+│       └── Shopify UK
+└── Marketplace
+    ├── North America
+    │   └── Amazon US
+    └── Europe
+        └── Amazon UK
+```
+
+## Hierarchy and User Access
+
+Channel hierarchy works with access control:
+
+- Grant access at any hierarchy level
+- Access flows down to children
+- Access to "Marketplace" = access to all marketplace channels
+
+See [User Access](/administration/user-access).
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Match Business Structure">
+    Design hierarchy to match how you manage the business:
+    - How do you report performance?
+    - How are teams organized?
+    - What comparisons are meaningful?
+  </Accordion>
+
+  <Accordion title="Keep It Simple">
+    Don't over-engineer:
+    - 2-3 levels is usually enough
+    - More levels = more complexity
+    - Start simple, add as needed
+  </Accordion>
+
+  <Accordion title="Consistent Naming">
+    Use clear, consistent names:
+    - Obvious what each level means
+    - Consistent terminology
+  </Accordion>
+
+  <Accordion title="Plan for Growth">
+    Consider future needs:
+    - New regions?
+    - New channel types?
+    - Build flexibility in
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Channel Not Appearing in Hierarchy
+
+**Possible causes:**
+- Hierarchy values not assigned
+- Channel is archived
+- Hierarchy not fully configured
+
+**Solutions:**
+1. Check channel's hierarchy assignments
+2. Verify channel is active
+3. Review hierarchy configuration
+
+### Incorrect Totals
+
+**Possible causes:**
+- Channel assigned to wrong level
+- Duplicate assignments
+- Missing channels
+
+**Solutions:**
+1. Review channel assignments
+2. Ensure no duplicates
+3. Verify all channels are assigned
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Channels Overview" icon="shopping-cart" href="/channels/overview">
+    Learn channel basics
+  </Card>
+  <Card title="Managing Channels" icon="gear" href="/channels/managing">
+    Configure channels
+  </Card>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/filtering">
+    Filter forecasts by hierarchy
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Control access by hierarchy
+  </Card>
+</CardGroup>

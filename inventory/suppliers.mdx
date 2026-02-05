@@ -1,0 +1,353 @@
+---
+title: Suppliers
+description: Managing supplier relationships in Tether
+---
+
+# Suppliers
+
+Suppliers are the vendors who provide your products and materials. Tether helps you manage supplier information, capabilities, and costs for effective supply planning.
+
+## What is a Supplier?
+
+A supplier is any external party that provides goods to your business:
+
+- Product manufacturers
+- Raw material vendors
+- Packaging suppliers
+- Component providers
+- Distributors
+
+## The Suppliers Dashboard
+
+Navigate to **Inventory** → **Suppliers** (or through the sidebar).
+
+### Dashboard Features
+
+| Feature | Description |
+|---------|-------------|
+| **Supplier List** | All suppliers with key information |
+| **Search** | Find suppliers by name |
+| **Status Filter** | Active, inactive, or all |
+| **Create Button** | Add new suppliers |
+
+### Supplier Information
+
+Each supplier shows:
+
+| Column | Description |
+|--------|-------------|
+| **Name** | Supplier company name |
+| **Code** | Short identifier |
+| **Contact** | Primary contact person |
+| **Status** | Active or Inactive |
+| **SKU Count** | Products they supply |
+
+## Creating a Supplier
+
+<Steps>
+  <Step title="Navigate to Suppliers">
+    Go to **Inventory** → **Suppliers**
+  </Step>
+
+  <Step title="Click Create Supplier">
+    Click the **Create Supplier** button
+  </Step>
+
+  <Step title="Enter Basic Information">
+    | Field | Required | Description |
+    |-------|----------|-------------|
+    | **Name** | Yes | Company name |
+    | **Code** | Yes | Short identifier |
+    | **Contact Name** | No | Primary contact |
+    | **Email** | No | Contact email |
+    | **Phone** | No | Contact phone |
+  </Step>
+
+  <Step title="Add Address (Optional)">
+    Enter supplier location for reference
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to create the supplier
+  </Step>
+</Steps>
+
+## Supplier Detail View
+
+Click on a supplier to see full details:
+
+### Overview Section
+
+Basic supplier information:
+- Name and code
+- Contact details
+- Address
+- Status
+- Notes
+
+### Capabilities Section
+
+What products this supplier provides and their terms. This is the critical section for supply planning.
+
+## Supplier Capabilities
+
+Capabilities define what a supplier can provide and the terms.
+
+### Configuring Capabilities
+
+<Steps>
+  <Step title="Open Supplier Detail">
+    Click on a supplier to open their page
+  </Step>
+
+  <Step title="Go to Capabilities">
+    Navigate to the capabilities section
+  </Step>
+
+  <Step title="Add SKU">
+    Click **Add SKU** to add a product this supplier provides
+  </Step>
+
+  <Step title="Configure Terms">
+    For each SKU, set:
+    - Lead time
+    - Cost
+    - Minimum order quantity
+    - Supplier SKU code
+  </Step>
+
+  <Step title="Save">
+    Save the capability configuration
+  </Step>
+</Steps>
+
+### Capability Fields
+
+| Field | Description |
+|-------|-------------|
+| **SKU** | The product this supplier provides |
+| **Supplier SKU Code** | Their internal code for this product |
+| **Lead Time** | Days from order to delivery |
+| **Cost per Unit** | Purchase price |
+| **Minimum Quantity** | Minimum order size |
+| **Lot Size** | Order must be in multiples of this |
+| **Priority** | Preference ranking among suppliers |
+
+### Example Capability
+
+```
+SKU: Blue T-Shirt (Medium)
+Supplier SKU: BTS-M-BL
+Lead Time: 14 days
+Cost: $8.50 per unit
+Minimum Quantity: 100 units
+Lot Size: 50 units
+Priority: 1 (Primary supplier)
+```
+
+## Lead Times
+
+Lead times are critical for supply planning.
+
+### Components of Lead Time
+
+| Component | Description |
+|-----------|-------------|
+| **Order Processing** | Time for supplier to process order |
+| **Manufacturing** | Time to produce (if made-to-order) |
+| **Shipping** | Transit time to your warehouse |
+| **Customs** | International shipping delays |
+| **Receiving** | Time to receive and stock |
+
+### Setting Lead Times
+
+Enter the total lead time that covers all components.
+
+<Info>
+  Use realistic lead times. Overly optimistic times lead to stockouts. Add buffer for reliability.
+</Info>
+
+### Different Lead Times
+
+Consider variations:
+
+| Situation | Adjustment |
+|-----------|------------|
+| Standard order | Base lead time |
+| Rush order | Shorter (if supplier offers) |
+| Peak season | Add buffer for delays |
+| New relationship | Add buffer until proven |
+
+## Cost Configuration
+
+Track costs for purchasing decisions and margin analysis.
+
+### Cost Fields
+
+| Field | Description |
+|-------|-------------|
+| **Base Cost** | Standard unit price |
+| **Currency** | Cost currency |
+| **Volume Discounts** | Price breaks at quantities |
+| **Effective Date** | When pricing is valid |
+
+### Volume Pricing
+
+Configure price breaks:
+
+| Quantity | Cost per Unit |
+|----------|---------------|
+| 1-99 | $10.00 |
+| 100-499 | $9.00 |
+| 500-999 | $8.50 |
+| 1000+ | $8.00 |
+
+## Multiple Suppliers
+
+Many SKUs have multiple potential suppliers.
+
+### Why Multiple Suppliers
+
+- **Backup** - Alternative if primary can't deliver
+- **Capacity** - Primary can't meet full demand
+- **Geographic** - Different suppliers for different regions
+- **Cost** - Price competition
+
+### Supplier Priority
+
+Set priority to indicate preference:
+
+| Priority | Meaning |
+|----------|---------|
+| 1 | Primary supplier (first choice) |
+| 2 | Secondary supplier |
+| 3+ | Backup suppliers |
+
+### How Tether Uses Priority
+
+1. Recommendations use highest priority supplier
+2. If capacity exceeded, moves to next priority
+3. Can manually override for specific orders
+
+## Supplier Status
+
+Suppliers can be Active or Inactive:
+
+| Status | Behavior |
+|--------|----------|
+| **Active** | Available for orders and recommendations |
+| **Inactive** | Not used in planning, data preserved |
+
+### When to Deactivate
+
+- Relationship ended
+- Quality issues
+- Temporary suspension
+
+<Note>
+  Deactivating doesn't delete history. Past transactions and costs remain for reporting.
+</Note>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Complete All Capabilities">
+    For supply planning to work well:
+    - Add all SKUs each supplier provides
+    - Set accurate lead times
+    - Include cost information
+    - Define minimum quantities
+  </Accordion>
+
+  <Accordion title="Maintain Multiple Suppliers">
+    Reduce risk with backup suppliers:
+    - Have at least 2 suppliers for critical SKUs
+    - Verify backup can actually deliver
+    - Keep relationships active
+  </Accordion>
+
+  <Accordion title="Regular Updates">
+    Keep information current:
+    - Review lead times quarterly
+    - Update costs when pricing changes
+    - Verify contact information
+  </Accordion>
+
+  <Accordion title="Document Terms">
+    Use notes to record:
+    - Payment terms
+    - Special agreements
+    - Contact preferences
+    - Historical issues
+  </Accordion>
+</AccordionGroup>
+
+## Suppliers in Supply Planning
+
+Supplier data powers the supply plan:
+
+### Order Recommendations
+
+Tether recommends orders based on:
+1. Demand forecast
+2. Current inventory
+3. Supplier lead times
+4. Minimum order quantities
+
+### Order Timing
+
+```
+Stockout projected: Day 30
+Lead time: 14 days
+Order must be placed by: Day 16
+```
+
+### Supplier Selection
+
+Recommendations use:
+1. Primary supplier (Priority 1)
+2. Unless capacity issue → Secondary
+3. Unless specified → Manual override
+
+## Troubleshooting
+
+### Supplier Not Appearing in Recommendations
+
+**Possible causes:**
+- No capabilities configured
+- Supplier is inactive
+- Priority is lower than alternatives
+
+**Solutions:**
+1. Add capabilities for relevant SKUs
+2. Verify supplier is active
+3. Check priority settings
+
+### Wrong Supplier Recommended
+
+**Possible causes:**
+- Priority misconfigured
+- Cost or lead time favors other supplier
+- Capacity constraints
+
+**Solutions:**
+1. Review and adjust priorities
+2. Manually select preferred supplier when ordering
+3. Check capacity settings
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    See supplier recommendations in action
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/creating">
+    Create purchase orders
+  </Card>
+  <Card title="Lead Times" icon="clock" href="/inventory/warehouses/lead-times">
+    Configure transfer times
+  </Card>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure replenishment rules
+  </Card>
+</CardGroup>

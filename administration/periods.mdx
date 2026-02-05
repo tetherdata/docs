@@ -1,0 +1,318 @@
+---
+title: Periods
+description: Configure fiscal periods and time boundaries
+---
+
+# Periods
+
+Configure how Tether handles time periods for forecasting, reporting, and planning.
+
+<Note>
+  Period configuration requires Admin access.
+</Note>
+
+## What Are Periods?
+
+Periods define time boundaries used throughout Tether:
+
+| Use | Description |
+|-----|-------------|
+| **Forecasting** | Time buckets for predictions |
+| **Reporting** | Aggregation boundaries |
+| **Planning** | Planning horizons |
+| **Comparison** | Period-over-period analysis |
+
+## Accessing Period Settings
+
+<Steps>
+  <Step title="Go to Settings">
+    Navigate to **Settings** in the sidebar
+  </Step>
+
+  <Step title="Select Periods">
+    Click on **Periods** section
+  </Step>
+
+  <Step title="View Configuration">
+    See current period settings
+  </Step>
+</Steps>
+
+## Period Types
+
+### Fiscal Year
+
+Configure your fiscal year:
+
+| Setting | Description |
+|---------|-------------|
+| **Start Month** | When fiscal year begins |
+| **Year Naming** | How to label fiscal years |
+
+### Fiscal Periods
+
+Define periods within the year:
+
+| Type | Description |
+|------|-------------|
+| **Monthly** | 12 periods per year |
+| **Quarterly** | 4 periods per year |
+| **Weekly** | 52 periods per year |
+| **4-4-5** | Retail calendar (13 weeks per quarter) |
+
+### Planning Horizons
+
+Define how far ahead to plan:
+
+| Horizon | Typical Use |
+|---------|-------------|
+| **Short-term** | 1-3 months, tactical |
+| **Medium-term** | 3-12 months, operational |
+| **Long-term** | 1-3 years, strategic |
+
+## Configuring Fiscal Year
+
+### Setting Fiscal Year Start
+
+<Steps>
+  <Step title="Go to Period Settings">
+    Navigate to periods configuration
+  </Step>
+
+  <Step title="Find Fiscal Year">
+    Locate fiscal year settings
+  </Step>
+
+  <Step title="Select Start Month">
+    Choose when your fiscal year begins
+  </Step>
+
+  <Step title="Save">
+    Apply configuration
+  </Step>
+</Steps>
+
+### Example Fiscal Years
+
+| Company Type | Common Start |
+|--------------|--------------|
+| **Calendar** | January |
+| **Retail** | February |
+| **Education** | July |
+| **Government** | October |
+
+## Configuring Period Granularity
+
+### Forecast Periods
+
+Choose time granularity for forecasts:
+
+| Granularity | When to Use |
+|-------------|-------------|
+| **Daily** | Short-term, high-volume |
+| **Weekly** | Most businesses |
+| **Monthly** | Longer planning horizons |
+
+### Configuring Granularity
+
+<Steps>
+  <Step title="Go to Period Settings">
+    Navigate to periods configuration
+  </Step>
+
+  <Step title="Find Forecast Settings">
+    Locate forecast period settings
+  </Step>
+
+  <Step title="Select Granularity">
+    Choose daily, weekly, or monthly
+  </Step>
+
+  <Step title="Save">
+    Apply settings
+  </Step>
+</Steps>
+
+## Period Labels
+
+### Naming Conventions
+
+Configure how periods are labeled:
+
+| Example | Format |
+|---------|--------|
+| **Jan 2024** | Month Year |
+| **2024-01** | Year-Month |
+| **Week 1, 2024** | Week Number |
+| **Q1 2024** | Quarter Year |
+
+### Customizing Labels
+
+<Steps>
+  <Step title="Go to Period Settings">
+    Navigate to configuration
+  </Step>
+
+  <Step title="Find Label Settings">
+    Locate period label configuration
+  </Step>
+
+  <Step title="Choose Format">
+    Select preferred naming convention
+  </Step>
+
+  <Step title="Save">
+    Apply settings
+  </Step>
+</Steps>
+
+## Period-Based Features
+
+### Forecasting
+
+Periods affect forecasting:
+
+| Setting | Impact |
+|---------|--------|
+| **Granularity** | Daily vs weekly vs monthly forecasts |
+| **Horizon** | How far ahead to forecast |
+| **Aggregation** | How to roll up periods |
+
+### Reporting
+
+Periods affect reporting:
+
+| Feature | Period Use |
+|---------|------------|
+| **Date filters** | Period boundaries |
+| **Comparisons** | Period-over-period |
+| **Aggregation** | Grouping by period |
+
+### Planning
+
+Periods affect planning:
+
+| Feature | Period Use |
+|---------|------------|
+| **Supply simulation** | Time horizon |
+| **Order recommendations** | Timing |
+| **Lead time calculations** | Period alignment |
+
+## Week Configuration
+
+### Week Start Day
+
+Configure when weeks begin:
+
+| Day | Common Use |
+|-----|------------|
+| **Sunday** | US retail |
+| **Monday** | Most businesses |
+| **Saturday** | Some retail |
+
+### Week Numbering
+
+Choose week numbering system:
+
+| System | Description |
+|--------|-------------|
+| **ISO** | International standard |
+| **US** | Week containing Jan 1 is week 1 |
+| **Custom** | Based on fiscal year |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Match Business Calendar">
+    Align Tether periods with:
+    - Fiscal calendar
+    - ERP system
+    - Reporting requirements
+  </Accordion>
+
+  <Accordion title="Consider Data Volume">
+    Choose appropriate granularity:
+    - Daily for high-volume
+    - Weekly for most cases
+    - Monthly for long-horizon planning
+  </Accordion>
+
+  <Accordion title="Plan Ahead">
+    Set up future periods:
+    - At least 1 year ahead
+    - Before year-end close
+    - Consider planning horizon
+  </Accordion>
+
+  <Accordion title="Consistent Boundaries">
+    Keep period boundaries consistent:
+    - Same across systems
+    - Don't change mid-year
+    - Document decisions
+  </Accordion>
+</AccordionGroup>
+
+## Period Impact on Analysis
+
+### Year-over-Year Comparisons
+
+Period alignment affects comparisons:
+
+| Issue | Solution |
+|-------|----------|
+| **Leap years** | Adjust for extra day |
+| **Week alignment** | Compare same week number |
+| **Holiday shifts** | Account for timing differences |
+
+### Seasonality
+
+Periods affect seasonality detection:
+
+| Granularity | Seasonality Detection |
+|-------------|----------------------|
+| **Daily** | Day-of-week patterns |
+| **Weekly** | Week-of-year patterns |
+| **Monthly** | Month-of-year patterns |
+
+## Troubleshooting
+
+### Periods Not Aligning
+
+**Possible causes:**
+- Different fiscal year settings
+- Week start mismatch
+- Period boundaries differ from source
+
+**Solutions:**
+1. Review fiscal year configuration
+2. Check week start day
+3. Align with source systems
+
+### Missing Periods
+
+**Possible causes:**
+- Future periods not generated
+- Period range not extended
+- Configuration incomplete
+
+**Solutions:**
+1. Generate future periods
+2. Extend date range
+3. Complete configuration
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
+    Configure inventory
+  </Card>
+  <Card title="Terminology" icon="book" href="/administration/terminology">
+    Customize terms
+  </Card>
+  <Card title="Forecasting" icon="chart-line" href="/demand-forecasting/admin">
+    Forecast administration
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Manage permissions
+  </Card>
+</CardGroup>

@@ -1,0 +1,204 @@
+---
+title: Collections Overview
+description: Organizing products with collections in Tether
+---
+
+# Collections Overview
+
+Collections are the primary way to organize and group related SKUs in Tether. They provide shared configurations, dimensions, and settings that apply to all SKUs within the collection.
+
+## What is a Collection?
+
+A collection is a logical grouping of related products. Think of it as a product line or category that shares common characteristics.
+
+**Examples:**
+- "T-Shirts" - all t-shirt variants
+- "Electronics" - electronic products
+- "Summer 2024" - seasonal product line
+- "Accessories" - bags, hats, belts
+
+## Why Use Collections?
+
+Collections provide several benefits:
+
+<CardGroup cols={2}>
+  <Card title="Shared Dimensions" icon="ruler-combined">
+    Define Size, Color, and other attributes once, use across all SKUs in the collection
+  </Card>
+  <Card title="Bulk Operations" icon="layer-group">
+    Apply settings, pricing, or updates to all SKUs in a collection at once
+  </Card>
+  <Card title="SKU Generation" icon="wand-magic-sparkles">
+    Automatically create SKU variants from dimension combinations
+  </Card>
+  <Card title="Organization" icon="folder-tree">
+    Keep your catalog organized and easy to navigate
+  </Card>
+</CardGroup>
+
+## The Collections Dashboard
+
+Navigate to **SKUs** → **Collections** tab to access the collections dashboard.
+
+### Dashboard Features
+
+| Feature | Description |
+|---------|-------------|
+| **Collection List** | All collections with key information |
+| **Search** | Find collections by name |
+| **Status Filter** | Show Active, Archived, or All |
+| **Create Button** | Add new collections |
+
+### Collection Information
+
+Each collection shows:
+
+- **Name** - Collection display name
+- **Description** - Optional details
+- **SKU Count** - Number of SKUs in the collection
+- **Status** - Active or Archived
+- **Created Date** - When the collection was created
+
+## Collection vs. Product Hierarchy
+
+Collections and product hierarchies serve different purposes:
+
+| Feature | Collection | Product Hierarchy |
+|---------|------------|-------------------|
+| **Purpose** | Group SKUs with shared attributes | Categorize for reporting |
+| **Dimensions** | Yes, defines available attributes | No |
+| **SKU Generation** | Yes | No |
+| **Nesting** | Flat (one level) | Multi-level (up to 5) |
+| **SKU Membership** | Each SKU in one collection | Can be in multiple hierarchy levels |
+
+<Info>
+  Use collections for products that share dimensions. Use product hierarchy for reporting and categorization that spans collections.
+</Info>
+
+## Collection Structure
+
+A collection contains several configuration areas:
+
+### SKUs Tab
+All SKUs belonging to this collection. Add, remove, or generate SKUs here.
+
+### Dimensions Tab
+Define product attributes like Size, Color, Material. Each dimension has values that SKUs can use.
+
+### Hierarchy Tab
+Configure how this collection fits into your product hierarchy for reporting.
+
+### Inventory Tab
+Aggregate view of inventory for all SKUs in the collection.
+
+### Suppliers Tab
+Suppliers who provide products in this collection.
+
+### Pricing Tab
+Collection-level pricing configuration and pricing matrix.
+
+### BOM Tab
+Bill of materials for products that share components.
+
+### Settings Tab
+Collection metadata and configuration options.
+
+## Creating Collections
+
+<Steps>
+  <Step title="Navigate to Collections">
+    Go to **SKUs** → **Collections** tab
+  </Step>
+
+  <Step title="Click Create Collection">
+    Click the **Create Collection** button
+  </Step>
+
+  <Step title="Enter Details">
+    - **Name**: Descriptive name for the collection
+    - **Description**: Optional details
+  </Step>
+
+  <Step title="Save">
+    Click **Save** to create the collection
+  </Step>
+</Steps>
+
+After creating, you'll want to:
+1. Set up dimensions (if products have variants)
+2. Add or generate SKUs
+3. Configure suppliers and pricing
+
+## Collection Status
+
+Collections can be Active or Archived:
+
+| Status | Behavior |
+|--------|----------|
+| **Active** | Visible in default views, SKUs can be added |
+| **Archived** | Hidden from default views, no new SKUs |
+
+<Note>
+  Archiving a collection doesn't affect its SKUs. They remain in the system but the collection is hidden from navigation.
+</Note>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Group by Shared Attributes">
+    Put products together when they share the same dimensions. All t-shirts might share Size and Color, so they belong in one collection.
+  </Accordion>
+
+  <Accordion title="Keep Collections Focused">
+    Don't make collections too broad. "All Products" isn't useful. "Summer T-Shirts" is more manageable.
+  </Accordion>
+
+  <Accordion title="Plan Dimensions First">
+    Before creating SKUs, define your dimensions. It's harder to add dimensions after SKUs exist.
+  </Accordion>
+
+  <Accordion title="Use Descriptive Names">
+    Name collections clearly. Future team members should understand what's in a collection from its name.
+  </Accordion>
+</AccordionGroup>
+
+## Common Workflows
+
+### Launching a New Product Line
+
+1. Create a new collection
+2. Define dimensions (Size, Color, etc.)
+3. Use SKU Generator to create all variants
+4. Configure suppliers and pricing
+5. Enable on channels
+
+### Managing Seasonal Products
+
+1. Create seasonal collections ("Spring 2024")
+2. Add new products to the seasonal collection
+3. At end of season, archive the collection
+4. Historical data is preserved
+
+### Reorganizing Products
+
+1. Create new collections with better structure
+2. Move SKUs to appropriate collections
+3. Archive old collections
+4. Update any integrations referencing old collections
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Managing Collections" icon="gear" href="/product-catalog/collections/managing">
+    Learn to configure collection settings in detail
+  </Card>
+  <Card title="Dimensions" icon="ruler-combined" href="/product-catalog/dimensions">
+    Set up product dimensions
+  </Card>
+  <Card title="Creating SKUs" icon="plus" href="/product-catalog/skus/creating-skus">
+    Add products to your collections
+  </Card>
+  <Card title="Product Hierarchy" icon="sitemap" href="/product-catalog/hierarchy">
+    Configure product categorization
+  </Card>
+</CardGroup>

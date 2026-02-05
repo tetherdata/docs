@@ -1,0 +1,307 @@
+---
+title: Forecast Comparison
+description: Compare forecast models and analyze accuracy
+---
+
+# Forecast Comparison
+
+The Forecast Comparison view lets you compare different forecast models side by side. This helps you understand which models perform best for different products and make informed decisions about forecast configuration.
+
+## Accessing Forecast Comparison
+
+Navigate to **Demand Forecast** → **Forecast Comparison** (or through the admin menu).
+
+<Note>
+  Forecast Comparison is primarily an Admin feature for evaluating forecast performance.
+</Note>
+
+## Why Compare Forecasts?
+
+Comparing forecasts helps you:
+
+| Purpose | Benefit |
+|---------|---------|
+| **Model Selection** | Choose the best model for your business |
+| **Accuracy Analysis** | Understand forecast quality |
+| **Identify Gaps** | Find products needing attention |
+| **Improve Over Time** | Track forecast accuracy trends |
+
+## Comparison View
+
+### Layout
+
+The comparison view shows:
+
+- **Model Selection** - Choose models to compare
+- **Metrics Cards** - Summary accuracy metrics
+- **Comparison Table** - Side-by-side forecast values
+- **Variance Analysis** - Differences between models and actuals
+
+### Available Models
+
+Depending on configuration, you may see:
+
+| Model Type | Description |
+|------------|-------------|
+| **Statistical** | Time series models (moving average, exponential smoothing) |
+| **ML-Based** | Machine learning algorithms |
+| **Manual/Override** | User-adjusted forecasts |
+| **Naive** | Simple baseline (last period, same period last year) |
+| **Consensus** | Combination of multiple models |
+
+## Comparing Models
+
+### Selecting Models
+
+<Steps>
+  <Step title="Open Model Selection">
+    Click on the model selector
+  </Step>
+
+  <Step title="Choose Models">
+    Select 2-4 models to compare:
+    - Model A (e.g., Statistical)
+    - Model B (e.g., ML-based)
+    - Actuals (if available)
+  </Step>
+
+  <Step title="Apply">
+    View updates to show selected models
+  </Step>
+</Steps>
+
+### Side-by-Side View
+
+The table shows forecasts from each model:
+
+| SKU | Period | Model A | Model B | Actual | Variance A | Variance B |
+|-----|--------|---------|---------|--------|------------|------------|
+| SKU-001 | Jan | 100 | 110 | 105 | -5 | +5 |
+| SKU-001 | Feb | 120 | 115 | 118 | +2 | -3 |
+| SKU-002 | Jan | 50 | 55 | 48 | +2 | +7 |
+
+## Accuracy Metrics
+
+### Key Metrics
+
+| Metric | Description | Good Value |
+|--------|-------------|------------|
+| **MAPE** | Mean Absolute Percentage Error | Lower is better (<20%) |
+| **MAE** | Mean Absolute Error | Lower is better |
+| **Bias** | Systematic over/under forecast | Close to 0 |
+| **Hit Rate** | % within acceptable range | Higher is better |
+
+### Understanding MAPE
+
+MAPE (Mean Absolute Percentage Error) is the most common metric:
+
+```
+MAPE = Average of |Actual - Forecast| / Actual × 100%
+```
+
+| MAPE Range | Interpretation |
+|------------|----------------|
+| < 10% | Excellent accuracy |
+| 10-20% | Good accuracy |
+| 20-30% | Acceptable |
+| > 30% | Needs improvement |
+
+### Metrics Cards
+
+Summary cards show overall performance:
+
+```
+Model A - Statistical
+├── MAPE: 15.2%
+├── MAE: 23 units
+├── Bias: +2.1%
+└── Hit Rate: 78%
+
+Model B - ML-Based
+├── MAPE: 12.8%
+├── MAE: 19 units
+├── Bias: -1.5%
+└── Hit Rate: 82%
+```
+
+## Filtering Comparisons
+
+### By Product
+
+Compare model performance for specific products:
+
+1. Filter by collection or SKU
+2. See how models perform for different product types
+3. Some models may work better for certain products
+
+### By Time Period
+
+Analyze accuracy over different periods:
+
+| Period Type | Insight |
+|-------------|---------|
+| **Recent** | Current model performance |
+| **Historical** | Long-term accuracy |
+| **Seasonal** | Performance during peaks |
+| **Promotional** | Accuracy during events |
+
+### By Channel
+
+Compare accuracy across channels:
+
+- Some models may perform better for specific channels
+- Channel patterns affect model suitability
+
+## Variance Analysis
+
+### Understanding Variance
+
+| Variance | Meaning |
+|----------|---------|
+| **Positive** | Forecast was higher than actual (over-forecast) |
+| **Negative** | Forecast was lower than actual (under-forecast) |
+| **Near Zero** | Accurate forecast |
+
+### Variance Patterns
+
+Look for systematic patterns:
+
+| Pattern | Indicates | Action |
+|---------|-----------|--------|
+| Consistently positive | Model over-forecasts | Apply dampening |
+| Consistently negative | Model under-forecasts | Apply uplift |
+| Random | No bias, normal variance | Model is balanced |
+| Seasonal misalignment | Wrong seasonal pattern | Adjust seasonality |
+
+## Model Performance by Segment
+
+### Product Segments
+
+Different models may excel for:
+
+| Segment | Often Best Model |
+|---------|------------------|
+| **High volume, stable** | Statistical (simple) |
+| **Seasonal products** | Seasonal decomposition |
+| **New products** | Similar product modeling |
+| **Trending products** | ML with external factors |
+
+### Analyzing by Segment
+
+1. Filter to a product segment
+2. Compare model metrics
+3. Note which model performs best
+4. Consider segment-specific model selection
+
+## Best Model Selection
+
+### Choosing the Right Model
+
+Consider:
+
+1. **Overall Accuracy** - Which has lowest MAPE?
+2. **Bias** - Is there systematic error?
+3. **Stability** - Is accuracy consistent?
+4. **Product Fit** - Does it work for your products?
+
+### Model Selection Matrix
+
+| If You Need... | Consider... |
+|----------------|-------------|
+| Simple, stable forecasts | Statistical models |
+| Handling of promotions | ML with event features |
+| New product forecasts | Similar product or judgment |
+| Maximum accuracy | Ensemble/consensus |
+
+## Using Comparison Results
+
+### Switching Models
+
+If comparison shows a better model:
+
+1. Document the findings
+2. Go to **Forecast Admin**
+3. Update model selection
+4. Monitor after switch
+
+### Hybrid Approaches
+
+Sometimes best results come from:
+
+- Different models for different products
+- Model ensembles (combining forecasts)
+- Manual override of specific SKUs
+
+## Reporting
+
+### Export Comparison Data
+
+<Steps>
+  <Step title="Set Up View">
+    Configure models, filters, and date range
+  </Step>
+
+  <Step title="Export">
+    Click **Export** button
+  </Step>
+
+  <Step title="Download">
+    Get detailed comparison data
+  </Step>
+</Steps>
+
+### Comparison Reports
+
+Use exports for:
+- Monthly accuracy reviews
+- Model selection decisions
+- Stakeholder presentations
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Comparison">
+    Compare models periodically:
+    - Monthly for active businesses
+    - Quarterly for stable businesses
+    - After significant changes
+  </Accordion>
+
+  <Accordion title="Use Appropriate Timeframes">
+    Don't judge models on too little data:
+    - Minimum 3-6 months for comparison
+    - Include seasonal periods
+    - Account for unusual events
+  </Accordion>
+
+  <Accordion title="Consider Business Context">
+    Accuracy isn't everything:
+    - Under-forecasting may be worse than over
+    - Inventory costs affect which errors matter
+    - Customer impact varies
+  </Accordion>
+
+  <Accordion title="Document Decisions">
+    When changing models:
+    - Record why the change was made
+    - Note expected improvement
+    - Plan for follow-up evaluation
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Configure forecast models
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View and edit forecasts
+  </Card>
+  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
+    Analyze historical data
+  </Card>
+  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
+    Track forecast changes
+  </Card>
+</CardGroup>

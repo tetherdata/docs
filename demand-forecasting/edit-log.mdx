@@ -1,0 +1,324 @@
+---
+title: Edit Log
+description: Track and audit forecast changes in Tether
+---
+
+# Edit Log
+
+The Edit Log provides a complete audit trail of all forecast changes. It helps you understand what changed, who changed it, and why—essential for forecast accuracy analysis and compliance.
+
+## Accessing the Edit Log
+
+Navigate to **Demand Forecast** → **Edit Log** (or click the Edit Log link from the forecast dashboard).
+
+## What's Tracked
+
+The edit log captures:
+
+| Information | Description |
+|-------------|-------------|
+| **Timestamp** | When the change was made |
+| **User** | Who made the change |
+| **SKU** | Product affected |
+| **Channel** | Sales channel affected |
+| **Period** | Time period(s) changed |
+| **Previous Value** | Value before change |
+| **New Value** | Value after change |
+| **Change Type** | Absolute or percentage |
+| **Reason** | User-provided explanation |
+
+## Edit Log View
+
+### Table Columns
+
+| Column | Description |
+|--------|-------------|
+| **Date/Time** | When change occurred |
+| **User** | User who made change |
+| **SKU** | Product changed |
+| **Channel** | Channel affected |
+| **Period** | Forecast period |
+| **Old Value** | Previous forecast |
+| **New Value** | Updated forecast |
+| **Change** | Difference (+/-) |
+| **Reason** | Explanation provided |
+
+### Sorting
+
+Click column headers to sort:
+- Most recent first (default)
+- By user
+- By SKU
+- By magnitude of change
+
+## Filtering the Edit Log
+
+### By Date Range
+
+<Steps>
+  <Step title="Select Date Filter">
+    Click the date range picker
+  </Step>
+
+  <Step title="Choose Range">
+    Select:
+    - Today
+    - Last 7 days
+    - Last 30 days
+    - Custom range
+  </Step>
+
+  <Step title="Apply">
+    Log shows only changes within range
+  </Step>
+</Steps>
+
+### By User
+
+Filter to see changes by specific team members:
+
+1. Click the User filter
+2. Select one or more users
+3. View their changes
+
+### By SKU
+
+Find changes for specific products:
+
+1. Use the SKU filter
+2. Search or select SKUs
+3. See all changes for those products
+
+### By Channel
+
+Focus on specific sales channels:
+
+1. Click the Channel filter
+2. Select channels
+3. View channel-specific changes
+
+### By Change Type
+
+Filter by type of modification:
+
+| Type | Shows |
+|------|-------|
+| **All** | All changes |
+| **Increases** | Only increases |
+| **Decreases** | Only decreases |
+| **Overrides** | Manual overrides |
+| **Reverts** | Restored to original |
+
+## Understanding Log Entries
+
+### Example Entry
+
+```
+Timestamp: 2024-01-15 09:30:22
+User: john@company.com
+SKU: Blue T-Shirt M (TSH-BLU-M)
+Channel: Shopify US
+Period: 2024-02
+Old Value: 500
+New Value: 650
+Change: +150 (+30%)
+Reason: Q1 marketing campaign expected to drive additional demand
+```
+
+### Reading the Change
+
+| Field | Meaning |
+|-------|---------|
+| **Old Value: 500** | Previous forecast was 500 units |
+| **New Value: 650** | Now forecasting 650 units |
+| **Change: +150** | Increase of 150 units |
+| **(+30%)** | Represents a 30% increase |
+
+## Analyzing Edit Patterns
+
+### Common Analysis
+
+Use the edit log to understand:
+
+**Volume of Changes:**
+- How many edits per day/week?
+- Are certain periods heavily edited?
+- Trending up or down?
+
+**Change Distribution:**
+- Which SKUs get most edits?
+- Which channels have most adjustments?
+- Who makes the most changes?
+
+**Change Reasons:**
+- What categories of reasons appear most?
+- Are promotions driving many changes?
+- Seasonal patterns in editing?
+
+### Accuracy Analysis
+
+Compare edits to outcomes:
+
+1. Find historical edits for a period
+2. Check what the actual sales were
+3. Was the edit directionally correct?
+4. Was the magnitude appropriate?
+
+## Edit Log Reports
+
+### Exporting the Log
+
+<Steps>
+  <Step title="Apply Filters">
+    Set date range and other filters for desired data
+  </Step>
+
+  <Step title="Click Export">
+    Click the **Export** button
+  </Step>
+
+  <Step title="Choose Format">
+    Select CSV or Excel
+  </Step>
+
+  <Step title="Download">
+    File downloads with all visible log entries
+  </Step>
+</Steps>
+
+### Report Uses
+
+- **Audit compliance** - Demonstrate forecast governance
+- **Team review** - Discuss changes in planning meetings
+- **Training** - Show examples of good/bad adjustments
+- **Process improvement** - Identify patterns to address
+
+## Edit Log Settings
+
+Admin users can configure edit log behavior:
+
+### Retention Settings
+
+How long to keep edit history:
+
+| Option | Keep Data For |
+|--------|---------------|
+| 6 months | Recent history |
+| 1 year | Standard retention |
+| 2 years | Extended retention |
+| Unlimited | Full history |
+
+### Required Reasons
+
+Configure whether reasons are required:
+
+| Setting | Behavior |
+|---------|----------|
+| **Required** | Must enter reason to save edit |
+| **Optional** | Reason encouraged but not required |
+| **Required for large changes** | Required if change > X% |
+
+### Category Options
+
+Configure reason categories:
+
+- Promotion
+- Seasonal
+- Market condition
+- Product lifecycle
+- Error correction
+- Other
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Review Regularly">
+    Check the edit log weekly:
+    - What's being changed?
+    - Are changes justified?
+    - Any unexpected patterns?
+  </Accordion>
+
+  <Accordion title="Require Reasons">
+    Configure reasons as required:
+    - Builds accountability
+    - Improves analysis
+    - Helps with training
+  </Accordion>
+
+  <Accordion title="Analyze Accuracy">
+    Periodically check edit outcomes:
+    - Were increases warranted?
+    - Were decreases accurate?
+    - Learn from discrepancies
+  </Accordion>
+
+  <Accordion title="Export for Reports">
+    Use exports for:
+    - Monthly planning reviews
+    - Quarterly business reviews
+    - Audit documentation
+  </Accordion>
+</AccordionGroup>
+
+## Compliance Uses
+
+For regulated industries or audit requirements:
+
+### SOX Compliance
+
+Edit log supports Sarbanes-Oxley requirements:
+- Who made changes
+- When changes occurred
+- What was changed
+- Reason documentation
+
+### Internal Audit
+
+Provide to auditors:
+- Export full history
+- Show access controls
+- Demonstrate governance
+
+## Troubleshooting
+
+### Missing Edits in Log
+
+**Possible causes:**
+- Date filter too restrictive
+- Changes made before tracking started
+- Bulk uploads may log differently
+
+**Solutions:**
+1. Expand date range
+2. Check system start date
+3. Look in import/upload logs
+
+### Can't Export
+
+**Possible causes:**
+- Too much data selected
+- Permission restrictions
+- Browser blocking download
+
+**Solutions:**
+1. Filter to smaller dataset
+2. Verify export permissions
+3. Check browser download settings
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Learn how to make forecast edits
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    Return to forecast viewing
+  </Card>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Configure forecast settings
+  </Card>
+  <Card title="User Access" icon="users" href="/administration/user-access">
+    Manage who can edit forecasts
+  </Card>
+</CardGroup>

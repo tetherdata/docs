@@ -1,0 +1,390 @@
+---
+title: Data Exports
+description: Export data from Tether for reporting and analysis
+---
+
+# Data Exports
+
+Export data from Tether to use in spreadsheets, reports, and other tools.
+
+## Why Export Data?
+
+| Use Case | Description |
+|----------|-------------|
+| **Reporting** | Create custom reports |
+| **Analysis** | Analyze in Excel or other tools |
+| **Sharing** | Share with stakeholders |
+| **Backup** | Keep local copies |
+| **Integration** | Use in other systems |
+
+## Export Formats
+
+| Format | Best For |
+|--------|----------|
+| **CSV** | Spreadsheets, data import |
+| **Excel (.xlsx)** | Formatted reports, analysis |
+| **PDF** | Sharing, printing |
+
+## Exporting from Different Areas
+
+### SKU Export
+
+<Steps>
+  <Step title="Go to SKUs">
+    Navigate to the SKU list
+  </Step>
+
+  <Step title="Filter (Optional)">
+    Apply filters to narrow data
+  </Step>
+
+  <Step title="Select Items">
+    Select specific items or all
+  </Step>
+
+  <Step title="Click Export">
+    Open export menu
+  </Step>
+
+  <Step title="Choose Format">
+    Select CSV, Excel, or PDF
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+**Available fields:**
+- SKU code and name
+- Collection
+- Status
+- Dimensions
+- Custom fields
+
+### Inventory Export
+
+<Steps>
+  <Step title="Go to Inventory">
+    Navigate to inventory dashboard
+  </Step>
+
+  <Step title="Filter View">
+    Set filters for desired data
+  </Step>
+
+  <Step title="Click Export">
+    Open export options
+  </Step>
+
+  <Step title="Select Format">
+    Choose export format
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+**Available fields:**
+- SKU information
+- Warehouse
+- Quantity by state (on hand, available, etc.)
+- Health status
+- Coverage days
+
+### Forecast Export
+
+<Steps>
+  <Step title="Go to Forecasting">
+    Navigate to demand forecasting
+  </Step>
+
+  <Step title="Configure View">
+    Set filters, date range, grouping
+  </Step>
+
+  <Step title="Click Export">
+    Open export menu
+  </Step>
+
+  <Step title="Choose Format">
+    Select CSV or Excel
+  </Step>
+
+  <Step title="Download">
+    Save the file
+  </Step>
+</Steps>
+
+**Available fields:**
+- SKU/channel
+- Period dates
+- Forecast quantities
+- Actual quantities (historical)
+- Adjustments
+
+### Transaction Export
+
+<Steps>
+  <Step title="Go to Transactions">
+    Navigate to transaction list
+  </Step>
+
+  <Step title="Filter (Optional)">
+    Filter by status, type, date
+  </Step>
+
+  <Step title="Select Transactions">
+    Choose specific or all
+  </Step>
+
+  <Step title="Export">
+    Download in chosen format
+  </Step>
+</Steps>
+
+**Available fields:**
+- Transaction ID and name
+- Type and status
+- Source and destination
+- Line items
+- Dates and amounts
+
+### Sales History Export
+
+<Steps>
+  <Step title="Go to Sales History">
+    Navigate to historical data
+  </Step>
+
+  <Step title="Set Date Range">
+    Select the time period
+  </Step>
+
+  <Step title="Filter">
+    Narrow by channel, SKU, etc.
+  </Step>
+
+  <Step title="Export">
+    Download data
+  </Step>
+</Steps>
+
+**Available fields:**
+- Date
+- SKU
+- Channel
+- Quantity
+- Revenue (if tracked)
+
+## Export Options
+
+### Scope Options
+
+| Option | Description |
+|--------|-------------|
+| **Selected** | Only selected rows |
+| **Filtered** | All visible (filtered) rows |
+| **All** | All data (ignore filters) |
+
+### Field Selection
+
+Some exports allow choosing fields:
+
+<Steps>
+  <Step title="Click Export">
+    Open export dialog
+  </Step>
+
+  <Step title="Select Fields">
+    Check/uncheck fields to include
+  </Step>
+
+  <Step title="Reorder (Optional)">
+    Drag to change column order
+  </Step>
+
+  <Step title="Export">
+    Generate file with selected fields
+  </Step>
+</Steps>
+
+### Date Format Options
+
+| Format | Example |
+|--------|---------|
+| **ISO** | 2024-01-15 |
+| **US** | 01/15/2024 |
+| **EU** | 15/01/2024 |
+| **Text** | January 15, 2024 |
+
+## Large Exports
+
+### Handling Large Data Sets
+
+For large exports:
+
+| Size | Approach |
+|------|----------|
+| **< 10,000 rows** | Direct download |
+| **10,000 - 100,000** | May take longer |
+| **> 100,000** | Consider filtering |
+
+### Tips for Large Exports
+
+1. **Filter first** - Export only what you need
+2. **Choose CSV** - Faster than Excel for large files
+3. **Wait for completion** - Don't navigate away
+4. **Check file** - Verify all data exported
+
+## Scheduled Exports
+
+### Setting Up Automated Exports
+
+If available, configure scheduled exports:
+
+<Steps>
+  <Step title="Go to Export Settings">
+    Navigate to export configuration
+  </Step>
+
+  <Step title="Create Schedule">
+    Set up new scheduled export
+  </Step>
+
+  <Step title="Configure">
+    Select data, format, frequency
+  </Step>
+
+  <Step title="Set Destination">
+    Choose email or storage location
+  </Step>
+
+  <Step title="Save">
+    Activate the schedule
+  </Step>
+</Steps>
+
+### Schedule Options
+
+| Frequency | Use Case |
+|-----------|----------|
+| **Daily** | Regular monitoring |
+| **Weekly** | Weekly reports |
+| **Monthly** | Period-end reporting |
+
+## Working with Exported Data
+
+### In Excel
+
+| Task | How |
+|------|-----|
+| **Open CSV** | File → Open, select CSV |
+| **Refresh Data** | Re-export and replace |
+| **Create Pivot** | Insert → PivotTable |
+| **Charts** | Select data, Insert → Chart |
+
+### In Google Sheets
+
+| Task | How |
+|------|-----|
+| **Import** | File → Import → Upload |
+| **Query** | Use QUERY function |
+| **Share** | Click Share button |
+
+### In Other Tools
+
+| Tool | Import Method |
+|------|---------------|
+| **Tableau** | Connect to CSV/Excel |
+| **Power BI** | Get Data → File |
+| **Python/Pandas** | pd.read_csv() |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Export What You Need">
+    Be selective with exports:
+    - Filter before exporting
+    - Choose relevant fields
+    - Smaller files are easier to work with
+  </Accordion>
+
+  <Accordion title="Document Your Exports">
+    Keep track of exports:
+    - Note when exported
+    - Record filters used
+    - Save with meaningful names
+  </Accordion>
+
+  <Accordion title="Regular Backups">
+    Export key data regularly:
+    - Weekly or monthly
+    - Before major changes
+    - Store securely
+  </Accordion>
+
+  <Accordion title="Verify Accuracy">
+    Check exported data:
+    - Row counts match
+    - Sample data correct
+    - No truncation
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Export Failed
+
+**Possible causes:**
+- Too much data
+- Network timeout
+- Browser issue
+
+**Solutions:**
+1. Try smaller export
+2. Use CSV instead of Excel
+3. Try different browser
+4. Check network connection
+
+### Missing Data in Export
+
+**Possible causes:**
+- Filters excluding data
+- Field not selected
+- Permission restrictions
+
+**Solutions:**
+1. Check active filters
+2. Verify field selection
+3. Confirm you have access
+
+### File Won't Open
+
+**Possible causes:**
+- Large file size
+- Corrupted download
+- Wrong application
+
+**Solutions:**
+1. Re-download file
+2. Try different application
+3. Open as text to check format
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
+    Work with multiple items
+  </Card>
+  <Card title="Analytics" icon="chart-pie" href="/analytics/metrics">
+    View metrics in Tether
+  </Card>
+  <Card title="Filtering" icon="filter" href="/product-catalog/skus/filtering">
+    Filter data effectively
+  </Card>
+  <Card title="Integrations" icon="plug" href="/integrations/setup">
+    Automate data flow
+  </Card>
+</CardGroup>

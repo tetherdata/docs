@@ -1,68 +1,136 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Tether Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "navigation",
+              "roles-permissions"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Product Catalog",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              {
+                "group": "SKUs",
+                "pages": [
+                  "product-catalog/skus/overview",
+                  "product-catalog/skus/creating-skus",
+                  "product-catalog/skus/editing-skus",
+                  "product-catalog/skus/filtering"
+                ]
+              },
+              {
+                "group": "Collections",
+                "pages": [
+                  "product-catalog/collections/overview",
+                  "product-catalog/collections/managing"
+                ]
+              },
+              "product-catalog/dimensions",
+              "product-catalog/hierarchy"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Inventory Management",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "inventory/dashboard",
+              "inventory/supply-plan",
+              "inventory/forecasts-flow",
+              {
+                "group": "Warehouses",
+                "pages": [
+                  "inventory/warehouses/overview",
+                  "inventory/warehouses/lead-times"
+                ]
+              },
+              "inventory/suppliers"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Demand Forecasting",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+              "demand-forecasting/dashboard",
+              "demand-forecasting/filtering",
+              "demand-forecasting/editing",
+              "demand-forecasting/edit-log",
+              "demand-forecasting/sales-history",
+              "demand-forecasting/comparison",
+              "demand-forecasting/admin",
+              "demand-forecasting/promotions"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Transactions",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "transactions/overview",
+              "transactions/types",
+              "transactions/creating",
+              "transactions/detail-view",
+              "transactions/workflow"
+            ]
+          },
+          {
+            "group": "Sales Channels",
+            "pages": [
+              "channels/overview",
+              "channels/managing",
+              "channels/hierarchy"
+            ]
+          },
+          {
+            "group": "Supply Simulation",
+            "pages": [
+              "supply-simulation/running",
+              "supply-simulation/configurations",
+              "supply-simulation/charts",
+              "supply-simulation/what-if"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/setup",
+              "integrations/sync-sessions",
+              "integrations/troubleshooting"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "analytics/metrics"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "administration/user-access",
+              "administration/terminology",
+              "administration/inventory-settings",
+              "administration/periods"
+            ]
+          },
+          {
+            "group": "Tips & Shortcuts",
+            "pages": [
+              "tips/command-palette",
+              "tips/shortcuts",
+              "tips/bulk-operations",
+              "tips/exports"
             ]
           }
         ]
@@ -71,14 +139,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Support",
+          "href": "mailto:support@tether.so",
+          "icon": "envelope"
         }
       ]
     }
@@ -91,32 +154,18 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@tether.so"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Open Tether",
+      "href": "https://app.tether.so"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "linkedin": "https://linkedin.com/company/tether"
     }
   }
 }

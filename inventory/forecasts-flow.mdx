@@ -1,0 +1,304 @@
+---
+title: Inventory Forecasts & Flow
+description: Visualize inventory projections and replenishment flows
+---
+
+# Inventory Forecasts & Flow
+
+The Forecast and Flow tabs provide visual representations of your inventory projections and supply chain movements. These tools help you understand future inventory states and how replenishment orders flow through your system.
+
+## Forecast Tab
+
+The Forecast tab displays inventory projection charts that show expected stock levels over time.
+
+### Accessing the Forecast Tab
+
+Navigate to **Inventory** → **Forecast** tab.
+
+### Understanding the Chart
+
+The inventory forecast chart shows several key elements:
+
+<CardGroup cols={2}>
+  <Card title="Current Projection" icon="chart-line">
+    Blue solid line showing expected inventory based on current orders
+  </Card>
+  <Card title="Recommended Projection" icon="chart-line-up">
+    Green dashed line showing inventory if system recommendations are accepted
+  </Card>
+  <Card title="Threshold Lines" icon="minus">
+    Horizontal lines indicating safety stock, target, and overstock levels
+  </Card>
+  <Card title="Events" icon="circle">
+    Markers showing supply and consumption events
+  </Card>
+</CardGroup>
+
+### Chart Elements
+
+| Element | Visual | Description |
+|---------|--------|-------------|
+| **Current Stock** | Blue solid line | Projected inventory with current orders |
+| **With Recommendations** | Green dashed line | Projected inventory if recommendations are accepted |
+| **Safety Stock** | Red dashed line | Minimum threshold |
+| **Target Stock** | Yellow dashed line | Ideal inventory level |
+| **Overstock Threshold** | Orange dashed line | Maximum before overstock |
+
+### Reading the Chart
+
+**Healthy Inventory:**
+- Blue line stays above safety stock (red line)
+- Line fluctuates near target (yellow line)
+- Smooth transitions without sharp drops
+
+**Problem Areas:**
+- Line drops below safety stock = safety stock breach
+- Line reaches zero = stockout
+- Line above overstock threshold = excess inventory
+
+### Interacting with the Chart
+
+**Zoom and Pan:**
+- Use scroll to zoom in/out
+- Click and drag to pan
+- Double-click to reset view
+
+**Hover for Details:**
+- Hover over any point to see exact values
+- Shows date, quantity, and any events on that day
+
+**Select SKU/Warehouse:**
+- Use filters to view specific SKU/warehouse combinations
+- Compare different products side by side
+
+### Day-by-Day Navigation
+
+Navigate through the projection day by day:
+
+1. Use the date picker or arrow buttons
+2. See inventory state for each specific day
+3. View events (orders received, consumption) for that day
+
+## Event Analysis
+
+Events are supply chain activities that affect inventory:
+
+### Supply Events
+
+| Event | Icon | Description |
+|-------|------|-------------|
+| **Order Placed** | 📋 | Purchase order sent to supplier |
+| **Order Shipped** | 🚚 | Order in transit |
+| **Order Received** | 📦 | Inventory received at warehouse |
+| **Transfer Out** | ➡️ | Inventory leaving warehouse |
+| **Transfer In** | ⬅️ | Inventory arriving from transfer |
+| **Production Complete** | 🏭 | Manufactured items added |
+
+### Consumption Events
+
+| Event | Description |
+|-------|-------------|
+| **Sales Forecast** | Projected daily sales consumption |
+| **Actual Sales** | Recorded sales (historical) |
+| **Production Consumption** | Materials used in manufacturing |
+
+### Event Details Panel
+
+Click on an event marker to see:
+
+- Event type and date
+- Quantities involved
+- Source/destination
+- Order or transaction reference
+
+## Flow Diagram Tab
+
+The Flow Diagram provides a visual representation of replenishment flows between suppliers, warehouses, and destinations.
+
+### Accessing the Flow Tab
+
+Navigate to **Inventory** → **Flow** tab.
+
+### Understanding the Diagram
+
+The flow diagram shows:
+
+```
+[Suppliers] → [Warehouses] → [Channels/Destinations]
+     ↓              ↓              ↓
+  Purchase      Transfers       Fulfillment
+  Orders
+```
+
+### Diagram Elements
+
+| Element | Shape | Description |
+|---------|-------|-------------|
+| **Supplier** | Rectangle | External vendors |
+| **Warehouse** | Rectangle | Inventory locations |
+| **Channel** | Rectangle | Sales destinations |
+| **Flow Line** | Arrow | Movement of goods |
+| **Flow Volume** | Line thickness | Quantity being moved |
+
+### Flow Information
+
+Each flow line shows:
+
+- Direction of movement
+- Quantity or value
+- Timeline (if applicable)
+- Associated orders
+
+### Filtering the Flow
+
+Focus the diagram on specific aspects:
+
+**By Time Period:**
+- View flows for next 30, 60, 90 days
+- Historical flows
+- Custom date range
+
+**By Warehouse:**
+- See flows to/from specific warehouses
+- Compare warehouse activity
+
+**By SKU/Collection:**
+- Filter to specific products
+- See flows for a product line
+
+## Using Forecasts for Planning
+
+### Identifying Issues
+
+Look for these patterns:
+
+| Pattern | Indicates | Action |
+|---------|-----------|--------|
+| Projected stockout | Insufficient supply | Add orders |
+| Sustained overstock | Too much inventory | Reduce orders |
+| Sharp fluctuations | Unstable supply | Smooth order timing |
+| Diverging lines | Recommendations available | Review and accept |
+
+### Scenario Comparison
+
+Compare current plan vs. recommended:
+
+1. **Current (blue)** - What happens with existing orders
+2. **Recommended (green)** - What happens if you accept recommendations
+3. **Gap** - The difference represents improvement opportunity
+
+### Lead Time Visibility
+
+The chart helps verify lead times:
+
+1. Find order placement event
+2. Find order receive event
+3. Time between = actual lead time
+4. Compare to configured lead time
+
+## Combining Forecast and Flow
+
+Use both views together:
+
+<Steps>
+  <Step title="Identify Problem in Forecast">
+    See a projected stockout in the forecast chart
+  </Step>
+
+  <Step title="Review Flow Diagram">
+    Check if any orders are scheduled to arrive
+  </Step>
+
+  <Step title="Identify Gap">
+    Determine what's missing (supplier order, transfer, etc.)
+  </Step>
+
+  <Step title="Take Action">
+    Create the appropriate order to fill the gap
+  </Step>
+</Steps>
+
+## Exporting Visualizations
+
+Export charts for reporting:
+
+1. Click the **Export** button
+2. Choose format:
+   - **PNG** - Image file
+   - **PDF** - Document format
+   - **CSV** - Raw data
+3. Download or share
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Review Schedule">
+    Check forecasts on a regular schedule:
+    - Daily: Next 2 weeks
+    - Weekly: Next 90 days
+    - Monthly: 6-12 month horizon
+  </Accordion>
+
+  <Accordion title="Validate Assumptions">
+    Use the forecast to validate:
+    - Are lead times accurate?
+    - Is demand forecast reasonable?
+    - Are safety stock levels appropriate?
+  </Accordion>
+
+  <Accordion title="Compare Scenarios">
+    Always compare current vs. recommended:
+    - Understand the impact of recommendations
+    - Make informed decisions about accepting them
+  </Accordion>
+
+  <Accordion title="Document Decisions">
+    When you see issues:
+    - Screenshot the forecast
+    - Note the decision made
+    - Follow up to verify outcome
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Chart Not Loading
+
+**Possible causes:**
+- Large data set taking time
+- Filter returns no data
+- Browser performance issue
+
+**Solutions:**
+1. Wait for loading to complete
+2. Adjust filters to reduce data
+3. Refresh the page
+
+### Unexpected Patterns
+
+**Possible causes:**
+- Incorrect forecast data
+- Missing lead time configuration
+- Order data not synced
+
+**Solutions:**
+1. Verify demand forecast accuracy
+2. Check lead time settings
+3. Ensure transactions are up to date
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Manage replenishment orders
+  </Card>
+  <Card title="Supply Simulation" icon="flask" href="/supply-simulation/running">
+    Run what-if scenarios
+  </Card>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
+    View and edit demand forecasts
+  </Card>
+  <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
+    Monitor inventory health
+  </Card>
+</CardGroup>

@@ -1,0 +1,277 @@
+---
+title: Running Simulations
+description: Execute supply chain simulations to optimize inventory
+---
+
+# Running Simulations
+
+Supply simulation helps you understand future inventory positions and optimize replenishment decisions. Run simulations to see projected stock levels, identify potential stockouts, and generate order recommendations.
+
+<Note>
+  Supply simulation uses your demand forecasts, current inventory, and lead times to project future states.
+</Note>
+
+## What is Supply Simulation?
+
+Supply simulation models your supply chain forward in time:
+
+| Input | How It's Used |
+|-------|---------------|
+| **Current Inventory** | Starting point |
+| **Demand Forecasts** | Expected consumption |
+| **Lead Times** | Time for orders to arrive |
+| **Open Orders** | Planned replenishment |
+| **Safety Stock** | Minimum stock levels |
+
+## Accessing Supply Simulation
+
+Navigate to **Inventory** → **Supply Simulation** in the sidebar.
+
+### Simulation Dashboard
+
+| Component | Description |
+|-----------|-------------|
+| **Run Button** | Execute new simulation |
+| **Date Range** | Simulation time horizon |
+| **Results** | Projected inventory and alerts |
+| **Charts** | Visual projections |
+
+## Running a Simulation
+
+<Steps>
+  <Step title="Navigate to Supply Simulation">
+    Go to **Inventory** → **Supply Simulation**
+  </Step>
+
+  <Step title="Configure Parameters">
+    Set simulation options:
+    - Start date (usually today)
+    - End date (planning horizon)
+    - Mode (baseline or what-if)
+  </Step>
+
+  <Step title="Click Run">
+    Execute the simulation
+  </Step>
+
+  <Step title="Review Results">
+    Examine projected inventory and recommendations
+  </Step>
+</Steps>
+
+## Simulation Modes
+
+### Baseline Mode
+
+Standard simulation using current data:
+
+- Uses existing demand forecasts
+- Uses configured lead times
+- Uses current inventory levels
+- Generates standard recommendations
+
+### What-If Mode
+
+Scenario analysis with modified parameters:
+
+- Adjust demand multipliers
+- Modify lead times
+- Test supplier constraints
+- Compare against baseline
+
+See [What-If Scenarios](/supply-simulation/what-if) for details.
+
+## Simulation Results
+
+### Inventory Projections
+
+For each SKU/warehouse combination:
+
+| Metric | Description |
+|--------|-------------|
+| **Projected Quantity** | Expected inventory over time |
+| **Stockout Date** | When inventory hits zero |
+| **Coverage Days** | Days of inventory remaining |
+| **Health Status** | Current inventory health |
+
+### Health Status Categories
+
+| Status | Meaning |
+|--------|---------|
+| **Healthy** | Sufficient inventory |
+| **Low Inventory** | Below safety stock threshold |
+| **Out of Stock** | No inventory available |
+| **Overstock** | Excess inventory |
+
+### Order Recommendations
+
+Simulation generates replenishment recommendations:
+
+| Field | Description |
+|-------|-------------|
+| **Type** | Purchase or Transfer |
+| **Source** | Supplier or warehouse |
+| **Destination** | Destination warehouse |
+| **SKUs** | Products to order |
+| **Quantities** | Recommended amounts |
+| **Order Date** | When to place order |
+| **Alert Level** | Urgency of order |
+
+## Alert Levels
+
+Recommendations are prioritized:
+
+| Level | Description | Action |
+|-------|-------------|--------|
+| **Urgent** | Stockout imminent | Order immediately |
+| **Important** | Low inventory soon | Order this week |
+| **Normal** | Standard replenishment | Schedule as planned |
+
+## Using Simulation Results
+
+### Review Recommendations
+
+1. Check urgent alerts first
+2. Review important recommendations
+3. Examine normal orders for planning
+
+### Create Orders
+
+Convert recommendations to transactions:
+
+<Steps>
+  <Step title="Select Recommendation">
+    Choose an order recommendation
+  </Step>
+
+  <Step title="Review Details">
+    Verify quantities and timing
+  </Step>
+
+  <Step title="Create Draft">
+    Convert to draft transaction
+  </Step>
+
+  <Step title="Submit">
+    Submit when ready to execute
+  </Step>
+</Steps>
+
+### Bulk Operations
+
+Create multiple orders at once:
+
+1. Select multiple recommendations
+2. Click **Create Drafts**
+3. Review created transactions
+4. Submit as needed
+
+## Simulation Frequency
+
+### When to Run
+
+| Trigger | Reason |
+|---------|--------|
+| **Daily** | Routine planning |
+| **After Forecast Update** | New demand data |
+| **After Inventory Change** | Major stock movements |
+| **Before Ordering** | Validate recommendations |
+
+### Automatic Runs
+
+Tether can run simulations automatically:
+
+- Scheduled daily runs
+- Results cached for quick access
+- Alerts generated proactively
+
+## Interpreting Results
+
+### Projected vs. Recommended
+
+| View | Shows |
+|------|-------|
+| **Current Projection** | What happens without action |
+| **Recommended Projection** | What happens with recommendations |
+
+### Reading the Timeline
+
+1. **Blue line**: Current inventory projection
+2. **Green line**: Projection with recommended orders
+3. **Red zone**: Stockout periods
+4. **Yellow zone**: Low inventory periods
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Run Regularly">
+    Regular simulations catch issues early:
+    - Run daily or weekly
+    - Review results promptly
+    - Act on urgent alerts
+  </Accordion>
+
+  <Accordion title="Review Before Ordering">
+    Always simulate before major orders:
+    - Validate quantities
+    - Check timing
+    - Identify conflicts
+  </Accordion>
+
+  <Accordion title="Use What-If for Planning">
+    Test scenarios before decisions:
+    - Demand changes
+    - Lead time variations
+    - Supplier issues
+  </Accordion>
+
+  <Accordion title="Monitor Accuracy">
+    Track simulation accuracy:
+    - Compare projections to actuals
+    - Adjust parameters as needed
+    - Improve forecast inputs
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Simulation Not Running
+
+**Possible causes:**
+- Missing data (forecasts, inventory)
+- Configuration issues
+- System processing
+
+**Solutions:**
+1. Verify forecasts exist
+2. Check inventory data
+3. Wait for processing to complete
+
+### Unexpected Results
+
+**Possible causes:**
+- Outdated forecasts
+- Incorrect lead times
+- Missing open orders
+
+**Solutions:**
+1. Review input data
+2. Update configurations
+3. Verify open order status
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Configurations" icon="gear" href="/supply-simulation/configurations">
+    Configure simulation parameters
+  </Card>
+  <Card title="Charts" icon="chart-area" href="/supply-simulation/charts">
+    Visualize simulation results
+  </Card>
+  <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
+    Run scenario analysis
+  </Card>
+  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Manage scheduled orders
+  </Card>
+</CardGroup>

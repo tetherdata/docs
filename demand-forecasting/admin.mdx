@@ -1,0 +1,393 @@
+---
+title: Forecast Administration
+description: Configure and manage forecast settings in Tether
+---
+
+# Forecast Administration
+
+The Forecast Admin section provides tools for configuring how forecasts are generated, managing bulk data, and controlling forecast versions. These settings significantly impact forecast quality.
+
+<Note>
+  Forecast Administration is restricted to Admin users.
+</Note>
+
+## Accessing Forecast Admin
+
+Navigate to **Demand Forecast** → **Admin** (or through the settings menu).
+
+## Admin Tabs
+
+The Forecast Admin page has multiple tabs:
+
+| Tab | Purpose |
+|-----|---------|
+| **Settings** | Model selection and configuration |
+| **Upload** | Bulk forecast data imports |
+| **Versioning** | Manage forecast versions |
+
+## Model Selection
+
+### Available Models
+
+Tether may offer multiple forecast models:
+
+| Model | Description | Best For |
+|-------|-------------|----------|
+| **Moving Average** | Average of recent periods | Stable demand |
+| **Exponential Smoothing** | Weighted recent data | Trending products |
+| **Seasonal Decomposition** | Captures seasonality | Seasonal products |
+| **Machine Learning** | AI-based predictions | Complex patterns |
+| **Consensus** | Combination of models | General use |
+
+### Selecting a Model
+
+<Steps>
+  <Step title="Go to Settings Tab">
+    Open the **Settings** tab in Forecast Admin
+  </Step>
+
+  <Step title="View Current Model">
+    See which model is currently selected
+  </Step>
+
+  <Step title="Select New Model">
+    Choose a different model from the options
+  </Step>
+
+  <Step title="Configure Parameters">
+    Adjust model-specific settings (if available)
+  </Step>
+
+  <Step title="Save">
+    Apply the new model selection
+  </Step>
+</Steps>
+
+### Model Parameters
+
+Some models have configurable parameters:
+
+**Moving Average:**
+- Number of periods to average
+- Weighting (equal or weighted)
+
+**Exponential Smoothing:**
+- Smoothing factor (alpha)
+- Trend factor (beta)
+- Seasonal factor (gamma)
+
+**Machine Learning:**
+- Feature selection
+- Training period
+- Update frequency
+
+## Forecast Settings
+
+### General Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Forecast Horizon** | How far ahead to forecast |
+| **Update Frequency** | How often forecasts regenerate |
+| **Granularity** | Daily, weekly, or monthly |
+| **Default Channel** | Channel for new SKUs |
+
+### Threshold Settings
+
+Configure alerts and indicators:
+
+| Setting | Description |
+|---------|-------------|
+| **Accuracy Threshold** | Alert if accuracy drops below |
+| **Change Threshold** | Highlight changes above X% |
+| **Confidence Interval** | Display range (e.g., 95%) |
+
+## Bulk Upload
+
+### Upload Tab
+
+The Upload tab allows importing forecast data in bulk.
+
+### Upload Process
+
+<Steps>
+  <Step title="Download Template">
+    Click **Download Template** to get the correct format
+  </Step>
+
+  <Step title="Prepare Data">
+    Fill in the template with forecast values:
+    - SKU code (required)
+    - Channel (required)
+    - Period (required)
+    - Forecast quantity (required)
+  </Step>
+
+  <Step title="Upload File">
+    Click **Upload** and select your file
+  </Step>
+
+  <Step title="Preview">
+    Review the preview of changes:
+    - New forecasts to be added
+    - Existing forecasts to be updated
+    - Errors to resolve
+  </Step>
+
+  <Step title="Confirm">
+    Click **Apply** to import the forecasts
+  </Step>
+</Steps>
+
+### Template Format
+
+| Column | Required | Description |
+|--------|----------|-------------|
+| `sku_code` | Yes | SKU identifier |
+| `channel_id` or `channel_name` | Yes | Sales channel |
+| `period_date` | Yes | Date in YYYY-MM-DD or YYYY-MM |
+| `quantity` | Yes | Forecast quantity |
+| `notes` | No | Optional notes |
+
+### Upload Validation
+
+The system validates:
+
+- SKU codes exist
+- Channels exist
+- Dates are in valid range
+- Quantities are numeric and positive
+
+<Warning>
+  Invalid rows are rejected. Fix errors and re-upload, or proceed with valid rows only.
+</Warning>
+
+### Upload History
+
+View past uploads:
+
+- Upload date and time
+- User who uploaded
+- File name
+- Record count
+- Status (success, partial, failed)
+
+## Versioning
+
+### What is Forecast Versioning?
+
+Versioning maintains historical snapshots of forecasts:
+
+| Version Type | Description |
+|--------------|-------------|
+| **Current** | Active forecast being used |
+| **Historical** | Past versions for comparison |
+| **Draft** | Work-in-progress (not active) |
+
+### Versioning Tab
+
+The Versioning tab shows:
+
+- List of forecast versions
+- Version dates and descriptions
+- Actions (view, restore, compare)
+
+### Creating a Version
+
+<Steps>
+  <Step title="Go to Versioning Tab">
+    Open the Versioning tab
+  </Step>
+
+  <Step title="Click Create Version">
+    Start a new version snapshot
+  </Step>
+
+  <Step title="Add Details">
+    - Name: "Q1 2024 Plan"
+    - Description: Reason for version
+  </Step>
+
+  <Step title="Save">
+    Version is created and stored
+  </Step>
+</Steps>
+
+### Comparing Versions
+
+Compare forecast versions:
+
+1. Select two versions
+2. Click **Compare**
+3. View differences by SKU/channel/period
+
+### Restoring a Version
+
+To revert to a previous version:
+
+<Steps>
+  <Step title="Select Version">
+    Click on the version to restore
+  </Step>
+
+  <Step title="Click Restore">
+    Choose **Restore** action
+  </Step>
+
+  <Step title="Confirm">
+    Review what will change and confirm
+  </Step>
+
+  <Step title="Version Active">
+    Selected version becomes current
+  </Step>
+</Steps>
+
+<Warning>
+  Restoring a version replaces the current forecast. Consider creating a version of the current state first.
+</Warning>
+
+## Forecast Regeneration
+
+### When Forecasts Regenerate
+
+Forecasts typically regenerate:
+
+- On a scheduled basis (daily, weekly)
+- When model settings change
+- When historical data is updated
+- On manual trigger
+
+### Manual Regeneration
+
+To trigger a forecast update:
+
+<Steps>
+  <Step title="Go to Settings">
+    Open Forecast Admin Settings
+  </Step>
+
+  <Step title="Click Regenerate">
+    Find the **Regenerate Forecasts** button
+  </Step>
+
+  <Step title="Select Scope">
+    Choose what to regenerate:
+    - All forecasts
+    - Specific channels
+    - Specific collections
+  </Step>
+
+  <Step title="Confirm">
+    Start the regeneration process
+  </Step>
+
+  <Step title="Monitor">
+    Track progress and completion
+  </Step>
+</Steps>
+
+<Info>
+  Regeneration may take time for large datasets. User edits are typically preserved unless specifically overwritten.
+</Info>
+
+## Data Quality
+
+### Monitoring Data Quality
+
+Good forecasts require good data:
+
+| Quality Issue | Impact | Solution |
+|---------------|--------|----------|
+| Missing history | Inaccurate baseline | Import historical data |
+| Outliers | Distorted patterns | Clean or flag anomalies |
+| Gaps | Incomplete patterns | Fill or interpolate |
+| Late data | Delayed updates | Improve sync timing |
+
+### Data Quality Indicators
+
+Watch for warnings about:
+
+- SKUs with no history
+- Channels with sparse data
+- Products with high variability
+- Recent data gaps
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Model Selection">
+    Choose models carefully:
+    - Start with simpler models
+    - Compare performance before switching
+    - Consider product segments
+    - Document selection rationale
+  </Accordion>
+
+  <Accordion title="Regular Updates">
+    Keep forecasts current:
+    - Ensure regular regeneration
+    - Monitor data freshness
+    - Review model performance
+  </Accordion>
+
+  <Accordion title="Version Discipline">
+    Use versioning effectively:
+    - Create versions before major changes
+    - Name versions descriptively
+    - Compare versions during planning
+  </Accordion>
+
+  <Accordion title="Upload Carefully">
+    Handle bulk uploads with care:
+    - Validate data before upload
+    - Preview changes
+    - Keep backup of current state
+    - Document upload purpose
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Forecasts Not Updating
+
+**Possible causes:**
+- Regeneration not scheduled
+- Processing error
+- Data sync issues
+
+**Solutions:**
+1. Check regeneration schedule
+2. Trigger manual regeneration
+3. Review system logs
+4. Verify data sources
+
+### Upload Errors
+
+**Common issues:**
+- Wrong file format
+- Invalid SKU codes
+- Date format problems
+
+**Solutions:**
+1. Use the provided template
+2. Verify SKU codes exist in system
+3. Use standard date formats
+4. Check for special characters
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
+    Compare forecast model performance
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View and edit forecasts
+  </Card>
+  <Card title="Promotions" icon="tag" href="/demand-forecasting/promotions">
+    Manage promotional impacts
+  </Card>
+  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
+    Configure change tracking
+  </Card>
+</CardGroup>

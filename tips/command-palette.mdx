@@ -1,0 +1,259 @@
+---
+title: Command Palette
+description: Quick access to any feature with keyboard commands
+---
+
+# Command Palette
+
+The command palette provides quick access to any feature in Tether. Use it to navigate, search, and execute actions without leaving the keyboard.
+
+## Opening the Command Palette
+
+| Method | Action |
+|--------|--------|
+| **Keyboard** | `Cmd + K` (Mac) or `Ctrl + K` (Windows) |
+| **Click** | Click search icon in header |
+
+## Using the Command Palette
+
+### Basic Navigation
+
+<Steps>
+  <Step title="Open Palette">
+    Press `Cmd + K` or `Ctrl + K`
+  </Step>
+
+  <Step title="Type Search">
+    Start typing what you want
+  </Step>
+
+  <Step title="Select Result">
+    Use arrow keys or click to select
+  </Step>
+
+  <Step title="Execute">
+    Press Enter to navigate or execute
+  </Step>
+</Steps>
+
+### Search Types
+
+The command palette searches across:
+
+| Type | Examples |
+|------|----------|
+| **Pages** | SKUs, Inventory, Forecasting |
+| **Actions** | Create SKU, Run Simulation |
+| **Records** | Specific SKUs, orders, suppliers |
+| **Settings** | User access, terminology |
+
+## Command Categories
+
+### Navigation Commands
+
+Quickly jump to any page:
+
+| Command | Navigates To |
+|---------|--------------|
+| `skus` | SKU list |
+| `collections` | Collections page |
+| `inventory` | Inventory dashboard |
+| `forecast` | Demand forecasting |
+| `transactions` | Transaction list |
+| `settings` | Settings page |
+
+### Action Commands
+
+Execute common actions:
+
+| Command | Action |
+|---------|--------|
+| `create sku` | Open SKU creation |
+| `create collection` | Open collection creation |
+| `create transaction` | Start new transaction |
+| `run simulation` | Execute supply simulation |
+| `export` | Open export options |
+
+### Search Commands
+
+Find specific records:
+
+| Command | Finds |
+|---------|-------|
+| `sku:` + name | Specific SKU |
+| `collection:` + name | Specific collection |
+| `order:` + number | Specific transaction |
+| `supplier:` + name | Specific supplier |
+
+## Tips for Effective Use
+
+### Fuzzy Matching
+
+You don't need exact matches:
+
+| Type | Matches |
+|------|---------|
+| `inv` | Inventory |
+| `sku cre` | Create SKU |
+| `fore dash` | Forecasting Dashboard |
+
+### Recent Items
+
+Command palette shows:
+
+- Recent pages visited
+- Recent searches
+- Recent actions
+
+### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `↑` `↓` | Navigate results |
+| `Enter` | Select highlighted |
+| `Esc` | Close palette |
+| `Tab` | Autocomplete |
+
+## Common Workflows
+
+### Quick SKU Lookup
+
+<Steps>
+  <Step title="Open Palette">
+    `Cmd + K`
+  </Step>
+
+  <Step title="Type SKU">
+    Type SKU code or name
+  </Step>
+
+  <Step title="Select">
+    Choose from results
+  </Step>
+
+  <Step title="View">
+    Jump directly to SKU detail
+  </Step>
+</Steps>
+
+### Fast Page Switching
+
+<Steps>
+  <Step title="Open Palette">
+    `Cmd + K`
+  </Step>
+
+  <Step title="Type Destination">
+    Type page name (e.g., "forecast")
+  </Step>
+
+  <Step title="Navigate">
+    Press Enter to go
+  </Step>
+</Steps>
+
+### Quick Actions
+
+<Steps>
+  <Step title="Open Palette">
+    `Cmd + K`
+  </Step>
+
+  <Step title="Type Action">
+    Type action (e.g., "create sku")
+  </Step>
+
+  <Step title="Execute">
+    Press Enter to start action
+  </Step>
+</Steps>
+
+## Advanced Features
+
+### Filtering Results
+
+Narrow results by type:
+
+| Prefix | Filter |
+|--------|--------|
+| `>` | Actions only |
+| `@` | Records only |
+| `#` | Pages only |
+
+### Contextual Commands
+
+Commands change based on current page:
+
+| Current Page | Available Commands |
+|--------------|-------------------|
+| **SKU List** | Filter, sort, export |
+| **Forecast** | Edit, compare, export |
+| **Transaction** | Update status, add items |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Learn Key Commands">
+    Memorize frequently used commands:
+    - Your most visited pages
+    - Common actions
+    - Frequent searches
+  </Accordion>
+
+  <Accordion title="Use Abbreviations">
+    Short inputs work well:
+    - First few letters
+    - Key words only
+    - Common abbreviations
+  </Accordion>
+
+  <Accordion title="Build Muscle Memory">
+    Practice using the palette:
+    - Resist using mouse
+    - Let it become natural
+    - Speed comes with practice
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Command Not Found
+
+**Possible causes:**
+- Misspelling
+- Feature not available
+- Permission restrictions
+
+**Solutions:**
+1. Check spelling
+2. Try alternative phrasing
+3. Verify you have access
+
+### Slow Results
+
+**Possible causes:**
+- Large dataset
+- Network latency
+- Complex search
+
+**Solutions:**
+1. Be more specific
+2. Use filters
+3. Wait for results to load
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Keyboard Shortcuts" icon="keyboard" href="/tips/shortcuts">
+    More keyboard shortcuts
+  </Card>
+  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
+    Work with multiple items
+  </Card>
+  <Card title="Navigation" icon="compass" href="/getting-started/navigation">
+    Interface overview
+  </Card>
+  <Card title="Exports" icon="download" href="/tips/exports">
+    Export data
+  </Card>
+</CardGroup>

@@ -1,0 +1,315 @@
+---
+title: Simulation Configurations
+description: Configure supply simulation parameters
+---
+
+# Simulation Configurations
+
+Configure your supply simulation to match your business rules, safety stock policies, and planning requirements.
+
+## Configuration Overview
+
+Supply simulation uses multiple configuration sources:
+
+| Configuration | Purpose |
+|---------------|---------|
+| **Safety Stock** | Minimum inventory levels |
+| **Lead Times** | Transit and production times |
+| **Fulfillment Mapping** | Which warehouses serve which channels |
+| **Supplier Capabilities** | What suppliers can provide |
+
+## Safety Stock Configuration
+
+### What is Safety Stock?
+
+Safety stock is buffer inventory to protect against:
+
+- Demand variability
+- Supply delays
+- Forecast errors
+
+### Setting Safety Stock
+
+Configure at the SKU/warehouse level:
+
+<Steps>
+  <Step title="Navigate to Inventory Settings">
+    Go to **Settings** → **Inventory Forecast**
+  </Step>
+
+  <Step title="Find Safety Stock Section">
+    Locate safety stock configuration
+  </Step>
+
+  <Step title="Set Values">
+    Define safety stock by:
+    - Fixed quantity
+    - Days of coverage
+    - Percentage of demand
+  </Step>
+
+  <Step title="Save">
+    Apply configuration
+  </Step>
+</Steps>
+
+### Safety Stock Methods
+
+| Method | Description | Best For |
+|--------|-------------|----------|
+| **Fixed Quantity** | Specific unit count | Stable demand |
+| **Days of Cover** | X days of average demand | Variable demand |
+| **Percentage** | % of forecast period demand | Seasonal products |
+
+### Example Configuration
+
+| SKU | Warehouse | Method | Value |
+|-----|-----------|--------|-------|
+| SKU-001 | Main | Days of Cover | 14 days |
+| SKU-002 | Main | Fixed | 500 units |
+| SKU-003 | Regional | Percentage | 20% |
+
+## Lead Time Configuration
+
+### Types of Lead Times
+
+| Type | Description |
+|------|-------------|
+| **Supplier Lead Time** | Time from order to receipt |
+| **Transit Lead Time** | Shipping time between locations |
+| **Production Lead Time** | Manufacturing time |
+
+### Configuring Lead Times
+
+#### Supplier Lead Times
+
+Set at the supplier capability level:
+
+1. Go to **Inventory** → **Suppliers**
+2. Select supplier
+3. View/edit capabilities
+4. Set lead time per SKU
+
+#### Warehouse Lead Times
+
+Configure transit times between warehouses:
+
+1. Go to **Inventory** → **Warehouses**
+2. Access Lead Times
+3. Set matrix of warehouse-to-warehouse times
+
+See [Lead Times](/inventory/warehouses/lead-times) for details.
+
+## Fulfillment Mapping
+
+### What is Fulfillment Mapping?
+
+Defines which warehouses fulfill demand from which channels:
+
+```
+Channel: Shopify US → Fulfilled by: Main Warehouse
+Channel: Amazon → Fulfilled by: Amazon FBA
+Channel: Wholesale → Fulfilled by: Regional DC
+```
+
+### Configuring Fulfillment
+
+<Steps>
+  <Step title="Go to Inventory Settings">
+    Navigate to **Settings** → **Inventory Forecast**
+  </Step>
+
+  <Step title="Find Fulfillment Mapping">
+    Locate the fulfillment configuration section
+  </Step>
+
+  <Step title="Map Channels to Warehouses">
+    For each channel, select fulfilling warehouse(s)
+  </Step>
+
+  <Step title="Save">
+    Apply the mapping
+  </Step>
+</Steps>
+
+### Multiple Fulfillment Options
+
+A channel can be fulfilled by multiple warehouses:
+
+| Channel | Primary | Secondary |
+|---------|---------|-----------|
+| Website US | East DC | West DC |
+| Website CA | Canada DC | East DC |
+
+## Supplier Configuration
+
+### Supplier Capabilities
+
+Configure what each supplier can provide:
+
+| Setting | Description |
+|---------|-------------|
+| **SKUs** | Which products they supply |
+| **Lead Time** | Days to receive |
+| **Cost** | Unit cost |
+| **MOQ** | Minimum order quantity |
+| **Capacity** | Maximum order quantity |
+
+### Setting Capabilities
+
+<Steps>
+  <Step title="Go to Suppliers">
+    Navigate to **Inventory** → **Suppliers**
+  </Step>
+
+  <Step title="Select Supplier">
+    Choose supplier to configure
+  </Step>
+
+  <Step title="Add Capabilities">
+    For each SKU they provide:
+    - Set lead time
+    - Set costs
+    - Set MOQ/capacity
+  </Step>
+
+  <Step title="Save">
+    Apply configuration
+  </Step>
+</Steps>
+
+## Simulation Parameters
+
+### Time Horizon
+
+Configure how far into the future to simulate:
+
+| Setting | Typical Value | Use Case |
+|---------|---------------|----------|
+| **Short** | 30 days | Tactical planning |
+| **Medium** | 90 days | Standard planning |
+| **Long** | 180+ days | Strategic planning |
+
+### Demand Source
+
+Which forecast to use:
+
+| Option | Description |
+|--------|-------------|
+| **Selected Model** | Currently active forecast model |
+| **Specific Model** | Choose a particular model |
+| **Manual Override** | Use custom forecast data |
+
+## Overstock Configuration
+
+### What is Overstock?
+
+Overstock threshold defines when inventory is excessive:
+
+- Ties up capital
+- Risk of obsolescence
+- Storage costs
+
+### Setting Overstock Thresholds
+
+Configure overstock alerts:
+
+| Method | Description |
+|--------|-------------|
+| **Days of Cover** | Alert if > X days inventory |
+| **Multiple of Target** | Alert if > X times safety stock |
+
+## Configuration Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start Conservative">
+    Begin with higher safety stocks:
+    - Learn demand patterns
+    - Understand variability
+    - Reduce gradually
+  </Accordion>
+
+  <Accordion title="Segment by Risk">
+    Different settings for different products:
+    - Critical items: higher safety stock
+    - Long lead time: higher buffer
+    - Stable demand: lower buffer
+  </Accordion>
+
+  <Accordion title="Review Regularly">
+    Update configurations as business changes:
+    - New suppliers
+    - Changed lead times
+    - Demand pattern shifts
+  </Accordion>
+
+  <Accordion title="Document Decisions">
+    Keep records of why settings were chosen:
+    - Helps future adjustments
+    - Enables learning
+  </Accordion>
+</AccordionGroup>
+
+## Configuration Impact
+
+### How Settings Affect Results
+
+| Configuration | Simulation Impact |
+|---------------|-------------------|
+| **Higher Safety Stock** | Earlier reorder, more inventory |
+| **Longer Lead Times** | Earlier order dates |
+| **More Fulfillment Options** | Flexible sourcing recommendations |
+| **Lower MOQ** | Smaller, more frequent orders |
+
+### Testing Configuration Changes
+
+Before applying configuration changes:
+
+1. Run simulation with current settings
+2. Note baseline results
+3. Run with new settings
+4. Compare differences
+5. Validate makes sense
+
+## Troubleshooting
+
+### Orders Recommended Too Late
+
+**Possible causes:**
+- Lead times not configured
+- Safety stock too low
+- Missing supplier capabilities
+
+**Solutions:**
+1. Verify lead time configuration
+2. Review safety stock settings
+3. Check supplier setup
+
+### Too Many Recommendations
+
+**Possible causes:**
+- Safety stock too high
+- Overstock threshold too low
+- Many small orders (low MOQ)
+
+**Solutions:**
+1. Review safety stock levels
+2. Adjust overstock thresholds
+3. Check MOQ settings
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Running Simulations" icon="play" href="/supply-simulation/running">
+    Execute simulations
+  </Card>
+  <Card title="Charts" icon="chart-area" href="/supply-simulation/charts">
+    Visualize results
+  </Card>
+  <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
+    Test scenarios
+  </Card>
+  <Card title="Lead Times" icon="clock" href="/inventory/warehouses/lead-times">
+    Configure lead times
+  </Card>
+</CardGroup>

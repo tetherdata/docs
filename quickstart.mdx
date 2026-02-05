@@ -1,80 +1,176 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start Guide
+description: Get up and running with Tether in minutes
 ---
 
-## Get started in three steps
+# Quick Start Guide
 
-Get your documentation site running locally and make your first customization.
-
-### Step 1: Set up your local environment
-
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+This guide walks you through the essential steps to set up Tether for your organization. By the end, you'll have your first warehouse, collection, SKUs, and sales channel configured.
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  This guide assumes you have Admin access. If you're a Sales Rep user, some features may not be available to you. See [User Roles & Permissions](/roles-permissions) for details.
 </Note>
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- Admin access to your Tether account
+- Basic information about your products (names, SKU codes)
+- Your warehouse location(s)
+- Sales channel information
+
+## Setup Checklist
+
+<Steps>
+  <Step title="Create Your First Warehouse">
+    Warehouses are where your inventory is stored. You need at least one warehouse to track inventory.
+
+    1. Navigate to **Inventory** in the sidebar
+    2. Click the **Warehouses** tab
+    3. Click **Create Warehouse**
+    4. Enter the warehouse details:
+       - **Name**: A descriptive name (e.g., "Main Warehouse")
+       - **Code**: A short identifier (e.g., "MAIN")
+       - **Address**: Physical location (optional but recommended)
+    5. Click **Save**
+
+    <Tip>
+      Use clear, consistent naming conventions for warehouses. This helps when you have multiple locations.
+    </Tip>
+  </Step>
+
+  <Step title="Create a Collection">
+    Collections group related products together and define shared attributes like dimensions.
+
+    1. Navigate to **SKUs** in the sidebar
+    2. Click the **Collections** tab
+    3. Click **Create Collection**
+    4. Enter collection details:
+       - **Name**: Descriptive name (e.g., "T-Shirts", "Electronics")
+       - **Description**: Optional details about the collection
+    5. Click **Save**
+  </Step>
+
+  <Step title="Set Up Dimensions (Optional)">
+    Dimensions define product attributes like Size or Color. This is optional but powerful for managing variants.
+
+    1. Open your newly created collection
+    2. Go to the **Dimensions** tab
+    3. Click **Add Dimension**
+    4. Create dimensions like:
+       - **Size**: S, M, L, XL
+       - **Color**: Red, Blue, Black
+    5. Save each dimension
+
+    <Info>
+      Dimensions enable the SKU Generator, which can automatically create all variant combinations for you.
+    </Info>
+  </Step>
+
+  <Step title="Add Your First SKUs">
+    SKUs are individual products in your catalog. You can create them manually or generate them from dimensions.
+
+    **Option A: Create Manually**
+    1. Navigate to **SKUs** in the sidebar
+    2. Click **Create SKU**
+    3. Enter SKU details:
+       - **Name**: Product name
+       - **SKU Code**: Unique identifier
+       - **Type**: Usually "Finished Good" for sellable products
+       - **Collection**: Select your collection
+    4. Click **Save**
+
+    **Option B: Generate from Dimensions**
+    1. Open your collection
+    2. Go to the **SKUs** tab
+    3. Click **SKU Generator**
+    4. Select the dimension values to include
+    5. Click **Generate** to create all combinations
+  </Step>
+
+  <Step title="Configure a Sales Channel">
+    Channels represent where you sell products (Shopify, Amazon, wholesale, etc.).
+
+    1. Navigate to **Channels** in the sidebar
+    2. Click **Create Channel**
+    3. Enter channel details:
+       - **Name**: Channel name (e.g., "Shopify US", "Amazon")
+       - **Type**: Select the appropriate type
+    4. Click **Save**
+  </Step>
+
+  <Step title="View Your Inventory Dashboard">
+    Now that you have the basics set up, explore your inventory dashboard.
+
+    1. Navigate to **Inventory** in the sidebar
+    2. The **Overview** tab shows:
+       - Inventory health alerts
+       - Stockout risks
+       - Safety stock breaches
+    3. Use filters to focus on specific warehouses or collections
+
+    <Note>
+      Inventory levels will show as zero until you import data or set up integrations.
+    </Note>
+  </Step>
+</Steps>
+
+## What's Next?
+
+Now that you have the basics configured, explore these areas:
+
+<CardGroup cols={2}>
+  <Card title="Import Inventory Data" icon="upload" href="/integrations/setup">
+    Connect your systems to automatically sync inventory levels
+  </Card>
+  <Card title="Set Up Suppliers" icon="truck" href="/inventory/suppliers">
+    Add suppliers and configure lead times for replenishment planning
+  </Card>
+  <Card title="Configure Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
+    View and adjust demand forecasts for your products
+  </Card>
+  <Card title="Explore Supply Planning" icon="clipboard-list" href="/inventory/supply-plan">
+    See system-recommended replenishment orders
+  </Card>
+</CardGroup>
+
+## Common Setup Tasks
+
+### Adding More Users
+
+If you need to add team members:
+
+1. Go to **Settings** → **User Access**
+2. Click **Add User**
+3. Enter their email and assign a role (Admin or Sales Rep)
+4. Configure channel access as needed
+
+### Customizing Terminology
+
+Tether allows you to customize terminology to match your organization's language:
+
+1. Go to **Settings** → **Terminology**
+2. Rename terms like "SKU", "Collection", or "Channel"
+3. Save changes
+
+### Setting Up Integrations
+
+To automatically sync data from external systems:
+
+1. Go to **Integrations** in the sidebar
+2. Click **Create Integration**
+3. Follow the setup wizard for your data source
+4. Configure field mappings
+5. Run your first sync
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Navigation Guide" icon="compass" href="/navigation">
+    Learn the Tether interface in detail
+  </Card>
+  <Card title="Command Palette" icon="keyboard" href="/tips/command-palette">
+    Quickly navigate with keyboard shortcuts
+  </Card>
+</CardGroup>
