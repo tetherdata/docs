@@ -158,31 +158,32 @@ Choosing the right SKU type is important for accurate inventory and forecasting:
     - Available on channels
   </Accordion>
 
-  <Accordion title="Raw Material">
-    **Use when**: The item is used to produce other products
+  <Accordion title="Variant">
+    **Use when**: The product is a variation of a base product based on dimensions
 
     **Examples**:
-    - Fabric for clothing
-    - Electronic components
-    - Raw ingredients
+    - "T-Shirt - Blue - Medium" (variant of base T-Shirt)
+    - "Running Shoe - Size 10 - Black"
 
     **Characteristics**:
-    - Consumed during production
-    - Linked via BOM to finished goods
-    - Ordered from suppliers
+    - Generated from dimension combinations (Size, Color, etc.)
+    - Inherits properties from parent collection
+    - Each variant is a distinct sellable product
   </Accordion>
 
   <Accordion title="Component">
-    **Use when**: The item is a part that goes into other products
+    **Use when**: The item is purchased and used in other products
 
     **Examples**:
-    - Buttons for shirts
-    - Screws for furniture
-    - Straps for bags
+    - Raw materials (fabric, ingredients)
+    - Packaging materials (boxes, bags, labels)
+    - Parts (buttons, screws, straps)
 
     **Characteristics**:
-    - Similar to raw materials
-    - Often reusable across products
+    - Always purchased, never produced
+    - Used in Bills of Materials (BOM)
+    - Ordered from suppliers
+    - Consumed during production or assembly
   </Accordion>
 
   <Accordion title="Bundle">
@@ -200,7 +201,7 @@ Choosing the right SKU type is important for accurate inventory and forecasting:
   </Accordion>
 
   <Accordion title="Kit">
-    **Use when**: Products are assembled on-demand
+    **Use when**: Products are assembled on-demand at fulfillment time
 
     **Examples**:
     - Build-your-own kits

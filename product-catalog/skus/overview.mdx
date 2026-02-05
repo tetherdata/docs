@@ -18,17 +18,20 @@ A SKU is a unique identifier for a specific product. In Tether, SKUs contain:
 
 ## SKU Types
 
-Tether supports multiple SKU types to model your product structure:
+Tether supports six SKU types to model your product structure:
 
 | Type | Description | Example |
 |------|-------------|---------|
-| **Finished Good** | Products sold to customers | "Blue T-Shirt, Size M" |
-| **Raw Material** | Components used in production | "Cotton Fabric" |
-| **Packaging** | Packaging materials | "Shipping Box 12x12" |
-| **Component** | Parts that make up other products | "Button Set" |
-| **Bundle** | A group of SKUs sold together | "Gift Set" |
-| **Kit** | Assembled from components | "DIY Kit" |
-| **Virtual Bundle** | Logical grouping (not physically assembled) | "Buy 2 Get 1 Free" |
+| **Finished Good** | Products sold directly to customers | "Blue T-Shirt, Size M" |
+| **Variant** | Product variations generated from dimension combinations | "T-Shirt - Blue - Medium" |
+| **Component** | Items purchased and used in other products (raw materials, packaging, parts) | "Cotton Fabric", "Shipping Box", "Button Set" |
+| **Bundle** | A group of SKUs physically assembled and sold together | "Gift Set" |
+| **Kit** | Products assembled from components at fulfillment time | "DIY Kit" |
+| **Virtual Bundle** | Logical grouping for pricing/promotions (not physically assembled) | "Buy 2 Get 1 Free" |
+
+<Note>
+  **Component** is the type to use for all purchased items that go into other products, including raw materials, packaging materials, and parts.
+</Note>
 
 ## The SKU Dashboard
 
@@ -141,10 +144,12 @@ Inventory is tracked per SKU per warehouse. A single SKU can have inventory in m
 
   <Accordion title="Using Types Effectively">
     Choose the right SKU type:
-    - Use **Finished Good** for anything you sell directly
-    - Use **Component** for items that go into other products
+    - Use **Finished Good** for products you sell directly
+    - Use **Variant** for dimension-based variations of a base product
+    - Use **Component** for all purchased items used in other products (raw materials, packaging, parts)
     - Use **Bundle** when you physically assemble products together
-    - Use **Virtual Bundle** for promotional groupings
+    - Use **Kit** for products assembled at fulfillment time
+    - Use **Virtual Bundle** for promotional groupings that aren't physically assembled
   </Accordion>
 </AccordionGroup>
 

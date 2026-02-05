@@ -286,11 +286,15 @@ BOM defines what components make up a finished product:
 
 ```
 T-Shirt (Finished Good)
-├── Fabric - 0.5 meters
-├── Thread - 1 spool
-├── Label - 1 piece
-└── Packaging - 1 bag
+├── Fabric - 0.5 meters (Component)
+├── Thread - 1 spool (Component)
+├── Label - 1 piece (Component)
+└── Poly Bag - 1 bag (Component)
 ```
+
+<Note>
+  All items in a BOM should be of SKU type **Component**. This includes raw materials, packaging materials, and parts.
+</Note>
 
 ### Collection-Level BOM
 
@@ -306,7 +310,7 @@ Set up BOM at the collection level when products share components:
   </Step>
 
   <Step title="Select SKU">
-    Choose the component SKU (must be type Component or Raw Material)
+    Choose the component SKU (must be SKU type **Component**)
   </Step>
 
   <Step title="Set Quantity">
@@ -332,18 +336,29 @@ General collection configuration.
 |---------|-------------|
 | **Name** | Collection display name |
 | **Description** | Detailed description |
-| **Code** | Short identifier |
-| **Status** | Active or Archived |
+| **Code** | Short identifier (SKU prefix) |
+| **Status** | Draft or Active (lifecycle status) |
+
+### Collection Lifecycle Status
+
+Collections have a lifecycle status separate from archiving:
+
+| Status | Description |
+|--------|-------------|
+| **Draft** | Collection is being configured, not ready for use |
+| **Active** | Collection is ready for manufacturing/inventory use |
 
 ### Archiving a Collection
+
+Archiving is separate from the Draft/Active status:
 
 <Steps>
   <Step title="Open Settings">
     Go to the collection's Settings tab
   </Step>
 
-  <Step title="Change Status">
-    Set Status to **Archived**
+  <Step title="Archive Collection">
+    Click **Archive** or toggle the archived setting
   </Step>
 
   <Step title="Confirm">
@@ -361,7 +376,7 @@ General collection configuration.
 
 1. Find the collection (use filters to show archived)
 2. Open Settings tab
-3. Change Status back to **Active**
+3. Unarchive the collection
 
 ## Best Practices
 

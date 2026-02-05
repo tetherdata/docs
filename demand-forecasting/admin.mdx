@@ -108,23 +108,79 @@ Configure alerts and indicators:
 
 The Upload tab allows importing forecast data in bulk.
 
+### Template Types
+
+Tether provides **two different upload templates** depending on your period configuration:
+
+| Template | When to Use | Download |
+|----------|-------------|----------|
+| **Standard Date Template** | Default - when custom periods are NOT enabled | Default template download |
+| **Custom Period Template** | When custom time aggregations are enabled | Select "Period" format |
+
+<Note>
+  The custom period template is only available if your organization has enabled custom time aggregations in period settings.
+</Note>
+
+### Standard Date Template
+
+Use this template when your organization uses standard calendar dates.
+
+**Required Columns:**
+
+| Column | Required | Description |
+|--------|----------|-------------|
+| `sku_code` | Yes | SKU identifier |
+| `channel_name` | Yes | Sales channel name |
+| `date` | Yes | Date in `MM/DD/YYYY` or `YYYY-MM-DD` format |
+| `quantity` | Yes | Forecast quantity (integer) |
+
+**Example:**
+```csv
+sku_code,channel_name,date,quantity
+SKU001,Amazon US,2025-01-01,1000
+SKU002,Shopify,01/15/2025,500
+```
+
+### Custom Period Template
+
+Use this template when your organization has custom periods enabled (e.g., fiscal periods like P1-P12).
+
+**Required Columns:**
+
+| Column | Required | Description |
+|--------|----------|-------------|
+| `sku_code` | Yes | SKU identifier |
+| `channel_name` | Yes | Sales channel name |
+| `period_label` | Yes | Period name (e.g., `P1`, `P10`) |
+| `fiscal_year` | Yes | Fiscal year (e.g., `FY2025`, `2024`) |
+| `quantity` | Yes | Forecast quantity (integer) |
+
+**Example:**
+```csv
+sku_code,channel_name,period_label,fiscal_year,quantity
+SKU001,Amazon US,P1,FY2025,1000
+SKU002,Shopify,P3,FY2025,500
+```
+
+<Warning>
+  Do not mix date and period columns in the same file. The system will reject files that contain both a `date` column and `period_label`/`fiscal_year` columns.
+</Warning>
+
 ### Upload Process
 
 <Steps>
   <Step title="Download Template">
-    Click **Download Template** to get the correct format
+    Click **Download Template** and select the appropriate format:
+    - **Standard** for date-based uploads
+    - **Period** for custom period uploads (if enabled)
   </Step>
 
   <Step title="Prepare Data">
-    Fill in the template with forecast values:
-    - SKU code (required)
-    - Channel (required)
-    - Period (required)
-    - Forecast quantity (required)
+    Fill in the template with your forecast values. Ensure all required columns are populated.
   </Step>
 
   <Step title="Upload File">
-    Click **Upload** and select your file
+    Click **Upload** and select your CSV file
   </Step>
 
   <Step title="Preview">
@@ -139,27 +195,29 @@ The Upload tab allows importing forecast data in bulk.
   </Step>
 </Steps>
 
-### Template Format
-
-| Column | Required | Description |
-|--------|----------|-------------|
-| `sku_code` | Yes | SKU identifier |
-| `channel_id` or `channel_name` | Yes | Sales channel |
-| `period_date` | Yes | Date in YYYY-MM-DD or YYYY-MM |
-| `quantity` | Yes | Forecast quantity |
-| `notes` | No | Optional notes |
-
 ### Upload Validation
 
-The system validates:
+The system validates all uploads:
 
-- SKU codes exist
-- Channels exist
-- Dates are in valid range
-- Quantities are numeric and positive
+**Common Validations:**
+- SKU codes must exist in the system
+- Channel names must match existing channels
+- Quantities must be numeric and non-negative
+- Duplicate SKU + Channel + Date/Period combinations are flagged
+
+**Date Template Validations:**
+- Dates must be in valid format (`MM/DD/YYYY` or `YYYY-MM-DD`)
+
+**Period Template Validations:**
+- Period labels must match configured periods
+- Fiscal years must match configured fiscal years
+
+<Info>
+  Non-whole number quantities are automatically rounded to the nearest integer with a warning.
+</Info>
 
 <Warning>
-  Invalid rows are rejected. Fix errors and re-upload, or proceed with valid rows only.
+  Invalid rows are rejected. You can fix errors and re-upload, or proceed with valid rows only.
 </Warning>
 
 ### Upload History
