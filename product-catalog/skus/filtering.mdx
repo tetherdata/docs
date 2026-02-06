@@ -11,6 +11,8 @@ With potentially thousands of SKUs, finding the right products quickly is essent
 
 The filter panel appears on the left side of the SKU dashboard. It contains multiple filter sections that work together.
 
+The dashboard header displays a count showing **"{filtered} of {total} SKUs"** so you always know how many SKUs match your current filters.
+
 ### Filter Sections
 
 | Filter | Description |
@@ -91,7 +93,7 @@ Narrow down to SKUs within specific collections:
 
 ## Collection Hierarchy Filtering
 
-If you've set up collection hierarchies, filter by hierarchy levels:
+If you've set up a product hierarchy, dynamic hierarchy fields appear as filter sections based on your active configuration.
 
 **Example Hierarchy:**
 ```
@@ -101,13 +103,15 @@ Apparel → T-Shirts → Summer Collection
 
 Filter at any level to see all SKUs below that point in the hierarchy.
 
+Each hierarchy level uses tri-state selection (Include, Exclude, Neutral) and includes an **(Unassigned)** option to find SKUs that don't have a value set for that hierarchy level.
+
 ## Dimension Filtering
 
-Filter by product attributes like Size, Color, or Material.
+Filter by product attributes like Size, Color, or Material. Dimension filter sections appear dynamically based on the dimensions configured in your system.
 
 ### Available Dimensions
 
-Dimensions shown depend on your collection configuration. Common examples:
+Only dimension values that are actually present in your data appear as filter options. Common examples:
 
 | Dimension | Example Values |
 |-----------|----------------|
@@ -137,24 +141,32 @@ Dimensions shown depend on your collection configuration. Common examples:
 
 ## Tri-State Selection
 
-Some filters support three states for more precise control:
+All filters (SKU Type, Collection, Hierarchy, and Dimensions) use a three-state selection system:
 
-| State | Visual | Behavior |
-|-------|--------|----------|
-| **Include** | ✓ Checked | Show items matching this value |
-| **Exclude** | ✗ Crossed | Hide items matching this value |
-| **Indifferent** | Empty | Don't filter by this value |
+| State | Visual Indicator | Behavior |
+|-------|-----------------|----------|
+| **Neutral** | Gray circle | No filtering applied — all items shown |
+| **Include** | Green checkmark | Show only items matching this value |
+| **Exclude** | Red X | Hide items matching this value |
+
+### How It Works
+
+- **Click once** on a filter value to set it to **Include** (green checkmark)
+- **Click again** to set it to **Exclude** (red X)
+- **Click a third time** to return to **Neutral** (gray circle)
+
+When all filter values are neutral, all SKUs are displayed.
 
 ### Example Use Case
 
 Find all T-Shirts that are NOT Blue:
 
-1. Select the "T-Shirts" collection (Include)
-2. In the Color filter, set "Blue" to Exclude
+1. In the Collection filter, click "T-Shirts" once (green checkmark — Include)
+2. In the Color dimension filter, click "Blue" twice (red X — Exclude)
 3. Results show all T-Shirts except blue ones
 
 <Tip>
-  Click once to Include, twice to Exclude, three times to return to Indifferent.
+  The **Clear All** button resets every filter back to neutral in one click.
 </Tip>
 
 ## Combining Filters

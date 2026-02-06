@@ -1,277 +1,346 @@
 ---
-title: Running Simulations
-description: Execute supply chain simulations to optimize inventory
+title: Running simulations
+sidebarTitle: Running simulations
+description: Understand how the simulation engine projects inventory day by day and generates replenishment recommendations
 ---
 
-# Running Simulations
+# Running simulations
 
-Supply simulation helps you understand future inventory positions and optimize replenishment decisions. Run simulations to see projected stock levels, identify potential stockouts, and generate order recommendations.
+Tether's supply simulation engine projects your inventory forward in time, one day at a time. It factors in demand forecasts, open orders, lead times, safety stock levels, and replenishment rules to show you exactly when and how much to reorder. The engine runs two parallel simulation routes — one reflecting your current supply plan and one generating optimized recommendations — so you can compare outcomes side by side.
 
 <Note>
-  Supply simulation uses your demand forecasts, current inventory, and lead times to project future states.
+  The simulation engine runs entirely in your browser using WebAssembly (WASM). Your data never leaves the client during simulation — the Rust-based engine is compiled to WASM and executed locally for fast, private computation.
 </Note>
 
-## What is Supply Simulation?
+## How the engine works
 
-Supply simulation models your supply chain forward in time:
+The simulation processes each SKU–warehouse pairing independently, stepping forward one day at a time from the start date to the end of your planning horizon. On each day, the engine:
 
-| Input | How It's Used |
-|-------|---------------|
-| **Current Inventory** | Starting point |
-| **Demand Forecasts** | Expected consumption |
-| **Lead Times** | Time for orders to arrive |
-| **Open Orders** | Planned replenishment |
-| **Safety Stock** | Minimum stock levels |
+1. **Applies consumption** — subtracts forecasted sales demand and any transfer consumption (inventory pulled by downstream warehouses) from the current inventory.
+2. **Applies incoming inventory** — adds any inventory arriving that day from in-progress transactions, supply plan drafts, or system-generated replenishments.
+3. **Checks replenishment criteria** — determines whether a new order should be placed based on your replenishment cadence and projected inventory levels.
+4. **Records daily state** — saves the end-of-day inventory snapshot for reporting and charting.
 
-## Accessing Supply Simulation
+This day-by-day approach lets the engine model complex supply chain dynamics — like transfer orders between warehouses, safety stock breaches that trigger accelerated orders, and cascading re-simulations when upstream demand changes.
+
+## Accessing supply simulation
 
 Navigate to **Inventory** → **Supply Simulation** in the sidebar.
 
-### Simulation Dashboard
-
-| Component | Description |
-|-----------|-------------|
-| **Run Button** | Execute new simulation |
-| **Date Range** | Simulation time horizon |
-| **Results** | Projected inventory and alerts |
-| **Charts** | Visual projections |
-
-## Running a Simulation
+## Running a simulation
 
 <Steps>
   <Step title="Navigate to Supply Simulation">
-    Go to **Inventory** → **Supply Simulation**
+    Go to **Inventory** → **Supply Simulation** in the sidebar.
   </Step>
 
-  <Step title="Configure Parameters">
-    Set simulation options:
-    - Start date (usually today)
-    - End date (planning horizon)
-    - Mode (baseline or what-if)
+  <Step title="Review simulation inputs">
+    The engine automatically loads your current data:
+
+    | Input | Description |
+    |-------|-------------|
+    | **Current inventory** | Beginning on-hand quantities per SKU per warehouse |
+    | **[Demand forecasts](/demand-forecasting/dashboard)** | Projected daily sales consumption per channel |
+    | **In-progress transactions** | Open purchase, production, and transfer orders with expected arrival dates |
+    | **Supply plan drafts** | Orders you have drafted but not yet submitted |
+    | **Safety stock levels** | Minimum inventory thresholds per SKU per warehouse |
+    | **Overstock thresholds** | Maximum inventory levels before flagging excess |
+    | **Replenishment cadence** | How often to reorder (weekly, monthly, quarterly, or custom days) |
+    | **Lead times** | Production and transit lead times per supplier or source warehouse |
+    | **Supplier capabilities** | Which suppliers can fulfill which SKUs, along with MOQ and UoM |
+    | **Fulfillment routing** | Which warehouses fulfill which channels |
   </Step>
 
-  <Step title="Click Run">
-    Execute the simulation
+  <Step title="Run the simulation">
+    Click **Run Simulation**. The engine executes in your browser using WebAssembly — results appear in seconds without a server round-trip.
   </Step>
 
-  <Step title="Review Results">
-    Examine projected inventory and recommendations
+  <Step title="Review results">
+    Examine the projected inventory timelines, order recommendations, and alert levels for each SKU–warehouse pairing.
   </Step>
 </Steps>
 
-## Simulation Modes
+## Dependency resolution
 
-### Baseline Mode
+Before the day-by-day loop begins, the engine determines the correct processing order for SKU–warehouse pairings. This matters because some warehouses depend on others — a retail warehouse might be replenished by transfers from a distribution center, which is itself replenished by production.
 
-Standard simulation using current data:
+### Why order matters
 
-- Uses existing demand forecasts
-- Uses configured lead times
-- Uses current inventory levels
-- Generates standard recommendations
+When a downstream warehouse (for example, a retail location) needs replenishment via a transfer order, that transfer consumes inventory from the upstream warehouse (the distribution center). The upstream warehouse needs to account for this consumption when deciding its own replenishment. Processing pairings in the wrong order produces inaccurate forecasts.
 
-### What-If Mode
+### How the engine sorts pairings
 
-Scenario analysis with modified parameters:
+The engine builds a directed acyclic graph (DAG) of dependencies based on your fulfillment routing and BOM (bill of materials) relationships, then performs a **topological sort** to determine the processing order:
 
-- Adjust demand multipliers
-- Modify lead times
-- Test supplier constraints
-- Compare against baseline
+1. **Identify relationships** — for each SKU–warehouse pairing, the engine looks at the configured replenishment source. If the source is another warehouse (a transfer), this creates a dependency edge.
+2. **Build the graph** — all dependency edges form a DAG where downstream pairings point to their upstream sources.
+3. **Sort** — the engine uses Kahn's algorithm (BFS-based topological sort) to produce a processing order where downstream pairings are simulated before their upstream sources. This way, when the engine processes the upstream warehouse, it already knows how much inventory the downstream warehouse will consume via transfers.
+4. **Detect cycles** — if circular dependencies exist (Warehouse A transfers to B, and B transfers to A for the same SKU), the engine detects and reports the cycle. Pairings involved in cycles are skipped.
 
-See [What-If Scenarios](/supply-simulation/what-if) for details.
+<Info>
+  Pairings with no dependencies (for example, warehouses replenished directly by suppliers) can be processed in any order and are handled independently.
+</Info>
 
-## Simulation Results
+## Two simulation routes
 
-### Inventory Projections
+The engine runs two parallel simulations for each SKU–warehouse pairing: the **User Forecast Route** and the **System Forecast Route**. Both process the same day-by-day loop but differ in how they handle supply.
 
-For each SKU/warehouse combination:
+### User Forecast Route
 
-| Metric | Description |
-|--------|-------------|
-| **Projected Quantity** | Expected inventory over time |
-| **Stockout Date** | When inventory hits zero |
-| **Coverage Days** | Days of inventory remaining |
-| **Health Status** | Current inventory health |
+The User Forecast Route shows what your inventory will look like given your **current supply plan** — the drafts and orders you have already created or planned.
 
-### Health Status Categories
+- **Incoming inventory** comes from in-progress transactions and your existing supply plan drafts.
+- **No new orders are generated.** The engine only replays what you have already planned.
+- **Transfer consumption** uses actual transfer orders from your supply plan.
+- This route answers the question: *"What happens if I execute my current plan as-is?"*
 
-| Status | Meaning |
-|--------|---------|
-| **Healthy** | Sufficient inventory |
-| **Low Inventory** | Below safety stock threshold |
-| **Out of Stock** | No inventory available |
-| **Overstock** | Excess inventory |
+### System Forecast Route
 
-### Order Recommendations
+The System Forecast Route shows what your inventory would look like if the system **generated optimal replenishment orders** from scratch based on your rules.
 
-Simulation generates replenishment recommendations:
+- **Incoming inventory** comes from in-progress transactions plus system-generated replenishment orders.
+- **New orders are generated** at each replenishment cadence point based on projected inventory, safety stock levels, and target coverage.
+- **Transfer consumption** is calculated dynamically as the engine generates transfer orders.
+- The engine ignores your existing supply plan drafts — it builds its own plan.
+- This route answers the question: *"What does the system recommend I do instead?"*
+
+### Key differences
+
+| Aspect | User Forecast Route | System Forecast Route |
+|--------|--------------------|-----------------------|
+| **Order source** | Your existing supply plan drafts | System-generated recommendations |
+| **New orders** | None — replay only | Generated based on replenishment rules |
+| **Transfer consumption** | From existing transfer orders | Dynamically calculated from generated transfers |
+| **Purpose** | Validate your plan | Get optimized recommendations |
+
+<Tip>
+  Compare both routes side by side to see whether your current supply plan leaves any gaps or creates overstock. The difference between the two routes highlights where your plan diverges from the system's recommendations.
+</Tip>
+
+## Day-by-day simulation loop
+
+For each SKU–warehouse pairing (in dependency order), the engine steps through every day in the simulation horizon. Here is what happens on each day:
+
+### Step 1: Apply consumption (inventory out)
+
+The engine subtracts two types of consumption from the current inventory:
+
+- **Sales consumption** — the forecasted daily demand from sales channels that this warehouse fulfills. The engine distributes the channel-level demand forecast across warehouses based on your fulfillment routing rules.
+- **Transfer consumption** — inventory consumed by transfer orders to downstream warehouses. In the User Forecast Route, this comes from existing transfer orders in the supply plan. In the System Forecast Route, this is calculated dynamically as the engine generates transfer orders for downstream pairings.
+
+### Step 2: Apply incoming inventory (inventory in)
+
+The engine adds inventory that arrives on this day:
+
+- **In-progress transactions** — purchase orders, production orders, or transfer orders that are currently in transit and scheduled to land today. Both routes include these.
+- **Supply plan drafts** (User Forecast Route only) — orders from your supply plan that are scheduled to arrive today.
+- **System-generated replenishments** (System Forecast Route only) — orders the engine generated in a previous step that land today.
+
+If the inventory level is at or below zero after applying consumption, the engine records a **stockout alert** for this day.
+
+### Step 3: Check replenishment criteria (System Forecast Route only)
+
+This step only runs in the System Forecast Route. The engine decides whether to generate a new replenishment order:
+
+<Accordion title="How the engine determines first order date">
+  On the first day of simulation, the engine calculates the **first order date** for each pairing:
+
+  1. **Find the first cadence point** — starting from today, find the next date that matches the replenishment cadence (weekly, monthly, quarterly, or custom).
+  2. **Check for safety stock breaches** — project inventory forward from today to the first cadence point. If inventory drops below safety stock before the first cadence point, the engine **accelerates** the first order date to today.
+  3. **Set urgency** — if the order was accelerated, it is flagged as **Urgent**. If the order falls on the regular cadence, it is flagged based on how close to safety stock the inventory is at landing.
+</Accordion>
+
+<Accordion title="Replenishment cadence check">
+  On each subsequent day, the engine checks whether today matches the next replenishment date according to the configured cadence:
+
+  - **Weekly** — every 7 days from the cadence reference date
+  - **Monthly** — same day each month (with month-end handling for the 29th–31st)
+  - **Quarterly** — every 3 months from the cadence reference date
+  - **Custom** — every *N* days from the cadence reference date
+
+  If today is not a replenishment day and no safety stock breach is detected, the engine skips order generation.
+</Accordion>
+
+<Accordion title="Quantity calculation">
+  When a replenishment is triggered, the engine calculates how much to order:
+
+  1. **Determine the expected land date** — add production lead time and transit lead time to today's date.
+  2. **Calculate target inventory** — sum the forecasted consumption for the target replenishment coverage period starting from the day after the land date. This is the amount of inventory you need to cover the next ordering cycle.
+  3. **Subtract projected inventory** — subtract the inventory the engine projects you will have on hand at the land date.
+  4. **Apply minimum order quantity (MOQ)** — if the calculated quantity is greater than zero but less than the supplier's MOQ, round up to the MOQ.
+  5. **Apply unit of measurement conversion** — convert between your SKU's default unit and the supplier's ordering unit if they differ.
+
+  If the projected inventory at the land date already exceeds the target, no order is generated.
+</Accordion>
+
+<Accordion title="Transfer consumption recording">
+  When the engine generates a transfer order (replenishment sourced from another warehouse), it records the consumption against the source warehouse. This allows the upstream warehouse's simulation to account for this demand when it is processed later (per the dependency order from topological sort).
+</Accordion>
+
+### Step 4: Record daily state
+
+At the end of each day, the engine saves:
+
+- **Sellable inventory** — the projected end-of-day inventory level
+- **Safety stock quantity** — the configured safety stock threshold for comparison
+- **Overstock quantity** — the configured overstock threshold for comparison
+- **Supply events** — any orders placed or arriving on this day
+
+These daily snapshots power the inventory projection charts and the timeline view.
+
+## Safety stock breach detection
+
+The engine monitors inventory levels against your safety stock thresholds throughout the simulation. When it detects that inventory will drop below safety stock — even before the next scheduled replenishment cadence point — it triggers special behavior:
+
+1. **Accelerated order** — the engine generates an order immediately (on the breach day) rather than waiting for the next cadence point.
+2. **Urgency flagging** — accelerated orders receive an **Urgent** alert level, signaling that you need to act quickly.
+3. **Re-simulation** — if the accelerated order is a transfer that affects an upstream warehouse, the engine may need to re-simulate the upstream pairing from an earlier date (see below).
+
+## Re-simulation
+
+Re-simulation occurs when a new transfer order generated during the System Forecast Route causes an upstream warehouse's first order date to move to a day that has **already been simulated**. Since the upstream warehouse has already processed those past days without knowing about this new downstream demand, its results are stale.
+
+When this happens, the engine:
+
+1. Detects that the upstream pairing's first order date now falls before the current simulation day.
+2. Replays the upstream pairing's simulation from the new first order date forward, incorporating the newly recorded transfer consumption.
+3. Updates any orders that the upstream pairing generates, which may in turn affect further upstream warehouses.
+
+This queue-based approach guarantees convergence — each re-simulation can only move order dates earlier or keep them the same, never later, so the process always terminates.
+
+<Info>
+  Re-simulation only affects the System Forecast Route. The User Forecast Route replays your existing plan and does not generate new orders that could trigger cascading changes.
+</Info>
+
+## WASM execution
+
+The simulation engine is written in Rust and compiled to WebAssembly (WASM). This means:
+
+- **Runs in your browser** — the simulation executes entirely on the client side. No data is sent to a server during the simulation.
+- **Fast execution** — Rust's performance characteristics carry over to WASM, enabling the engine to process thousands of SKU–warehouse pairings across hundreds of days in seconds.
+- **Step-by-step or full run** — the engine supports running one day at a time (for debugging or visualization) or running the entire simulation to completion at once.
+
+The engine uses an **Entity Component System (ECS)** architecture internally. Each warehouse, supplier, and production facility is an entity with attached components (inventory levels, replenishment config, lead times, demand forecasts). Systems process these entities each day — applying consumption, delivering orders, checking replenishment criteria, and recording results.
+
+## Simulation modes
+
+### Baseline mode
+
+In baseline mode, the simulation runs both routes using your current data:
+
+- Current inventory levels as starting quantities
+- Active demand forecasts for consumption projections
+- Configured replenishment rules, safety stock levels, and lead times
+- Existing supply plan drafts and in-progress transactions
+
+Baseline mode is your standard simulation for day-to-day planning.
+
+### What-If mode
+
+What-If mode lets you modify simulation inputs and compare the results against your baseline:
+
+- Adjust demand forecasts to model optimistic or pessimistic scenarios
+- Change lead times to account for supplier delays
+- Modify safety stock levels or replenishment cadence
+- Test different supplier assignments
+
+The engine runs both simulation routes with your modified parameters, letting you see how changes affect projected inventory and order recommendations before committing to a plan.
+
+See [What-If scenarios](/supply-simulation/what-if) for details.
+
+## Bootstrap behavior
+
+When you have no existing supply plan (for example, when first setting up a SKU–warehouse pairing), Tether automatically runs the System Forecast Route and converts its recommendations into supply plan drafts. This gives you a starting plan that you can then adjust. Once you have drafts in your supply plan, both routes run normally — the User Forecast Route replays your plan while the System Forecast Route generates its own recommendations for comparison.
+
+## Pairing eligibility
+
+Not every SKU–warehouse combination is included in the simulation. A pairing must meet these prerequisites:
+
+| Prerequisite | Description |
+|-------------|-------------|
+| **Consumption forecast** | A demand forecast must exist for at least one channel fulfilled by this warehouse |
+| **Safety stock** | A safety stock level must be configured for this SKU at this warehouse |
+| **Replenishment cadence** | A replenishment cadence must be set (weekly, monthly, quarterly, or custom) |
+| **Supplier capability** | At least one supplier or source warehouse must be configured as able to supply this SKU |
+
+Pairings missing any prerequisite are skipped, and the engine logs which prerequisite is missing so you can fix your configuration.
+
+## Interpreting results
+
+### Order recommendations
+
+The System Forecast Route generates replenishment recommendations with the following details:
 
 | Field | Description |
 |-------|-------------|
-| **Type** | Purchase or Transfer |
-| **Source** | Supplier or warehouse |
-| **Destination** | Destination warehouse |
-| **SKUs** | Products to order |
-| **Quantities** | Recommended amounts |
-| **Order Date** | When to place order |
-| **Alert Level** | Urgency of order |
+| **Type** | Purchase order, production order, or transfer order |
+| **Source** | The supplier, production facility, or source warehouse |
+| **Destination** | The destination warehouse |
+| **SKUs** | Products included in the order |
+| **Quantities** | Recommended order amounts (after MOQ and UoM adjustments) |
+| **Order date** | When to place the order |
+| **Land date** | When the order is expected to arrive (order date + lead time) |
+| **Alert level** | Urgency of the order |
 
-## Alert Levels
+### Alert levels
 
-Recommendations are prioritized:
+Each recommended order is assigned an alert level:
 
-| Level | Description | Action |
-|-------|-------------|--------|
-| **Urgent** | Stockout imminent | Order immediately |
-| **Important** | Low inventory soon | Order this week |
-| **Normal** | Standard replenishment | Schedule as planned |
+| Level | Meaning | Action |
+|-------|---------|--------|
+| **Urgent** | Inventory will breach safety stock before the order arrives, or has already breached. The order was accelerated ahead of the normal cadence. | Place this order immediately |
+| **Important** | Inventory is projected to be close to safety stock at the land date. The order is on cadence but warrants attention. | Review and place this order soon |
+| **None** | Standard replenishment on cadence. Inventory levels are healthy. | Schedule as planned |
 
-## Using Simulation Results
+### Stockout alerts
 
-### Review Recommendations
+During the simulation, the engine also records **stockout alerts** — days where projected inventory hits zero or goes negative. These appear on the inventory projection chart as highlighted periods and help you identify critical gaps in coverage.
 
-1. Check urgent alerts first
-2. Review important recommendations
-3. Examine normal orders for planning
+### Comparing routes
 
-### Create Orders
+The most valuable insight comes from comparing the User Forecast Route and System Forecast Route:
 
-Convert recommendations to transactions:
+- **User Route shows lower inventory than System Route** — your current plan may have gaps. Review the system's additional order recommendations.
+- **User Route shows higher inventory than System Route** — you may be over-ordering. Consider reducing or delaying some planned orders.
+- **Both routes align closely** — your supply plan matches the system's recommendations. You are on track.
 
-<Steps>
-  <Step title="Select Recommendation">
-    Choose an order recommendation
-  </Step>
-
-  <Step title="Review Details">
-    Verify quantities and timing
-  </Step>
-
-  <Step title="Create Draft">
-    Convert to draft transaction
-  </Step>
-
-  <Step title="Submit">
-    Submit when ready to execute
-  </Step>
-</Steps>
-
-### Bulk Operations
-
-Create multiple orders at once:
-
-1. Select multiple recommendations
-2. Click **Create Drafts**
-3. Review created transactions
-4. Submit as needed
-
-## Simulation Frequency
-
-### When to Run
-
-| Trigger | Reason |
-|---------|--------|
-| **Daily** | Routine planning |
-| **After Forecast Update** | New demand data |
-| **After Inventory Change** | Major stock movements |
-| **Before Ordering** | Validate recommendations |
-
-### Automatic Runs
-
-Tether can run simulations automatically:
-
-- Scheduled daily runs
-- Results cached for quick access
-- Alerts generated proactively
-
-## Interpreting Results
-
-### Projected vs. Recommended
-
-| View | Shows |
-|------|-------|
-| **Current Projection** | What happens without action |
-| **Recommended Projection** | What happens with recommendations |
-
-### Reading the Timeline
-
-1. **Blue line**: Current inventory projection
-2. **Green line**: Projection with recommended orders
-3. **Red zone**: Stockout periods
-4. **Yellow zone**: Low inventory periods
-
-## Best Practices
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Run Regularly">
-    Regular simulations catch issues early:
-    - Run daily or weekly
-    - Review results promptly
-    - Act on urgent alerts
+  <Accordion title="Run simulations after data changes">
+    Re-run the simulation whenever your inputs change:
+    - Updated demand forecasts
+    - New or modified open orders
+    - Changes to inventory levels (receipts, adjustments)
+    - Updated lead times or supplier configurations
   </Accordion>
 
-  <Accordion title="Review Before Ordering">
-    Always simulate before major orders:
-    - Validate quantities
-    - Check timing
-    - Identify conflicts
+  <Accordion title="Address urgent alerts first">
+    Urgent alerts indicate that safety stock will be breached before the next scheduled replenishment. Act on these immediately to avoid stockouts.
   </Accordion>
 
-  <Accordion title="Use What-If for Planning">
-    Test scenarios before decisions:
-    - Demand changes
-    - Lead time variations
-    - Supplier issues
+  <Accordion title="Use What-If mode for planning decisions">
+    Before making major changes to your supply plan — like switching suppliers, adjusting safety stock, or changing replenishment frequency — run a What-If simulation to see the projected impact.
   </Accordion>
 
-  <Accordion title="Monitor Accuracy">
-    Track simulation accuracy:
-    - Compare projections to actuals
-    - Adjust parameters as needed
-    - Improve forecast inputs
+  <Accordion title="Check pairing eligibility if results are missing">
+    If a SKU–warehouse pairing does not appear in simulation results, verify that it meets all four prerequisites: consumption forecast, safety stock, replenishment cadence, and supplier capability.
   </Accordion>
 </AccordionGroup>
 
-## Troubleshooting
-
-### Simulation Not Running
-
-**Possible causes:**
-- Missing data (forecasts, inventory)
-- Configuration issues
-- System processing
-
-**Solutions:**
-1. Verify forecasts exist
-2. Check inventory data
-3. Wait for processing to complete
-
-### Unexpected Results
-
-**Possible causes:**
-- Outdated forecasts
-- Incorrect lead times
-- Missing open orders
-
-**Solutions:**
-1. Review input data
-2. Update configurations
-3. Verify open order status
-
-## Next Steps
+## Next steps
 
 <CardGroup cols={2}>
   <Card title="Configurations" icon="gear" href="/supply-simulation/configurations">
-    Configure simulation parameters
+    Configure safety stock, replenishment cadence, lead times, and supplier capabilities
   </Card>
   <Card title="Charts" icon="chart-area" href="/supply-simulation/charts">
-    Visualize simulation results
+    Visualize daily inventory projections and supply events
   </Card>
-  <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
-    Run scenario analysis
+  <Card title="What-If scenarios" icon="flask" href="/supply-simulation/what-if">
+    Test alternative scenarios against your baseline
   </Card>
-  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
-    Manage scheduled orders
+  <Card title="Supply plan" icon="clipboard-list" href="/inventory/supply-plan">
+    Manage your supply plan drafts and submitted orders
   </Card>
 </CardGroup>

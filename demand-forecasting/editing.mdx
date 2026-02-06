@@ -1,356 +1,424 @@
 ---
 title: Editing Forecasts
-description: How to modify demand forecast values in Tether
+sidebarTitle: Editing Forecasts
+description: How to edit demand forecast values, including the Consensus Model editing logic and distribution rules
 ---
 
-# Editing Forecasts
+# Editing forecasts
 
-While Tether generates forecasts automatically, you often need to make adjustments based on business knowledge, planned promotions, or other factors. This guide covers all the ways to edit forecast values.
+Tether allows you to edit forecast values directly in the forecast table. This is especially important for the **Consensus Model**, where all forecast values are 100% user-defined. This guide covers how edits work, how values distribute across aggregations, and how to use the editing tools effectively.
 
 <Note>
-  Editing capabilities depend on your role. Admins have full access; Sales Reps may have limited editing rights.
+  Editing capabilities depend on your user role. Only users with edit permissions can modify forecast values.
 </Note>
 
-## Why Edit Forecasts?
+## The Consensus Model
 
-Common reasons to adjust forecasts:
+The Consensus Model is a special forecast model where **output values are entirely based on your inputs** — there is no underlying statistical algorithm. Every organization has a Consensus Model, and it is always initialized with a value of 0 for all forecast entries.
 
-| Reason | Example |
-|--------|---------|
-| **Planned Promotions** | Marketing campaign will drive extra demand |
-| **Product Launches** | New product with no history |
-| **Seasonal Events** | Holiday peak not captured in model |
-| **Market Changes** | Competitor exit, trend shift |
-| **Known Issues** | Supply constraints, discontinuation |
+Use the Consensus Model when:
 
-## Inline Cell Editing
+- Your sales team provides their own demand projections
+- You need full manual control over forecast numbers
+- System-generated models don't capture your business context accurately
+- You want to combine inputs from multiple stakeholders into a single forecast
 
-The quickest way to make changes is directly in the forecast table.
+<Info>
+  The system admin can optionally disable all system-generated models so that the Consensus Model is the only available option. The Consensus Model itself can only be disabled by a system admin.
+</Info>
 
-### Making an Edit
+## Key concepts
+
+Before diving into editing, it's important to understand how the forecast table is structured:
+
+| Term | Definition |
+|------|-----------|
+| **Tail node** | The most granular level in the forecast — a single SKU × channel × day |
+| **Time aggregation** | Grouping daily values into larger periods (weekly, monthly) displayed as columns |
+| **Row aggregation** | Grouping SKUs by product, category, channel, or other hierarchy levels displayed as rows |
+| **Parent node** | The row or cell one level above the current selection in the hierarchy |
+| **Child node** | All rows or cells one level below the current selection in the hierarchy |
+
+At every level, a parent node's quantity is always the **sum** of its children. When you edit a parent, the system distributes the change down to maintain this consistency.
+
+## Inline cell editing
+
+Click any editable cell in the forecast table to modify its value.
 
 <Steps>
-  <Step title="Navigate to the Cell">
-    Find the SKU/channel and time period you want to edit
+  <Step title="Click the cell">
+    Click the forecast cell you want to edit. The cell becomes an input field with a blue border.
   </Step>
 
-  <Step title="Click the Cell">
-    Click to enter edit mode. The cell becomes an input field.
+  <Step title="Enter the new value">
+    Type the new forecast quantity. Values must be **whole numbers** (integers) and **non-negative**. Decimal and negative values are not permitted.
   </Step>
 
-  <Step title="Enter New Value">
-    Type the new forecast quantity
-  </Step>
-
-  <Step title="Save">
-    Press **Enter** to save or **Escape** to cancel
+  <Step title="Confirm or cancel">
+    Press **Enter** to confirm or **Escape** to cancel. The cell highlights in yellow to indicate an unsaved change.
   </Step>
 </Steps>
 
-### Edit Indicators
+### Edit indicators
 
 | Indicator | Meaning |
 |-----------|---------|
-| Yellow highlight | Cell has been edited |
-| Blue border | Currently editing |
-| Green flash | Save successful |
-| Red border | Validation error |
+| Yellow highlight | Cell has been edited but not saved |
+| Blue border | Cell is currently in edit mode |
+| Greyed out / read-only | Historical period locked by actuals |
 
-### Bulk Inline Editing
+<Warning>
+  Edits are staged locally and **not saved** until you explicitly click **Save**. If you leave the page without saving, all unsaved edits are lost.
+</Warning>
 
-Edit multiple cells quickly:
+## How edit distribution works
 
-1. Edit a cell and press **Tab** to move to next
-2. Continue editing and tabbing
-3. All changes save automatically
+When you edit a cell that represents an aggregated value (grouped by time, rows, or both), the system must distribute your new total down to the underlying tail nodes. The distribution follows specific rules depending on what type of cell you're editing.
 
-## Numeric Value Changes
+### Editing a tail node
 
-### Absolute Values
+When you edit a single SKU × single channel × single day, the value updates directly. No distribution is needed.
 
-Enter exact quantities:
+**Example:** Set SKU "BINDER-BLUE-S" on Shopify for June 1 to 10 → only that cell changes to 10.
 
-- Current: 100
-- Type: 150
-- Result: Forecast is now 150
+### Editing a time-aggregated cell
 
-### Clearing Values
+When you edit a cell that spans multiple days (such as a monthly total for a single SKU and channel), the new value distributes across all days in that period.
 
-To remove a forecast:
-- Enter 0 or leave blank
-- Save the change
+<Tabs>
+  <Tab title="Future period">
+    For a fully future period, the system distributes the new total **proportionally** across all days based on their current values.
 
-## Percentage Adjustments
+    **Example:** You set June 2025 to 300 for a single SKU/channel.
+    - If the days currently have values like 8, 12, 10, etc., each day gets a proportional share of 300 based on its current weight.
+    - If all days are currently 0, the 300 distributes **equally** (10 per day for 30 days).
+  </Tab>
 
-Adjust by percentage instead of absolute values:
+  <Tab title="Partial period (current month)">
+    For a period that is partially complete (e.g., editing June when today is June 15):
 
-### Single Cell Percentage
+    1. The system calculates **actuals** — the sum of actual sales from the completed portion (June 1–14).
+    2. You **cannot** set a value lower than the actuals. The UI shows an error if you try.
+    3. The system subtracts the actuals from your entered value and distributes the remainder across the **remaining future days** proportionally.
 
-1. Click on a cell
-2. Click the percentage icon (%) or enter with % symbol
-3. Enter: +10% or -20%
-4. Applies percentage change to current value
+    **Example:** Actuals for June 1–14 are 80 units. You enter 200 for June.
+    - Remainder: 200 − 80 = 120
+    - The 120 units distribute proportionally across June 15–30 based on their current values.
+  </Tab>
+</Tabs>
 
-**Example:**
-- Current: 100
-- Enter: +10%
-- Result: 110
+### Editing a row-aggregated cell
 
-### Row Percentage Edit
+When you edit a cell that spans multiple SKUs (such as a product total for a single day), the new value distributes across all direct children in the current hierarchy.
 
-Adjust all periods for a row:
+- The distribution is **proportional** based on each child's current value.
+- If all children are currently 0, the value distributes **equally**.
+- If there is only one child, it takes the full value.
+- If children have their own children, the distribution **cascades recursively** — each child's distributed value is treated as if you had edited it directly.
+
+**Example:** Product "BINDER MAX" on Shopify for June 1 has two SKUs with current values of 30 and 20 (total 50). You change the product total to 100.
+- SKU 1: (30/50) × 100 = 60
+- SKU 2: (20/50) × 100 = 40
+
+### Editing a combined aggregation (row + time)
+
+When you edit a cell that has both row and time aggregation (such as a product total for a month), the system combines both distribution methods:
+
+1. **First, distribute across row children** — the new value is split proportionally among the direct children of the row aggregation, following the current hierarchy.
+2. **Then, distribute each child's share across time** — each child's allocated amount is further distributed across the days in the time period.
+3. **Recursive cascading** — if children have their own children, the process repeats at each level until reaching the tail nodes.
+
+For partial periods, actuals handling applies at every level of the hierarchy:
+
+1. Compute actuals for each tail node involved in the row aggregation for the completed portion of the time period.
+2. Roll up actuals to each parent level.
+3. The minimum allowed value is the sum of all actuals.
+4. Subtract actuals and distribute the remainder using **proportional weights** — each tail node's weight is its previous model output minus its actuals (negative weights become 0).
+
+<Accordion title="Detailed example: Multi-layer distribution with actuals">
+  **Scenario:** Today is June 15. You edit June 2025 for product category "UNDERTHINGS" which contains two products (BINDER MAX, BRIEF CLASSIC), each with two SKUs on Shopify.
+
+  **Previous monthly values and actuals (June 1–14):**
+
+  | Product | SKU | Previous June total | Actuals (June 1–14) | Weight (total − actuals) |
+  |---------|-----|--------------------:|--------------------:|-------------------------:|
+  | BINDER MAX | SKU 1 | 100 | 30 | 70 |
+  | BINDER MAX | SKU 2 | 80 | 20 | 60 |
+  | BRIEF CLASSIC | SKU 3 | 120 | 25 | 95 |
+  | BRIEF CLASSIC | SKU 4 | 100 | 25 | 75 |
+
+  **Rolled-up weights:**
+  - BINDER MAX: 70 + 60 = 130
+  - BRIEF CLASSIC: 95 + 75 = 170
+  - UNDERTHINGS total weight: 300
+
+  **You set UNDERTHINGS June 2025 to 1,000.** Total actuals = 100. Minimum allowed = 100.
+
+  **Distribution of remainder (1,000 − 100 = 900):**
+  - BINDER MAX: (130/300) × 900 = 390
+  - BRIEF CLASSIC: (170/300) × 900 = 510
+
+  **Distribution to SKUs within each product:**
+  - SKU 1: (70/130) × 390 = 210, SKU 2: (60/130) × 390 = 180
+  - SKU 3: (95/170) × 510 = 285, SKU 4: (75/170) × 510 = 225
+
+  **Final June totals (actuals + distributed):**
+
+  | SKU | Actuals | Distributed (June 15–30) | June total |
+  |-----|--------:|-------------------------:|-----------:|
+  | SKU 1 | 30 | 210 | 240 |
+  | SKU 2 | 20 | 180 | 200 |
+  | SKU 3 | 25 | 285 | 310 |
+  | SKU 4 | 25 | 225 | 250 |
+  | **Total** | **100** | **900** | **1,000** |
+</Accordion>
+
+## Proportional distribution logic
+
+All edit distributions follow the same core logic:
+
+1. **Proportional split** — each child receives a share proportional to its current value relative to the total of all children.
+2. **Equal split when all zeros** — if every child's current value is 0, the new total distributes evenly across all children.
+3. **Single child** — if there is only one child, it takes the full value directly.
+
+When actuals are involved (partial periods), the proportional weight for each node is calculated as:
+
+```
+weight = previous_model_output − actuals
+```
+
+Negative weights are treated as 0. This means a tail node whose actuals already exceed its forecast receives no additional allocation.
+
+## Whole number quantities and rounding
+
+All forecast quantities must be **whole numbers** (integers) at every level. When distributing a value produces fractional results, the system uses the **Largest Remainder Method** to round:
+
+1. Calculate the exact proportional value for each child.
+2. Floor each value to get whole numbers.
+3. Sum the floored values — the difference from the target total is the remainder.
+4. Distribute the remainder one unit at a time to the children with the **largest fractional parts**.
+
+This ensures:
+- Every tail node has a whole number quantity.
+- The sum of all children exactly matches the parent total.
+- Rounding adjustments are minimized and distributed fairly.
+
+**Example:** Distributing 7 units across 3 equal children:
+- Exact: 2.333 each → floored: 2, 2, 2 (sum = 6)
+- Remainder: 7 − 6 = 1 → give 1 extra unit to the first child
+- Result: **3, 2, 2** (sum = 7)
+
+## Historical periods and actuals locking
+
+Periods where actual sales data exists are **locked from editing**. These historical periods appear as read-only in the forecast table.
+
+For partially completed periods (such as the current month):
+- Days with actuals are locked and cannot be changed.
+- You can still edit the period total, but your value **cannot be less than the sum of actuals** for that period.
+- The system only distributes your edit to the remaining future days within the period.
+
+<Warning>
+  If actuals for a child node exceed the previous forecast value, that child's weight becomes 0 and it receives no additional allocation. The system displays an error if you try to enter a total below the sum of all actuals.
+</Warning>
+
+## Percentage adjustments
+
+You can adjust forecast values by a percentage rather than entering an absolute number.
 
 <Steps>
-  <Step title="Select the Row">
-    Click on the row you want to adjust
+  <Step title="Open the detail modal">
+    Click a row in the forecast table to open the detail view.
   </Step>
 
-  <Step title="Open Row Edit">
-    Click **Row Edit** or right-click and select "Edit Row"
+  <Step title="Click Adjust %">
+    Click the **Adjust %** button to open the percentage adjustment dialog.
   </Step>
 
-  <Step title="Enter Percentage">
-    Enter the percentage change:
-    - +15% to increase all periods by 15%
-    - -10% to decrease all periods by 10%
+  <Step title="Enter the percentage">
+    Enter a percentage value:
+    - Positive values (e.g., **+15%**) increase all future periods
+    - Negative values (e.g., **−10%**) decrease all future periods
+    - Must be between **−100%** and **1000%**
   </Step>
 
-  <Step title="Select Date Range">
-    Choose which periods to affect:
-    - All visible periods
-    - Specific date range
-  </Step>
-
-  <Step title="Apply">
-    Review preview and apply changes
+  <Step title="Review and confirm">
+    The adjustment applies to all non-historical periods. Each period's value is multiplied by the factor (1 + percentage/100) and rounded to the nearest whole number.
   </Step>
 </Steps>
 
-## Quick Edit Modal
+Historical periods are automatically skipped during percentage adjustments.
 
-For more control, use the Quick Edit Modal:
+## Copying data to the Consensus Model
+
+You can populate the Consensus Model by copying values from other data sources. This is useful when you want to start from an existing baseline rather than entering every value manually.
+
+### Available copy sources
+
+| Source | Description |
+|--------|-------------|
+| **Budget** | Copy from a budget version |
+| **Rolling forecast (RF)** | Copy from a rolling forecast version |
+| **Historical sales** | Copy last year's sales data, shifted forward by one year |
+| **Shipped & pending** | Combine actual shipped orders with pending sales orders |
+| **Model output** | Copy from any system-generated forecast model |
+| **Baseline** | Copy from an uploaded baseline forecast |
+
+### How copying works
+
+You can copy data at two levels:
+
+- **Entire row** — copies all periods for the selected row from the source, replacing all future period values.
+- **Single period** — click a specific period cell in the source row to copy only that period's data.
+
+Copied values are applied at the leaf level (SKU × channel × day), so the data maps precisely to the Consensus Model's structure. Historical periods are automatically skipped — only future periods receive copied values.
+
+<Tip>
+  Copying from a source replaces the leaf-level values directly rather than using proportional distribution. This gives you an exact replica of the source data as your starting point.
+</Tip>
+
+## Push forecast
+
+The push forecast feature shifts all forecast values forward by a specified number of periods. This is useful when plans are delayed and you need to move the entire forecast timeline.
+
+When you push a forecast:
+- Each future period receives the values from an earlier period (shifted by the number of periods you specify).
+- The distribution shape within each period is maintained proportionally.
+- Historical periods are not affected.
+- If a source period doesn't exist (beginning of the range), the target period is set to 0.
+
+## Reverting changes
+
+### Discard all changes
+
+Before saving, you can discard all pending edits by clicking **Discard Changes**. This resets every edited cell back to its last saved value.
+
+### After saving
+
+Once changes are saved, they cannot be undone through the UI. However, you can:
+- Manually re-enter previous values
+- Copy from a data source to restore baseline values
+- Review the edit log to see what was changed and enter corrective values
+
+## Saving changes and change reasons
+
+When you save your edits, a **Save Reason Modal** appears.
 
 <Steps>
-  <Step title="Select Cell or Row">
-    Click on the item you want to edit
+  <Step title="Review the summary">
+    The modal shows a summary of your changes:
+    - The time periods affected
+    - The number of SKUs and channels modified
+    - Expandable lists of affected SKU and channel names
   </Step>
 
-  <Step title="Open Quick Edit">
-    Click the **Quick Edit** button or press a keyboard shortcut
-  </Step>
+  <Step title="Enter a reason">
+    Provide a reason for your changes (up to 500 characters). This is recorded in the edit log.
 
-  <Step title="See Details">
-    The modal shows:
-    - Current value
-    - Historical context
-    - Recent trends
-  </Step>
-
-  <Step title="Make Adjustment">
-    Enter new value or percentage change
-  </Step>
-
-  <Step title="Add Reason">
-    Enter a reason for the change (recommended)
+    Good reasons include specific context:
+    - "Adjusted for Q3 marketing campaign launching July 15"
+    - "Reduced forecast due to supplier delay on raw materials"
+    - "Aligned with updated sales team projections from weekly review"
   </Step>
 
   <Step title="Save">
-    Apply the change
+    Click **Save Changes** or press **Cmd/Ctrl + Enter** to confirm. The changes are saved to the Consensus Model and the edit log records the change with your reason, timestamp, and user ID.
   </Step>
 </Steps>
 
-## Change Reasons
+<Info>
+  The reason field may be required or optional depending on your organization's configuration. If required, you cannot save without providing a reason.
+</Info>
 
-Documenting why you made changes helps with analysis and audit.
+## Edit log
 
-### Adding a Reason
-
-When editing:
-
-1. Make your value change
-2. Click **Add Reason** or the reason icon
-3. Enter a brief explanation:
-   - "Holiday promotion expected"
-   - "New marketing campaign"
-   - "Product phase-out"
-4. Save with the change
-
-### Save Reason Modal
-
-For important changes, the Save Reason Modal provides more structure:
+Every saved change is recorded in the edit log with full traceability:
 
 | Field | Description |
 |-------|-------------|
-| **Category** | Type of change (promotion, seasonal, market, etc.) |
-| **Description** | Detailed explanation |
-| **Impact Period** | How long the change affects |
-| **Confidence** | How certain you are about the adjustment |
+| **Date and time** | When the change was saved |
+| **User** | Who made the change |
+| **Reason** | The reason provided at save time |
+| **Edit count** | Number of individual cell changes |
+| **SKUs affected** | Which SKUs were modified |
+| **Channels affected** | Which channels were modified |
+| **Periods affected** | Which time periods were modified |
+| **Quantity change** | Net change in total quantity (with increase/decrease indicators) |
+| **Revenue impact** | Estimated revenue impact of the change (if pricing data is available) |
 
-### Why Reasons Matter
+You can expand any edit log entry to see a detailed pivot table showing the before and after values for each SKU, channel, and period combination, along with the delta for each cell.
 
-- **Accountability** - Know who changed what and why
-- **Learning** - Review if adjustments were accurate
-- **Communication** - Team understands the reasoning
-- **Compliance** - Audit trail for regulated industries
-
-## Editing Grouped Data
-
-When data is grouped, editing works at different levels:
-
-### Editing Detail Rows
-
-1. Expand the group
-2. Edit individual SKU/channel cells
-3. Group totals update automatically
-
-### Editing Group Totals
-
-Some views allow editing at the group level:
-
-1. Edit the group total
-2. System distributes change to detail rows
-3. Distribution method depends on configuration
-
-<Warning>
-  Editing group totals may distribute changes in ways you don't expect. Review detail rows after group-level edits.
-</Warning>
-
-## Copying and Pasting
-
-### Copy from Spreadsheet
-
-1. Copy cells from Excel or Sheets
-2. Select target cells in Tether
-3. Paste (Ctrl/Cmd + V)
-4. Values populate
-
-### Copy Within Tether
-
-1. Select cells to copy
-2. Copy (Ctrl/Cmd + C)
-3. Select destination
-4. Paste (Ctrl/Cmd + V)
-
-<Info>
-  Copy/paste respects the data structure. Ensure source and target have compatible formats.
-</Info>
-
-## Reverting Changes
-
-### Undo Recent Edit
-
-- Press **Ctrl/Cmd + Z** to undo
-- Works for recent changes in current session
-
-### Revert to Original
-
-To restore the system forecast:
-
-1. Select the edited cell(s)
-2. Click **Revert** or right-click → "Revert to Original"
-3. Confirm the revert
-
-### Check Edit Log
-
-To see what was changed:
-
-1. Go to **Edit Log**
-2. Find the specific change
-3. See original and current values
-
-## Edit Permissions
-
-### By Role
-
-| Role | Capability |
-|------|------------|
-| **Admin** | Full edit access |
-| **Sales Rep** | Limited - may be view-only or restricted periods |
-
-### By Time Period
-
-Some configurations restrict editing:
-
-- **Historical**: Cannot edit past periods
-- **Locked**: Certain periods may be locked
-- **Future**: Usually editable
-
-### By Channel
-
-Channel access rules may limit which forecasts you can edit.
-
-## Best Practices
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Always Add Reasons">
-    Document every significant change. Future you (and your team) will thank you.
+  <Accordion title="Always provide meaningful change reasons">
+    Document every significant change with specific context. Future you (and your team) will need to understand why forecasts were adjusted when reviewing accuracy.
   </Accordion>
 
-  <Accordion title="Check the Impact">
-    Before saving:
-    - Review the change in context
-    - Consider ripple effects on inventory
-    - Verify it makes sense
+  <Accordion title="Start from a data source when possible">
+    Use the copy feature to pull in budget, historical sales, or model output data as a starting point. Then refine individual values rather than entering everything from scratch.
   </Accordion>
 
-  <Accordion title="Use Percentage for Trends">
-    When adjusting for general factors (growth, promotion multiplier), use percentages rather than absolute values.
+  <Accordion title="Understand distribution before editing aggregated cells">
+    When editing a grouped row or monthly total, the change distributes proportionally to all children. Review the child-level values after making aggregated edits to ensure the distribution looks reasonable.
   </Accordion>
 
-  <Accordion title="Review Regularly">
-    Check edited forecasts against actuals:
-    - Were your adjustments accurate?
-    - Learn from over/under estimates
-    - Refine your adjustment approach
+  <Accordion title="Use percentage adjustments for broad changes">
+    When applying a general growth factor or seasonal adjustment across many periods, use the percentage adjustment tool rather than editing cells individually.
   </Accordion>
 
-  <Accordion title="Coordinate with Team">
-    If multiple people edit forecasts:
-    - Communicate about changes
-    - Avoid conflicting adjustments
-    - Use change reasons for visibility
+  <Accordion title="Watch for actuals constraints">
+    For the current month or any partially completed period, your forecast total cannot be less than what has already been sold. Check the actuals floor before entering values.
+  </Accordion>
+
+  <Accordion title="Save frequently">
+    Unsaved changes are lost if you navigate away. Save your work regularly, especially after making many edits.
   </Accordion>
 </AccordionGroup>
 
 ## Troubleshooting
 
-### Can't Edit Cell
+### Cannot edit a cell
 
 **Possible causes:**
-- Historical period (locked)
-- Insufficient permissions
-- Cell is calculated/read-only
+- The period is historical (locked by actuals)
+- You don't have edit permissions for this forecast
+- The cell is a calculated aggregate that requires editing at a different level
 
-**Solutions:**
-1. Verify you're in an editable period
-2. Check your role permissions
-3. Try editing a different cell type
+**Solution:** Verify the period is in the future and that you have the correct role permissions.
 
-### Changes Not Saving
+### Value rejected as too low
+
+**Cause:** For a partially completed period, you entered a value below the sum of actuals.
+
+**Solution:** The error message shows the minimum allowed value (equal to actuals). Enter a value at or above that minimum.
+
+### Rounding doesn't look right
+
+**Cause:** When distributing values, the system uses the Largest Remainder Method to ensure whole numbers sum to the correct total. Individual cells may differ by ±1 from a simple proportional calculation.
+
+**Solution:** This is expected behavior. The total always matches your entered value exactly.
+
+### Changes not appearing after save
 
 **Possible causes:**
-- Validation error
-- Network issue
+- Network error during save
 - Session timeout
 
-**Solutions:**
-1. Check for error messages
-2. Verify internet connection
-3. Refresh and try again
+**Solution:** Check for error messages. Refresh the page and verify whether the changes persisted. If not, re-enter and save again.
 
-## Next Steps
+## Next steps
 
 <CardGroup cols={2}>
   <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
-    Track all forecast changes
+    Review the full history of forecast changes
   </Card>
-  <Card title="Promotions" icon="tag" href="/demand-forecasting/promotions">
-    Manage promotional impacts on forecasts
+  <Card title="Forecast Comparison" icon="chart-mixed" href="/demand-forecasting/comparison">
+    Compare forecast models and versions
   </Card>
   <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
-    Configure forecast settings
+    Configure forecast models and settings
   </Card>
-  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
-    Compare forecasts to actuals
+  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
+    Understand how forecast values are generated
   </Card>
 </CardGroup>

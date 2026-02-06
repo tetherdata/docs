@@ -5,303 +5,347 @@ description: Compare forecast models and analyze accuracy
 
 # Forecast Comparison
 
-The Forecast Comparison view lets you compare different forecast models side by side. This helps you understand which models perform best for different products and make informed decisions about forecast configuration.
+The Forecast Comparison view lets you compare the outputs of different forecast models side by side. Each model uses one of Tether's [11 forecast algorithms](/demand-forecasting/algorithms), and comparing their outputs helps you choose the best model for your products.
 
 ## Accessing Forecast Comparison
 
-Navigate to **Demand Forecast** → **Forecast Comparison** (or through the admin menu).
+You can compare models in two ways:
+
+1. **Comparison page** — Navigate to **Demand Forecast** → **Forecast Comparison**.
+2. **Inline comparison** — Click any row in the forecast table to open a modal showing all model outputs for that SKU-channel combination.
 
 <Note>
-  Forecast Comparison is primarily an Admin feature for evaluating forecast performance.
+  Model comparison and selection is available to Admin users. Non-admin users can view the currently active model's output on the forecast dashboard.
 </Note>
 
-## Why Compare Forecasts?
+## Why compare forecasts?
 
 Comparing forecasts helps you:
 
 | Purpose | Benefit |
 |---------|---------|
-| **Model Selection** | Choose the best model for your business |
-| **Accuracy Analysis** | Understand forecast quality |
-| **Identify Gaps** | Find products needing attention |
-| **Improve Over Time** | Track forecast accuracy trends |
+| **Model selection** | Choose the best-performing algorithm for your product mix |
+| **Accuracy analysis** | Understand how well each model predicts actual sales |
+| **Segment optimization** | Find which algorithms work best for specific product types |
+| **Ongoing improvement** | Track forecast accuracy over time and switch models when needed |
 
-## Comparison View
+## Comparison view
 
 ### Layout
 
 The comparison view shows:
 
-- **Model Selection** - Choose models to compare
-- **Metrics Cards** - Summary accuracy metrics
-- **Comparison Table** - Side-by-side forecast values
-- **Variance Analysis** - Differences between models and actuals
+- **Model list** — all defined models with their algorithm type
+- **Side-by-side outputs** — forecast values from each model for the same SKU, channel, and period
+- **Actuals** — historical sales values for completed periods (visually distinguished from forecasts)
+- **Variance** — differences between each model's forecast and actual sales
 
-### Available Models
+### Available algorithms
 
-Depending on configuration, you may see:
+Each model in the comparison uses one of the following algorithms. See [Forecast Algorithms](/demand-forecasting/algorithms) for full details.
 
-| Model Type | Description |
-|------------|-------------|
-| **Statistical** | Time series models (moving average, exponential smoothing) |
-| **ML-Based** | Machine learning algorithms |
-| **Manual/Override** | User-adjusted forecasts |
-| **Naive** | Simple baseline (last period, same period last year) |
-| **Consensus** | Combination of multiple models |
+| Algorithm | Best for |
+|-----------|----------|
+| **90-Day Rolling Average** | Stable, predictable demand |
+| **120-Day Rolling Average (Recursive)** | Volatile products, strategic planning |
+| **Exponentially Weighted Moving Average (EWMA)** | Trending products, recent pattern changes |
+| **Linear Trend** | Products with consistent growth or decline |
+| **Simplified Seasonal** | Seasonal and holiday-driven products |
+| **Simple Seasonal with Trend Adjustment** | Seasonal products with growth trends |
+| **Seasonal Year-over-Year Growth** | Seasonal products with observed annual growth |
+| **Rolling Momentum** | Accelerating or decelerating products |
+| **Holt-Winters (Triple Exponential Smoothing)** | Complex seasonal patterns with trends |
+| **SARIMA** | Complex time series with seasonal components |
+| **Static Baseline** | External or manually uploaded forecasts |
 
-## Comparing Models
+## Comparing models
 
-### Selecting Models
+### Selecting models to compare
 
 <Steps>
-  <Step title="Open Model Selection">
-    Click on the model selector
+  <Step title="Open the comparison view">
+    Navigate to **Demand Forecast** → **Forecast Comparison**, or click a row in the forecast table to open the inline model selection dialog.
   </Step>
 
-  <Step title="Choose Models">
-    Select 2-4 models to compare:
-    - Model A (e.g., Statistical)
-    - Model B (e.g., ML-based)
-    - Actuals (if available)
+  <Step title="View model outputs">
+    The view shows each defined model as a row, with columns representing time periods. The currently active model is highlighted.
   </Step>
 
-  <Step title="Apply">
-    View updates to show selected models
+  <Step title="Compare values">
+    Review forecast values side by side. For completed periods, all models show the actual sales value. For current and future periods, each model shows its own forecast output.
+  </Step>
+
+  <Step title="Select a model">
+    If you want to switch, select a different model and click **Apply** to make it the active forecast.
   </Step>
 </Steps>
 
-### Side-by-Side View
+### Side-by-side view
 
-The table shows forecasts from each model:
+The table shows forecast outputs from each model for the same SKU-channel combination:
 
-| SKU | Period | Model A | Model B | Actual | Variance A | Variance B |
-|-----|--------|---------|---------|--------|------------|------------|
-| SKU-001 | Jan | 100 | 110 | 105 | -5 | +5 |
-| SKU-001 | Feb | 120 | 115 | 118 | +2 | -3 |
-| SKU-002 | Jan | 50 | 55 | 48 | +2 | +7 |
+| SKU | Period | 90-Day Rolling Avg | EWMA | Holt-Winters | Actual | Variance (Rolling Avg) | Variance (EWMA) |
+|-----|--------|-------------------|------|--------------|--------|----------------------|-----------------|
+| SKU-001 | Jan | 100 | 110 | 108 | 105 | -5 | +5 |
+| SKU-001 | Feb | 120 | 115 | 117 | 118 | +2 | -3 |
+| SKU-002 | Jan | 50 | 55 | 52 | 48 | +2 | +7 |
 
-## Accuracy Metrics
+<Info>
+  Completed periods display actual sales history, visually distinguished from forecast values. All models show the same actual value for completed periods.
+</Info>
 
-### Key Metrics
+## Accuracy metrics
 
-| Metric | Description | Good Value |
-|--------|-------------|------------|
-| **MAPE** | Mean Absolute Percentage Error | Lower is better (<20%) |
-| **MAE** | Mean Absolute Error | Lower is better |
-| **Bias** | Systematic over/under forecast | Close to 0 |
-| **Hit Rate** | % within acceptable range | Higher is better |
+### Key metrics
+
+Tether calculates four accuracy metrics for each model's forecast against actual sales:
+
+| Metric | Description | Formula | Good value |
+|--------|-------------|---------|------------|
+| **MAPE** | Mean Absolute Percentage Error — average percentage difference between forecast and actual | `mean(\|actual - forecast\| / actual) × 100` | Lower is better (< 20%) |
+| **MAE** | Mean Absolute Error — average absolute difference in units | `mean(\|actual - forecast\|)` | Lower is better |
+| **Bias** | Systematic over- or under-forecasting tendency | `mean(forecast - actual) / mean(actual) × 100` | Close to 0% |
+| **Hit Rate** | Percentage of periods where forecast falls within an acceptable range of actual | `% of periods where \|error\| < threshold` | Higher is better (> 75%) |
+
+<Info>
+  Accuracy metrics are only calculated for completed periods where actual sales data is available. Future periods do not contribute to accuracy scores.
+</Info>
 
 ### Understanding MAPE
 
-MAPE (Mean Absolute Percentage Error) is the most common metric:
+MAPE (Mean Absolute Percentage Error) is the primary metric used for [parameter optimization](/demand-forecasting/algorithms) and model comparison:
 
 ```
 MAPE = Average of |Actual - Forecast| / Actual × 100%
 ```
 
-| MAPE Range | Interpretation |
+| MAPE range | Interpretation |
 |------------|----------------|
 | < 10% | Excellent accuracy |
-| 10-20% | Good accuracy |
-| 20-30% | Acceptable |
+| 10–20% | Good accuracy |
+| 20–30% | Acceptable |
 | > 30% | Needs improvement |
 
-### Metrics Cards
+<Warning>
+  MAPE can be misleading for SKUs with very low sales volumes — a difference of 1 unit on a product that sells 2 units shows 50% MAPE. Use MAE alongside MAPE for low-volume items.
+</Warning>
 
-Summary cards show overall performance:
+### Metrics cards
+
+Summary cards show overall performance per model. For example:
 
 ```
-Model A - Statistical
-├── MAPE: 15.2%
+90-Day Rolling Average
+├── MAPE: 18.4%
 ├── MAE: 23 units
 ├── Bias: +2.1%
-└── Hit Rate: 78%
+└── Hit Rate: 72%
 
-Model B - ML-Based
+Holt-Winters
 ├── MAPE: 12.8%
 ├── MAE: 19 units
 ├── Bias: -1.5%
 └── Hit Rate: 82%
+
+EWMA
+├── MAPE: 15.1%
+├── MAE: 21 units
+├── Bias: +0.8%
+└── Hit Rate: 78%
 ```
 
-## Filtering Comparisons
+## Filtering comparisons
 
-### By Product
+### By product
 
 Compare model performance for specific products:
 
-1. Filter by collection or SKU
-2. See how models perform for different product types
-3. Some models may work better for certain products
+1. Filter by collection, tag, or individual SKU
+2. See how each algorithm performs for different product types
+3. Identify algorithms that excel for specific demand patterns
 
-### By Time Period
+### By time period
 
 Analyze accuracy over different periods:
 
-| Period Type | Insight |
+| Period type | Insight |
 |-------------|---------|
-| **Recent** | Current model performance |
-| **Historical** | Long-term accuracy |
-| **Seasonal** | Performance during peaks |
-| **Promotional** | Accuracy during events |
+| **Recent** (last 30–90 days) | Current model performance |
+| **Historical** (6+ months) | Long-term accuracy trends |
+| **Seasonal** (peak periods) | Performance during seasonal demand spikes |
+| **Post-event** (after promotions) | Accuracy around demand disruptions |
 
-### By Channel
+### By channel
 
-Compare accuracy across channels:
+Compare accuracy across sales channels:
 
-- Some models may perform better for specific channels
-- Channel patterns affect model suitability
+- Some algorithms may perform better for specific channels (e.g., wholesale vs. DTC)
+- Channel-specific demand patterns affect algorithm suitability
+- Consider creating separate models for channels with very different demand profiles
 
-## Variance Analysis
+## Variance analysis
 
-### Understanding Variance
+### Understanding variance
 
 | Variance | Meaning |
 |----------|---------|
 | **Positive** | Forecast was higher than actual (over-forecast) |
 | **Negative** | Forecast was lower than actual (under-forecast) |
-| **Near Zero** | Accurate forecast |
+| **Near zero** | Accurate forecast |
 
-### Variance Patterns
+### Variance patterns
 
-Look for systematic patterns:
+Look for systematic patterns in variance to diagnose model fit:
 
 | Pattern | Indicates | Action |
 |---------|-----------|--------|
-| Consistently positive | Model over-forecasts | Apply dampening |
-| Consistently negative | Model under-forecasts | Apply uplift |
-| Random | No bias, normal variance | Model is balanced |
-| Seasonal misalignment | Wrong seasonal pattern | Adjust seasonality |
+| Consistently positive | Model over-forecasts | Try a more reactive algorithm (e.g., EWMA) or reduce trend parameters |
+| Consistently negative | Model under-forecasts | Check if growth trends are being captured; try Linear Trend or Seasonal YoY Growth |
+| Random | No bias, normal variance | Model is well-calibrated |
+| Seasonal misalignment | Seasonal pattern timing is off | Switch to a seasonal algorithm (Simplified Seasonal, Holt-Winters) or verify seasonal period settings |
 
-## Model Performance by Segment
+## Model performance by segment
 
-### Product Segments
+### Product segments
 
-Different models may excel for:
+Different algorithms tend to perform best for different demand patterns:
 
-| Segment | Often Best Model |
-|---------|------------------|
-| **High volume, stable** | Statistical (simple) |
-| **Seasonal products** | Seasonal decomposition |
-| **New products** | Similar product modeling |
-| **Trending products** | ML with external factors |
+| Segment | Recommended algorithms | Why |
+|---------|----------------------|-----|
+| **High volume, stable** | 90-Day Rolling Average, EWMA | Simple averages smooth noise on stable products |
+| **Seasonal products** | Simplified Seasonal, Holt-Winters, SARIMA | Capture repeating seasonal patterns |
+| **Products with growth trends** | Linear Trend, Seasonal YoY Growth | Model upward or downward demand trajectories |
+| **New or volatile products** | EWMA, Rolling Momentum | React quickly to recent data without requiring long history |
+| **Complex seasonal + trend** | Holt-Winters, SARIMA | Handle both trend and seasonality simultaneously |
+| **Externally planned** | Static Baseline | Use your own uploaded forecast values |
 
-### Analyzing by Segment
+See [Forecast Algorithms](/demand-forecasting/algorithms) for detailed descriptions and parameter information for each algorithm.
 
-1. Filter to a product segment
-2. Compare model metrics
-3. Note which model performs best
-4. Consider segment-specific model selection
+### Analyzing by segment
 
-## Best Model Selection
+1. Filter to a product segment (by collection, tag, or channel)
+2. Compare model metrics across the filtered set
+3. Identify which algorithm performs best for that segment
+4. Consider creating a model specifically configured for that segment
 
-### Choosing the Right Model
+## Best model selection
 
-Consider:
+### Choosing the right algorithm
 
-1. **Overall Accuracy** - Which has lowest MAPE?
-2. **Bias** - Is there systematic error?
-3. **Stability** - Is accuracy consistent?
-4. **Product Fit** - Does it work for your products?
+Consider these factors when selecting an algorithm for a model:
 
-### Model Selection Matrix
+1. **Overall accuracy** — Which has the lowest MAPE across your product set?
+2. **Bias** — Is there systematic over- or under-forecasting?
+3. **Stability** — Is accuracy consistent across periods, or does it vary widely?
+4. **Data requirements** — Does the algorithm need more history than you have? (e.g., SARIMA and Holt-Winters need 2+ years of data for reliable seasonality)
+5. **Product fit** — Does your demand pattern match what the algorithm models?
 
-| If You Need... | Consider... |
-|----------------|-------------|
-| Simple, stable forecasts | Statistical models |
-| Handling of promotions | ML with event features |
-| New product forecasts | Similar product or judgment |
-| Maximum accuracy | Ensemble/consensus |
+### Algorithm selection guide
 
-## Using Comparison Results
+| If your products have... | Consider... |
+|--------------------------|-------------|
+| Stable, predictable demand | 90-Day Rolling Average, 120-Day Rolling Average |
+| Recent trend changes | EWMA, Rolling Momentum |
+| Clear seasonality | Simplified Seasonal, Holt-Winters |
+| Seasonal patterns + growth | Seasonal YoY Growth, Simple Seasonal with Trend |
+| Complex seasonal patterns | SARIMA, Holt-Winters |
+| Linear growth or decline | Linear Trend |
+| External or manual forecasts | Static Baseline |
 
-### Switching Models
+## Using comparison results
 
-If comparison shows a better model:
+### Switching models
 
-1. Document the findings
-2. Go to **Forecast Admin**
-3. Update model selection
-4. Monitor after switch
+If comparison reveals a better-performing model:
 
-### Hybrid Approaches
+1. Note which algorithm performs best and for which products
+2. Go to [**Forecast Admin**](/demand-forecasting/admin) → **Model Selection**
+3. Either update the active model or create a new model with the better algorithm
+4. Monitor accuracy after the switch to confirm improvement
 
-Sometimes best results come from:
+### Per-SKU optimization
 
-- Different models for different products
-- Model ensembles (combining forecasts)
-- Manual override of specific SKUs
+Tether supports different models for different SKU-channel combinations:
+
+- Create multiple models, each with a different algorithm
+- Assign the best-performing model per SKU-channel pair
+- Use comparison metrics to validate your choices over time
+
+<Tip>
+  Start with a broadly accurate algorithm (like EWMA or Holt-Winters), then create specialized models for product segments where a different algorithm significantly outperforms.
+</Tip>
 
 ## Reporting
 
-### Export Comparison Data
+### Exporting comparison data
 
 <Steps>
-  <Step title="Set Up View">
-    Configure models, filters, and date range
+  <Step title="Set up your view">
+    Configure the models, filters, and date range you want to export.
   </Step>
 
   <Step title="Export">
-    Click **Export** button
+    Click the **Export** button to download comparison data.
   </Step>
 
-  <Step title="Download">
-    Get detailed comparison data
+  <Step title="Review">
+    The export includes forecast values, actuals, variances, and accuracy metrics for all selected models.
   </Step>
 </Steps>
 
-### Comparison Reports
+### Using comparison reports
 
-Use exports for:
-- Monthly accuracy reviews
-- Model selection decisions
-- Stakeholder presentations
+Exports are useful for:
+- Monthly accuracy reviews with stakeholders
+- Documenting model selection decisions
+- Identifying trends in forecast performance over time
 
-## Best Practices
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Regular Comparison">
-    Compare models periodically:
-    - Monthly for active businesses
-    - Quarterly for stable businesses
-    - After significant changes
+  <Accordion title="Compare regularly">
+    Review model performance periodically:
+    - **Monthly** for businesses with frequent demand changes
+    - **Quarterly** for stable, predictable businesses
+    - **After major events** — promotions, product launches, or supply disruptions
   </Accordion>
 
-  <Accordion title="Use Appropriate Timeframes">
-    Don't judge models on too little data:
-    - Minimum 3-6 months for comparison
-    - Include seasonal periods
-    - Account for unusual events
+  <Accordion title="Use enough data">
+    Don't judge algorithms on too little history:
+    - Minimum **3–6 months** of actuals for meaningful comparison
+    - Include at least one full seasonal cycle for seasonal algorithms
+    - Account for unusual events (stockouts, promotions) that may skew metrics
   </Accordion>
 
-  <Accordion title="Consider Business Context">
-    Accuracy isn't everything:
-    - Under-forecasting may be worse than over
-    - Inventory costs affect which errors matter
-    - Customer impact varies
+  <Accordion title="Consider business context">
+    Pure accuracy isn't the only factor:
+    - **Under-forecasting** may cause stockouts and lost sales
+    - **Over-forecasting** ties up capital in excess inventory
+    - Check the **Bias** metric to see if a model consistently over- or under-forecasts
+    - Choose the error direction that's less costly for your business
   </Accordion>
 
-  <Accordion title="Document Decisions">
-    When changing models:
-    - Record why the change was made
-    - Note expected improvement
-    - Plan for follow-up evaluation
+  <Accordion title="Document model changes">
+    When switching models:
+    - Record which algorithm was replaced and why
+    - Note the accuracy improvement you expect
+    - Set a follow-up date to validate the change worked
   </Accordion>
 </AccordionGroup>
 
-## Next Steps
+## Next steps
 
 <CardGroup cols={2}>
+  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
+    Learn how each algorithm works and when to use it
+  </Card>
   <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
-    Configure forecast models
+    Configure and manage forecast models
   </Card>
   <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
     View and edit forecasts
   </Card>
   <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
     Analyze historical data
-  </Card>
-  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
-    Track forecast changes
   </Card>
 </CardGroup>

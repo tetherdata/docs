@@ -13,12 +13,17 @@ Control who has access to Tether and what they can do. User access management en
 
 ## Understanding User Roles
 
-Tether has two primary roles:
+Tether has three roles:
 
 | Role | Description |
 |------|-------------|
-| **Admin** | Full access to all features |
-| **Sales Rep** | Limited access based on assignments |
+| **Admin** | Full access to all features and settings |
+| **Sales Rep** | Focused access to sales-related features based on channel assignments |
+| **Tether Admin** | System-level access including all Admin capabilities plus internal configuration tools |
+
+<Info>
+  The Tether Admin role is typically reserved for Tether support staff. It includes everything an Admin can do, plus access to advanced system configuration such as mapper settings and data management operations.
+</Info>
 
 ### Admin Capabilities
 
@@ -27,19 +32,33 @@ Admins have full access:
 - All SKUs and collections
 - All channels and warehouses
 - All transactions
-- All settings and configuration
+- All settings and configuration (terminology, inventory & forecast settings, periods)
 - User management
 - Integrations
 
 ### Sales Rep Capabilities
 
-Sales Reps have restricted access:
+Sales Reps have focused access:
 
-- View assigned channels only
-- View forecasts for assigned scope
-- Limited or no transaction management
-- No settings access
-- No user management
+- View SKUs and collections
+- View demand forecasts (with limited editing)
+- View sales history
+- View assigned channels
+- Access the command palette for navigation and search
+
+Sales Reps **cannot** access:
+- Inventory management, warehouses, or suppliers
+- Integrations
+- Transactions
+- Settings or user management
+- Dimensions or product hierarchy configuration
+
+### Tether Admin Capabilities
+
+Tether Admins have all Admin capabilities, plus:
+
+- Mapper configuration for data processing integrations
+- Data management operations (e.g., bulk deletion of sales orders or model outputs)
 
 ## Managing Users
 
@@ -47,11 +66,11 @@ Sales Reps have restricted access:
 
 <Steps>
   <Step title="Go to Settings">
-    Navigate to **Settings** in the sidebar
+    Click your **profile avatar** in the top-right corner and select **Settings**
   </Step>
 
   <Step title="Select User Access">
-    Click on **User Access** section
+    Click on the **User Access** card
   </Step>
 
   <Step title="View Users">
@@ -316,7 +335,7 @@ User actions are logged:
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Roles & Permissions" icon="user-shield" href="/getting-started/roles-permissions">
+  <Card title="Roles & Permissions" icon="user-shield" href="/roles-permissions">
     Understand role capabilities
   </Card>
   <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">

@@ -1,36 +1,209 @@
 ---
 title: Simulation Configurations
-description: Configure supply simulation parameters
+description: Configure supply simulation parameters including replenishment cadence, safety stock, lead times, and source types
 ---
 
 # Simulation Configurations
 
-Configure your supply simulation to match your business rules, safety stock policies, and planning requirements.
+Configure your supply simulation to match your business rules, safety stock policies, and planning requirements. The simulation engine uses these configurations to determine when and how to generate replenishment recommendations.
 
 ## Configuration Overview
 
-Supply simulation uses multiple configuration sources:
+Supply simulation uses multiple configuration sources that work together:
 
-| Configuration | Purpose |
-|---------------|---------|
-| **Safety Stock** | Minimum inventory levels |
-| **Lead Times** | Transit and production times |
-| **Fulfillment Mapping** | Which warehouses serve which channels |
-| **Supplier Capabilities** | What suppliers can provide |
+| Configuration | Purpose | Impact on Simulation |
+|---------------|---------|---------------------|
+| **Safety Stock** | Minimum inventory levels | Triggers replenishment when projected inventory falls below threshold |
+| **Lead Times** | Transit and production times | Determines how far in advance orders must be placed |
+| **Replenishment Cadence** | Fixed ordering intervals | Controls when replenishment orders can be placed |
+| **Fulfillment Mapping** | Which warehouses serve which channels | Defines where demand is consumed from |
+| **Supplier Capabilities** | What suppliers can provide | Determines source, MOQ, and capacity for orders |
+| **Source Types** | Purchase, Production, or Transfer | Defines how inventory is replenished at each warehouse |
+| **Overstock Threshold** | Maximum desired inventory | Identifies excess inventory situations |
+
+## Replenishment Cadence
+
+### What is Replenishment Cadence?
+
+Replenishment cadence defines the fixed intervals at which the simulation can place replenishment orders. Rather than ordering whenever inventory falls below a threshold, cadence-based replenishment aligns orders to a regular schedule.
+
+<Note>
+A SKU-warehouse pairing must have a replenishment cadence configured to be eligible for simulation. Without a cadence, the simulation cannot generate replenishment orders for that pairing.
+</Note>
+
+### Cadence Types
+
+| Cadence | Description | Order Frequency |
+|---------|-------------|-----------------|
+| **Weekly** | Orders placed on a specific day each week | Every 7 days |
+| **Monthly** | Orders placed on a specific day each month | Every ~30 days |
+| **Quarterly** | Orders placed on a specific day each quarter | Every ~90 days |
+| **Custom (Arbitrary Days)** | Orders placed every N days | User-defined interval |
+
+### How Cadence Affects Simulation
+
+On each day of the simulation, the engine checks whether the current day is a replenishment point based on the configured cadence:
+
+1. **If it is a replenishment day**, the engine calculates how much inventory is needed to cover demand until the next replenishment point, accounting for lead time.
+2. **If it is not a replenishment day**, no new orders are generated for that day (unless safety stock breach detection moves an order earlier — see below).
+
+### Replenishment Quantity Calculation
+
+When a replenishment point is reached, the order quantity is calculated as:
+
+1. **Project forward** from the order's expected landing date (order date + lead time) to the next replenishment point.
+2. **Sum the forecasted demand** over that coverage period.
+3. **Add safety stock buffer** to ensure inventory stays above the safety stock threshold.
+4. **Subtract current projected inventory** at the landing date.
+5. **Apply MOQ rules** — if the calculated quantity is below the supplier's minimum order quantity, round up to the MOQ.
+
+<Tip>
+The simulation always accounts for lead time when calculating quantities. An order placed today won't arrive until `order_date + lead_time`, so the engine projects demand from the landing date forward.
+</Tip>
+
+### Safety Stock Breach Detection
+
+The simulation includes a look-ahead mechanism that can accelerate order dates:
+
+1. After calculating orders at regular cadence points, the engine scans the projection for days where inventory falls below safety stock.
+2. If a breach is detected **before** the next scheduled order would land, the engine moves the first order date earlier so that inventory arrives before the breach.
+3. This ensures safety stock is maintained even when demand spikes occur between cadence points.
+
+### Configuring Cadence
+
+<Steps>
+  <Step title="Navigate to Inventory Settings">
+    Go to **Settings** → **Inventory Forecast**
+  </Step>
+
+  <Step title="Select SKU-Warehouse Pairing">
+    Choose the SKU and warehouse combination to configure
+  </Step>
+
+  <Step title="Set Cadence Type">
+    Select the replenishment cadence:
+    - **Weekly** — choose the day of week
+    - **Monthly** — choose the day of month
+    - **Quarterly** — choose the day within the quarter
+    - **Custom** — enter the number of days between orders
+  </Step>
+
+  <Step title="Save">
+    Apply the cadence configuration
+  </Step>
+</Steps>
+
+## Source Types
+
+### What are Source Types?
+
+Source types define how inventory is replenished at each warehouse. Each replenishment order is classified as one of three types:
+
+| Source Type | Description | Source Entity |
+|-------------|-------------|---------------|
+| **Purchase** | Buy from an external supplier | Supplier |
+| **Production** | Manufacture in-house | Production facility / warehouse |
+| **Transfer** | Move inventory between warehouses | Another warehouse |
+
+### How Source Types Map to the Supply Chain
+
+```
+[Suppliers] ──Purchase──→ [Warehouses] ──Transfer──→ [Warehouses]
+                              ↑
+                         Production
+                        (in-house mfg)
+```
+
+- **Purchase orders** flow from a supplier to a destination warehouse. The supplier must have a capability configured for the SKU, including lead time, cost, and MOQ.
+- **Production orders** represent manufacturing at a facility. Production lead time determines how long manufacturing takes.
+- **Transfer orders** move inventory from one warehouse to another. Transit lead time determines shipping time between locations.
+
+### Source Type and Simulation Behavior
+
+The source type affects how the simulation processes each SKU-warehouse pairing:
+
+| Aspect | Purchase | Production | Transfer |
+|--------|----------|------------|----------|
+| **Lead Time Used** | Supplier lead time | Production lead time | Transit lead time (warehouse-to-warehouse) |
+| **Source Entity** | External supplier | Same or linked facility | Source warehouse |
+| **MOQ Applied** | Supplier MOQ | Production batch size | None (typically) |
+| **Dependency** | Independent | May depend on component SKUs | Depends on source warehouse inventory |
+
+<Warning>
+Transfer source types create dependencies between SKU-warehouse pairings. When Warehouse A transfers to Warehouse B, the simulation must process Warehouse A first so that the transfer consumption is accurately reflected. This is handled by the dependency graph (see below).
+</Warning>
+
+### Units of Measurement
+
+When generating orders, the simulation respects the unit of measurement (UoM) configuration:
+
+- Each SKU has a **default UoM** used throughout the system.
+- Suppliers may have a **supplier-specific UoM** that differs from the default.
+- The simulation converts between UoMs when generating purchase orders, ensuring quantities are expressed in the supplier's expected unit.
+
+## Dependency Graph
+
+### What is the Dependency Graph?
+
+The dependency graph determines the order in which SKU-warehouse pairings are simulated. This is critical because some pairings depend on the results of others — particularly when transfers are involved.
+
+### Why Order Matters
+
+Consider a simple supply chain:
+
+```
+Supplier → Main Warehouse → Regional Warehouse → Channel
+```
+
+The Regional Warehouse receives inventory via **transfer** from the Main Warehouse. When the simulation generates a transfer order for the Regional Warehouse, it **records consumption** against the Main Warehouse's inventory. If the Main Warehouse were simulated after the Regional Warehouse, this transfer consumption would be missed.
+
+### How the Graph is Built
+
+The simulation builds a dependency graph based on:
+
+1. **Fulfillment relationships** — which warehouses fulfill which channels.
+2. **Transfer routes** — which warehouses supply other warehouses.
+3. **Bill of Materials (BOM)** — which component SKUs are needed to produce finished goods.
+
+### Topological Sort
+
+The dependency graph is resolved using a **topological sort**, which produces a linear ordering where every pairing is processed before any pairing that depends on it:
+
+1. **Source pairings** (those with no upstream dependencies) are processed first.
+2. **Intermediate pairings** (warehouses that both receive and send transfers) are processed next.
+3. **Terminal pairings** (end-of-chain warehouses fulfilling channels) are processed last.
+
+<Info>
+The simulation includes **cycle detection**. If the dependency graph contains a cycle (e.g., Warehouse A transfers to B, and B transfers back to A), the simulation reports an error rather than entering an infinite loop.
+</Info>
+
+### Example: Multi-Warehouse Dependency
+
+For a supply chain with three warehouses:
+
+| Pairing | Source | Depends On |
+|---------|--------|------------|
+| SKU-001 @ Factory | Purchase from Supplier | None (processed first) |
+| SKU-001 @ Distribution Center | Transfer from Factory | SKU-001 @ Factory |
+| SKU-001 @ Regional Store | Transfer from DC | SKU-001 @ Distribution Center |
+
+The simulation processes these in order: Factory → Distribution Center → Regional Store, ensuring each transfer is reflected in the source warehouse's inventory.
 
 ## Safety Stock Configuration
 
 ### What is Safety Stock?
 
-Safety stock is buffer inventory to protect against:
+Safety stock is buffer inventory that protects against:
 
-- Demand variability
-- Supply delays
-- Forecast errors
+- Demand variability (unexpected spikes in orders)
+- Supply delays (late shipments from suppliers)
+- Forecast errors (actual demand exceeding predictions)
+
+The simulation uses safety stock as a threshold. When projected inventory falls below the safety stock level, the simulation generates replenishment recommendations, and may accelerate order dates to prevent a breach.
 
 ### Setting Safety Stock
 
-Configure at the SKU/warehouse level:
+Configure at the SKU-warehouse level:
 
 <Steps>
   <Step title="Navigate to Inventory Settings">
@@ -38,14 +211,13 @@ Configure at the SKU/warehouse level:
   </Step>
 
   <Step title="Find Safety Stock Section">
-    Locate safety stock configuration
+    Locate the safety stock configuration for the desired SKU-warehouse pairing
   </Step>
 
   <Step title="Set Values">
-    Define safety stock by:
-    - Fixed quantity
-    - Days of coverage
-    - Percentage of demand
+    Define safety stock using one of the available methods:
+    - **Fixed quantity** — a specific number of units
+    - **Days of coverage** — enough inventory to cover X days of forecasted demand
   </Step>
 
   <Step title="Save">
@@ -57,27 +229,38 @@ Configure at the SKU/warehouse level:
 
 | Method | Description | Best For |
 |--------|-------------|----------|
-| **Fixed Quantity** | Specific unit count | Stable demand |
-| **Days of Cover** | X days of average demand | Variable demand |
-| **Percentage** | % of forecast period demand | Seasonal products |
+| **Fixed Quantity** | A specific unit count as the minimum buffer | Products with stable, predictable demand |
+| **Days of Cover** | Automatically calculated as X days of average forecasted demand | Products with variable demand patterns |
+
+### How Safety Stock Affects Simulation
+
+During the day-by-day simulation, the engine tracks the `safety_stock_qty` for each pairing each day. The simulation:
+
+1. **Checks projected EOH** (End on Hand) against the safety stock level after processing all consumption and supply events for the day.
+2. **Generates alerts** when inventory is projected to breach safety stock:
+   - **Important** — inventory is approaching safety stock levels
+   - **Urgent** — inventory is at or below safety stock, stockout is imminent
+3. **Accelerates orders** — if a safety stock breach is detected before the next cadence-based order would arrive, the simulation moves the order date earlier.
 
 ### Example Configuration
 
-| SKU | Warehouse | Method | Value |
-|-----|-----------|--------|-------|
-| SKU-001 | Main | Days of Cover | 14 days |
-| SKU-002 | Main | Fixed | 500 units |
-| SKU-003 | Regional | Percentage | 20% |
+| SKU | Warehouse | Method | Value | Effect |
+|-----|-----------|--------|-------|--------|
+| SKU-001 | Main | Days of Cover | 14 days | Safety stock = 14 × daily avg demand |
+| SKU-002 | Main | Fixed | 500 units | Safety stock = 500 units always |
+| SKU-003 | Regional | Days of Cover | 21 days | Higher buffer for longer lead times |
 
 ## Lead Time Configuration
 
 ### Types of Lead Times
 
-| Type | Description |
-|------|-------------|
-| **Supplier Lead Time** | Time from order to receipt |
-| **Transit Lead Time** | Shipping time between locations |
-| **Production Lead Time** | Manufacturing time |
+| Type | Description | Used For |
+|------|-------------|----------|
+| **Supplier Lead Time** | Days from placing a purchase order to receiving goods | Purchase source types |
+| **Transit Lead Time** | Shipping time between warehouse locations | Transfer source types |
+| **Production Lead Time** | Manufacturing time from start to completion | Production source types |
+
+Lead times are critical because they determine the **landing date** of an order: `landing_date = order_date + lead_time`. The simulation uses landing dates to project when incoming inventory will be available.
 
 ### Configuring Lead Times
 
@@ -86,25 +269,39 @@ Configure at the SKU/warehouse level:
 Set at the supplier capability level:
 
 1. Go to **Inventory** → **Suppliers**
-2. Select supplier
-3. View/edit capabilities
-4. Set lead time per SKU
+2. Select the supplier
+3. View/edit capabilities for each SKU
+4. Set lead time (in days) per SKU
 
-#### Warehouse Lead Times
+#### Warehouse Transit Lead Times
 
 Configure transit times between warehouses:
 
 1. Go to **Inventory** → **Warehouses**
-2. Access Lead Times
-3. Set matrix of warehouse-to-warehouse times
+2. Access the **Lead Times** section
+3. Set the matrix of warehouse-to-warehouse transit times
 
 See [Lead Times](/inventory/warehouses/lead-times) for details.
+
+### Lead Time Impact on Ordering
+
+The simulation uses lead times to work backwards from when inventory is needed:
+
+| If Lead Time Is... | Simulation Effect |
+|--------------------|-------------------|
+| **Short** (1–3 days) | Orders can be placed closer to when inventory is needed |
+| **Medium** (7–14 days) | Orders must be placed 1–2 weeks in advance |
+| **Long** (30+ days) | Orders must be placed well in advance; safety stock becomes more critical |
+
+<Tip>
+For SKUs with long lead times, consider increasing safety stock to provide additional buffer against demand variability during the extended wait period.
+</Tip>
 
 ## Fulfillment Mapping
 
 ### What is Fulfillment Mapping?
 
-Defines which warehouses fulfill demand from which channels:
+Fulfillment mapping defines which warehouses fulfill demand from which sales channels. This mapping determines where demand consumption occurs in the simulation.
 
 ```
 Channel: Shopify US → Fulfilled by: Main Warehouse
@@ -124,7 +321,7 @@ Channel: Wholesale → Fulfilled by: Regional DC
   </Step>
 
   <Step title="Map Channels to Warehouses">
-    For each channel, select fulfilling warehouse(s)
+    For each channel, select the fulfilling warehouse(s)
   </Step>
 
   <Step title="Save">
@@ -141,19 +338,24 @@ A channel can be fulfilled by multiple warehouses:
 | Website US | East DC | West DC |
 | Website CA | Canada DC | East DC |
 
+<Note>
+Fulfillment mapping is one of the inputs to the dependency graph. The simulation uses these mappings to determine which SKU-warehouse pairings need to be simulated and how demand flows through the system.
+</Note>
+
 ## Supplier Configuration
 
 ### Supplier Capabilities
 
 Configure what each supplier can provide:
 
-| Setting | Description |
-|---------|-------------|
-| **SKUs** | Which products they supply |
-| **Lead Time** | Days to receive |
-| **Cost** | Unit cost |
-| **MOQ** | Minimum order quantity |
-| **Capacity** | Maximum order quantity |
+| Setting | Description | Simulation Impact |
+|---------|-------------|-------------------|
+| **SKUs** | Which products the supplier provides | Determines eligible suppliers for each SKU |
+| **Lead Time** | Days from order to receipt | Sets order-to-landing delay |
+| **Cost** | Unit cost per SKU | Used for cost calculations on recommendations |
+| **MOQ** | Minimum order quantity | Orders are rounded up to meet MOQ |
+| **Capacity** | Maximum order quantity | Limits order size per supplier |
+| **UoM** | Supplier-specific unit of measurement | Orders are converted to supplier's UoM |
 
 ### Setting Capabilities
 
@@ -163,20 +365,29 @@ Configure what each supplier can provide:
   </Step>
 
   <Step title="Select Supplier">
-    Choose supplier to configure
+    Choose the supplier to configure
   </Step>
 
   <Step title="Add Capabilities">
-    For each SKU they provide:
-    - Set lead time
-    - Set costs
-    - Set MOQ/capacity
+    For each SKU the supplier provides:
+    - Set lead time (days)
+    - Set unit cost
+    - Set MOQ and maximum capacity
+    - Configure UoM if different from SKU default
   </Step>
 
   <Step title="Save">
     Apply configuration
   </Step>
 </Steps>
+
+### MOQ Handling in Simulation
+
+When the simulation calculates a replenishment quantity, it applies MOQ rules:
+
+1. If the calculated quantity is **below the MOQ**, the order is rounded up to the MOQ.
+2. If the calculated quantity is **above the MOQ**, it is used as-is (no rounding).
+3. The additional units from MOQ rounding contribute to higher projected inventory, which may defer the next order.
 
 ## Simulation Parameters
 
@@ -186,67 +397,85 @@ Configure how far into the future to simulate:
 
 | Setting | Typical Value | Use Case |
 |---------|---------------|----------|
-| **Short** | 30 days | Tactical planning |
-| **Medium** | 90 days | Standard planning |
-| **Long** | 180+ days | Strategic planning |
+| **Short** | 30 days | Tactical planning and urgent orders |
+| **Medium** | 90 days | Standard replenishment planning |
+| **Long** | 180+ days | Strategic planning and long lead time items |
 
 ### Demand Source
 
-Which forecast to use:
+The simulation consumes demand based on the selected forecast:
 
 | Option | Description |
 |--------|-------------|
-| **Selected Model** | Currently active forecast model |
-| **Specific Model** | Choose a particular model |
-| **Manual Override** | Use custom forecast data |
+| **Selected Model** | Uses the currently active forecast model |
+| **Specific Model** | Choose a particular forecast model |
 
 ## Overstock Configuration
 
 ### What is Overstock?
 
-Overstock threshold defines when inventory is excessive:
+Overstock threshold defines when inventory is considered excessive. Excess inventory:
 
-- Ties up capital
-- Risk of obsolescence
-- Storage costs
+- Ties up working capital
+- Creates risk of obsolescence
+- Increases storage costs
 
 ### Setting Overstock Thresholds
 
-Configure overstock alerts:
-
 | Method | Description |
 |--------|-------------|
-| **Days of Cover** | Alert if > X days inventory |
-| **Multiple of Target** | Alert if > X times safety stock |
+| **Days of Cover** | Flag as overstock if inventory exceeds X days of demand |
+| **Multiple of Target** | Flag as overstock if inventory exceeds X times the target level |
+
+The simulation tracks the `overstock_qty` for each SKU-warehouse pairing each day. When projected inventory exceeds the overstock threshold, it is flagged in charts and alerts.
+
+## Pairing Eligibility
+
+### Requirements for Simulation
+
+Not every SKU-warehouse combination is simulated. A pairing must meet these prerequisites:
+
+| Requirement | Why It's Needed |
+|-------------|-----------------|
+| **Replenishment cadence** configured | The simulation needs to know when to check for replenishment |
+| **Safety stock** configured | Defines the target minimum inventory level |
+| **At least one source** (supplier capability, transfer route, or production capability) | The simulation needs to know where to order from |
+| **[Demand forecast](/demand-forecasting/dashboard)** available | The simulation needs projected consumption data |
+
+<Warning>
+If a SKU-warehouse pairing is missing any of these prerequisites, it will be skipped during simulation. Check your configuration if a pairing does not appear in simulation results.
+</Warning>
 
 ## Configuration Best Practices
 
 <AccordionGroup>
   <Accordion title="Start Conservative">
     Begin with higher safety stocks:
-    - Learn demand patterns
-    - Understand variability
-    - Reduce gradually
+    - Learn demand patterns first
+    - Understand demand variability
+    - Reduce safety stock gradually as you gain confidence
   </Accordion>
 
   <Accordion title="Segment by Risk">
-    Different settings for different products:
-    - Critical items: higher safety stock
-    - Long lead time: higher buffer
-    - Stable demand: lower buffer
+    Apply different settings based on product characteristics:
+    - **Critical items**: higher safety stock, shorter cadence
+    - **Long lead time items**: higher safety stock buffer
+    - **Stable demand items**: lower safety stock, longer cadence
+    - **New products**: higher buffer until demand patterns are established
+  </Accordion>
+
+  <Accordion title="Align Cadence with Operations">
+    Choose cadence that matches your operational reality:
+    - Match supplier ordering windows
+    - Align with shipping schedules
+    - Consider warehouse receiving capacity
   </Accordion>
 
   <Accordion title="Review Regularly">
-    Update configurations as business changes:
-    - New suppliers
-    - Changed lead times
-    - Demand pattern shifts
-  </Accordion>
-
-  <Accordion title="Document Decisions">
-    Keep records of why settings were chosen:
-    - Helps future adjustments
-    - Enables learning
+    Update configurations as your business changes:
+    - New suppliers or changed lead times
+    - Demand pattern shifts (seasonal changes)
+    - New warehouses or fulfillment routes
   </Accordion>
 </AccordionGroup>
 
@@ -256,60 +485,87 @@ Configure overstock alerts:
 
 | Configuration | Simulation Impact |
 |---------------|-------------------|
-| **Higher Safety Stock** | Earlier reorder, more inventory |
-| **Longer Lead Times** | Earlier order dates |
+| **Higher Safety Stock** | Earlier reorder triggers, more inventory on hand |
+| **Longer Lead Times** | Orders must be placed further in advance |
+| **Shorter Cadence** | More frequent, smaller orders |
+| **Longer Cadence** | Less frequent, larger orders |
+| **Higher MOQ** | Larger orders, potentially more overstock |
 | **More Fulfillment Options** | Flexible sourcing recommendations |
-| **Lower MOQ** | Smaller, more frequent orders |
+| **Transfer Source Type** | Creates dependencies between warehouses |
 
 ### Testing Configuration Changes
 
 Before applying configuration changes:
 
 1. Run simulation with current settings
-2. Note baseline results
-3. Run with new settings
-4. Compare differences
-5. Validate makes sense
+2. Note baseline results (stockout dates, order counts, coverage days)
+3. Change the configuration
+4. Run simulation again
+5. Compare differences and validate the results make sense
 
 ## Troubleshooting
+
+### Pairing Not Appearing in Simulation
+
+**Possible causes:**
+- Missing replenishment cadence
+- No safety stock configured
+- No supplier capability, transfer route, or production capability set up
+- No [demand forecast](/demand-forecasting/dashboard) available for the SKU
+
+**Solutions:**
+1. Check all pairing eligibility requirements above
+2. Verify the SKU-warehouse pairing has a source configured
+3. Ensure a demand forecast covers the simulation period
 
 ### Orders Recommended Too Late
 
 **Possible causes:**
-- Lead times not configured
+- Lead times not configured or too short
 - Safety stock too low
 - Missing supplier capabilities
 
 **Solutions:**
-1. Verify lead time configuration
-2. Review safety stock settings
-3. Check supplier setup
+1. Verify lead time configuration matches real-world delivery times
+2. Review safety stock settings — increase if breaches are frequent
+3. Check supplier setup and ensure capabilities are complete
 
 ### Too Many Recommendations
 
 **Possible causes:**
-- Safety stock too high
-- Overstock threshold too low
-- Many small orders (low MOQ)
+- Safety stock too high relative to demand
+- Replenishment cadence too short (e.g., daily)
+- MOQ too low, generating many small orders
 
 **Solutions:**
-1. Review safety stock levels
-2. Adjust overstock thresholds
-3. Check MOQ settings
+1. Review safety stock levels — reduce if inventory is consistently above target
+2. Lengthen the replenishment cadence (e.g., weekly instead of daily)
+3. Check MOQ settings with suppliers
+
+### Unexpected Dependency Order
+
+**Possible causes:**
+- Transfer routes creating unexpected dependencies
+- Circular dependencies between warehouses
+
+**Solutions:**
+1. Review transfer routes in your warehouse configuration
+2. Check for cycles in the supply chain (e.g., Warehouse A → B → A)
+3. Simplify transfer routes if dependencies are overly complex
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Running Simulations" icon="play" href="/supply-simulation/running">
-    Execute simulations
+    Execute simulations with your configuration
   </Card>
   <Card title="Charts" icon="chart-area" href="/supply-simulation/charts">
-    Visualize results
+    Visualize simulation results
   </Card>
   <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
-    Test scenarios
+    Test scenarios with different parameters
   </Card>
   <Card title="Lead Times" icon="clock" href="/inventory/warehouses/lead-times">
-    Configure lead times
+    Configure warehouse lead times
   </Card>
 </CardGroup>

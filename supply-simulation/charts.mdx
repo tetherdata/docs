@@ -1,96 +1,205 @@
 ---
 title: Simulation Charts
-description: Visualize supply simulation results
+description: Understand inventory forecast charts, daily inventory values, threshold lines, and order flow diagrams
 ---
 
 # Simulation Charts
 
-Tether provides visual charts to help you understand simulation results, identify inventory issues, and make informed decisions.
+Tether provides visual charts to help you understand simulation results, identify inventory issues, and make informed decisions. The charts display the day-by-day output of the simulation engine, showing how inventory levels change over time as consumption and supply events occur.
 
-## Chart Types
+## Inventory Forecast Chart
 
-### Inventory Forecast Chart
+The primary visualization is the inventory forecast chart, which shows projected inventory levels over the simulation horizon for a specific SKU-warehouse pairing.
 
-The primary visualization showing projected inventory over time:
+### Daily Inventory Values
 
-| Element | Description |
-|---------|-------------|
-| **Blue Line** | Current inventory projection |
-| **Green Line** | Projection with recommended orders |
-| **Red Zone** | Stockout periods |
-| **Yellow Zone** | Low inventory (below safety stock) |
-| **Horizontal Lines** | Safety stock and overstock thresholds |
+The simulation tracks inventory on a day-by-day basis. The chart displays two key values for each day:
 
-### Order Flow Diagram
+| Value | Description |
+|-------|-------------|
+| **BOH (Beginning on Hand)** | The inventory quantity at the start of the day, before any events are processed |
+| **EOH (End on Hand)** | The inventory quantity at the end of the day, after all consumption and supply events are applied |
 
-Visualizes replenishment orders between suppliers and warehouses:
-
-| Element | Description |
-|---------|-------------|
-| **Nodes** | Suppliers and warehouses |
-| **Arrows** | Order flow direction |
-| **Labels** | Order quantities and dates |
-
-## Reading the Inventory Chart
-
-### Understanding the Timeline
-
-The x-axis shows time from today forward:
+The relationship between BOH and EOH for each day follows this flow:
 
 ```
-Today -----> Future
-  |           |
-Start       End of
-Date        Simulation
+BOH → subtract consumption → add supply events → EOH
 ```
 
-### Understanding Inventory Levels
-
-The y-axis shows quantity:
+The next day's BOH equals the previous day's EOH, creating a continuous projection:
 
 ```
-Overstock ─────── Too much inventory
-Target ─────────── Ideal level
-Safety Stock ───── Minimum acceptable
-Zero ──────────── Stockout
+Day 1 EOH = Day 2 BOH
+Day 2 EOH = Day 3 BOH
+...and so on
 ```
 
-### Key Points to Identify
+<Tip>
+The difference between BOH and EOH on any given day tells you the net inventory change. A large drop indicates high consumption or no incoming supply. A large increase indicates a replenishment order landing.
+</Tip>
 
-| Pattern | Meaning |
-|---------|---------|
-| **Declining Line** | Inventory being consumed |
-| **Sudden Drop** | Large order fulfilled |
-| **Sudden Rise** | Replenishment received |
-| **Flat at Zero** | Stockout period |
-| **Line Crossing Safety Stock** | Low inventory alert |
+### Consumption Events
+
+Consumption events reduce inventory throughout the simulation. These are shown on the chart as downward movements:
+
+| Event Type | Description | Chart Effect |
+|------------|-------------|--------------|
+| **Sales Forecast** | Projected daily sales based on the [demand forecast model](/demand-forecasting/algorithms) | Gradual, steady decline in inventory |
+| **Actual Sales** | Recorded sales for historical days | Reflected in past-period inventory levels |
+| **Transfer Out** | Inventory leaving the warehouse to supply another location | Sudden drop on transfer date |
+| **Production Consumption** | Raw materials or components consumed during manufacturing | Reduction in component SKU inventory |
+
+### Supply Events
+
+Supply events increase inventory. These are shown on the chart as upward movements:
+
+| Event Type | Description | Chart Effect |
+|------------|-------------|--------------|
+| **Purchase Order Landing** | Inventory received from a supplier | Sudden rise on the landing date (order date + supplier lead time) |
+| **Transfer In** | Inventory arriving from another warehouse | Sudden rise on arrival date (transfer date + transit lead time) |
+| **Production Complete** | Finished goods added after manufacturing | Sudden rise on completion date (start date + production lead time) |
+| **In-Progress Orders** | Existing orders (drafts or submitted) expected to arrive | Pre-scheduled supply shown on expected landing dates |
+
+<Note>
+The simulation distinguishes between two projection lines. The **current projection** (User Forecast Route) includes only existing orders and drafts from your supply plan. The **recommended projection** (System Forecast Route) includes system-generated replenishment orders based on your configuration rules.
+</Note>
+
+### Two Projection Lines
+
+The chart displays two inventory projection lines:
+
+| Line | Color | Description |
+|------|-------|-------------|
+| **Current Projection** | Blue solid line | What happens with your existing supply plan (current orders and drafts only) |
+| **Recommended Projection** | Green dashed line | What happens if you accept the system's replenishment recommendations |
+
+**Current Projection (User Forecast Route):**
+- Uses existing supply plan drafts, submitted orders, and in-progress transactions
+- Does **not** generate new replenishment orders
+- Shows the impact of your current plan as-is
+
+**Recommended Projection (System Forecast Route):**
+- Ignores the user supply plan
+- Generates new replenishment orders based on configured rules (cadence, safety stock, lead times, MOQ)
+- Shows what the system recommends for optimal inventory levels
+
+The gap between these two lines highlights where your current plan differs from the system's recommendations.
+
+## Threshold Lines
+
+The chart displays horizontal threshold lines that represent inventory targets and limits:
+
+| Threshold | Visual | Description |
+|-----------|--------|-------------|
+| **Safety Stock** | Red dashed line | The minimum acceptable inventory level. When the projection crosses below this line, it indicates a safety stock breach. |
+| **Target Stock** | Yellow dashed line | The ideal inventory level that replenishment orders aim to restore inventory to. |
+| **Overstock Threshold** | Orange dashed line | The maximum desired inventory level. Inventory above this line is flagged as excess. |
+
+### Reading Threshold Zones
+
+The areas between threshold lines represent different inventory health states:
+
+```
+Above Overstock ──── Excess inventory (ties up capital)
+─── Overstock Threshold ───
+Healthy Zone ─────── Inventory between target and overstock
+─── Target Stock ──────────
+Adequate Zone ────── Inventory between safety stock and target
+─── Safety Stock ──────────
+Below Safety Stock ─ Risk of stockout (action needed)
+─── Zero ──────────────────
+Stockout ─────────── No inventory available
+```
+
+### Alert Levels
+
+When inventory crosses threshold lines, the simulation assigns alert levels to replenishment recommendations:
+
+| Alert Level | Condition | Recommended Action |
+|-------------|-----------|-------------------|
+| **Urgent** | Inventory is at or below safety stock; stockout is imminent | Order immediately |
+| **Important** | Inventory is approaching safety stock levels | Order this week |
+| **None** | Inventory is healthy; standard replenishment scheduled | Follow normal cadence |
+
+## Order Flow Diagram
+
+The order flow diagram provides a visual representation of replenishment flows between entities in your supply chain.
+
+### Diagram Structure
+
+The flow diagram shows the movement of goods through your supply chain:
+
+```
+[Suppliers] ──Purchase Orders──→ [Warehouses] ──Transfers──→ [Warehouses] ──Fulfillment──→ [Channels]
+```
+
+### Diagram Elements
+
+| Element | Shape | Description |
+|---------|-------|-------------|
+| **Supplier** | Node (rectangle) | External vendors that provide inventory via purchase orders |
+| **Warehouse** | Node (rectangle) | Inventory storage locations that receive, hold, and ship goods |
+| **Channel** | Node (rectangle) | Sales destinations (e.g., Shopify, Amazon) that consume inventory |
+| **Purchase Flow** | Arrow (supplier → warehouse) | Purchase orders from suppliers, showing quantity and expected dates |
+| **Transfer Flow** | Arrow (warehouse → warehouse) | Inter-warehouse transfers, showing quantity and transit time |
+| **Fulfillment Flow** | Arrow (warehouse → channel) | Demand consumption from channels |
+| **Flow Volume** | Line thickness | Thicker lines indicate larger quantities being moved |
+
+### Flow Information
+
+Each flow line displays:
+
+- **Direction** — where goods are moving from and to
+- **Quantity** — number of units in the order or transfer
+- **Timeline** — when the movement is expected to occur
+- **Associated orders** — links to the underlying transactions
+
+### Filtering the Flow
+
+Focus the diagram on specific aspects:
+
+| Filter | Effect |
+|--------|--------|
+| **By Time Period** | View flows for the next 30, 60, or 90 days |
+| **By Warehouse** | See flows to/from a specific warehouse |
+| **By SKU** | Filter to a specific product across all locations |
 
 ## Chart Interactions
 
 ### Zooming
 
-- Scroll to zoom in/out
-- Click and drag to pan
-- Double-click to reset
+- **Scroll** to zoom in and out on the time axis
+- **Click and drag** to pan across the timeline
+- **Double-click** to reset the view to the full simulation horizon
 
 ### Hovering
 
-Hover over the chart to see:
+Hover over any point on the chart to see detailed information for that day:
 
-- Date
-- Projected quantity
-- Demand for that day
-- Orders arriving
+- **Date** — the specific simulation day
+- **BOH** — beginning on hand quantity
+- **EOH** — end on hand quantity
+- **Consumption** — total units consumed that day (sales forecast, transfers out)
+- **Supply** — total units received that day (order landings, transfers in)
+- **Events** — specific events occurring on that day (order placed, order received, transfer)
 
 ### Filtering
 
-Control what's displayed:
+Control what the chart displays:
 
 | Filter | Effect |
 |--------|--------|
-| **SKU** | Show specific product |
-| **Warehouse** | Show specific location |
-| **Date Range** | Adjust time horizon |
+| **SKU** | Show the projection for a specific product |
+| **Warehouse** | Show the projection for a specific location |
+| **Date Range** | Adjust the visible time horizon |
+
+### Day-by-Day Navigation
+
+Navigate through the projection one day at a time:
+
+1. Use the **date picker** or **arrow buttons** to step through days
+2. See the inventory state for each specific day
+3. View all events (orders received, consumption, transfers) that occur on that day
 
 ## Accessing Charts
 
@@ -98,19 +207,19 @@ Control what's displayed:
 
 <Steps>
   <Step title="Run Simulation">
-    Execute a supply simulation
+    Execute a supply simulation to generate projection data
   </Step>
 
   <Step title="View Results">
-    Navigate to simulation results
-  </Step>
-
-  <Step title="Click Charts Tab">
-    Access visualization options
+    Navigate to the simulation results view
   </Step>
 
   <Step title="Select SKU/Warehouse">
-    Choose what to visualize
+    Choose the SKU-warehouse pairing to visualize
+  </Step>
+
+  <Step title="View Chart">
+    The inventory forecast chart displays automatically for the selected pairing
   </Step>
 </Steps>
 
@@ -118,79 +227,50 @@ Control what's displayed:
 
 <Steps>
   <Step title="Go to Inventory">
-    Navigate to Inventory Dashboard
+    Navigate to the **Inventory** dashboard
   </Step>
 
   <Step title="Select SKU">
-    Click on a SKU to see details
+    Click on a SKU to see its details
   </Step>
 
-  <Step title="View Forecast Flow">
-    Access the Forecasts & Flow view
-  </Step>
-</Steps>
-
-## Chart Types in Detail
-
-### Current Projection Chart
-
-Shows what happens without any new orders:
-
-**Use to understand:**
-- When stockouts will occur
-- How quickly inventory depletes
-- Impact of current demand
-
-### Recommended Projection Chart
-
-Shows what happens with recommended orders:
-
-**Use to understand:**
-- Impact of recommendations
-- Whether recommendations solve issues
-- Timing of improvement
-
-### Comparison View
-
-Side-by-side or overlay comparison:
-
-| View | Shows |
-|------|-------|
-| **Side by Side** | Two separate charts |
-| **Overlay** | Both lines on same chart |
-
-## Generating Chart Files
-
-Export charts for reports or sharing:
-
-<Steps>
-  <Step title="Configure View">
-    Set up the chart you want to export
-  </Step>
-
-  <Step title="Click Export">
-    Choose export option
-  </Step>
-
-  <Step title="Select Format">
-    Choose SVG or PNG format
-  </Step>
-
-  <Step title="Download">
-    Save the file
+  <Step title="View Forecast & Flow">
+    Access the **Forecast** tab to see the inventory projection chart, or the **Flow** tab to see the order flow diagram
   </Step>
 </Steps>
 
-### Export Formats
+## Events Panel
 
-| Format | Best For |
-|--------|----------|
-| **SVG** | High quality, scalable |
-| **PNG** | Easy sharing, presentations |
+The events panel provides a detailed list of all supply chain events that affect inventory for the selected SKU-warehouse pairing.
+
+### Event Details
+
+Click on any event marker in the chart to open the events panel, which shows:
+
+| Field | Description |
+|-------|-------------|
+| **Event Type** | Purchase order, transfer, production, or consumption |
+| **Date** | When the event occurs |
+| **Quantity** | Number of units involved |
+| **Source / Destination** | Where goods are coming from or going to |
+| **Order Reference** | Link to the underlying transaction or recommendation |
+| **Status** | Whether the event is from an existing order (User Route) or a recommendation (System Route) |
+
+### Event Types in the Panel
+
+| Icon | Event | Effect on Inventory |
+|------|-------|-------------------|
+| 📋 | **Order Placed** | No immediate inventory change; order is in transit |
+| 📦 | **Order Received** | Inventory increases at destination warehouse |
+| 🚚 | **Order Shipped** | Inventory in transit (not yet available) |
+| ➡️ | **Transfer Out** | Inventory decreases at source warehouse |
+| ⬅️ | **Transfer In** | Inventory increases at destination warehouse |
+| 🏭 | **Production Complete** | Finished goods added to inventory |
+| 📉 | **Sales Consumption** | Inventory decreases based on demand forecast |
 
 ## Understanding Chart Patterns
 
-### Healthy Inventory
+### Healthy Inventory Pattern
 
 ```
           ───────────
@@ -200,9 +280,9 @@ Export charts for reports or sharing:
      Restock        Restock
 ```
 
-- Regular replenishment cycles
-- Never hits zero
-- Stays above safety stock
+- Regular replenishment cycles with smooth transitions
+- Inventory stays above safety stock at all times
+- Periodic rises (restocks) and gradual declines (consumption)
 
 ### Trending to Stockout
 
@@ -215,9 +295,23 @@ Export charts for reports or sharing:
             Stockout!
 ```
 
-- Declining without replenishment
-- Will hit zero
-- Needs urgent order
+- Continuous decline without replenishment
+- Inventory will hit zero — needs urgent action
+- Check for missing orders or insufficient supply
+
+### Safety Stock Breach
+
+```
+────────────
+            \        ┌───── Restock arrives
+             \      /
+- - - - - - -\- - /- - -  Safety stock line
+               \/
+```
+
+- Inventory dips below safety stock before restock arrives
+- The simulation may accelerate order dates to prevent this
+- Consider increasing safety stock or shortening cadence
 
 ### Overstock Situation
 
@@ -228,12 +322,12 @@ Export charts for reports or sharing:
      /
 ────/
     ↑
- Large order
+ Large order (possibly due to MOQ)
 ```
 
-- Above optimal levels
-- Ties up capital
-- May need to reduce orders
+- Inventory exceeds the overstock threshold
+- Often caused by large MOQ requirements
+- Consider negotiating lower MOQ or adjusting order timing
 
 ## Using Charts for Decisions
 
@@ -241,27 +335,21 @@ Export charts for reports or sharing:
 
 | Chart Signal | Action |
 |--------------|--------|
-| Crosses safety stock | Review recommendations |
-| Reaches zero | Order immediately |
-| Above overstock | Reduce planned orders |
-| Erratic pattern | Review forecast accuracy |
+| Projection crosses below safety stock | Review and accept replenishment recommendations |
+| Projection reaches zero | Place an urgent order immediately |
+| Projection above overstock threshold | Reduce or defer planned orders |
+| Large gap between current and recommended lines | Review system recommendations for improvement |
+| Erratic pattern with sharp spikes | Review forecast accuracy and order timing |
 
 ### Validating Recommendations
 
-Before accepting recommendations:
+Before accepting system recommendations:
 
-1. View the "with recommendations" chart
-2. Verify issues are resolved
-3. Check timing makes sense
-4. Confirm no new issues created
-
-### Communicating Status
-
-Use charts to communicate:
-
-- Share with stakeholders
-- Include in reports
-- Present in planning meetings
+1. View the **recommended projection** (green line)
+2. Verify that safety stock breaches are resolved
+3. Check that order timing makes sense given lead times
+4. Confirm no new overstock issues are created
+5. Review the events panel for order details
 
 ## Chart Customization
 
@@ -269,48 +357,52 @@ Use charts to communicate:
 
 | Option | Description |
 |--------|-------------|
-| **Show Safety Stock** | Display threshold line |
-| **Show Overstock** | Display upper threshold |
-| **Show Orders** | Mark order arrival points |
-| **Show Demand** | Overlay demand forecast |
+| **Show Safety Stock** | Toggle the safety stock threshold line |
+| **Show Overstock** | Toggle the overstock threshold line |
+| **Show Target** | Toggle the target stock threshold line |
+| **Show Orders** | Mark order placement and arrival points |
+| **Show Demand** | Overlay the demand forecast on the chart |
 
-### Time Scale Options
+### Export Options
 
-| Scale | View |
-|-------|------|
-| **Daily** | Day-by-day detail |
-| **Weekly** | Aggregated by week |
-| **Monthly** | High-level trend |
+Export charts for reports or sharing:
+
+| Format | Best For |
+|--------|----------|
+| **SVG** | High quality, scalable graphics for presentations |
+| **PNG** | Easy sharing via email or chat |
 
 ## Best Practices
 
 <AccordionGroup>
-  <Accordion title="Check Critical SKUs">
-    Regularly review charts for:
-    - High-value products
-    - Long lead time items
-    - Fast-moving SKUs
+  <Accordion title="Check Critical SKUs First">
+    Prioritize chart review for:
+    - High-value products with significant financial impact
+    - Long lead time items where delays are costly
+    - Fast-moving SKUs that can stockout quickly
+    - New products with uncertain demand patterns
   </Accordion>
 
-  <Accordion title="Compare Scenarios">
-    Use charts to compare:
-    - Current vs. recommended
-    - Different what-if scenarios
-    - Historical accuracy
+  <Accordion title="Compare Both Projections">
+    Always review both the current and recommended projections:
+    - Understand what happens with your existing plan
+    - See what the system recommends
+    - Identify the gap between the two
+    - Make informed decisions about which recommendations to accept
   </Accordion>
 
-  <Accordion title="Share Visuals">
-    Charts communicate better than numbers:
-    - Export for presentations
-    - Include in status updates
-    - Use for alignment
+  <Accordion title="Use the Events Panel">
+    Don't just look at the lines — dig into the events:
+    - Click on event markers to see details
+    - Understand what's driving inventory changes
+    - Verify that order timing aligns with your expectations
   </Accordion>
 
-  <Accordion title="Set Up Alerts">
-    Don't rely only on charts:
-    - Configure inventory alerts
-    - Get notified of issues
-    - Review charts for details
+  <Accordion title="Share Visuals with Stakeholders">
+    Charts communicate supply chain status effectively:
+    - Export charts for planning meetings
+    - Include in status reports
+    - Use to align with suppliers on order timing
   </Accordion>
 </AccordionGroup>
 
@@ -319,40 +411,50 @@ Use charts to communicate:
 ### Chart Not Loading
 
 **Possible causes:**
-- Simulation not complete
-- No data for selection
-- Browser issue
+- Simulation has not been run or is still processing
+- No data exists for the selected SKU-warehouse pairing
+- Browser performance issue with large datasets
 
 **Solutions:**
-1. Wait for simulation to complete
-2. Verify SKU/warehouse has data
-3. Refresh the page
+1. Wait for the simulation to complete before viewing charts
+2. Verify the SKU-warehouse pairing has forecast data and configuration
+3. Try refreshing the page or selecting a different pairing first
 
-### Unexpected Pattern
+### Flat Line at Zero
 
 **Possible causes:**
-- Data quality issues
-- Missing orders
-- Configuration problems
+- No beginning inventory and no incoming supply
+- All supply events are beyond the visible date range
+- SKU-warehouse pairing has no demand forecast
 
 **Solutions:**
-1. Review underlying data
-2. Check open orders
-3. Verify settings
+1. Check that opening inventory is configured correctly
+2. Extend the date range to see if supply events exist further out
+3. Verify the demand forecast covers the simulation period
+
+### Threshold Lines Not Showing
+
+**Possible causes:**
+- Safety stock or overstock thresholds not configured
+- Display options have thresholds toggled off
+
+**Solutions:**
+1. Configure safety stock and overstock in [Simulation Configurations](/supply-simulation/configurations)
+2. Check chart display options to ensure threshold lines are enabled
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Running Simulations" icon="play" href="/supply-simulation/running">
-    Execute simulations
+    Execute simulations to generate chart data
   </Card>
   <Card title="Configurations" icon="gear" href="/supply-simulation/configurations">
-    Configure parameters
+    Configure safety stock, cadence, and thresholds
   </Card>
   <Card title="What-If Scenarios" icon="flask" href="/supply-simulation/what-if">
-    Test scenarios
+    Test scenarios and compare projections
   </Card>
   <Card title="Forecasts & Flow" icon="chart-line" href="/inventory/forecasts-flow">
-    Inventory flow view
+    Inventory forecast and flow views
   </Card>
 </CardGroup>

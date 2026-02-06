@@ -1,213 +1,158 @@
 ---
 title: Channel Hierarchy
-description: Organizing channels with hierarchies
+description: Organizing channels with hierarchy fields
 ---
 
 # Channel Hierarchy
 
-Channel hierarchy lets you organize channels into logical groups for better reporting and analysis.
+Channel hierarchy lets you organize channels using configurable classification fields for better reporting and analysis.
 
 ## What is Channel Hierarchy?
 
-Channel hierarchy creates a tree structure for grouping channels:
+Channel hierarchy in Tether uses **up to 5 independent classification fields** that you can label and populate with values. Each channel can be assigned a value for each field, enabling flexible grouping and filtering.
 
-```
-All Channels
-├── Direct to Consumer
-│   ├── Shopify US
-│   ├── Shopify CA
-│   └── Website
-├── Marketplaces
-│   ├── Amazon US
-│   ├── Amazon UK
-│   └── eBay
-└── Wholesale
-    ├── Distributor A
-    └── Distributor B
-```
+<Note>
+  Hierarchy fields are flat dimensions, not a nested tree. Each field is independent — for example, you might have "Region" as Field 1 and "Business Model" as Field 2, and assign values to each independently per channel.
+</Note>
+
+### Example Configuration
+
+| Field | Custom Label | Available Values |
+|-------|-------------|-----------------|
+| Field 1 | Business Model | DTC, Marketplace, Wholesale |
+| Field 2 | Region | North America, Europe, Asia Pacific |
+| Field 3 | Platform | Shopify, Amazon, Manual |
+
+With this configuration, a channel like "Shopify US" might be assigned:
+- **Business Model**: DTC
+- **Region**: North America
+- **Platform**: Shopify
 
 ## Why Use Channel Hierarchy?
 
 | Benefit | Description |
 |---------|-------------|
-| **Reporting** | Aggregate data at any level |
-| **Filtering** | Filter by category, not individual channels |
-| **Organization** | Logical grouping for navigation |
-| **Analysis** | Compare performance across groups |
+| **Reporting** | Aggregate data by any hierarchy field |
+| **Filtering** | Filter by field values instead of individual channels |
+| **Organization** | Logical grouping for navigation and analysis |
+| **Flexibility** | Up to 5 independent dimensions to classify channels |
 
 ## Configuring Channel Hierarchy
 
 ### Accessing Configuration
 
-Navigate to **Channels** → **Hierarchy** (or through Settings).
+Navigate to **Channels** → **Hierarchy** to open the hierarchy configuration dashboard.
 
-### Setting Up Hierarchy Levels
-
-Tether supports multiple hierarchy levels:
+### Setting Up Hierarchy Fields
 
 <Steps>
-  <Step title="Define Level Names">
-    Name each level:
+  <Step title="Define Field Labels">
+    For each of the 5 available fields, set a custom label that describes what the field represents:
 
-    | Level | Example |
-    |-------|---------|
-    | Level 1 | Channel Type |
-    | Level 2 | Region |
-    | Level 3 | Specific Channel |
+    | Field | Example Label |
+    |-------|--------------|
+    | Field 1 | Business Model |
+    | Field 2 | Region |
+    | Field 3 | Platform |
+    | Field 4 | Account Manager |
+    | Field 5 | Priority |
   </Step>
 
-  <Step title="Create Values">
-    Add values for each level:
+  <Step title="Activate Fields">
+    Toggle each field to active or inactive. Only active fields appear as columns in the channels table.
+  </Step>
 
-    **Level 1 (Type):**
+  <Step title="Add Available Values">
+    For each active field, define the list of available values. For example:
+
+    **Business Model:**
     - Direct to Consumer
     - Marketplace
     - Wholesale
+    - Retail
 
-    **Level 2 (Region):**
+    **Region:**
     - North America
     - Europe
     - Asia Pacific
   </Step>
 
-  <Step title="Define Relationships">
-    Specify which Level 2 values belong under Level 1:
-    - DTC → North America, Europe
-    - Marketplace → North America, Europe, Asia Pacific
-  </Step>
-
-  <Step title="Save">
-    Apply the hierarchy configuration
+  <Step title="Save Configuration">
+    Apply the hierarchy configuration. Changes will be reflected immediately in the channels table.
   </Step>
 </Steps>
 
-### Assigning Channels to Hierarchy
+### Assigning Channels to Hierarchy Values
+
+Hierarchy values are assigned to channels directly from the **Channels** dashboard table:
 
 <Steps>
-  <Step title="Open Channel">
-    Navigate to the channel detail page
+  <Step title="Go to Channels Dashboard">
+    Navigate to **Channels** in the sidebar
   </Step>
 
-  <Step title="Find Hierarchy Settings">
-    Locate hierarchy assignment section
+  <Step title="Find Hierarchy Columns">
+    Active hierarchy fields appear as columns in the channels table (e.g., "Business Model", "Region")
   </Step>
 
   <Step title="Select Values">
-    For each level, select the appropriate value:
-    - Type: Marketplace
-    - Region: North America
-  </Step>
-
-  <Step title="Save">
-    Channel is now part of the hierarchy
+    Use the inline dropdown selector in each hierarchy column to assign a value for that channel
   </Step>
 </Steps>
+
+<Note>
+  Hierarchy assignments are saved automatically when you select a value from the dropdown.
+</Note>
 
 ## Using Channel Hierarchy
 
 ### Filtering by Hierarchy
 
-In forecasts and reports:
+In forecasts and reports, use hierarchy field values to filter:
 
-1. Open the Channel filter
-2. See hierarchy tree structure
-3. Select at any level:
-   - Select "Marketplace" to see all marketplace channels
-   - Select "Amazon US" for just that channel
+- Filter all "DTC" channels at once
+- Compare "North America" vs "Europe" performance
+- View data for a specific platform across all regions
 
-### Reporting at Different Levels
+### Reporting with Hierarchy Fields
 
-| Level | View |
-|-------|------|
-| **All Channels** | Total business |
-| **Type** | DTC vs Marketplace vs Wholesale |
-| **Region** | North America vs Europe |
-| **Channel** | Individual channel detail |
-
-### Drill-Down Analysis
-
-Start high, drill down:
-
-1. View total sales by Type
-2. Click on "Marketplace" to expand
-3. See breakdown by individual marketplace
-4. Click on "Amazon US" for full detail
+| Dimension | Example Use |
+|-----------|-------------|
+| **Business Model** | Compare DTC vs Marketplace vs Wholesale revenue |
+| **Region** | Analyze geographic performance differences |
+| **Platform** | Track orders by platform type |
 
 ## Common Hierarchy Patterns
 
 ### By Business Model
 
-```
-Channel Type
-├── Direct to Consumer
-├── Wholesale / B2B
-├── Marketplace
-└── Retail
-```
+| Field Label | Values |
+|------------|--------|
+| Business Model | DTC, Marketplace, Wholesale, Retail |
 
 ### By Geography
 
-```
-Region
-├── North America
-│   ├── United States
-│   └── Canada
-├── Europe
-│   ├── UK
-│   ├── Germany
-│   └── France
-└── Asia Pacific
-    ├── Australia
-    └── Japan
-```
-
-### By Platform
-
-```
-Platform
-├── Shopify
-│   ├── Shopify US
-│   ├── Shopify CA
-│   └── Shopify UK
-├── Amazon
-│   ├── Amazon US
-│   └── Amazon UK
-└── Custom
-    └── B2B Portal
-```
+| Field Label | Values |
+|------------|--------|
+| Region | North America, Europe, Asia Pacific, Latin America |
 
 ### Combined Approach
 
-```
-Type
-├── DTC
-│   ├── North America
-│   │   ├── Shopify US
-│   │   └── Shopify CA
-│   └── Europe
-│       └── Shopify UK
-└── Marketplace
-    ├── North America
-    │   └── Amazon US
-    └── Europe
-        └── Amazon UK
-```
+Use multiple fields together:
 
-## Hierarchy and User Access
+| Field | Label | Values |
+|-------|-------|--------|
+| Field 1 | Business Model | DTC, Marketplace, Wholesale |
+| Field 2 | Region | North America, Europe, Asia Pacific |
+| Field 3 | Platform | Shopify, Amazon, Manual |
 
-Channel hierarchy works with access control:
-
-- Grant access at any hierarchy level
-- Access flows down to children
-- Access to "Marketplace" = access to all marketplace channels
-
-See [User Access](/administration/user-access).
+This lets you answer questions like "How are DTC channels performing in North America?" by filtering on both dimensions simultaneously.
 
 ## Best Practices
 
 <AccordionGroup>
   <Accordion title="Match Business Structure">
-    Design hierarchy to match how you manage the business:
+    Design hierarchy fields to match how you manage the business:
     - How do you report performance?
     - How are teams organized?
     - What comparisons are meaningful?
@@ -215,50 +160,50 @@ See [User Access](/administration/user-access).
 
   <Accordion title="Keep It Simple">
     Don't over-engineer:
-    - 2-3 levels is usually enough
-    - More levels = more complexity
-    - Start simple, add as needed
+    - Start with 2-3 active fields
+    - Add more fields only when needed
+    - Use clear, descriptive labels
   </Accordion>
 
-  <Accordion title="Consistent Naming">
-    Use clear, consistent names:
-    - Obvious what each level means
-    - Consistent terminology
+  <Accordion title="Consistent Values">
+    Use consistent value names:
+    - Standardize terminology (e.g., always "DTC" not sometimes "Direct")
+    - Keep values short but descriptive
+    - Review values periodically for cleanup
   </Accordion>
 
   <Accordion title="Plan for Growth">
     Consider future needs:
-    - New regions?
-    - New channel types?
-    - Build flexibility in
+    - New regions or business models?
+    - Keep available values list manageable
+    - You have up to 5 fields available
   </Accordion>
 </AccordionGroup>
 
 ## Troubleshooting
 
-### Channel Not Appearing in Hierarchy
+### Hierarchy Columns Not Showing in Table
 
 **Possible causes:**
-- Hierarchy values not assigned
-- Channel is archived
-- Hierarchy not fully configured
+- Hierarchy fields are not set to active
+- No fields have been configured yet
 
 **Solutions:**
-1. Check channel's hierarchy assignments
-2. Verify channel is active
-3. Review hierarchy configuration
+1. Go to **Channels** → **Hierarchy**
+2. Ensure at least one field is toggled to active
+3. Verify the field has a custom label set
 
-### Incorrect Totals
+### Channel Missing a Hierarchy Value
 
 **Possible causes:**
-- Channel assigned to wrong level
-- Duplicate assignments
-- Missing channels
+- Value not yet assigned from the channels table
+- The desired value hasn't been added to the field's available values
 
 **Solutions:**
-1. Review channel assignments
-2. Ensure no duplicates
-3. Verify all channels are assigned
+1. Go to the **Channels** dashboard
+2. Find the channel in the table
+3. Use the dropdown in the appropriate hierarchy column
+4. If the value you need isn't listed, add it in the hierarchy configuration
 
 ## Next Steps
 
@@ -272,7 +217,7 @@ See [User Access](/administration/user-access).
   <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/filtering">
     Filter forecasts by hierarchy
   </Card>
-  <Card title="User Access" icon="users" href="/administration/user-access">
-    Control access by hierarchy
+  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
+    Connect external platforms
   </Card>
 </CardGroup>

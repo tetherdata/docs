@@ -12,144 +12,136 @@ This guide helps you identify and resolve common integration issues.
 ### Authentication Errors
 
 **Symptoms:**
-- "Authentication failed" error
-- "Invalid credentials" message
-- Sync fails immediately
+- Sync execution fails immediately
+- Error message referencing credentials or authentication
+- No records fetched
 
 **Causes:**
-- Expired OAuth token
-- Changed password
-- Revoked API access
-- Invalid API credentials
+- Expired API access token
+- Invalid credentials entered during setup
+- Credentials revoked on the external platform
+- Store URL changed or incorrect
 
 **Solutions:**
 
 <Steps>
-  <Step title="Re-authorize Connection">
-    Go to integration settings and click "Reconnect" or "Re-authorize"
-  </Step>
-
   <Step title="Verify Credentials">
-    If using API keys, verify they're correct
+    Check that the credentials entered in Tether match what's configured in the external service
   </Step>
 
-  <Step title="Check Platform Status">
-    Ensure the external platform is accessible
+  <Step title="Regenerate Credentials">
+    If using API keys or access tokens, generate new ones from the external platform's settings
   </Step>
 
-  <Step title="Generate New Credentials">
-    If needed, create new API credentials
+  <Step title="Recreate Integration">
+    If credentials cannot be updated in place, delete the integration and create a new one with valid credentials
+  </Step>
+
+  <Step title="Check External Platform">
+    Ensure the external platform account is active and the API access hasn't been revoked
   </Step>
 </Steps>
 
-### Connection Timeout
+### Unmapped SKUs
 
 **Symptoms:**
-- Sync takes too long
-- "Connection timeout" error
-- Partial data sync
+- Sync executions complete but with many "Failed" sync items
+- Error messages referencing unmapped or unrecognized SKU identifiers
+- Aggregate error analysis shows a list of unmapped SKU IDs
 
 **Causes:**
-- Network issues
-- Large data volume
-- Platform overload
-- Slow API response
+- SKUs in the external system don't have matching `external_id` values in Tether
+- New products added to the external platform that haven't been set up in Tether
+- Naming mismatches between systems
 
 **Solutions:**
 
-| Action | Description |
-|--------|-------------|
-| **Retry** | Wait and try again |
-| **Reduce Scope** | Sync smaller date range |
-| **Off-Peak** | Sync during low-traffic hours |
-| **Contact Support** | If persists |
+<Steps>
+  <Step title="Review Unmapped SKUs">
+    Open the failed sync execution and check the error analysis section for the list of unmapped SKUs
+  </Step>
+
+  <Step title="Configure SKU Mappings">
+    For each unmapped SKU, ensure the corresponding Tether SKU has the correct `external_id` set to match the external system's identifier
+  </Step>
+
+  <Step title="Re-Sync">
+    Trigger a manual sync to reprocess the previously failed records
+  </Step>
+</Steps>
+
+### Unmapped Channels
+
+**Symptoms:**
+- Sync items fail with channel-related error messages
+- Error analysis shows unmapped channel identifiers
+
+**Causes:**
+- The external system references channels that don't exist in Tether
+- Channel names or IDs don't match between systems
+
+**Solutions:**
+
+1. Review the unmapped channel identifiers in the execution error analysis
+2. Create the missing channels in Tether or map existing channels correctly
+3. Trigger a manual sync to reprocess
 
 ### Data Not Syncing
 
 **Symptoms:**
-- New orders not appearing
-- Inventory not updating
-- Products missing
+- No new sync executions appearing
+- Records fetched count is zero
+- Expected data not showing up in Tether
 
 **Causes:**
-- Integration paused
-- Filter excluding data
-- Mapping issues
-- Data format problems
+- Integration is disabled
+- Cron schedule not configured correctly
+- No new data in the external system since last sync
+- Credentials expired
 
 **Solutions:**
 
 <Steps>
   <Step title="Check Integration Status">
-    Verify integration is active (not paused)
+    Verify the integration is enabled on the integration detail page
   </Step>
 
-  <Step title="Review Filters">
-    Check if filters are excluding data
+  <Step title="Review Schedule">
+    Check the cron expression and timezone are correct. Verify the "Next Sync" time is reasonable.
   </Step>
 
-  <Step title="Verify Mapping">
-    Ensure field mappings are correct
+  <Step title="Check Last Sync">
+    Review the most recent execution — did it complete successfully?
   </Step>
 
-  <Step title="Check Source Data">
-    Verify data exists in source system
+  <Step title="Verify Source Data">
+    Confirm that new data exists in the external system within the expected date range
   </Step>
 
   <Step title="Trigger Manual Sync">
-    Force a sync to see specific errors
+    Click **Trigger Sync** to force an immediate sync and check the results
   </Step>
 </Steps>
 
-### Duplicate Records
+### Partial Sync Failures
 
 **Symptoms:**
-- Same order appears multiple times
-- Duplicate SKUs
-- Inflated counts
+- Execution completes but statistics show a mix of success and failed records
+- Some sync items have "PartialMapped" status
 
 **Causes:**
-- Multiple syncs of same data
-- Missing unique identifiers
-- Channel overlap
-- Mapping issues
+- Some records have mapping issues while others are fine
+- External data contains inconsistencies
+- Mixed valid and invalid records in the same batch
 
 **Solutions:**
 
 | Action | Description |
 |--------|-------------|
-| **Review Mappings** | Ensure unique IDs are mapped |
-| **Check Channels** | Verify no overlap |
-| **Merge Duplicates** | Combine duplicate records |
-| **Adjust Filters** | Prevent re-syncing old data |
-
-### Missing Historical Data
-
-**Symptoms:**
-- Only recent data synced
-- Historical orders missing
-- Incomplete history
-
-**Causes:**
-- Date range filter
-- Platform limitations
-- Initial sync settings
-
-**Solutions:**
-
-<Steps>
-  <Step title="Check Date Range">
-    Review historical sync settings
-  </Step>
-
-  <Step title="Adjust Settings">
-    Extend the date range if possible
-  </Step>
-
-  <Step title="Manual Import">
-    Import historical data separately if needed
-  </Step>
-</Steps>
+| **Filter by Failed** | Use the sync items filter to show only failed records |
+| **Review Errors** | Check individual error messages for patterns |
+| **Fix Mappings** | Resolve the most common mapping issues first |
+| **Re-Sync** | Trigger a manual sync after fixes |
 
 ## Platform-Specific Issues
 
@@ -157,74 +149,127 @@ This guide helps you identify and resolve common integration issues.
 
 | Issue | Solution |
 |-------|----------|
-| **Rate limit exceeded** | Wait 1 minute, retry |
-| **Location not syncing** | Verify location is active in Shopify |
-| **Variants missing** | Check variant visibility settings |
-| **Fulfillment issues** | Verify fulfillment service configuration |
+| **Rate limit exceeded** | Shopify GraphQL API has rate limits. Wait for the next scheduled sync, which will resume from where it left off |
+| **Orders not syncing** | Verify the Admin API access token has the required read permissions for orders |
+| **SKU mismatches** | Shopify SKUs are matched via external ID. Ensure Tether SKUs have the correct `external_id` set |
+| **Only paid orders syncing** | By design, the Shopify integration filters orders by financial status (paid, partially refunded) |
 
-### Amazon
-
-| Issue | Solution |
-|-------|----------|
-| **Access denied** | Re-authorize through Amazon Seller Central |
-| **Marketplace not showing** | Add marketplace in Tether settings |
-| **FBA data missing** | Verify FBA permissions granted |
-| **Order delay** | Amazon API can have 15-30 min delay |
-
-### NetSuite
+### TrackStar (Warehouse Management)
 
 | Issue | Solution |
 |-------|----------|
-| **Script execution error** | Check NetSuite script logs |
-| **Permission denied** | Verify role has required permissions |
-| **Field not mapping** | Ensure custom field is exposed to API |
-| **Saved search issues** | Verify saved search criteria |
+| **Inventory not updating** | Verify the integration has the "Warehouse Inventory" capability enabled |
+| **Connection failed** | Check TrackStar API credentials are valid |
+| **Missing warehouses** | Ensure warehouses are configured in both TrackStar and Tether |
+
+### BigQuery / Redshift (Data Warehouses)
+
+| Issue | Solution |
+|-------|----------|
+| **Query errors** | Verify database connection credentials and permissions |
+| **No data returned** | Check that the configured queries or tables contain data |
+| **Schema changes** | If the source schema changed, review and update the integration configuration |
 
 ## Diagnostic Steps
 
 ### Step 1: Check Integration Status
 
-1. Go to **Settings** → **Integrations**
-2. Verify status is "Connected"
-3. Note any error messages
+1. Go to **Integrations** in the sidebar
+2. Verify the integration is **Enabled**
+3. Check the **Last Sync** and **Next Sync** times
 
-### Step 2: Review Recent Syncs
+### Step 2: Review Recent Executions
 
-1. View sync session history
-2. Look for failed or partial syncs
-3. Check error details
+1. Click on the integration to open its detail page
+2. Review the sync execution history
+3. Look for failed executions or executions with high failure counts
 
-### Step 3: Verify Configuration
+### Step 3: Inspect Failed Execution
 
-| Check | How |
-|-------|-----|
-| **Credentials** | Re-enter or re-authorize |
-| **Mappings** | Review field mappings |
-| **Filters** | Check date/data filters |
-| **Permissions** | Verify platform permissions |
+1. Click on a failed execution
+2. Review the **Statistics** (success/failed/skipped counts)
+3. Check if it was a **Dry Run** (dry runs don't save data)
+4. Filter sync items by "Failed" status
+5. Review error messages for patterns
 
-### Step 4: Test Connection
+### Step 4: Check Error Analysis
 
-1. Trigger a manual sync
-2. Watch for immediate errors
-3. Check if any data syncs
+1. In the execution detail page, look at the aggregate error analysis
+2. Note any unmapped SKUs or channels
+3. Review the top error messages
 
-### Step 5: Review Logs
+### Step 5: Trigger Manual Sync
 
-1. Access detailed sync logs
-2. Look for specific error messages
-3. Identify affected records
+1. Go back to the integration detail page
+2. Click **Trigger Sync**
+3. Monitor the new execution for results
 
 ## Error Message Reference
 
-| Error | Meaning | Action |
-|-------|---------|--------|
-| **401 Unauthorized** | Authentication failed | Re-authorize |
-| **403 Forbidden** | Permission denied | Check permissions |
-| **404 Not Found** | Resource doesn't exist | Verify configuration |
-| **429 Too Many Requests** | Rate limited | Wait and retry |
-| **500 Internal Error** | Server issue | Retry later |
-| **503 Service Unavailable** | Platform down | Wait for recovery |
+| Error Pattern | Meaning | Action |
+|--------------|---------|--------|
+| **Unmapped SKU** | SKU from external system not found in Tether | Add `external_id` to the matching Tether SKU |
+| **Unmapped Channel** | Channel identifier not recognized | Create or map the channel in Tether |
+| **Authentication failed** | Invalid or expired credentials | Update credentials or recreate integration |
+| **Rate limited** | Too many API requests | Wait for next scheduled sync |
+| **Connection timeout** | Network or platform issue | Retry with manual sync |
+
+## Recovery Procedures
+
+### Reset Sync State
+
+If sync data becomes corrupted or you need to re-import all data:
+
+<Steps>
+  <Step title="Contact Admin">
+    Resetting sync state requires administrator access
+  </Step>
+
+  <Step title="Reset State">
+    On the integration detail page, use the **Reset Sync State** action (admin only)
+  </Step>
+
+  <Step title="Confirm">
+    This will delete all execution history for the integration
+  </Step>
+
+  <Step title="Monitor Full Sync">
+    The next sync will perform a full data fetch. Monitor it closely for any mapping errors.
+  </Step>
+</Steps>
+
+<Warning>
+  Resetting sync state deletes all execution history and forces a full re-import. Use this only when necessary.
+</Warning>
+
+### After Extended Outage
+
+<Steps>
+  <Step title="Check Integration Status">
+    Verify the integration is still enabled and credentials are valid
+  </Step>
+
+  <Step title="Review Missed Period">
+    Check the last successful sync date to understand what was missed
+  </Step>
+
+  <Step title="Trigger Manual Sync">
+    Run a manual sync to catch up on missed data
+  </Step>
+
+  <Step title="Verify Completeness">
+    Check record counts and compare with the source system
+  </Step>
+</Steps>
+
+## Dry Run Troubleshooting
+
+If you're using dry run mode to test an integration:
+
+- Sync executions are marked with a **Dry Run** badge
+- No data is saved to Tether, so you can safely test mappings
+- Review sync items to see which records would succeed or fail
+- Fix any mapping issues before disabling dry run mode
 
 ## Preventing Issues
 
@@ -233,96 +278,51 @@ This guide helps you identify and resolve common integration issues.
 <AccordionGroup>
   <Accordion title="Regular Monitoring">
     Check integrations regularly:
-    - Daily status check
-    - Weekly sync review
-    - Monthly full audit
+    - Review execution history for failures
+    - Verify records are being fetched as expected
+    - Check for increasing error counts
   </Accordion>
 
-  <Accordion title="Keep Credentials Updated">
+  <Accordion title="Keep Credentials Current">
     Maintain authentication:
-    - Update before expiration
-    - Don't share credentials
-    - Use service accounts
+    - Monitor for credential expiration
+    - Use long-lived API tokens where possible
+    - Document credential rotation procedures
   </Accordion>
 
-  <Accordion title="Document Configuration">
-    Keep records of:
-    - Integration settings
-    - Field mappings
-    - Custom configurations
-    - Change history
+  <Accordion title="Test with Dry Run">
+    Before making changes:
+    - Use dry run mode to validate configuration changes
+    - Review results before enabling live sync
+    - Check for new unmapped SKUs or channels
   </Accordion>
 
-  <Accordion title="Test After Changes">
-    After any changes:
-    - Trigger test sync
-    - Verify data accuracy
-    - Monitor for errors
+  <Accordion title="Maintain SKU Mappings">
+    Keep external ID mappings up to date:
+    - Add `external_id` values when creating new SKUs
+    - Update mappings when external system IDs change
+    - Periodically review unmapped SKU reports
   </Accordion>
 </AccordionGroup>
-
-### Setting Up Alerts
-
-Configure notifications for:
-
-| Alert | When Triggered |
-|-------|----------------|
-| **Sync Failed** | Any sync failure |
-| **Error Threshold** | Errors exceed limit |
-| **Sync Delayed** | Sync not running on schedule |
-| **Data Discrepancy** | Counts don't match |
 
 ## When to Contact Support
 
 Contact Tether support when:
 
-- Issue persists after troubleshooting
-- Error message is unclear
-- Data corruption suspected
-- Platform-specific issue
+- Issue persists after following troubleshooting steps
+- Error messages are unclear or unexpected
+- Data corruption is suspected
+- You need help with complex integration configurations
 
 ### Information to Provide
 
 | Information | Why Needed |
 |-------------|------------|
-| **Integration type** | Identify platform |
-| **Error message** | Understand issue |
+| **Integration name and service** | Identify the integration |
+| **Execution ID** | Locate the specific sync run |
+| **Error messages** | Understand the issue |
 | **When it started** | Timeline context |
-| **Steps tried** | Avoid duplication |
-| **Sync session ID** | Locate specific sync |
-
-## Recovery Procedures
-
-### After Extended Outage
-
-<Steps>
-  <Step title="Check Integration Status">
-    Verify connection is restored
-  </Step>
-
-  <Step title="Review Missed Period">
-    Identify date range not synced
-  </Step>
-
-  <Step title="Trigger Manual Sync">
-    Sync missed data
-  </Step>
-
-  <Step title="Verify Completeness">
-    Check record counts match
-  </Step>
-</Steps>
-
-### After Data Corruption
-
-<Warning>
-  Contact support before attempting data recovery.
-</Warning>
-
-1. Stop automatic syncs
-2. Document the issue
-3. Contact Tether support
-4. Follow recovery guidance
+| **Steps already tried** | Avoid duplication |
 
 ## Next Steps
 

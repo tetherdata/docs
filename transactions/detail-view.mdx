@@ -39,158 +39,114 @@ Available actions depend on status:
 | Status | Available Actions |
 |--------|-------------------|
 | **Draft** | Edit, Submit, Delete |
-| **In Progress** | Update Steps, Add Documents, Cancel |
-| **Completed** | View Only, Export |
-| **Cancelled** | View Only |
+| **In Progress** | Update Steps, Add Documents |
+| **Completed** | View Only, Export, Archive |
+| **Archived** | View Only |
 
 ## Tabs Overview
 
+The detail view organizes information into tabs. Some tabs are only visible once the transaction leaves Draft status.
+
+| Tab | Visibility | Description |
+|-----|-----------|-------------|
+| **Overview** | Always | General info, line items, and metadata |
+| **Steps & Inventory** | Non-draft only | Step progress and inventory state per step |
+| **Documents** | Always | Artifacts and uploaded documents |
+| **Inventory Impact** | Always | How this transaction affects inventory levels |
+| **Analysis** | Non-draft only | Cost variance and quantity analysis |
+
 ### Overview Tab
 
-General transaction information:
+General transaction information and line items:
 
 - **Basic Details**: Name, reference number, dates
 - **Source/Destination**: Supplier or warehouse information
+- **Line Items**: Products in the transaction with SKU, quantity, unit cost, and totals
 - **Summary Metrics**: Total items, total value
 - **Notes**: Any comments or instructions
 - **Metadata**: Created date, created by, last modified
 
-### Line Items Tab
+### Steps & Inventory Tab
 
-Products included in the transaction:
+<Note>
+  This tab only appears once a transaction has been submitted (status is **In Progress** or later).
+</Note>
 
-| Column | Description |
-|--------|-------------|
-| **SKU** | Product name and code |
-| **Quantity** | Ordered/transferred amount |
-| **Unit Cost** | Cost per unit (POs) |
-| **Total** | Line total |
-| **Status** | Item-level status |
-
-#### Line Item Actions
-
-| Action | Description |
-|--------|-------------|
-| **Add** | Add new line item (if draft) |
-| **Edit** | Modify quantity or details |
-| **Remove** | Delete line item (if draft) |
-| **View SKU** | Navigate to SKU detail |
-
-### Steps Tab
-
-Workflow progress tracking:
+Tracks the real-time progress of each step within the transaction. Steps correspond to the three step types: **Purchase**, **Shipment**, and **Production**.
 
 #### Step List
 
-```
-✓ Order Created         2024-01-15 09:00
-✓ Supplier Confirmed    2024-01-15 14:30
-○ Shipped               (pending)
-○ In Transit            (pending)
-○ Received              (pending)
-○ Completed             (pending)
-```
+Each step shows:
+- **Step type** (Purchase, Shipment, or Production)
+- **Status** (Draft, In Progress, Completed, or Cancelled)
+- **Inventory state** for that step (e.g., In Process, In Transit, In Production)
+- **Source and destination** warehouses or suppliers
 
-#### Updating Steps
+#### Updating Steps via Artifacts
 
-<Steps>
-  <Step title="Find Current Step">
-    Locate the next pending step
-  </Step>
+Steps are advanced by submitting step-modifying artifacts:
 
-  <Step title="Click to Update">
-    Click the step or the update button
-  </Step>
+| Step Type | Artifact to Submit | Effect |
+|-----------|-------------------|--------|
+| **Purchase** | Purchase Report | Updates purchase step progress |
+| **Shipment** | Shipment Receipt | Updates shipment step progress |
+| **Production** | Production Report | Updates production step progress |
 
-  <Step title="Enter Details">
-    - Completion date/time
-    - Notes (optional)
-    - Attachments (optional)
-  </Step>
-
-  <Step title="Save">
-    Step is marked complete, next step becomes active
-  </Step>
-</Steps>
+New steps can also be initiated by submitting a **Shipping Plan** artifact, which creates a new Shipment step.
 
 ### Documents Tab
 
-Attached files and documents:
+Lists all artifacts associated with the transaction:
 
-#### Document Types
+#### Artifact Types
 
-| Type | Examples |
-|------|----------|
-| **Purchase Order** | PO PDF sent to supplier |
-| **Invoice** | Supplier invoice |
-| **Packing Slip** | Shipping documentation |
-| **Proof of Delivery** | Delivery confirmation |
-| **Custom** | Any other relevant files |
+| Type | Description |
+|------|-------------|
+| **Purchase Order** | Root artifact for purchase transactions |
+| **Production Order** | Root artifact for production transactions |
+| **Sales Order** | Root artifact for sales transactions |
+| **Shipping Plan** | Creates a shipment step when submitted |
+| **Transaction Initiation** | Step-based transaction initiation |
+| **Production Report** | Updates production step progress |
+| **Purchase Report** | Updates purchase step progress |
+| **Shipment Receipt** | Updates shipment step progress |
+| **Receipt** | General receipt document |
+| **Packing List** | Shipping documentation |
+| **Quality Certificate** | Quality assurance documentation |
+| **Stock Take Form** | Inventory count documentation |
+| **Inventory Adjustment** | Inventory adjustment record |
 
-#### Adding Documents
+Each artifact has a status (**Draft** or **Submitted**) and can be viewed or submitted from this tab.
 
-<Steps>
-  <Step title="Click Add Document">
-    Open the document upload dialog
-  </Step>
+### Inventory Impact Tab
 
-  <Step title="Select File">
-    Choose file from your computer
-  </Step>
+Shows how this transaction affects inventory across warehouses:
 
-  <Step title="Add Details">
-    - Document type
-    - Description
-    - Date (if relevant)
-  </Step>
-
-  <Step title="Upload">
-    File is attached to transaction
-  </Step>
-</Steps>
+- **Per-SKU impact**: How each line item affects sellable, committed, reserved, and in-transit quantities
+- **Source warehouse**: Quantities being deducted or committed
+- **Destination warehouse**: Quantities incoming or added
 
 ### Analysis Tab
 
-Cost breakdown and analytics:
+<Note>
+  This tab only appears once a transaction has been submitted (status is **In Progress** or later).
+</Note>
 
-#### Cost Breakdown
+Provides cost and quantity analytics with two sub-tabs:
 
-For purchase orders:
+#### Cost Variance
 
-| Category | Amount |
-|----------|--------|
-| **Subtotal** | Sum of line item costs |
-| **Shipping** | Shipping charges |
-| **Taxes/Duties** | Import fees |
-| **Total** | Grand total |
+Compares expected vs. actual costs:
+- **Planned cost** vs. **Actual cost** per line item
+- **Variance** amount and percentage
+- **Landed cost** breakdown (unit cost + shipping + duties/taxes)
 
-#### Cost Breakdown Popover
+#### Quantity Analysis
 
-Click on cost categories for detailed breakdown:
-
-- By SKU
-- By cost category
-- By supplier terms
-
-### Gantt View Tab
-
-Timeline visualization of the transaction:
-
-#### Gantt Features
-
-- **Timeline**: Visual representation of steps
-- **Dependencies**: How steps relate
-- **Progress**: Current vs. planned
-- **Delays**: Visual indication of delays
-
-#### Using the Gantt View
-
-| Action | How |
-|--------|-----|
-| **Zoom** | Use controls to zoom in/out |
-| **Pan** | Click and drag to move |
-| **Details** | Click step for details |
-| **Print** | Export or print timeline |
+Compares expected vs. actual quantities:
+- **Ordered** vs. **Received** quantities
+- **Shortages** and **overages**
+- **Completion percentage** per line item
 
 ## Working with Different Statuses
 
@@ -222,14 +178,14 @@ When finished:
 - Can export data
 - Used for reference
 
-### Cancelled Transactions
+### Archived Transactions
 
-When cancelled:
+When archived (terminal state):
 
 - Read-only
-- Shows reason for cancellation
-- Inventory effects reversed
-- Maintained for records
+- Full history preserved
+- No further status changes possible
+- Maintained for records and audit
 
 ## Common Actions
 
@@ -254,12 +210,12 @@ When cancelled:
 When not all items arrive:
 
 <Steps>
-  <Step title="Go to Line Items">
-    Open the Line Items tab
+  <Step title="Go to Steps & Inventory">
+    Open the **Steps & Inventory** tab
   </Step>
 
-  <Step title="Update Received Quantity">
-    Enter actual received amount
+  <Step title="Submit a Shipment Receipt">
+    Submit a Shipment Receipt artifact with the actual received quantities
   </Step>
 
   <Step title="Note Discrepancy">
@@ -273,29 +229,27 @@ When not all items arrive:
   </Step>
 </Steps>
 
-### Cancelling a Transaction
+### Cancelling Steps
+
+Individual steps can be cancelled without affecting the entire transaction:
 
 <Steps>
-  <Step title="Click Cancel">
-    From actions menu, select **Cancel**
+  <Step title="Go to Steps & Inventory">
+    Open the **Steps & Inventory** tab
   </Step>
 
-  <Step title="Provide Reason">
-    Enter reason for cancellation
-  </Step>
-
-  <Step title="Confirm">
-    Confirm cancellation
+  <Step title="Cancel the Step">
+    Mark the relevant step as Cancelled
   </Step>
 
   <Step title="Inventory Reverts">
-    Committed/reserved inventory is released
+    Committed or in-transit inventory associated with the step is released
   </Step>
 </Steps>
 
-<Warning>
-  Cancelling a transaction reverses its inventory effects. Ensure this is intended before confirming.
-</Warning>
+<Note>
+  Transactions do not have a "Cancelled" status. Instead, cancel individual steps as needed. Once all steps are completed or cancelled, the transaction moves to **Completed** and can then be **Archived**.
+</Note>
 
 ## Best Practices
 
@@ -321,11 +275,11 @@ When not all items arrive:
     - Issues encountered
   </Accordion>
 
-  <Accordion title="Use Gantt for Complex Orders">
-    For multi-step orders:
-    - Visualize timeline
-    - Identify delays
-    - Communicate with stakeholders
+  <Accordion title="Monitor Inventory Impact">
+    Check the Inventory Impact tab to:
+    - Verify correct warehouse effects
+    - Track committed and in-transit quantities
+    - Understand how each step changes inventory
   </Accordion>
 </AccordionGroup>
 

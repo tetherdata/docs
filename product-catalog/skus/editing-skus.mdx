@@ -17,17 +17,18 @@ The fastest way to make quick changes is directly in the SKU dashboard.
 
 ### Editable Columns
 
-The following columns support inline editing:
+The following columns support inline editing on the dashboard:
 
 | Column | Edit Type | Notes |
 |--------|-----------|-------|
-| **Name** | Text input | Click to edit |
-| **SKU Code** | Text input | Must remain unique |
+| **Type** | Dropdown | Select from SKU types |
 | **UPC** | Text input | Barcode number |
 | **Amazon ID** | Text input | ASIN or Amazon identifier |
-| **Type** | Dropdown | Select from SKU types |
-| **Status** | Dropdown | Active or Archived |
-| **Dimension Values** | Dropdown | Select from available values |
+| **Dimension Values** | Dropdown | Select from available values in the collection |
+
+<Note>
+  Name and SKU Code are **not** inline-editable on the dashboard. To edit these fields, open the SKU detail page.
+</Note>
 
 ### How to Inline Edit
 
@@ -76,15 +77,16 @@ The Overview tab contains basic SKU information:
 **Editable Fields:**
 - Name
 - SKU Code
-- Description
-- UPC
-- Amazon ID
-- Status
+- UPC Code
+- External ID (e.g., Amazon ASIN)
+- SKU Type
+- Unit of Measurement
+- Dimension values
 
 **Read-Only Fields:**
+- Collection (displayed as a link to the collection detail page)
 - Created date
 - Last modified date
-- Collection
 
 <Steps>
   <Step title="Open the SKU">
@@ -92,27 +94,47 @@ The Overview tab contains basic SKU information:
   </Step>
 
   <Step title="Navigate to Overview">
-    Select the **Overview** tab (usually the default)
+    Select the **Overview** tab (the default tab)
   </Step>
 
-  <Step title="Edit Fields">
-    Click on any editable field to modify it
+  <Step title="Enter Edit Mode">
+    Click the **Edit** button to toggle fields into edit mode
   </Step>
 
-  <Step title="Save Changes">
-    Click **Save** or changes may auto-save depending on the field
+  <Step title="Make Changes">
+    Modify the desired fields
+  </Step>
+
+  <Step title="Save or Cancel">
+    Click **Save** to commit changes or **Cancel** to discard them
   </Step>
 </Steps>
 
+#### Unit Conversions
+
+The Overview tab also lets you manage alternate units of measurement for the SKU:
+
+- **Default Unit**: The primary unit set during SKU creation (e.g., "Yard")
+- **Additional Units**: Add alternate units with conversion ratios
+
+**Adding a Unit Conversion:**
+
+1. Click **Add Unit** in the unit conversions section
+2. Enter the alternate unit name (e.g., "Roll")
+3. Enter the conversion ratio: `Default Unit × Conversion Ratio = Alternate Unit`
+4. Save the conversion
+
+<Info>
+  Unit conversions are used when suppliers order in different units than your inventory tracking unit. For example, inventory tracked in yards but ordered from suppliers in rolls.
+</Info>
+
 ### Pricing Tab
 
-Configure SKU pricing and unit conversions:
+Configure SKU pricing by sales channel:
 
 **What You Can Edit:**
-- Base price
 - Channel-specific pricing
-- Unit of measure
-- Conversion factors
+- Price values per channel
 
 <Info>
   Pricing changes may affect demand forecasts and reporting. Review the impact before making significant price changes.
@@ -132,40 +154,41 @@ View inventory levels (read-only from this tab):
 
 ### Suppliers Tab
 
-Manage supplier relationships for this SKU:
+View supplier associations for this SKU.
 
-**What You Can Configure:**
-- Assigned suppliers
-- Supplier-specific SKU codes
-- Cost per unit
-- Lead times
-- Minimum order quantities
+<Note>
+  The Suppliers tab is only visible if the SKU belongs to a collection. Supplier details are managed through the collection or the Suppliers dashboard.
+</Note>
 
-<Steps>
-  <Step title="Add a Supplier">
-    Click **Add Supplier** and select from your supplier list
-  </Step>
+**What's Shown:**
+- Which suppliers provide this item
+- Supplier-specific details (SKU codes, costs, lead times)
 
-  <Step title="Configure Details">
-    Enter supplier-specific information:
-    - Their SKU code for this product
-    - Cost and pricing
-    - Lead time in days
-  </Step>
+### Processes Tab
 
-  <Step title="Save">
-    Click **Save** to store the supplier relationship
-  </Step>
-</Steps>
+View manufacturing processes associated with this SKU.
 
-### BOM Tab (Bill of Materials)
+<Note>
+  The Processes tab is only visible if the SKU's collection has processes enabled. Process associations are read-only from this view.
+</Note>
 
-For composite SKUs, manage the component structure:
+**What's Shown:**
+- Associated production processes
+- Process configurations for this SKU
 
-**What You Can Edit:**
-- Component SKUs
-- Quantities required
-- Assembly instructions
+### Bill of Materials Tab
+
+The Bill of Materials tab has two sub-tabs:
+
+**Components Sub-tab** — What goes into this SKU:
+- Lists all materials and parts needed to make this SKU
+- Columns: Component, Source, SKU Code, Quantity, Unit, Optional
+- Empty state shows: "This SKU does not contain any components."
+
+**Usage Sub-tab** — Where this SKU is used as a component:
+- Lists all SKUs that use this item as a component
+- Columns: Used In SKU, SKU Code, Collection, Quantity, Unit, Optional
+- Helpful for understanding the impact of changes before modifying a component
 
 <Warning>
   Changing BOM affects production planning and inventory calculations. Verify changes before saving.

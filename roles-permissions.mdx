@@ -9,14 +9,17 @@ Tether uses role-based access control (RBAC) to ensure users have appropriate ac
 
 ## Available Roles
 
-Tether has two primary user roles:
+Tether has three user roles:
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Admin" icon="user-shield">
     Full access to all features, settings, and data management capabilities.
   </Card>
   <Card title="Sales Rep" icon="user">
     Focused access to sales-related features with read-only access to most areas.
+  </Card>
+  <Card title="Tether Admin" icon="shield">
+    System-level access with all Admin capabilities plus internal configuration tools. Typically reserved for Tether support staff.
   </Card>
 </CardGroup>
 
@@ -24,41 +27,43 @@ Tether has two primary user roles:
 
 ### Feature Access by Role
 
-| Feature | Admin | Sales Rep |
-|---------|:-----:|:---------:|
-| **Product Catalog** | | |
-| View SKUs | ✓ | ✓ |
-| Create/Edit SKUs | ✓ | - |
-| Manage Collections | ✓ | - |
-| Configure Dimensions | ✓ | - |
-| **Inventory** | | |
-| View Inventory Dashboard | ✓ | - |
-| View Inventory Alerts | ✓ | - |
-| Manage Supply Plan | ✓ | - |
-| Create/Edit Warehouses | ✓ | - |
-| Manage Suppliers | ✓ | - |
-| **Demand Forecasting** | | |
-| View Forecasts | ✓ | ✓ |
-| Edit Forecasts | ✓ | Limited |
-| View Sales History | ✓ | ✓ |
-| Forecast Administration | ✓ | - |
-| Manage Promotions | ✓ | - |
-| **Transactions** | | |
-| View Transactions | ✓ | - |
-| Create/Edit Transactions | ✓ | - |
-| **Channels** | | |
-| View Channels | ✓ | ✓ |
-| Create/Edit Channels | ✓ | - |
-| **Integrations** | | |
-| View Integrations | ✓ | - |
-| Configure Integrations | ✓ | - |
-| **Supply Simulation** | | |
-| Run Simulations | ✓ | - |
-| **Analytics** | | |
-| View Metrics | ✓ | ✓ |
-| **Administration** | | |
-| Manage Users | ✓ | - |
-| Configure Settings | ✓ | - |
+| Feature | Admin | Sales Rep | Tether Admin |
+|---------|:-----:|:---------:|:------------:|
+| **Product Catalog** | | | |
+| View SKUs | ✓ | ✓ | ✓ |
+| Create/Edit SKUs | ✓ | - | ✓ |
+| Manage Collections | ✓ | - | ✓ |
+| Configure Dimensions | ✓ | - | ✓ |
+| **Inventory** | | | |
+| View Inventory Dashboard | ✓ | - | ✓ |
+| View Inventory Alerts | ✓ | - | ✓ |
+| Manage Supply Plan | ✓ | - | ✓ |
+| Create/Edit Warehouses | ✓ | - | ✓ |
+| Manage Suppliers | ✓ | - | ✓ |
+| **Demand Forecasting** | | | |
+| View Forecasts | ✓ | ✓ | ✓ |
+| Edit Forecasts | ✓ | Limited | ✓ |
+| View Sales History | ✓ | ✓ | ✓ |
+| Forecast Administration | ✓ | - | ✓ |
+| Manage Promotions | ✓ | - | ✓ |
+| **Transactions** | | | |
+| View Transactions | ✓ | - | ✓ |
+| Create/Edit Transactions | ✓ | - | ✓ |
+| **Channels** | | | |
+| View Channels | ✓ | ✓ | ✓ |
+| Create/Edit Channels | ✓ | - | ✓ |
+| **Integrations** | | | |
+| View Integrations | ✓ | - | ✓ |
+| Configure Integrations | ✓ | - | ✓ |
+| **Supply Simulation** | | | |
+| Run Simulations | ✓ | - | ✓ |
+| **Analytics** | | | |
+| View Metrics | ✓ | ✓ | ✓ |
+| **Administration** | | | |
+| Manage Users | ✓ | - | ✓ |
+| Configure Settings | ✓ | - | ✓ |
+| Mapper Configuration | - | - | ✓ |
+| Data Management | - | - | ✓ |
 
 ## Admin Role
 
@@ -164,7 +169,7 @@ Beyond roles, Admins can configure granular channel access to control which data
 
 ### How Channel Access Works
 
-1. **Admin creates access rules** in Settings → User Access
+1. **Admin creates access rules** in Settings (via user menu) → User Access
 2. **Rules define** which channels and/or collections a user can access
 3. **Sales Reps** see only data for their assigned channels
 4. **Admins** always have access to all channels
@@ -182,7 +187,7 @@ Beyond roles, Admins can configure granular channel access to control which data
 
 <Steps>
   <Step title="Navigate to Settings">
-    Go to **Settings** → **User Access**
+    Click your **profile avatar** in the top-right corner, select **Settings**, then click the **User Access** card
   </Step>
   <Step title="Select User">
     Find the user in the list and click to edit
@@ -204,24 +209,26 @@ Beyond roles, Admins can configure granular channel access to control which data
 Admins see the full navigation menu:
 
 ```
-├── SKUs
-├── Inventory
-├── Demand Forecast
-├── Integrations
-├── Channels
-├── Transactions
-└── Settings
+├── SKUs (Dimensions, Collections, Product Hierarchy, SKUs)
+├── Inventory (Report, Warehouses, Suppliers)
+├── Demand Forecast (Dashboard, Comparison, Admin, Sales History, Promotions, Edit Log)
+├── Integrations (Data Ingestion)
+├── Channels (Channel List, Hierarchy)
+└── Transactions
 ```
+
+<Info>
+  **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not the sidebar. Only Admins see the Settings option in their user menu.
+</Info>
 
 ### Sales Rep Sidebar
 
 Sales Reps see a simplified menu:
 
 ```
-├── SKUs
-├── Sales History
-├── Demand Forecast
-└── Channels
+├── SKUs (Collections, SKUs)
+├── Demand Forecast (Dashboard, Comparison, Sales History, Edit Log)
+└── Channels (Channel List)
 ```
 
 <Info>

@@ -29,30 +29,31 @@ Purchase orders are orders placed with external suppliers.
 
 ### Purchase Order Workflow
 
+When a purchase order is submitted, Tether creates a **Purchase step** to track the supplier fulfillment, followed by a **Shipment step** when a Shipping Plan is created to move goods to your warehouse.
+
 ```
-Draft → Submitted → Confirmed → Shipped → Received → Completed
+Draft → In Progress (Purchase Step: In Process → Completed Purchase)
+                     → Shipment Step: In Transit → Completed Shipment
+     → Completed
 ```
 
 ### Steps in a Purchase Order
 
-| Step | Description |
-|------|-------------|
-| **Order Placed** | PO sent to supplier |
-| **Supplier Confirmed** | Supplier acknowledges order |
-| **In Production** | Supplier manufacturing (if applicable) |
-| **Shipped** | Items left supplier |
-| **In Transit** | Items being transported |
-| **Delivered** | Items arrived at warehouse |
-| **Received** | Items inspected and stocked |
+| Step Type | Inventory States | What Happens |
+|-----------|-----------------|--------------|
+| **Purchase** | In Process → Completed Purchase | Tracks supplier order progress. No warehouse inventory changes until shipment. When completed, inventory is added to sellable at the supplier's linked warehouse. |
+| **Shipment** | In Transit → Completed Shipment | Created when a Shipping Plan artifact is submitted. Subtracts inventory from source, adds to "Awaiting In-Transit" at destination. On completion, moves to sellable at destination. |
 
 ### Cost Tracking
 
-Purchase orders track:
+Purchase orders track costs through artifacts:
 
-- Unit costs per SKU
-- Shipping costs
-- Duties and taxes (if applicable)
+- Unit costs per SKU (on line items)
+- Shipping and freight costs (artifact-level cost items)
+- Duties, tariffs, and taxes (artifact-level cost items)
 - Total order value
+
+The **Analysis** tab shows planned vs. reported cost variance once the transaction is in progress.
 
 ## Transfer Orders
 
@@ -76,33 +77,38 @@ Transfer orders move inventory between your warehouses.
 
 ### Transfer Order Workflow
 
+When a transfer order is submitted, Tether automatically creates a **Shipping Plan** artifact and a **Shipment step**. All inventory immediately enters the "In Transit" state—there are no intermediate picking steps.
+
 ```
-Draft → Submitted → Picked → Shipped → In Transit → Received → Completed
+Draft → Submitted (auto-creates Shipping Plan + Shipment Step)
+     → In Progress (Shipment Step: In Transit → Completed Shipment)
+     → Completed
 ```
+
+<Note>
+  Unlike purchase orders, transfer orders create a Shipping Plan automatically on submission. The full quantity immediately enters "In Transit" status.
+</Note>
 
 ### Steps in a Transfer Order
 
-| Step | Description |
-|------|-------------|
-| **Order Created** | Transfer initiated |
-| **Pick Started** | Items being collected |
-| **Picked** | Items collected from source |
-| **Shipped** | Items left source warehouse |
-| **In Transit** | Items being transported |
-| **Delivered** | Items arrived at destination |
-| **Received** | Items stocked at destination |
+| Step Type | Inventory States | What Happens |
+|-----------|-----------------|--------------|
+| **Shipment** | In Transit → Completed Shipment | The only step type for transfers. On creation, subtracts inventory from source warehouse sellable and adds to "Awaiting In-Transit" at destination. On completion, moves to sellable at destination. |
 
 ### Inventory Impact
 
-Transfer orders affect inventory at both locations:
+Transfer orders affect inventory at both locations immediately on submission:
 
 **Source Warehouse:**
-- Committed when order created
-- Deducted when shipped
+- Sellable inventory subtracted when submitted (enters In Transit)
 
 **Destination Warehouse:**
-- Incoming when in transit
-- Available when received
+- Added to "Awaiting In-Transit" when submitted
+- Moved to sellable when shipment is completed
+
+<Warning>
+  If the source warehouse does not have sufficient sellable inventory at submission time, the submission is blocked with an error.
+</Warning>
 
 ## Production Orders
 
@@ -127,31 +133,38 @@ Production orders are for internal manufacturing.
 
 ### Production Order Workflow
 
+When a production order is submitted, Tether creates a **Production step** that tracks both the finished goods being produced and the components being consumed.
+
 ```
-Draft → Submitted → Materials Allocated → In Production → QC → Completed
+Draft → In Progress (Production Step: In Production → Completed Production)
+     → Completed
 ```
 
 ### Steps in a Production Order
 
-| Step | Description |
-|------|-------------|
-| **Order Created** | Production planned |
-| **Materials Allocated** | Components reserved |
-| **Materials Consumed** | Components pulled from inventory |
-| **In Production** | Manufacturing in progress |
-| **Quality Check** | Inspection of finished goods |
-| **Completed** | Finished goods added to inventory |
+| Step Type | Inventory States | What Happens |
+|-----------|-----------------|--------------|
+| **Production** | In Production → Completed Production | Tracks manufacturing progress. Components are committed (subtracted from sellable) and consumed during production. Finished goods are added to sellable at the source warehouse on completion. |
+
+**Component inventory states** (tracked within the production step):
+
+| State | Description |
+|-------|-------------|
+| **Committed** | Components reserved—subtracted from sellable at the supplier warehouse |
+| **Consumed** | Components actually used in production |
+| **Backordered** | Components that could not be committed due to insufficient inventory |
 
 ### Inventory Impact
 
 Production orders affect multiple SKUs:
 
-**Components (consumed):**
-- Reserved when allocated
-- Deducted when consumed
+**Components (at supplier warehouse):**
+- Subtracted from sellable and moved to Committed when production starts
+- Moved from Committed to Consumed during production
+- Marked as Backordered if insufficient inventory is available
 
 **Finished Goods (produced):**
-- Added when production completes
+- Added to sellable at the source warehouse when production completes
 
 ### Bill of Materials (BOM)
 
@@ -171,9 +184,11 @@ Finished Good: T-Shirt Bundle (3-pack)
 |--------|---------------|----------------|------------------|
 | **External/Internal** | External (supplier) | Internal | Internal |
 | **Cost Tracking** | Yes (supplier cost) | No (internal) | Yes (component cost) |
-| **Source** | Supplier | Warehouse | Components |
+| **Source** | Supplier (resolved to warehouse) | Warehouse | Supplier |
 | **Destination** | Warehouse | Warehouse | Warehouse |
+| **Step Types** | Purchase + Shipment | Shipment only | Production |
 | **Lead Time** | Supplier + shipping | Transit time | Production time |
+| **Auto Shipping Plan** | No (created manually) | Yes (on submission) | No (created manually) |
 
 ## Choosing the Right Type
 
@@ -228,9 +243,9 @@ Finished Good: T-Shirt Bundle (3-pack)
 <AccordionGroup>
   <Accordion title="Availability Check">
     When creating a transfer:
-    - System verifies source has inventory
-    - Shows available vs. committed quantities
-    - Alerts if insufficient stock
+    - System verifies source has sufficient sellable inventory
+    - Shows available quantities at source
+    - Blocks submission if insufficient stock
   </Accordion>
 
   <Accordion title="Lead Time">
@@ -240,11 +255,11 @@ Finished Good: T-Shirt Bundle (3-pack)
     - Shipping method
   </Accordion>
 
-  <Accordion title="Partial Transfers">
-    Can handle partial shipments:
-    - Ship what's available
-    - Complete remainder later
-    - Track multiple shipments
+  <Accordion title="Automatic Shipping Plan">
+    Unlike purchase orders:
+    - A Shipping Plan is created automatically on submission
+    - All inventory immediately enters "In Transit"
+    - No additional shipments can be created since everything is already shipped
   </Accordion>
 </AccordionGroup>
 

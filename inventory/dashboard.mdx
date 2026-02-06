@@ -22,122 +22,95 @@ The Inventory page has four main tabs:
 | Tab | Purpose |
 |-----|---------|
 | **Overview** | Alerts and health status summary |
+| **Inventory** | Current stock levels across warehouses |
+| **Forecast** | Inventory projection charts and flow diagrams |
 | **Supply Plan** | Scheduled orders and recommendations |
-| **Forecast** | Inventory projection charts |
-| **Flow** | Visual replenishment diagram |
 
 ## Overview Tab
 
-The Overview tab provides a snapshot of your inventory health.
+The Overview tab provides a snapshot of your inventory health across all warehouses and SKUs.
 
 ### Alert Summary Cards
 
-At the top, summary cards show:
+At the top, summary cards show counts of alerts by issue type. Click a card to filter the alert table to that issue type.
 
 <CardGroup cols={3}>
   <Card title="Stockout Alerts" icon="triangle-exclamation">
-    SKUs at risk of running out of stock
+    SKUs projected to run out of stock
   </Card>
   <Card title="Safety Stock Breaches" icon="shield-exclamation">
-    SKUs falling below safety thresholds
+    SKUs projected to fall below safety stock thresholds
   </Card>
   <Card title="Overstock Alerts" icon="boxes-packing">
-    SKUs with excess inventory
+    SKUs with excess inventory above overstock thresholds
   </Card>
 </CardGroup>
 
 ### Understanding Alert Levels
 
-Alerts are categorized by urgency:
+Alerts are categorized into five levels based on severity:
 
-| Level | Icon | Description |
-|-------|------|-------------|
-| **Urgent** | 🔴 | Immediate action required (stockout imminent) |
-| **Important** | 🟡 | Action needed soon (safety stock breach) |
-| **Info** | 🔵 | Awareness item (overstock or minor issue) |
+| Level | Color | Description |
+|-------|-------|-------------|
+| **Urgent** | Red | Immediate action required — stockout is imminent or already occurring |
+| **Important** | Orange | Action needed soon — safety stock breach is projected |
+| **Overstock** | Yellow | Excess inventory detected above overstock thresholds |
+| **Expedite** | Blue | Existing plan can be improved — consider adjusting order timing |
+| **Plan Good** | Green | Your current plan already covers the issue |
 
 ### Alert Table
 
-The main table shows individual alerts with:
+The main table shows individual alerts for each SKU/warehouse pairing:
 
 | Column | Description |
 |--------|-------------|
-| **Alert Level** | Urgency indicator |
-| **SKU** | Product name and code |
-| **Warehouse** | Location of the issue |
-| **Current Stock** | Current inventory level |
-| **Coverage Days** | Days until stockout at current rate |
-| **Health Status** | Overall inventory health |
-| **Actions** | Quick action buttons |
+| **Alert** | Alert level badge (Urgent, Important, Overstock, Expedite, Plan Good) |
+| **SKU** | Product name with link to SKU detail |
+| **Warehouse** | Warehouse where the issue is detected |
+| **Issues** | List of issue types (Stockout, Safety Stock Breach, Overstock) with date ranges |
+| **Draft** | Indicator showing if a draft transaction already exists for this alert |
+
+Click on any row to open the **Alert Resolution Modal** for detailed analysis and actions.
 
 ### Filtering Alerts
 
-Filter the alert list by:
+Filter the alert list using the controls at the top:
 
-- **Warehouse** - Focus on specific locations
-- **Collection** - Filter by product group
-- **Days Ahead** - 30, 60, 90, 180, or 360 days projection
-- **Alert Level** - Show only urgent, important, or info
+- **Warehouse** — Focus on specific locations
+- **Collection** — Filter by product group
+- **Days Ahead** — Set the projection horizon (e.g., 30, 60, 90, 180, or 360 days)
 
-### Taking Action on Alerts
+You can also click the alert summary cards to filter by issue type (Stockout, Safety Stock Breach, or Overstock).
 
-Click on an alert to open the Alert Resolution Modal:
+### Alert Resolution Modal
 
-<Steps>
-  <Step title="Review Alert Details">
-    See current stock, consumption rate, and projected stockout date
-  </Step>
+Click on an alert row to open the Alert Resolution Modal, which provides:
 
-  <Step title="View Recommendations">
-    Tether shows suggested actions:
-    - Recommended order quantity
-    - Suggested order date
-    - Available suppliers
-  </Step>
-
-  <Step title="Take Action">
-    Options include:
-    - Add to supply plan
-    - Create purchase order
-    - Create transfer order
-    - Dismiss alert (with reason)
-  </Step>
-</Steps>
+- **Breach Timeline** — A left sidebar showing all issues for this SKU/warehouse with clickable breach periods
+- **Projection Chart** — An inventory projection chart with six lines:
+  - Current Plan inventory (solid blue)
+  - System Plan inventory (solid green)
+  - Current Safety Stock threshold (dashed orange)
+  - System Safety Stock threshold (dotted orange)
+  - Current Overstock threshold (dashed red)
+  - System Overstock threshold (dotted red)
+- **Issue Details** — Specific information about the selected breach period, including date range and severity
+- **Draft vs. System Comparison** — Side-by-side view of any existing draft transaction and the system's recommended order
+- **Actions** — Navigate between alerts using arrow buttons, or view the full scheduled order details
 
 ## Inventory Health Status
 
-Each SKU/warehouse combination has a health status:
+Each SKU/warehouse combination has a health status determined by the supply simulation:
 
 | Status | Meaning | Typical Action |
 |--------|---------|----------------|
-| **Healthy** | Stock levels are good | No action needed |
+| **Healthy** | Stock levels are within target range | No action needed |
 | **Low Inventory** | Below target but above safety stock | Plan replenishment |
-| **Safety Stock Breach** | Below safety stock threshold | Order urgently |
 | **Out of Stock** | Zero sellable inventory | Emergency order |
-| **Overstock** | Above maximum threshold | Reduce orders, promote sales |
-
-## Coverage Days
-
-Coverage days indicate how long current inventory will last based on consumption forecasts.
-
-### How It's Calculated
-
-```
-Coverage Days = Current Sellable Inventory / Daily Consumption Rate
-```
-
-### Interpreting Coverage Days
-
-| Coverage | Interpretation |
-|----------|----------------|
-| **< 7 days** | Critical - immediate action needed |
-| **7-14 days** | Urgent - order now |
-| **15-30 days** | Plan replenishment |
-| **31-60 days** | Healthy range (varies by product) |
-| **> 60 days** | Consider if overstock |
+| **Overstock** | Above overstock threshold | Reduce orders or promote sales |
 
 <Info>
-  Ideal coverage days vary by product and lead time. A product with 60-day lead time needs more coverage than one with 7-day lead time.
+  Health statuses are computed from daily inventory snapshots generated by the supply simulation engine. Each snapshot records the projected inventory level and its health classification for that day.
 </Info>
 
 ## Inventory States
@@ -159,82 +132,38 @@ On Hand = Sellable + Committed + Damaged
 Available to Promise = Sellable + Incoming
 ```
 
-## Filtering the Dashboard
+## Refreshing Simulation Data
 
-### By Warehouse
-
-Focus on specific warehouses:
-
-1. Click the warehouse filter
-2. Select one or more warehouses
-3. All data updates to show only selected locations
-
-### By Collection
-
-Filter by product group:
-
-1. Open the collection filter
-2. Select collections to include
-3. Alerts and metrics update accordingly
-
-### By Time Horizon
-
-Change the projection window:
-
-| Option | Shows Alerts For |
-|--------|------------------|
-| **30 days** | Short-term issues |
-| **60 days** | Medium-term planning |
-| **90 days** | Standard planning horizon |
-| **180 days** | Extended view |
-| **360 days** | Annual planning |
+The Overview tab includes a **Refresh** button that triggers both User and System supply simulations. This recalculates all inventory projections, alerts, and recommendations based on the latest data.
 
 <Tip>
-  Start with 90 days for daily operations. Use longer horizons for strategic planning sessions.
+  Use the Refresh button after making changes to inventory settings, safety stock levels, or supplier capabilities to see updated alerts.
 </Tip>
-
-## Dashboard Metrics
-
-### Key Performance Indicators
-
-The dashboard shows several KPIs:
-
-| Metric | Description |
-|--------|-------------|
-| **Total SKUs** | Number of SKUs monitored |
-| **SKUs at Risk** | SKUs with any alert |
-| **Average Coverage** | Mean coverage days across SKUs |
-| **Fill Rate** | Percentage of SKUs in stock |
-
-### Trends
-
-Some metrics show trends:
-- ↑ Improving
-- ↓ Declining
-- → Stable
 
 ## Best Practices
 
 <AccordionGroup>
   <Accordion title="Daily Review">
     Check the dashboard daily:
-    - Review new urgent alerts
-    - Update on previous alerts
-    - Verify recent actions took effect
+    - Review new Urgent alerts first
+    - Check Important alerts for upcoming safety stock breaches
+    - Monitor Overstock alerts to prevent excess inventory
   </Accordion>
 
   <Accordion title="Address Urgent First">
     Prioritize by alert level:
-    1. Handle Urgent alerts immediately
-    2. Plan for Important alerts
-    3. Review Info alerts weekly
+    1. Handle Urgent alerts immediately — these indicate imminent stockouts
+    2. Plan for Important alerts — schedule replenishment before breaches occur
+    3. Review Overstock and Expedite alerts periodically
+    4. Plan Good alerts confirm your current plan is working
   </Accordion>
 
   <Accordion title="Use Filters Strategically">
     Different filters for different purposes:
-    - No filter for overall health check
+    - No filter for an overall health check
     - Warehouse filter for location-specific review
     - Collection filter for product line analysis
+    - Click summary cards to focus on specific issue types
   </Accordion>
 
   <Accordion title="Look Beyond Today">
@@ -249,10 +178,10 @@ Some metrics show trends:
 
 The dashboard connects to other Tether features:
 
-- **Supply Plan** - Manage recommended orders
-- **Transactions** - Create and track orders
-- **Demand Forecast** - Understand consumption projections
-- **Supply Simulation** - Model scenarios
+- **[Supply Plan](/inventory/supply-plan)** — Manage recommended and draft orders
+- **[Transactions](/transactions/overview)** — Create and track purchase and transfer orders
+- **[Demand Forecasting](/demand-forecasting/dashboard)** — Understand consumption projections
+- **[Supply Simulation](/supply-simulation/running)** — Generate projections and recommendations
 
 ## Next Steps
 
@@ -261,7 +190,7 @@ The dashboard connects to other Tether features:
     Manage replenishment orders
   </Card>
   <Card title="Inventory Forecasts" icon="chart-line" href="/inventory/forecasts-flow">
-    View projection charts
+    View projection charts and flow diagrams
   </Card>
   <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
     Configure warehouse settings

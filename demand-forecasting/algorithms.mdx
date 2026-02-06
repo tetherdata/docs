@@ -1,0 +1,457 @@
+---
+title: Forecast Algorithms
+description: Understand the statistical algorithms Tether uses to generate demand forecasts
+sidebarTitle: Algorithms
+---
+
+# Forecast Algorithms
+
+Tether generates demand forecasts using **11 statistical algorithms**, each designed for different demand patterns and business requirements. Every algorithm operates on individual SKU-channel combinations independently, using only the historical sales data for that specific pair.
+
+<Info>
+  All algorithms support runtime parameter configuration. Seven of the 11 algorithms also support automatic parameter optimization to find the best settings for each SKU-channel combination.
+</Info>
+
+## Algorithm overview
+
+| Algorithm | Best for | Auto-optimize | Min. history |
+|-----------|----------|:-------------:|:------------:|
+| [Rolling Average (90-day)](#rolling-average) | Stable, predictable demand | No | None |
+| [Rolling Average (120-day, Recursive)](#rolling-average) | Volatile products, strategic planning | No | None |
+| [Exponentially Weighted Moving Average](#exponentially-weighted-moving-average-ewma) | Trending products, recent pattern changes | Yes | None |
+| [Linear Trend](#linear-trend) | Products with consistent growth or decline | No | None |
+| [Simplified Seasonal](#simplified-seasonal) | Seasonal or cyclical products | Yes | 365 days |
+| [Simple Seasonal with Trend](#simple-seasonal-with-trend) | Seasonal products with growth trends | Yes | 365 days |
+| [Seasonal Year-over-Year Growth](#seasonal-year-over-year-growth) | Seasonal products with observed YoY growth | Yes | 365 days |
+| [Rolling Momentum](#rolling-momentum) | Accelerating or decelerating products | Yes | 90 days |
+| [Holt-Winters](#holt-winters-triple-exponential-smoothing) | Complex seasonal patterns with trends | Yes | 365 days |
+| [SARIMA](#sarima) | Complex time series with strong seasonality | Yes | 365 days |
+| [Static Baseline](#static-baseline) | External or manual forecasts | No | N/A |
+
+In addition, the [Consensus Model](#consensus-model) is a special model type where forecast values are entirely user-defined rather than algorithm-generated.
+
+---
+
+## Rolling Average
+
+The Rolling Average computes the simple arithmetic mean of daily sales over a historical window. It produces a flat forecast value that reflects average recent demand.
+
+**How it works:**
+1. Look back over the configured window (e.g., 90 days before the forecast date).
+2. Sum all sales quantities within that window — days with no sales count as zero.
+3. Divide by the window size to get the average daily demand.
+
+**When to use it:** Products with stable, predictable demand that does not exhibit strong trends or seasonality.
+
+### Implementations
+
+<Tabs>
+  <Tab title="90-Day Rolling Average">
+    The default general-purpose algorithm. Computes a non-recursive average — each forecast date receives the same value based on the historical window.
+
+    | Parameter | Default | Description |
+    |-----------|---------|-------------|
+    | `window_days` | 90 | Number of days to include in the average |
+
+    **Type ID:** `last_90_day_average`
+    **Supports optimization:** No
+  </Tab>
+
+  <Tab title="120-Day Rolling Average (Recursive)">
+    The only **recursive** algorithm in Tether. As the forecast window rolls forward, previously forecasted values are used as inputs for subsequent days. This means the Day N+1 forecast depends on the Day N forecast.
+
+    This recursive behavior causes the forecast to gradually converge toward its own output over longer horizons.
+
+    | Parameter | Default | Description |
+    |-----------|---------|-------------|
+    | `window_days` | 120 | Number of days in the sliding window |
+
+    **Type ID:** `rolling_window`
+    **Supports optimization:** No
+  </Tab>
+</Tabs>
+
+<Tip>
+  **Window size trade-off:** Larger windows (120+ days) produce more stable forecasts but react slowly to demand shifts. Smaller windows (30–60 days) are more responsive but more volatile.
+</Tip>
+
+---
+
+## Exponentially Weighted Moving Average (EWMA)
+
+EWMA applies exponential weighting to historical data, giving more importance to recent observations while still considering the full window. The most recent day always has the highest weight (1.0), and each day further back is weighted by a decay factor.
+
+**How it works:**
+1. Look back over the configured window (default 60 days).
+2. Assign each day a weight: `decay_factor^(distance_from_most_recent_day)`.
+3. Multiply each day's sales by its weight, sum the weighted values, and divide by the total weight sum.
+
+**When to use it:** Products experiencing trend shifts or where recent sales are a better indicator of future demand than older data.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `window_days` | 60 | — | No | Number of days in the window |
+| `weight_factor` | 0.8 | 0.1–0.99 | Yes | Exponential decay factor — lower values create steeper decay (more recent emphasis) |
+
+**Type ID:** `weighted_recent`
+**Supports optimization:** Yes (Nelder-Mead)
+
+<Tip>
+  A `weight_factor` of **0.7** emphasizes the last 2–3 weeks heavily. A value of **0.9** spreads weight more evenly across the window.
+</Tip>
+
+---
+
+## Linear Trend
+
+Uses least-squares linear regression over a historical window to project a growth or decline trend forward.
+
+**How it works:**
+1. Fit a straight line (slope + intercept) through the daily sales data in the window.
+2. Project the trend line to the forecast date.
+3. If the projected value is negative, clamp it to zero.
+
+**When to use it:** Products with a consistent upward or downward trajectory — for example, a product gaining market share steadily over time.
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `window_days` | 120 | Number of days for the regression calculation |
+
+**Type ID:** `simple_trend`
+**Supports optimization:** No
+
+<Warning>
+  Linear Trend assumes demand follows a straight line. It is sensitive to outliers and can produce unrealistic projections if demand is cyclical rather than linear.
+</Warning>
+
+---
+
+## Simplified Seasonal
+
+Combines **monthly** and **weekly** seasonal patterns with configurable weights to capture recurring demand cycles. This algorithm uses a streamlined approach — it does not model day-of-week patterns, which reduces noise and improves stability.
+
+**How it works:**
+1. Extract monthly seasonal patterns (same month-of-year across prior years).
+2. Extract weekly seasonal patterns (same ISO week-of-year across prior years).
+3. Blend the two components: `forecast = (weekly × weight) + (monthly × weight)`.
+
+If fewer than 365 days of history are available, the algorithm automatically falls back to a 90-day Rolling Average.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `weekly_weight` | 0.8 | 0.0–1.0 | Yes | Weight for weekly seasonal component |
+| `monthly_weight` | 0.2 | 0.0–1.0 | Yes | Weight for monthly seasonal component |
+
+Weights are normalized to sum to 1.0 during optimization.
+
+**Type ID:** `seasonal_moving_average`
+**Supports optimization:** Yes (Nelder-Mead)
+**Minimum history:** 365 days (falls back to Rolling Average with less)
+
+---
+
+## Simple Seasonal with Trend
+
+Builds on Simplified Seasonal by adding a **growth factor** that blends observed year-over-year trends with a planned growth assumption. Near-term forecasts emphasize observed performance, while longer-horizon forecasts shift toward the planned growth rate.
+
+**How it works:**
+1. Calculate the seasonal baseline using monthly (50%) and weekly (50%) components.
+2. Compute the observed year-over-year trend from the recent observation window.
+3. Blend the observed trend with the configured planned growth rate, adjusting the blend based on how far into the forecast horizon each date falls.
+4. Apply a confidence scale based on history length:
+   - Less than 365 days → falls back to Rolling Average
+   - 365–729 days → 50% confidence
+   - 730+ days → full confidence
+
+| Parameter | Default | Optimizable | Description |
+|-----------|---------|:-----------:|-------------|
+| `growth_factor` | 0.15 | Yes | Planned annual growth rate (0.15 = 15%) |
+| `adjustment_observation_window` | 120 | Yes | Days to analyze for observed YoY trend |
+| `adjustment_horizon_window` | 120 | Yes | Days over which to transition from observed to planned growth |
+| `initial_trend_weight` | 0.8 | Yes | Starting weight for observed growth vs planned growth |
+
+**Type ID:** `simple_seasonal_with_trend`
+**Supports optimization:** Yes (Nelder-Mead)
+**Minimum history:** 365 days
+
+---
+
+## Seasonal Year-over-Year Growth
+
+Combines seasonal patterns with the **observed** year-over-year growth rate. Similar to Simplified Seasonal in its use of weekly and monthly components, but it also calculates and applies the actual YoY growth factor from historical data.
+
+**How it works:**
+1. If only 1–2 years of data exist, synthesize a "year 0" by duplicating the first year backward.
+2. Calculate the seasonal baseline using weekly (80%) and monthly (20%) pattern averages.
+3. Calculate the year-over-year growth factor for the forecast period.
+4. Apply growth: `forecast = seasonal_baseline × (1 + growth_rate)`.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `weekly_weight` | 0.8 | 0.0–1.0 | Yes | Weight for weekly seasonal component |
+| `monthly_weight` | 0.2 | 0.0–1.0 | Yes | Weight for monthly seasonal component |
+
+Weights are normalized to sum to 1.0 during optimization.
+
+**Type ID:** `seasonal_yoy_growth`
+**Supports optimization:** Yes (Nelder-Mead)
+**Minimum history:** 365 days
+
+---
+
+## Rolling Momentum
+
+Detects acceleration or deceleration in demand by comparing short-term performance against long-term performance, then projects that momentum forward.
+
+**How it works:**
+1. Calculate the trailing 30-day average (short-term) and the trailing 90-day average (long-term).
+2. Compute a momentum ratio: `M = short-term average / long-term average`.
+   - M > 1.0 → demand is accelerating.
+   - M < 1.0 → demand is decelerating.
+   - M = 1.0 → demand is stable.
+3. Convert the momentum ratio into a daily compound growth rate.
+4. Apply a sensitivity factor to control how strongly to react to the detected momentum.
+5. Project forward using exponential growth: `forecast = long_term_avg × (1 + adjusted_growth)^days_ahead`.
+6. Cap the daily growth rate to prevent unrealistic projections.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `short_window_days` | 30 | — | Yes | Days for the short-term average |
+| `long_window_days` | 90 | — | Yes | Days for the long-term average |
+| `sensitivity` | 0.5 | 0.0–1.0 | Yes | How strongly to react to momentum (0 = ignore, 1 = full) |
+| `max_daily_growth_cap` | 0.02 | — | Yes | Maximum allowed daily growth rate (2%) |
+
+**Type ID:** `rolling_momentum`
+**Supports optimization:** Yes (Nelder-Mead)
+**Minimum history:** 90 days
+
+<Accordion title="Example calculation">
+  Given a 90-day average of 1.22 units/day and a 30-day average of 1.67 units/day with sensitivity at 0.5:
+
+  | Step | Calculation | Result |
+  |------|-------------|--------|
+  | Momentum ratio | 1.67 / 1.22 | 1.36 (36% positive momentum) |
+  | Daily growth rate | 1.36^(1/60) − 1 | 0.52% per day |
+  | Adjusted growth | 0.5 × 0.52% | 0.26% per day |
+  | Day 30 forecast | 1.22 × (1.0026)^30 | 1.32 |
+  | Day 90 forecast | 1.22 × (1.0026)^90 | 1.54 |
+</Accordion>
+
+---
+
+## Holt-Winters (Triple Exponential Smoothing)
+
+A classic time series method that decomposes demand into three components — **level**, **trend**, and **seasonality** — and updates each independently. Tether uses the multiplicative seasonal variant with a 52-week seasonal period.
+
+**How it works:**
+1. Initialize level, trend, and 52 weekly seasonal factors from historical data.
+2. For each period, update:
+   - **Level:** the baseline demand value, smoothed by α.
+   - **Trend:** the rate of growth/decline per period, smoothed by β.
+   - **Seasonality:** weekly multiplicative factors, smoothed by γ.
+3. Project forward: `forecast = (level + horizon × trend × φ^h) × seasonal_factor`.
+4. The damping factor (φ) prevents unrealistic long-term trend extrapolation.
+
+If only 1–2 years of data exist, the algorithm synthesizes a "year 0" by duplicating the first year backward to initialize seasonal factors.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `alpha` | 0.2 | 0.0–1.0 | Yes | Level smoothing — higher values make the baseline more responsive |
+| `beta` | 0.1 | 0.0–1.0 | Yes | Trend smoothing — higher values detect trend changes faster |
+| `gamma` | 0.1 | 0.0–1.0 | Yes | Seasonal smoothing — higher values allow faster seasonal adaptation |
+| `phi` | 0.95 | 0.8–1.0 | Yes | Trend damping — values below 1.0 fade the trend over longer horizons |
+
+**Type ID:** `holt_winters`
+**Supports optimization:** Yes (Nelder-Mead)
+**Minimum history:** 365 days
+
+---
+
+## SARIMA
+
+Seasonal AutoRegressive Integrated Moving Average. A powerful statistical method that models both trend and seasonal patterns through differencing and autoregressive/moving-average components.
+
+**Model notation:** SARIMA(p, d, q)(P, D, Q)[s]
+
+| Symbol | Meaning |
+|--------|---------|
+| p | Non-seasonal autoregressive order |
+| d | Non-seasonal differencing order |
+| q | Non-seasonal moving average order |
+| P | Seasonal autoregressive order |
+| D | Seasonal differencing order |
+| Q | Seasonal moving average order |
+| s | Seasonal period in days (default: 365) |
+
+**How it works:**
+1. Apply seasonal differencing to remove yearly patterns.
+2. Apply non-seasonal differencing to remove trends.
+3. Fit an ARIMA model to the differenced series.
+4. Generate forecasts and integrate back to the original scale.
+5. Apply trend dampening to prevent unrealistic long-term extrapolation.
+
+| Parameter | Default | Range | Optimizable | Description |
+|-----------|---------|-------|:-----------:|-------------|
+| `ar_order` | 1 | 0–3 | Yes (grid) | Non-seasonal AR order (p) |
+| `diff_order` | 1 | 0–2 | Yes (grid) | Non-seasonal differencing (d) |
+| `ma_order` | 1 | 0–2 | Yes (grid) | Non-seasonal MA order (q) |
+| `seasonal_ar_order` | 1 | 0–2 | Yes (grid) | Seasonal AR order (P) |
+| `seasonal_diff_order` | 1 | 0–1 | Yes (grid) | Seasonal differencing (D) |
+| `seasonal_ma_order` | 0 | 0–1 | No | Seasonal MA order (Q) |
+| `seasonal_period` | 365 | ≥ 2 | No | Season length in days (s) |
+| `trend_dampening` | 0.95 | 0.0–1.0 | No | Trend fade factor for long horizons |
+
+**Type ID:** `sarima`
+**Supports optimization:** Yes (Grid Search — because ARIMA orders must be integers)
+**Minimum history:** 365 days
+
+<Note>
+  SARIMA uses **Grid Search** optimization instead of Nelder-Mead because the order parameters (p, d, q, P, D, Q) are discrete integers. Grid Search tests all combinations within the allowed ranges to find the best fit.
+</Note>
+
+---
+
+## Static Baseline
+
+Static Baseline directly uses uploaded forecast values without any calculation or algorithmic adjustment. It is not a forecasting algorithm in the traditional sense — it is a mechanism for importing external forecasts into Tether.
+
+**How it works:**
+1. Look up the uploaded baseline data for the specified label.
+2. For each forecast date, return the baseline value for that SKU-channel-date combination.
+3. No calculations, transformations, or adjustments are applied.
+4. Dates without uploaded baseline data produce no forecast output.
+
+**Type ID:** `static`
+**Supports optimization:** No
+**Parameters:** None
+
+**Use cases:**
+- Import forecasts from external systems or spreadsheets
+- Use forecast data provided by customers or partners
+- Upload manually curated values for specific products or time periods
+- Bring in historical forecast data from legacy systems
+
+<Warning>
+  The Static Baseline model requires uploaded baseline data. You must set `input_source_type` to `baseline` and specify a `baseline_label` when creating the model. Forecasts are only generated for dates where baseline data has been uploaded.
+</Warning>
+
+---
+
+## Consensus Model
+
+The Consensus Model is a special model type where **all forecast values are entered directly by users**. Unlike the other algorithms, it does not perform any statistical calculations — it serves as a manual-input forecast that you can edit, adjust, and compare alongside algorithm-generated forecasts.
+
+The Consensus Model is typically used for collaborative demand planning where human judgment drives the final forecast numbers. You can enter values at any level of the product or time hierarchy, and the system distributes edits to individual SKU-time cells following the [edit distribution rules](/demand-forecasting/editing).
+
+For details on how to enter and adjust Consensus Model values, see [Forecast editing](/demand-forecasting/editing).
+
+---
+
+## Parameter optimization
+
+Tether can automatically find the best parameter values for each algorithm by testing them against historical data. This process is called **parameter optimization** (or auto-tune).
+
+### How optimization works
+
+<Steps>
+  <Step title="Split historical data">
+    Historical sales data is split into a training set (80%) and a validation set (20%).
+  </Step>
+
+  <Step title="Search for best parameters">
+    The optimizer adjusts algorithm parameters to minimize forecast error on the training data.
+
+    Two optimization methods are used depending on the parameter type:
+    - **Nelder-Mead Simplex** — for algorithms with continuous parameters (floats). Iteratively adjusts parameters to converge on the minimum error.
+    - **Grid Search** — for algorithms with discrete parameters (integers). Tests all combinations within specified ranges. Currently used only by SARIMA.
+  </Step>
+
+  <Step title="Validate and store">
+    The best parameters are evaluated against the validation set to confirm they generalize well. Optimized parameters are stored per SKU-channel combination.
+  </Step>
+</Steps>
+
+### Error metrics
+
+The optimizer can minimize any of three error metrics:
+
+| Metric | Formula | Best for |
+|--------|---------|----------|
+| **MSE** (default) | Mean of (predicted − actual)² | Penalizing large errors heavily |
+| **MAE** | Mean of |predicted − actual| | More robustness to outliers |
+| **MAPE** | Mean of |predicted − actual| / actual × 100% | Scale-independent comparisons across SKUs |
+
+### Which algorithms support optimization?
+
+| Algorithm | Optimizable | Method | Parameters optimized |
+|-----------|:-----------:|--------|---------------------|
+| Rolling Average (90-day) | No | — | — |
+| Rolling Average (120-day) | No | — | — |
+| EWMA | **Yes** | Nelder-Mead | `weight_factor` |
+| Linear Trend | No | — | — |
+| Simplified Seasonal | **Yes** | Nelder-Mead | `weekly_weight`, `monthly_weight` |
+| Simple Seasonal with Trend | **Yes** | Nelder-Mead | `growth_factor`, observation/horizon windows, `initial_trend_weight` |
+| Seasonal YoY Growth | **Yes** | Nelder-Mead | `weekly_weight`, `monthly_weight` |
+| Rolling Momentum | **Yes** | Nelder-Mead | Window sizes, `sensitivity`, `max_daily_growth_cap` |
+| Holt-Winters | **Yes** | Nelder-Mead | `alpha`, `beta`, `gamma`, `phi` |
+| SARIMA | **Yes** | Grid Search | AR/MA orders, seasonal orders |
+| Static Baseline | No | — | — |
+
+---
+
+## Algorithm selection guide
+
+Use this guide to choose the right algorithm based on your data patterns.
+
+<AccordionGroup>
+  <Accordion title="Stable demand — no trends or seasonality">
+    Use **Rolling Average (90-day)** as a reliable baseline. For products with short-lived demand spikes, consider the **120-day Recursive** variant for additional smoothing.
+  </Accordion>
+
+  <Accordion title="Trending demand — consistent growth or decline">
+    Use **Linear Trend** for steady, linear growth patterns. For products where recent performance matters more than historical averages, use **EWMA** with a lower decay factor to emphasize recent data.
+  </Accordion>
+
+  <Accordion title="Seasonal demand — recurring annual cycles">
+    Start with **Simplified Seasonal** for straightforward seasonal products. If your products also exhibit year-over-year growth, use **Seasonal YoY Growth** or **Simple Seasonal with Trend**. For complex patterns with both trend and seasonality, **Holt-Winters** offers the most flexibility.
+  </Accordion>
+
+  <Accordion title="Momentum-driven demand — acceleration or deceleration">
+    Use **Rolling Momentum** for products experiencing demand acceleration (e.g., viral products) or deceleration (e.g., declining items). Tune the `sensitivity` parameter to control how aggressively the forecast reacts to momentum.
+  </Accordion>
+
+  <Accordion title="Complex time series — multiple overlapping patterns">
+    Use **SARIMA** for data with complex autoregressive and seasonal patterns. SARIMA is the most powerful algorithm but requires at least one year of history and is computationally intensive. Use Grid Search optimization to find the best order parameters.
+  </Accordion>
+
+  <Accordion title="External or manual forecasts">
+    Use **Static Baseline** to import forecasts from external systems, spreadsheets, or partner-provided data. Use the **Consensus Model** when human judgment should drive the forecast entirely.
+  </Accordion>
+</AccordionGroup>
+
+### Parameter tuning tips
+
+| Parameter area | Guidance |
+|----------------|----------|
+| **Rolling Average window** | 30–60 days for fast-changing products. 90–120 days for general use. 180+ days for strategic planning. |
+| **EWMA decay factor** | 0.7 for heavy recent bias. 0.8 for moderate decay. 0.9 for balanced history. |
+| **Momentum sensitivity** | Start at 0.5 and adjust based on accuracy. Higher values amplify momentum effects. |
+| **Holt-Winters smoothing** | α: 0.1–0.3 for stable series, 0.3–0.5 for volatile. β: 0.05–0.15 for most cases. γ: 0.05–0.2 for seasonal adaptation. |
+| **SARIMA orders** | Start with (1,1,1)(1,1,0)[365] and use Grid Search to find the best combination. |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Configure model selection and parameters
+  </Card>
+  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
+    Compare algorithm performance side by side
+  </Card>
+  <Card title="Forecast Editing" icon="pen-to-square" href="/demand-forecasting/editing">
+    Edit forecast values and work with the Consensus Model
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View your forecasts and track accuracy
+  </Card>
+</CardGroup>

@@ -37,7 +37,7 @@ See [Supply Plan](/inventory/supply-plan) for details on working with recommenda
 
 <Steps>
   <Step title="Start New Transaction">
-    Go to **Transactions** → Click **Create** → Select **Purchase Order**
+    Go to **Transactions** → Click **Create**. When prompted, select **Buy New Inventory**. This tells Tether you are purchasing from an external supplier.
   </Step>
 
   <Step title="Select Supplier">
@@ -79,17 +79,17 @@ See [Supply Plan](/inventory/supply-plan) for details on working with recommenda
 
 <Steps>
   <Step title="Start New Transaction">
-    Go to **Transactions** → Click **Create** → Select **Transfer Order**
+    Go to **Transactions** → Click **Create**. When prompted, select **Move Inventory** (as opposed to "Buy New Inventory"). This tells Tether you are transferring existing inventory between warehouses rather than purchasing new stock.
   </Step>
 
   <Step title="Select Source Warehouse">
     Choose where inventory will come from:
-    - See available inventory
-    - Check current stock levels
+    - Only warehouses are shown (not suppliers)
+    - See available sellable inventory at each warehouse
   </Step>
 
   <Step title="Select Destination Warehouse">
-    Choose where inventory will go
+    Choose where inventory will go. Must be different from the source warehouse.
   </Step>
 
   <Step title="Add Line Items">
@@ -99,7 +99,7 @@ See [Supply Plan](/inventory/supply-plan) for details on working with recommenda
     |-------|-------------|
     | **SKU** | Search and select product |
     | **Quantity** | How many to transfer |
-    | **Available** | Shows available at source |
+    | **Available** | Shows sellable inventory at source |
   </Step>
 
   <Step title="Set Expected Dates">
@@ -113,8 +113,12 @@ See [Supply Plan](/inventory/supply-plan) for details on working with recommenda
 </Steps>
 
 <Warning>
-  You cannot transfer more than available inventory. The system will warn you if quantity exceeds availability.
+  You cannot transfer more than the available sellable inventory at the source warehouse. If the source has insufficient inventory, submission is blocked with an error.
 </Warning>
+
+<Tip>
+  **Split shipments**: You can specify multiple destination warehouses for a single transaction and allocate quantities per line item for each destination. Tether creates separate shipment steps and artifacts for each destination.
+</Tip>
 
 ### Creating a Production Order
 
@@ -252,13 +256,13 @@ Tether validates transactions before submission:
 
 When you submit a transaction:
 
-1. **Validation** runs
-2. **Status** changes to "In Progress"
-3. **Inventory** is affected:
-   - PO: No immediate impact
-   - Transfer: Source inventory committed
-   - Production: Components reserved
-4. **Steps** are created
+1. **Validation** runs (including inventory checks for transfers)
+2. **Status** changes from Draft to "In Progress"
+3. **Steps** are created based on transaction type:
+   - **Purchase Order**: A Purchase step is created (In Process state)
+   - **Transfer Order**: A Shipping Plan artifact and Shipment step are created automatically. All inventory immediately enters "In Transit"—source sellable is subtracted.
+   - **Production Order**: A Production step is created. Components are committed (subtracted from sellable at the supplier warehouse).
+4. **Inventory** is affected per the step types above
 5. **Notifications** sent (if configured)
 
 ### Submit Options

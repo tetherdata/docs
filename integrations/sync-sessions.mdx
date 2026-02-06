@@ -5,16 +5,16 @@ description: Monitor and manage data synchronization
 
 # Sync Sessions
 
-Sync sessions show when data synchronizes between Tether and your connected platforms. Monitor sync activity to ensure data stays current and identify issues.
+Sync sessions (also called sync executions) represent individual data synchronization runs between Tether and your connected platforms. Monitor sync activity to ensure data stays current and identify issues.
 
 ## What is a Sync Session?
 
-A sync session is a data synchronization event:
+A sync session is a single execution of an integration's data synchronization:
 
-- Tether connects to external platform
-- Data is fetched or pushed
-- Records are created or updated
-- Session completes or fails
+- Tether connects to the external platform
+- Data is fetched based on the integration's capabilities
+- Individual records (sync items) are processed
+- The session completes with a status and statistics
 
 ## Viewing Sync Sessions
 
@@ -22,165 +22,191 @@ A sync session is a data synchronization event:
 
 <Steps>
   <Step title="Go to Integrations">
-    Navigate to **Settings** → **Integrations**
+    Navigate to **Integrations** in the sidebar
   </Step>
 
   <Step title="Select Integration">
-    Choose the integration to view
+    Click on the integration you want to inspect
   </Step>
 
-  <Step title="View Sync History">
-    See list of sync sessions
+  <Step title="View Execution History">
+    The integration detail page shows a table of past sync executions
   </Step>
 </Steps>
 
-### Sync Session List
+### Sync Execution List
+
+Each sync execution in the list displays:
 
 | Column | Description |
 |--------|-------------|
-| **Date/Time** | When sync occurred |
-| **Type** | Full sync, incremental, manual |
-| **Status** | Completed, failed, in progress |
-| **Records** | Number of records processed |
-| **Duration** | How long sync took |
+| **Status** | Visual badge showing the execution result |
+| **Domain Type** | What type of data was synced (e.g., sales_orders, warehouse_inventory) |
+| **Started At** | When the sync execution began |
+| **Duration** | How long the sync took (in seconds) |
+| **Records Fetched** | Number of records retrieved from the external system |
+| **Statistics** | Breakdown of success, failed, and skipped record counts |
 
 ## Sync Types
 
-### Full Sync
+### Scheduled Sync
 
-Complete data synchronization:
-
-| Aspect | Description |
-|--------|-------------|
-| **When** | Initial setup, manual trigger |
-| **What** | All available data |
-| **Duration** | Longer (depends on data volume) |
-| **Use** | First sync, recovery |
-
-### Incremental Sync
-
-Only changes since last sync:
+Syncs that run automatically based on the integration's cron schedule:
 
 | Aspect | Description |
 |--------|-------------|
-| **When** | Scheduled intervals |
-| **What** | New and modified records |
-| **Duration** | Shorter (only changes) |
-| **Use** | Regular updates |
+| **When** | Based on the configured cron expression and timezone |
+| **What** | Incremental data since last sync (new and modified records) |
+| **Duration** | Varies based on data volume |
+| **Use** | Regular ongoing synchronization |
 
 ### Manual Sync
 
-User-triggered synchronization:
+User-triggered synchronization for immediate data fetch:
 
 <Steps>
-  <Step title="Go to Integration">
-    Navigate to the integration
+  <Step title="Go to Integration Detail">
+    Navigate to the integration's detail page
   </Step>
 
-  <Step title="Click Sync Now">
-    Trigger immediate sync
+  <Step title="Click Trigger Sync">
+    Click the **Trigger Sync** button to start an immediate sync
   </Step>
 
   <Step title="Monitor Progress">
-    Watch sync complete
+    The new execution will appear in the execution history
   </Step>
 </Steps>
 
-## Sync Session Details
+### Full Re-Sync
 
-Click on a sync session to see details:
+After resetting sync state (admin only), the next sync performs a full data fetch:
 
-### Summary
+| Aspect | Description |
+|--------|-------------|
+| **When** | After an admin resets sync state |
+| **What** | All available data from the external system |
+| **Duration** | Longer (full data volume) |
+| **Use** | Recovery, re-import after fixing mapping issues |
+
+## Sync Execution Details
+
+Click on a sync execution to see its detail page.
+
+### Execution Summary
 
 | Field | Description |
 |-------|-------------|
-| **Started** | Start time |
-| **Completed** | End time |
-| **Duration** | Total time |
-| **Status** | Final status |
+| **Status** | Overall execution result |
+| **Dry Run** | Whether this was a dry run (mapping validation only, no data saved) |
+| **Duration** | Total execution time in seconds |
+| **Records Fetched** | Total records retrieved from the external system |
+| **Domain Type** | The data type that was synced |
 
-### Records Processed
+### Statistics
 
-| Type | Count |
-|------|-------|
-| **Created** | New records added |
-| **Updated** | Existing records modified |
-| **Skipped** | Records not processed |
-| **Errors** | Records with issues |
+Each execution tracks aggregate statistics:
 
-### Error Details
+| Statistic | Description |
+|-----------|-------------|
+| **Success** | Records processed successfully |
+| **Failed** | Records that encountered errors |
+| **Skipped** | Records that were skipped (e.g., already up to date) |
 
-If errors occurred:
+### Sync Items
 
-- Error message
-- Affected records
-- Suggested resolution
+The execution detail page shows a table of individual sync items — the records that were processed during the sync. Each item shows:
 
-## Sync Status
+| Column | Description |
+|--------|-------------|
+| **Sync Status** | Status badge for the individual record |
+| **Error Message** | Error details if the record failed |
+| **Fetched At** | When the record was retrieved |
+| **Domain Type** | Data type of the record |
+| **External ID** | Identifier from the external system |
+| **Records** | Record count (for aggregate items) |
 
-### Successful Sync
+### Sync Item Statuses
 
-A successful sync shows:
+Individual sync items can have the following statuses:
 
-- ✅ Status: Completed
-- Records processed without errors
-- Duration within expected range
+| Status | Description |
+|--------|-------------|
+| **Processing** | Record is currently being processed |
+| **Success** | Record was processed successfully |
+| **Failed** | Record encountered an error during processing |
+| **Skipped** | Record was skipped (e.g., no changes detected) |
+| **Mapped** | Record was successfully mapped to Tether entities |
+| **PartialMapped** | Record was partially mapped (some fields could not be resolved) |
 
-### Failed Sync
+### Filtering Sync Items
 
-A failed sync shows:
+The sync items table supports filtering to help you investigate specific issues:
 
-- ❌ Status: Failed
-- Error message explaining issue
-- Partial progress (if any)
+| Filter | Description |
+|--------|-------------|
+| **Status** | Filter by sync item status (e.g., show only Failed items) |
+| **Search** | Text search across sync item fields |
+| **Domain Type** | Filter by data type |
 
-### Partial Sync
+## Error Analysis
 
-Sometimes syncs partially complete:
+### Unmapped SKU and Channel Errors
 
-- ⚠️ Status: Completed with errors
-- Most records processed
-- Some records failed
+A common source of sync failures is unmapped SKUs or channels. The execution detail page provides aggregate error analysis:
+
+- **Unique unmapped SKUs**: List of SKU identifiers from the external system that don't match any Tether SKU
+- **Unique unmapped channels**: Channel identifiers that couldn't be resolved
+- **Top errors**: Most frequently occurring error messages
+
+This helps you quickly identify which mappings need to be configured before the data can sync successfully.
+
+### Viewing Error Details
+
+For aggregate sync items (items that represent batches of records), you can click to view the detailed error breakdown showing individual record errors within the batch.
 
 ## Monitoring Sync Health
 
-### Key Metrics
+### Key Indicators
 
-| Metric | Healthy | Warning |
-|--------|---------|---------|
-| **Success Rate** | >95% | <90% |
-| **Sync Delay** | <5 min | >30 min |
-| **Error Count** | 0-2 | >5 |
+| Indicator | Healthy | Needs Attention |
+|-----------|---------|-----------------|
+| **Execution Status** | Consistently successful | Repeated failures |
+| **Failed Count** | 0 or very low | Increasing over time |
+| **Records Fetched** | Consistent with expected volume | Sudden drop or zero |
+| **Duration** | Within expected range | Significantly longer than usual |
 
-### Sync Schedule
+### Checking Sync Schedule
 
-Track if syncs run on schedule:
+From the integration detail page, verify:
 
-| Schedule | Expected |
-|----------|----------|
-| Real-time | Within minutes of change |
-| Hourly | Every hour |
-| Daily | Once per day |
+| Field | Description |
+|-------|-------------|
+| **Last Sync** | When the integration last executed |
+| **Next Sync** | When the next scheduled execution will occur |
+| **Schedule** | The cron expression and timezone |
+
+If the last sync is older than expected based on the schedule, the integration may be disabled or experiencing issues.
 
 ## Managing Sync Issues
 
-### Retrying Failed Syncs
+### Retrying After Failures
 
 <Steps>
-  <Step title="Find Failed Sync">
-    Locate the failed sync session
+  <Step title="Review Failed Execution">
+    Click on the failed execution to see error details
   </Step>
 
-  <Step title="Review Error">
-    Understand what went wrong
+  <Step title="Check Sync Items">
+    Filter sync items by "Failed" status to identify specific issues
   </Step>
 
-  <Step title="Fix Issue">
-    Address the underlying problem
+  <Step title="Fix Root Cause">
+    Address the underlying problem (e.g., add missing SKU mappings, fix credentials)
   </Step>
 
-  <Step title="Retry">
-    Trigger a new sync
+  <Step title="Trigger Manual Sync">
+    Go back to the integration detail page and click **Trigger Sync**
   </Step>
 </Steps>
 
@@ -188,117 +214,51 @@ Track if syncs run on schedule:
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| **Authentication Failed** | Expired credentials | Re-authorize integration |
-| **Rate Limited** | Too many requests | Wait and retry |
-| **Data Mapping Error** | Invalid data format | Review field mappings |
-| **Timeout** | Large data volume | Retry or contact support |
+| **Unmapped SKUs** | External SKU IDs don't match Tether SKUs | Configure SKU external ID mappings |
+| **Unmapped Channels** | Channel identifiers not recognized | Verify channel configuration |
+| **Authentication Failed** | Expired or invalid credentials | Update integration credentials |
+| **No Records Fetched** | Date range issue or empty data source | Check integration configuration and source data |
 
-## Sync Configuration
+## Dry Run Mode
 
-### Adjusting Sync Frequency
+When an integration runs in dry run mode, sync executions are marked with a **Dry Run** indicator. In dry run mode:
 
-<Steps>
-  <Step title="Go to Integration Settings">
-    Navigate to the integration
-  </Step>
-
-  <Step title="Find Sync Settings">
-    Locate frequency configuration
-  </Step>
-
-  <Step title="Choose Frequency">
-    Select desired interval:
-    - Real-time
-    - Hourly
-    - Daily
-  </Step>
-
-  <Step title="Save">
-    Apply changes
-  </Step>
-</Steps>
-
-### Selecting Sync Scope
-
-Control what data syncs:
-
-| Option | Description |
-|--------|-------------|
-| **Orders** | Sales order data |
-| **Products** | Product/SKU data |
-| **Inventory** | Stock levels |
-| **All** | Everything available |
-
-## Sync Logs
-
-### Accessing Detailed Logs
-
-For troubleshooting, access detailed logs:
-
-1. Go to sync session
-2. Click "View Logs"
-3. See record-by-record details
-
-### Log Information
-
-| Log Entry | Shows |
-|-----------|-------|
-| **Timestamp** | When action occurred |
-| **Action** | What happened |
-| **Record** | Which record affected |
-| **Result** | Success or error |
+- Data is fetched and mapping is validated
+- No data is actually saved to Tether
+- You can review sync items to see what would be processed
+- Useful for testing new integrations or debugging mapping issues
 
 ## Best Practices
 
 <AccordionGroup>
   <Accordion title="Monitor Regularly">
     Check sync status routinely:
-    - Daily quick check
-    - Weekly detailed review
-    - Immediate check after changes
-  </Accordion>
-
-  <Accordion title="Set Up Alerts">
-    Get notified of issues:
-    - Failed sync alerts
-    - Error threshold alerts
-    - Delay notifications
+    - Review execution history after schedule changes
+    - Investigate any increase in failed records
+    - Verify records fetched counts are reasonable
   </Accordion>
 
   <Accordion title="Investigate Errors Promptly">
     Don't let errors accumulate:
-    - Check error details
-    - Fix root cause
-    - Retry failed records
+    - Check error details on failed executions
+    - Resolve unmapped SKU/channel issues quickly
+    - Use dry run mode to test fixes before enabling
   </Accordion>
 
-  <Accordion title="Document Changes">
-    Track sync configuration changes:
-    - When changed
-    - Why changed
-    - Impact observed
+  <Accordion title="Use Filtering">
+    When investigating issues:
+    - Filter sync items by "Failed" status to focus on errors
+    - Search for specific external IDs
+    - Filter by domain type to isolate data categories
+  </Accordion>
+
+  <Accordion title="Reset When Needed">
+    If sync state becomes corrupted:
+    - Ask an admin to reset sync state
+    - This forces a full re-sync on the next execution
+    - Monitor the full sync carefully for errors
   </Accordion>
 </AccordionGroup>
-
-## Sync Sessions and Data Quality
-
-### Ensuring Data Accuracy
-
-| Check | How |
-|-------|-----|
-| **Record Counts** | Match source system |
-| **Sample Records** | Spot check data |
-| **Totals** | Compare aggregates |
-
-### Handling Discrepancies
-
-If data doesn't match:
-
-1. Identify affected records
-2. Check sync session details
-3. Review error logs
-4. Trigger manual sync if needed
-5. Contact support if persists
 
 ## Next Steps
 

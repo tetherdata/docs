@@ -29,7 +29,8 @@ The most straightforward way to add a product:
     | **Name** | Yes | Display name for the SKU |
     | **SKU Code** | Yes | Unique identifier (must be unique) |
     | **Type** | Yes | Select the appropriate SKU type |
-    | **Collection** | Recommended | Parent collection for the SKU |
+    | **Collection** | Yes | Parent collection for the SKU |
+    | **Unit of Measurement** | Yes | Default unit for tracking this SKU (e.g., "Each", "Yard", "Kg") |
     | **UPC** | No | Universal Product Code |
     | **Amazon ID** | No | Amazon ASIN identifier |
   </Step>
@@ -234,12 +235,13 @@ Choosing the right SKU type is important for accurate inventory and forecasting:
 | **Name** | Display name shown throughout Tether |
 | **SKU Code** | Must be unique across your organization |
 | **Type** | Determines how the SKU behaves |
+| **Collection** | Parent collection that defines available dimensions and shared settings |
+| **Unit of Measurement** | Default unit used for tracking inventory and transactions |
 
 ### Recommended Fields
 
 | Field | Why It's Useful |
 |-------|-----------------|
-| **Collection** | Enables dimension management and bulk operations |
 | **UPC** | Required for retail channels and barcode scanning |
 | **Dimensions** | Powers filtering and reporting |
 
@@ -256,7 +258,7 @@ Choosing the right SKU type is important for accurate inventory and forecasting:
 When creating SKUs, Tether validates:
 
 - **SKU Code uniqueness**: No duplicates allowed
-- **Required fields**: Name, code, and type must be provided
+- **Required fields**: Name, code, type, collection, and unit of measurement must be provided
 - **Dimension consistency**: Values must exist in the collection's dimensions
 - **Format requirements**: Codes cannot contain certain special characters
 

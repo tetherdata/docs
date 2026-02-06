@@ -9,13 +9,11 @@ Channels represent where you sell your products. Tether allows you to manage mul
 
 ## What is a Channel?
 
-A channel is a sales avenue for your products:
+A channel is a sales avenue for your products. Each channel has a name, a type, a currency, and an active/inactive status. Channels are the foundation for organizing sales orders, demand forecasting, and performance analysis.
 
-- **Direct-to-Consumer**: Shopify, your website
-- **Marketplaces**: Amazon, eBay, Walmart
-- **Wholesale**: B2B customers, distributors
-- **Retail**: Physical stores
-- **Custom**: Any other sales avenue
+<Note>
+  Currently, Shopify is the only supported channel type. Additional channel types will be added in future releases.
+</Note>
 
 ## Why Track Channels?
 
@@ -24,42 +22,35 @@ A channel is a sales avenue for your products:
 | **Demand Forecasting** | Forecast by channel for accuracy |
 | **Inventory Allocation** | Know where demand comes from |
 | **Performance Analysis** | Compare channel performance |
-| **Pricing** | Channel-specific pricing |
+| **Hierarchy Organization** | Group channels for reporting |
 | **User Access** | Control who sees what data |
 
 ## The Channels Dashboard
 
-Navigate to **Channels** in the sidebar.
+Navigate to **Channels** in the sidebar to view the channels dashboard.
 
-### Dashboard Features
+### Summary Cards
 
-| Feature | Description |
-|---------|-------------|
-| **Channel List** | All channels with status |
-| **Search** | Find channels quickly |
-| **Create Button** | Add new channels |
-| **Status Indicators** | Active/Archived status |
+The dashboard displays three summary cards at the top:
 
-### Channel Information
+| Card | Description |
+|------|-------------|
+| **Total Channels** | Count of all configured sales channels |
+| **Active Channels** | Count of channels currently accepting orders |
+| **Channel Types** | Count of distinct channel types in use |
 
-Each channel shows:
+### Channels Table
 
-- **Name**: Channel display name
-- **Type**: Category of channel
-- **Status**: Active or Archived
-- **SKU Count**: Products available on channel
+The main table displays your channels with the following columns:
 
-## Channel Types
+| Column | Description |
+|--------|-------------|
+| **Name** | Channel display name (links to detail page) |
+| **Currency** | Channel currency (e.g., USD) |
+| **Hierarchy Fields** | Dynamic columns for each active hierarchy field |
+| **Actions** | Archive button to deactivate a channel |
 
-Organize channels by type:
-
-| Type | Examples |
-|------|----------|
-| **E-commerce** | Shopify, WooCommerce, BigCommerce |
-| **Marketplace** | Amazon, eBay, Etsy |
-| **Wholesale** | B2B portal, distributor orders |
-| **Retail** | Physical store POS |
-| **Direct** | Phone orders, manual entry |
+Hierarchy field values can be assigned directly from the table using inline dropdown selectors. See [Channel Hierarchy](/channels/hierarchy) for details.
 
 ## Creating a Channel
 
@@ -68,32 +59,46 @@ Organize channels by type:
     Go to **Channels** in the sidebar
   </Step>
 
-  <Step title="Click Create Channel">
-    Click the **Create Channel** button
+  <Step title="Click Add Channel">
+    Click the **Add Channel** button in the top right
   </Step>
 
   <Step title="Enter Details">
+    Fill in the channel creation form:
+
     | Field | Required | Description |
     |-------|----------|-------------|
-    | **Name** | Yes | Channel display name |
-    | **Code** | Yes | Short identifier |
-    | **Type** | No | Channel category |
-    | **Description** | No | Additional details |
+    | **Channel Name** | Yes | A descriptive name (e.g., "Shopify US", "Amazon Store") |
+    | **Channel Type** | Yes | Currently only Shopify is available |
+    | **Currency** | Yes | Currently only USD is supported |
+    | **Active Channel** | No | Toggle to set initial active status (defaults to on) |
   </Step>
 
-  <Step title="Save">
-    Click **Save** to create the channel
+  <Step title="Create">
+    Click **Create Channel** to add the channel
   </Step>
 </Steps>
 
 ## Channel Status
 
-Channels can be Active or Archived:
+Channels have an active or inactive status controlled by the `is_active` flag:
 
 | Status | Behavior |
 |--------|----------|
-| **Active** | Used in forecasting, available for orders |
-| **Archived** | Hidden from active use, data preserved |
+| **Active** | Channel is visible in active lists, available for orders and forecasting |
+| **Inactive (Archived)** | Channel is hidden from active use, historical data is preserved |
+
+You can archive a channel from the channels table by clicking the delete icon and confirming the action. Archiving sets the channel to inactive but preserves all historical data.
+
+## Channel Detail Page
+
+Click on a channel name in the table to open its detail page. The detail page shows:
+
+- **Channel header** with the channel name, type badge, currency badge, and active status
+- **Summary cards** showing total orders, manual orders, and integration orders
+- **Sales orders table** listing all orders for that channel with columns for order number, source (Manual or Integration), order date, warehouse, external ID, and creation date
+
+You can also create a manual sales order directly from the channel detail page by clicking **Create Manual Order**.
 
 ## Channels and Forecasting
 
@@ -101,7 +106,7 @@ Channels are essential for demand forecasting:
 
 ### Forecast by Channel
 
-- Each SKU/channel combination has its own forecast
+- Each SKU/channel combination can have its own forecast
 - Different channels may have different demand patterns
 - Promotions can be channel-specific
 
@@ -113,34 +118,14 @@ Track metrics per channel:
 - Forecast accuracy
 - Growth trends
 
-## Channels and Inventory
+## Access Control
 
-### Fulfillment Mapping
-
-Configure which warehouses fulfill which channels:
-
-| Channel | Fulfilled From |
-|---------|----------------|
-| Shopify US | Main Warehouse |
-| Amazon | Amazon FBA |
-| Wholesale | Regional DCs |
-
-### Channel Availability
-
-Control which SKUs are available on which channels:
-
-- All SKUs on all channels
-- Channel-specific assortments
-- Exclusive products
-
-## Channel Access Control
-
-Control user access by channel:
+Channel pages require the **Sales Rep** role or higher:
 
 | Role | Access |
 |------|--------|
-| **Admin** | All channels |
-| **Sales Rep** | Assigned channels only |
+| **Admin** | All channels and settings |
+| **Sales Rep** | Channel dashboard, detail pages, and hierarchy |
 
 See [User Access](/administration/user-access) for configuration.
 
@@ -150,7 +135,7 @@ See [User Access](/administration/user-access) for configuration.
   <Accordion title="Consistent Naming">
     Use clear, consistent channel names:
     - Include region: "Shopify US", "Shopify EU"
-    - Include type: "Amazon Marketplace", "Wholesale B2B"
+    - Include purpose: "Wholesale B2B", "DTC Website"
   </Accordion>
 
   <Accordion title="Match Business Structure">
@@ -159,16 +144,16 @@ See [User Access](/administration/user-access) for configuration.
     - Group similar channels if managed together
   </Accordion>
 
-  <Accordion title="Consider Forecasting Needs">
-    Create granularity needed for accurate forecasts:
-    - Different patterns = different channels
-    - Same patterns = can combine
+  <Accordion title="Use Hierarchy Fields">
+    Organize channels with hierarchy fields for better reporting:
+    - Label fields by business dimension (e.g., "Region", "Business Model")
+    - Assign values consistently across channels
   </Accordion>
 
   <Accordion title="Plan for Growth">
     Design for scalability:
     - Room for new channels
-    - Consistent structure
+    - Consistent naming structure
   </Accordion>
 </AccordionGroup>
 
@@ -179,12 +164,12 @@ See [User Access](/administration/user-access) for configuration.
     Configure channel settings
   </Card>
   <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">
-    Organize channels
+    Organize channels with hierarchy fields
   </Card>
   <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
     Forecast by channel
   </Card>
-  <Card title="User Access" icon="users" href="/administration/user-access">
-    Control channel access
+  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
+    Connect channels to external platforms
   </Card>
 </CardGroup>

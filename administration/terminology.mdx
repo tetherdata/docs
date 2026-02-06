@@ -38,30 +38,16 @@ Customize the terminology used throughout Tether to match your business vocabula
 
 ## Customizable Terms
 
-### Core Concepts
+The following terms can be customized in Tether. For each term, you can set a custom singular form, plural form, and description.
 
-| Default Term | What It Refers To | Common Alternatives |
-|--------------|-------------------|---------------------|
-| **SKU** | Products/items | Product, Item, Article |
-| **Collection** | Product groupings | Category, Line, Family |
-| **Warehouse** | Storage locations | Location, DC, Facility |
-| **Channel** | Sales avenues | Store, Account, Customer |
-
-### Transaction Terms
-
-| Default Term | What It Refers To | Common Alternatives |
-|--------------|-------------------|---------------------|
-| **Purchase Order** | Supplier orders | PO, Buy Order, Procurement |
-| **Transfer Order** | Internal movements | Transfer, Move Order, Replenishment |
-| **Production Order** | Manufacturing | Work Order, Production Run |
-
-### Inventory Terms
-
-| Default Term | What It Refers To | Common Alternatives |
-|--------------|-------------------|---------------------|
-| **Inventory** | Stock on hand | Stock, Goods, Units |
-| **Safety Stock** | Buffer inventory | Buffer, Reserve, Minimum |
-| **Lead Time** | Delivery time | Transit Time, Replenishment Time |
+| Default Term | What It Refers To | Where It's Used | Common Alternatives |
+|--------------|-------------------|-----------------|---------------------|
+| **Channel** | Sales avenues | Demand Forecast, Sales Reports, Analytics | Store, Account, Customer |
+| **Product** | Product entities | Products, Inventory, Demand Forecast | Item, Article, Good |
+| **SKU** | Individual product variants | Products, Inventory, Demand Forecast | Part Number, Item Code |
+| **Forecast** | Demand predictions | Demand Forecast, Reports | Projection, Plan |
+| **Warehouse** | Storage locations | Warehouse Management, Inventory | Location, DC, Facility |
+| **Inventory** | Stock on hand | Inventory Management, Warehouse | Stock, Goods, Units |
 
 ## Changing Terminology
 
@@ -85,20 +71,21 @@ Customize the terminology used throughout Tether to match your business vocabula
   </Step>
 </Steps>
 
-### Singular and Plural
+### Singular, Plural, and Description
 
-Configure both forms:
+Configure all three fields for each term:
 
 | Field | Example |
 |-------|---------|
 | **Singular** | Product |
 | **Plural** | Products |
+| **Description** | Where this term is used in the system |
 
-Tether automatically uses the correct form in context.
+Tether automatically uses the correct singular or plural form in context.
 
 ## Where Changes Apply
 
-Updated terminology appears in:
+Updated terminology appears throughout the application. Tether includes a live preview on the settings page so you can see how your custom terms will look before saving.
 
 | Location | Example |
 |----------|---------|
@@ -116,7 +103,7 @@ Updated terminology appears in:
 | Default | Retail Term |
 |---------|-------------|
 | SKU | Product |
-| Collection | Category |
+| Product | Item |
 | Warehouse | Fulfillment Center |
 | Channel | Store |
 
@@ -125,9 +112,9 @@ Updated terminology appears in:
 | Default | Manufacturing Term |
 |---------|---------------------|
 | SKU | Part Number |
-| Collection | Product Line |
+| Product | Component |
 | Warehouse | Plant |
-| Production Order | Work Order |
+| Forecast | Projection |
 
 ### Distribution
 
@@ -136,7 +123,7 @@ Updated terminology appears in:
 | SKU | Item |
 | Warehouse | DC |
 | Channel | Customer |
-| Transfer Order | Replenishment |
+| Inventory | Stock |
 
 ## Best Practices
 
@@ -229,7 +216,7 @@ You can reset individual terms or all at once.
   <Card title="Periods" icon="calendar" href="/administration/periods">
     Set up time periods
   </Card>
-  <Card title="Navigation" icon="compass" href="/getting-started/navigation">
+  <Card title="Navigation" icon="compass" href="/navigation">
     Learn the interface
   </Card>
 </CardGroup>

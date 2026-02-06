@@ -9,151 +9,111 @@ This guide covers channel configuration and maintenance tasks.
 
 ## Channel Detail View
 
-Click on a channel to open its detail page.
+Click on a channel name from the channels table to open its detail page.
 
-### Channel Settings
+### Channel Header
 
-| Setting | Description |
+The detail page header shows:
+
+| Element | Description |
 |---------|-------------|
-| **Name** | Display name |
-| **Code** | Short identifier |
-| **Type** | Channel category |
-| **Status** | Active or Archived |
-| **Description** | Additional notes |
+| **Channel Name** | Display name with a store icon |
+| **Type Badge** | The channel type (e.g., Shopify) |
+| **Currency Badge** | The channel's currency (e.g., USD) |
+| **Status Badge** | Shows "Inactive" if the channel is not active |
 
-### Editing Channel Information
+### Summary Cards
 
-<Steps>
-  <Step title="Open Channel">
-    Click on the channel from the list
-  </Step>
+Three cards provide a quick overview:
 
-  <Step title="Edit Fields">
-    Modify any editable field:
-    - Name
-    - Description
-    - Type
-  </Step>
+| Card | Description |
+|------|-------------|
+| **Total Orders** | Count of all sales orders for this channel |
+| **Manual Orders** | Orders created manually in Tether |
+| **Integration Orders** | Orders synced from an external integration |
 
-  <Step title="Save">
-    Click **Save** to apply changes
-  </Step>
-</Steps>
+### Sales Orders Table
 
-## Channel Configuration
+The detail page includes a full sales orders table with the following columns:
 
-### Fulfillment Settings
+| Column | Description |
+|--------|-------------|
+| **Order #** | Order number or truncated ID (links to order detail) |
+| **Source** | "Manual" or "Integration" badge |
+| **Order Date** | Date the order was placed |
+| **Warehouse** | Fulfillment warehouse (links to warehouse detail) |
+| **External ID** | External system identifier, if applicable |
+| **Created** | When the order was created in Tether |
 
-Configure how orders from this channel are fulfilled:
+The table supports sorting, filtering, pagination, row grouping, and a sidebar for column management.
 
-<Steps>
-  <Step title="Go to Settings">
-    Navigate to **Settings** → **Inventory Forecast**
-  </Step>
+## Creating Manual Orders
 
-  <Step title="Find Fulfillment Mapping">
-    Locate the fulfillment configuration section
-  </Step>
-
-  <Step title="Map Channel to Warehouse">
-    Select which warehouse(s) fulfill this channel
-  </Step>
-
-  <Step title="Save">
-    Apply the configuration
-  </Step>
-</Steps>
-
-### SKU Availability
-
-Control which products are available on the channel:
-
-| Setting | Description |
-|---------|-------------|
-| **All SKUs** | Every active SKU available |
-| **Collection-Based** | Specific collections only |
-| **Individual** | Hand-picked SKUs |
-
-### Channel-Specific Pricing
-
-If pricing varies by channel:
-
-1. Go to SKU or Collection pricing
-2. Add channel-specific prices
-3. Default price used if no override
+From the channel detail page, click **Create Manual Order** to create a new sales order assigned to this channel. You will be taken to the manual order creation form with the channel pre-selected.
 
 ## Archiving Channels
 
-To hide a channel without deleting data:
+To deactivate a channel without deleting its data:
 
 <Steps>
-  <Step title="Open Channel">
-    Navigate to the channel detail page
+  <Step title="Go to Channels">
+    Navigate to the **Channels** dashboard
   </Step>
 
-  <Step title="Change Status">
-    Set Status to **Archived**
+  <Step title="Find the Channel">
+    Locate the channel in the table
+  </Step>
+
+  <Step title="Click Archive">
+    Click the trash icon in the **Actions** column
   </Step>
 
   <Step title="Confirm">
-    Confirm the archive action
+    In the confirmation dialog, click **Archive Channel** to proceed
   </Step>
 </Steps>
 
 **Effects of archiving:**
 
-- Channel hidden from active lists
-- Historical data preserved
-- Forecasts excluded from active views
-- Can be restored later
+- Channel's `is_active` status is set to false
+- Channel is hidden from active channel lists
+- Historical data (orders, forecasts) is preserved
+- Channel can be identified in the system for future restoration
 
-### Restoring Archived Channels
-
-1. Filter channels to show Archived
-2. Open the archived channel
-3. Change Status to **Active**
-4. Save
+<Note>
+  Archiving is a soft delete. The channel and all associated data remain in the system.
+</Note>
 
 ## Channel Integration
 
-For automated channels, configure integrations:
+Channels can receive orders automatically through integrations. When an integration syncs sales orders, each order is associated with a specific channel.
 
-### Integrated Channels
+### Supported External Services
 
-| Integration Type | Examples |
-|-----------------|----------|
-| **E-commerce** | Shopify, WooCommerce |
-| **Marketplace** | Amazon, eBay |
-| **ERP** | NetSuite, SAP |
+Integrations are configured separately and can sync data to your channels:
 
-### Integration Settings
+| External Service | Description |
+|-----------------|-------------|
+| **Shopify** | E-commerce platform integration |
+| **BigQuery** | Data warehouse integration |
+| **Redshift** | Data warehouse integration |
+| **TrackStar** | Warehouse management integration |
+| **Brewman** | Brewery management integration |
 
-1. Go to **Integrations**
-2. Create integration for the channel
-3. Map fields appropriately
-4. Configure sync settings
+### Setting Up Channel Integrations
 
-See [Integrations](/integrations/setup) for details.
+1. Go to **Integrations** in the sidebar
+2. Create a new integration for the desired external service
+3. Configure capabilities (e.g., sales orders, sales history)
+4. Set up the sync schedule
 
-## Channel Metrics
+See [Integration Setup](/integrations/setup) for detailed instructions.
 
-Track channel performance:
+## Channel Hierarchy Assignment
 
-### Available Metrics
+Hierarchy field values can be assigned to channels directly from the channels table on the dashboard. Each active hierarchy field appears as a column with a dropdown selector.
 
-| Metric | Description |
-|--------|-------------|
-| **Sales Volume** | Units sold |
-| **Revenue** | Sales value |
-| **Forecast Accuracy** | How accurate forecasts are |
-| **Growth Rate** | Period-over-period change |
-
-### Accessing Metrics
-
-1. Go to **Analytics** → **Metrics**
-2. Filter by channel
-3. Select time period
-4. View channel-specific data
+See [Channel Hierarchy](/channels/hierarchy) for configuration details.
 
 ## Multi-Channel Considerations
 
@@ -161,72 +121,39 @@ Track channel performance:
 
 When selling same products on multiple channels:
 
-- Inventory allocated across channels
+- Inventory is considered across channels for forecasting
 - Forecast separately per channel
 - Monitor for cannibalization
 
-### Channel Prioritization
+### Order Source Tracking
 
-Configure priority for inventory allocation:
+Each sales order tracks its source:
 
-| Priority | Behavior |
-|----------|----------|
-| **Equal** | Inventory shared proportionally |
-| **Ranked** | Higher priority channels served first |
-| **Reserved** | Specific inventory reserved per channel |
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Regular Review">
-    Periodically review channels:
-    - Are all channels still active?
-    - Is performance being tracked?
-    - Are integrations working?
-  </Accordion>
-
-  <Accordion title="Clean Up">
-    Maintain channel hygiene:
-    - Archive unused channels
-    - Consolidate similar channels
-    - Update descriptions
-  </Accordion>
-
-  <Accordion title="Document Configuration">
-    Keep records of:
-    - Why channels were created
-    - Special settings
-    - Integration details
-  </Accordion>
-
-  <Accordion title="Test Changes">
-    Before major changes:
-    - Understand the impact
-    - Test in limited scope if possible
-    - Communicate to team
-  </Accordion>
-</AccordionGroup>
+| Source | Description |
+|--------|-------------|
+| **Manual** | Orders created directly in Tether |
+| **Integration** | Orders synced from an external platform |
 
 ## Troubleshooting
 
 ### Channel Not Showing in Forecasts
 
 **Possible causes:**
-- Channel is archived
-- No SKUs available on channel
-- Filter excluding channel
+- Channel is archived (inactive)
+- No sales orders on the channel
+- Forecast filters excluding the channel
 
 **Solutions:**
-1. Check channel status
-2. Verify SKU availability
+1. Check the channel's active status
+2. Verify sales orders exist for the channel
 3. Clear forecast filters
 
 ### Data Not Syncing
 
 **For integrated channels:**
-- Check integration status
-- Verify credentials
-- Review sync logs
+- Check that the integration is enabled
+- Verify credentials are valid
+- Review sync execution history
 
 See [Integration Troubleshooting](/integrations/troubleshooting).
 
@@ -234,13 +161,13 @@ See [Integration Troubleshooting](/integrations/troubleshooting).
 
 <CardGroup cols={2}>
   <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">
-    Organize channels
+    Organize channels with hierarchy fields
   </Card>
   <Card title="Integrations" icon="plug" href="/integrations/setup">
     Set up channel integrations
   </Card>
-  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
-    Configure fulfillment
+  <Card title="Sync Sessions" icon="rotate" href="/integrations/sync-sessions">
+    Monitor integration sync activity
   </Card>
   <Card title="User Access" icon="users" href="/administration/user-access">
     Control channel access

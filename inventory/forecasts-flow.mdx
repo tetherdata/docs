@@ -5,258 +5,216 @@ description: Visualize inventory projections and replenishment flows
 
 # Inventory Forecasts & Flow
 
-The Forecast and Flow tabs provide visual representations of your inventory projections and supply chain movements. These tools help you understand future inventory states and how replenishment orders flow through your system.
+The Forecast tab provides visual representations of your inventory projections and supply chain movements. It includes both a summary chart and a detailed forecast grid, along with a flow diagram view showing how inventory moves through your supply chain.
 
 ## Forecast Tab
 
-The Forecast tab displays inventory projection charts that show expected stock levels over time.
-
-### Accessing the Forecast Tab
-
 Navigate to **Inventory** → **Forecast** tab.
 
-### Understanding the Chart
+### Visualization Toggle
 
-The inventory forecast chart shows several key elements:
+The Forecast tab includes a toggle to switch between two visualization types:
 
-<CardGroup cols={2}>
-  <Card title="Current Projection" icon="chart-line">
-    Blue solid line showing expected inventory based on current orders
-  </Card>
-  <Card title="Recommended Projection" icon="chart-line-up">
-    Green dashed line showing inventory if system recommendations are accepted
-  </Card>
-  <Card title="Threshold Lines" icon="minus">
-    Horizontal lines indicating safety stock, target, and overstock levels
-  </Card>
-  <Card title="Events" icon="circle">
-    Markers showing supply and consumption events
-  </Card>
-</CardGroup>
+| View | Description |
+|------|-------------|
+| **Chart** | Summary chart showing inventory, consumption, and replenishment over time |
+| **Flow Diagram** | Visual diagram showing supply chain flows between suppliers, warehouses, and channels |
+
+### Simulation Modes
+
+Both views support two simulation modes:
+
+| Mode | Description |
+|------|-------------|
+| **User** | Shows projections based on your current supply plan (draft transactions marked as in plan) |
+| **System** | Shows projections based on system-generated recommendations |
+
+When the chart is displayed, both User and System data are shown simultaneously with distinct color schemes. The selected mode controls which lines are emphasized with thicker strokes and solid colors.
+
+## Summary Chart
+
+The summary chart is a composed chart (bars + lines) showing key inventory metrics over time.
 
 ### Chart Elements
 
 | Element | Visual | Description |
 |---------|--------|-------------|
-| **Current Stock** | Blue solid line | Projected inventory with current orders |
-| **With Recommendations** | Green dashed line | Projected inventory if recommendations are accepted |
-| **Safety Stock** | Red dashed line | Minimum threshold |
-| **Target Stock** | Yellow dashed line | Ideal inventory level |
-| **Overstock Threshold** | Orange dashed line | Maximum before overstock |
+| **Consumption** | Bars (orange) | Projected demand consumption per period |
+| **Replenishment** | Bars (blue) | Incoming inventory from orders per period |
+| **Inventory** | Line (black for User, gray for System) | Projected sellable inventory level |
+| **Safety Stock** | Line (yellow) | Safety stock threshold |
+| **Overstock** | Line (red) | Overstock threshold |
 
-### Reading the Chart
+### Dual-Mode Display
 
-**Healthy Inventory:**
-- Blue line stays above safety stock (red line)
-- Line fluctuates near target (yellow line)
-- Smooth transitions without sharp drops
+Both User and System projections are displayed together:
 
-**Problem Areas:**
-- Line drops below safety stock = safety stock breach
-- Line reaches zero = stockout
-- Line above overstock threshold = excess inventory
+- **User mode colors** — Solid, primary colors (orange consumption, blue replenishment, black inventory)
+- **System mode colors** — Lighter, secondary colors (light orange, light blue, gray)
 
-### Interacting with the Chart
+This side-by-side display helps you quickly see where your plan differs from the system's recommendations.
 
-**Zoom and Pan:**
-- Use scroll to zoom in/out
-- Click and drag to pan
-- Double-click to reset view
+### Chart Interactions
 
-**Hover for Details:**
-- Hover over any point to see exact values
-- Shows date, quantity, and any events on that day
+- **Hover** — See exact values for any period
+- **Legend** — Click legend items to show/hide individual data series
+- **Period View** — Toggle between daily, weekly, and monthly aggregation
 
-**Select SKU/Warehouse:**
-- Use filters to view specific SKU/warehouse combinations
-- Compare different products side by side
+## Forecast Grid
 
-### Day-by-Day Navigation
+Below the summary chart, the Forecast Grid displays detailed projection data in a hierarchical table using AG Grid.
 
-Navigate through the projection day by day:
+### Grid Hierarchy
 
-1. Use the date picker or arrow buttons
-2. See inventory state for each specific day
-3. View events (orders received, consumption) for that day
+The grid is organized in a tree structure:
 
-## Event Analysis
+| Level | Content |
+|-------|---------|
+| **Warehouse** | Top-level grouping by warehouse |
+| **SKU** | Individual products within each warehouse |
+| **Starting Inventory** | Sellable inventory at the start of each period |
+| **Consumption** | Total demand consumption, expandable to show breakdown |
+| **Replenishment** | Total incoming supply, expandable to show breakdown |
+| **Ending Inventory** | Projected sellable inventory at end of each period |
 
-Events are supply chain activities that affect inventory:
+### Consumption Breakdown
 
-### Supply Events
+Expand the Consumption row to see a breakdown by source:
 
-| Event | Icon | Description |
-|-------|------|-------------|
-| **Order Placed** | 📋 | Purchase order sent to supplier |
-| **Order Shipped** | 🚚 | Order in transit |
-| **Order Received** | 📦 | Inventory received at warehouse |
-| **Transfer Out** | ➡️ | Inventory leaving warehouse |
-| **Transfer In** | ⬅️ | Inventory arriving from transfer |
-| **Production Complete** | 🏭 | Manufactured items added |
+- **Direct Sales** — Consumption from sales channels
+- **Transfers Out** — Inventory transferred to other warehouses
+- **Bundle Consumption** — Inventory used in bundle/kit production
+- **Production Consumption** — Materials consumed in manufacturing
 
-### Consumption Events
+### Replenishment Breakdown
 
-| Event | Description |
-|-------|-------------|
-| **Sales Forecast** | Projected daily sales consumption |
-| **Actual Sales** | Recorded sales (historical) |
-| **Production Consumption** | Materials used in manufacturing |
+Expand the Replenishment row to see incoming inventory by source:
 
-### Event Details Panel
+- **Purchases** — Orders from suppliers
+- **Transfers In** — Inventory received from other warehouses
+- **Individual Transactions** — Each draft or submitted transaction is shown as its own row with:
+  - Transaction name and reference number
+  - Source type indicator (User Plan or System Recommended)
+  - Active date range highlighting (blue shading for draft, green for submitted/in-progress)
 
-Click on an event marker to see:
+### Dataset Visibility
 
-- Event type and date
-- Quantities involved
-- Source/destination
-- Order or transaction reference
+Toggle which datasets are displayed:
 
-## Flow Diagram Tab
+| Mode | Shows |
+|------|-------|
+| **All** | Inventory, consumption, and replenishment together |
+| **Inventory** | Only starting and ending inventory rows |
+| **Consumption** | Only consumption rows |
+| **Replenishment** | Only replenishment rows |
 
-The Flow Diagram provides a visual representation of replenishment flows between suppliers, warehouses, and destinations.
+### Period Views
 
-### Accessing the Flow Tab
+Switch between time aggregations:
 
-Navigate to **Inventory** → **Flow** tab.
+| View | Description |
+|------|-------------|
+| **Daily** | Day-by-day projections |
+| **Weekly** | Aggregated by week |
+| **Monthly** | Aggregated by month |
 
-### Understanding the Diagram
+### Filtering
 
-The flow diagram shows:
+Filter the forecast grid by:
 
-```
-[Suppliers] → [Warehouses] → [Channels/Destinations]
-     ↓              ↓              ↓
-  Purchase      Transfers       Fulfillment
-  Orders
-```
+- **Warehouse** — Focus on specific locations
+- **SKU** — View specific products
+- **Collection** — Filter by product group
+- **Health Status** — Show only SKUs with specific health statuses (Out of Stock, Low Inventory, Overstock, Healthy)
+
+### Exporting Data
+
+Click the **Export** button to download the forecast grid data as a CSV file.
+
+## Flow Diagram
+
+Toggle to the **Flow Diagram** view to see a visual representation of inventory movements.
 
 ### Diagram Elements
 
 | Element | Shape | Description |
 |---------|-------|-------------|
-| **Supplier** | Rectangle | External vendors |
-| **Warehouse** | Rectangle | Inventory locations |
-| **Channel** | Rectangle | Sales destinations |
-| **Flow Line** | Arrow | Movement of goods |
-| **Flow Volume** | Line thickness | Quantity being moved |
+| **Supplier** | Node | External vendors providing inventory |
+| **Warehouse** | Node | Inventory storage locations |
+| **Channel** | Node | Sales channels and destinations |
+| **Flow Edge** | Arrow | Movement of goods between nodes, with quantity labels |
 
 ### Flow Information
 
 Each flow line shows:
 
 - Direction of movement
-- Quantity or value
-- Timeline (if applicable)
-- Associated orders
+- Quantity being moved
+- Source and destination
 
 ### Filtering the Flow
 
 Focus the diagram on specific aspects:
 
-**By Time Period:**
-- View flows for next 30, 60, 90 days
-- Historical flows
-- Custom date range
-
-**By Warehouse:**
-- See flows to/from specific warehouses
-- Compare warehouse activity
-
-**By SKU/Collection:**
-- Filter to specific products
-- See flows for a product line
+- **Date Range** — View flows within a specific time window
+- **Warehouse** — Filter to flows involving specific warehouses
+- **SKU/Collection** — Filter to specific products
+- **Channel** — Focus on specific sales channels
 
 ## Using Forecasts for Planning
 
 ### Identifying Issues
 
-Look for these patterns:
+Look for these patterns in the summary chart and grid:
 
 | Pattern | Indicates | Action |
 |---------|-----------|--------|
-| Projected stockout | Insufficient supply | Add orders |
-| Sustained overstock | Too much inventory | Reduce orders |
-| Sharp fluctuations | Unstable supply | Smooth order timing |
-| Diverging lines | Recommendations available | Review and accept |
+| Inventory drops below safety stock | Upcoming safety stock breach | Add replenishment orders |
+| Inventory reaches zero | Projected stockout | Create urgent orders |
+| Inventory stays above overstock line | Excess inventory | Reduce or delay orders |
+| User and System projections diverge | Recommendations available | Review system recommendations |
 
-### Scenario Comparison
+### Comparing User vs. System Plans
 
-Compare current plan vs. recommended:
+Use the dual-mode display to compare your plan against the system:
 
-1. **Current (blue)** - What happens with existing orders
-2. **Recommended (green)** - What happens if you accept recommendations
-3. **Gap** - The difference represents improvement opportunity
+1. **User mode** — Shows projections based on your current supply plan
+2. **System mode** — Shows what the system recommends
+3. **Gap** — Where the lines diverge represents improvement opportunities
 
-### Lead Time Visibility
-
-The chart helps verify lead times:
-
-1. Find order placement event
-2. Find order receive event
-3. Time between = actual lead time
-4. Compare to configured lead time
-
-## Combining Forecast and Flow
-
-Use both views together:
-
-<Steps>
-  <Step title="Identify Problem in Forecast">
-    See a projected stockout in the forecast chart
-  </Step>
-
-  <Step title="Review Flow Diagram">
-    Check if any orders are scheduled to arrive
-  </Step>
-
-  <Step title="Identify Gap">
-    Determine what's missing (supplier order, transfer, etc.)
-  </Step>
-
-  <Step title="Take Action">
-    Create the appropriate order to fill the gap
-  </Step>
-</Steps>
-
-## Exporting Visualizations
-
-Export charts for reporting:
-
-1. Click the **Export** button
-2. Choose format:
-   - **PNG** - Image file
-   - **PDF** - Document format
-   - **CSV** - Raw data
-3. Download or share
+<Tip>
+  If the System projection shows better inventory health than your User plan, review the system's recommendations in the Supply Plan tab.
+</Tip>
 
 ## Best Practices
 
 <AccordionGroup>
   <Accordion title="Regular Review Schedule">
     Check forecasts on a regular schedule:
-    - Daily: Next 2 weeks
-    - Weekly: Next 90 days
-    - Monthly: 6-12 month horizon
+    - Daily: Review next 2 weeks for urgent issues
+    - Weekly: Review next 90 days for planning
+    - Monthly: Review 6-12 month horizon for strategy
   </Accordion>
 
   <Accordion title="Validate Assumptions">
     Use the forecast to validate:
-    - Are lead times accurate?
-    - Is demand forecast reasonable?
-    - Are safety stock levels appropriate?
+    - Are lead times accurate? Check when replenishment appears vs. order dates
+    - Is the demand forecast reasonable? Compare consumption against actuals
+    - Are safety stock levels appropriate? Check how often breaches are projected
   </Accordion>
 
   <Accordion title="Compare Scenarios">
-    Always compare current vs. recommended:
-    - Understand the impact of recommendations
-    - Make informed decisions about accepting them
+    Always compare User vs. System plans:
+    - Understand the impact of system recommendations
+    - Identify where your plan may have gaps
+    - Make informed decisions about accepting recommendations
   </Accordion>
 
-  <Accordion title="Document Decisions">
-    When you see issues:
-    - Screenshot the forecast
-    - Note the decision made
-    - Follow up to verify outcome
+  <Accordion title="Use the Grid for Detail">
+    The forecast grid provides granular data:
+    - Expand consumption to see which channels drive demand
+    - Expand replenishment to see each incoming transaction
+    - Use period views to match your planning cadence
   </Accordion>
 </AccordionGroup>
 
@@ -265,26 +223,26 @@ Export charts for reporting:
 ### Chart Not Loading
 
 **Possible causes:**
-- Large data set taking time
-- Filter returns no data
-- Browser performance issue
+- [Supply simulation](/supply-simulation/running) hasn't been run yet
+- Large dataset is loading
+- Filters return no matching data
 
 **Solutions:**
-1. Wait for loading to complete
-2. Adjust filters to reduce data
-3. Refresh the page
+1. Click **Refresh** to trigger a new simulation
+2. Wait for loading to complete
+3. Adjust filters to ensure data exists for the selected criteria
 
 ### Unexpected Patterns
 
 **Possible causes:**
-- Incorrect forecast data
-- Missing lead time configuration
-- Order data not synced
+- [Demand forecast](/demand-forecasting/dashboard) is inaccurate
+- Lead times are misconfigured
+- Transactions are not included in the supply plan
 
 **Solutions:**
 1. Verify demand forecast accuracy
-2. Check lead time settings
-3. Ensure transactions are up to date
+2. Check lead time settings for warehouses and suppliers
+3. Ensure relevant draft transactions are added to the supply plan
 
 ## Next Steps
 
@@ -292,13 +250,13 @@ Export charts for reporting:
   <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
     Manage replenishment orders
   </Card>
-  <Card title="Supply Simulation" icon="flask" href="/supply-simulation/running">
-    Run what-if scenarios
-  </Card>
-  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
-    View and edit demand forecasts
-  </Card>
   <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
-    Monitor inventory health
+    Monitor inventory health and alerts
+  </Card>
+  <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
+    Configure warehouse settings
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Configure supplier capabilities
   </Card>
 </CardGroup>

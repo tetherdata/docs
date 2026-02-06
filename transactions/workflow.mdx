@@ -12,10 +12,12 @@ Transactions follow a structured workflow from creation to completion. Understan
 All transactions follow a similar lifecycle:
 
 ```
-Creation → Draft → Submit → In Progress → Complete
-                      ↓
-                   Cancel
+Creation → Draft → Submit → In Progress → Completed → Archived
 ```
+
+<Note>
+  There is no "Cancelled" status at the transaction level. Individual **steps** within a transaction can be cancelled, but the transaction itself moves through Draft → In Progress → Completed → Archived.
+</Note>
 
 ## Workflow Stages
 
@@ -82,162 +84,152 @@ Creation → Draft → Submit → In Progress → Complete
 ### Stage 5: Completion
 
 **What Happens:**
-- Final receiving/confirmation
+- All steps are completed
 - Inventory fully updated
-- Transaction becomes read-only
-- Historical record created
+- Transaction status moves to "Completed"
 
 **Completion Types:**
 | Type | Description |
 |------|-------------|
-| **Full** | All items received/completed |
-| **Partial** | Some items, closed as complete |
-| **Cancelled** | Order terminated |
+| **Full** | All items received/completed as expected |
+| **Partial** | Some items completed, remainder steps cancelled |
+
+### Stage 6: Archived
+
+**What Happens:**
+- Transaction is moved to the "Archived" terminal state
+- Becomes fully read-only
+- Preserved for historical records and audit
+- No further status changes are possible
 
 ## Workflow by Transaction Type
+
+Tether uses three step types—**Purchase**, **Shipment**, and **Production**—to model all transaction workflows. Each step has its own status (Draft → In Progress → Completed, or Cancelled) and tracks inventory through specific inventory state types.
 
 ### Purchase Order Workflow
 
 ```
 Draft
   ↓
-Submitted (Order Placed)
+Submitted → Purchase Step created (In Process)
   ↓
-Supplier Confirmed
+Purchase Report submitted → Purchase Step completed (Completed Purchase)
   ↓
-In Production (if applicable)
+Shipping Plan submitted → Shipment Step created (In Transit)
   ↓
-Ready to Ship
-  ↓
-Shipped
-  ↓
-In Transit
-  ↓
-Delivered
-  ↓
-Received
+Shipment Receipt submitted → Shipment Step completed (Completed Shipment)
   ↓
 Completed
 ```
 
-#### PO-Specific Steps
+#### PO Steps & Inventory States
 
-| Step | Description | Inventory Impact |
-|------|-------------|------------------|
-| **Order Placed** | PO sent to supplier | None |
-| **Confirmed** | Supplier acknowledges | None |
-| **Shipped** | Left supplier | None |
-| **Received** | Arrived at warehouse | Inventory added |
+| Step Type | Inventory State | Description |
+|-----------|----------------|-------------|
+| **Purchase** (In Progress) | In Process | Order is being processed by supplier |
+| **Purchase** (Completed) | Completed Purchase | Supplier has fulfilled the order |
+| **Shipment** (In Progress) | In Transit | Goods are in transit to destination |
+| **Shipment** (Completed) | Completed Shipment | Goods received at destination warehouse; sellable inventory added |
 
 ### Transfer Order Workflow
 
 ```
 Draft
   ↓
-Submitted
+Submitted → Shipping Plan auto-created → Shipment Step created (In Transit)
   ↓
-Pick Started
-  ↓
-Picked
-  ↓
-Shipped
-  ↓
-In Transit
-  ↓
-Delivered
-  ↓
-Received
+Shipment Receipt submitted → Shipment Step completed (Completed Shipment)
   ↓
 Completed
 ```
 
-#### Transfer-Specific Steps
+#### Transfer Steps & Inventory States
 
-| Step | Description | Inventory Impact |
-|------|-------------|------------------|
-| **Submitted** | Transfer initiated | Source: Committed |
-| **Picked** | Items collected | Source: Ready to ship |
-| **Shipped** | Left source | Source: Deducted |
-| **Received** | Arrived at destination | Destination: Added |
+| Step Type | Inventory State | Description |
+|-----------|----------------|-------------|
+| **Shipment** (In Progress) | In Transit | Goods deducted from source sellable, in transit to destination |
+| **Shipment** (Completed) | Completed Shipment | Goods received at destination; sellable inventory added |
+
+<Tip>
+  For split shipments with multiple destinations, Tether creates separate Shipment steps and artifacts for each destination warehouse.
+</Tip>
 
 ### Production Order Workflow
 
 ```
 Draft
   ↓
-Submitted
+Submitted → Production Step created (In Production, components Committed)
   ↓
-Materials Allocated
-  ↓
-Materials Consumed
-  ↓
-In Production
-  ↓
-Quality Check
+Production Report submitted → Production Step completed (Completed Production, components Consumed)
   ↓
 Completed
 ```
 
-#### Production-Specific Steps
+#### Production Steps & Inventory States
 
-| Step | Description | Inventory Impact |
-|------|-------------|------------------|
-| **Submitted** | Order approved | None |
-| **Allocated** | Components reserved | Components: Reserved |
-| **Consumed** | Production started | Components: Deducted |
-| **Completed** | Production finished | Finished goods: Added |
+| Step Type | Inventory State | Description |
+|-----------|----------------|-------------|
+| **Production** (In Progress) | In Production | Finished goods are being produced |
+| **Production** (In Progress) | Committed | Components reserved from sellable inventory |
+| **Production** (In Progress) | Backordered | Components that couldn't be committed due to insufficient inventory |
+| **Production** (Completed) | Completed Production | Finished goods added to sellable inventory |
+| **Production** (Completed) | Consumed | Components fully deducted from inventory |
 
 ## Step Management
 
-### Updating Steps
+### Step Statuses
+
+Each step within a transaction has its own status:
+
+| Status | Description |
+|--------|-------------|
+| **Draft** | Step created but not yet active |
+| **In Progress** | Step is actively being worked on |
+| **Completed** | Step finished successfully |
+| **Cancelled** | Step was cancelled (does not block transaction completion) |
+
+### Updating Steps via Artifacts
+
+Steps are advanced by submitting the appropriate artifact:
 
 <Steps>
   <Step title="Navigate to Transaction">
     Open the transaction detail view
   </Step>
 
-  <Step title="Go to Steps Tab">
-    Click on the Steps tab
+  <Step title="Go to Steps & Inventory Tab">
+    Click on the **Steps & Inventory** tab (visible for non-draft transactions)
   </Step>
 
-  <Step title="Find Current Step">
-    Locate the next pending step
+  <Step title="Select the Step">
+    Find the step you want to update
   </Step>
 
-  <Step title="Mark Complete">
-    Click to complete the step:
-    - Enter completion date/time
-    - Add notes if needed
-    - Attach documents if relevant
+  <Step title="Submit the Appropriate Artifact">
+    Submit the matching artifact to advance the step:
+    - **Production Report** → advances a Production step
+    - **Purchase Report** → advances a Purchase step
+    - **Shipment Receipt** → advances a Shipment step
+    - **Shipping Plan** → creates a new Shipment step
   </Step>
 
-  <Step title="Save">
-    Step is recorded, next step activates
+  <Step title="Review">
+    Step status updates and inventory states change accordingly
   </Step>
 </Steps>
 
 ### Step Details
 
-Each step can include:
+Each step tracks:
 
 | Field | Description |
 |-------|-------------|
-| **Completion Date** | When step was completed |
-| **Completed By** | User who updated |
-| **Notes** | Additional information |
-| **Documents** | Attached files |
-
-### Skipping Steps
-
-Some workflows allow skipping steps:
-
-- Steps can be skipped if not applicable
-- Provide reason when skipping
-- Affects lead time calculations
-
-<Warning>
-  Skipping steps may impact reporting accuracy. Only skip when legitimately not applicable.
-</Warning>
+| **Step Type** | Production, Purchase, or Shipment |
+| **Status** | Draft, In Progress, Completed, or Cancelled |
+| **Inventory States** | Current inventory impact of this step |
+| **Source** | Where goods come from |
+| **Destination** | Where goods are going |
 
 ## Handling Issues
 
@@ -260,61 +252,60 @@ When not all quantities are received:
 | **Backorder** | Order remainder separately |
 | **Close Short** | Accept partial, close transaction |
 
-### Cancellation
+### Cancelling Steps
 
-To cancel a transaction:
+Individual steps can be cancelled without cancelling the entire transaction:
 
 <Steps>
   <Step title="Review Impact">
-    Understand what will be reversed
+    Understand what inventory effects will be reversed for this step
   </Step>
 
-  <Step title="Initiate Cancel">
-    Click Cancel from transaction actions
+  <Step title="Cancel the Step">
+    Mark the step as Cancelled
   </Step>
 
-  <Step title="Provide Reason">
-    Document why cancellation is necessary
-  </Step>
-
-  <Step title="Confirm">
-    System reverses inventory effects
+  <Step title="Inventory Adjusts">
+    Committed or in-transit inventory associated with that step is released
   </Step>
 </Steps>
 
-**What Gets Reversed:**
-- Committed inventory released
-- Reserved components freed
-- Incoming inventory removed
+**What Gets Reversed When a Step Is Cancelled:**
+- Committed components are released back to sellable
+- In-transit quantities are reversed
+- The step moves to Cancelled status
 
-## Inventory Effects by Stage
+<Note>
+  The transaction itself does not have a "Cancelled" status. If all steps are cancelled or completed, the transaction moves to **Completed** and can then be **Archived**.
+</Note>
 
-### Purchase Orders
+## Inventory Effects by Step Type
 
-| Stage | Inventory Effect |
-|-------|------------------|
-| Draft | None |
-| Submitted | None (or "On Order" view) |
-| In Transit | Shows as incoming |
-| Received | Added to sellable |
+Inventory changes are tracked through `StepInventoryStateType` values on each step:
 
-### Transfers
+### Purchase Steps
 
-| Stage | Source | Destination |
-|-------|--------|-------------|
-| Draft | None | None |
-| Submitted | Committed | None |
-| Shipped | Deducted | In Transit |
-| Received | - | Added |
+| State | Effect |
+|-------|--------|
+| **In Process** | Order is being processed; no inventory change yet |
+| **Completed Purchase** | Purchase fulfilled; goods ready for shipment to warehouse |
 
-### Production
+### Shipment Steps
 
-| Stage | Components | Finished Goods |
+| State | Source Warehouse | Destination Warehouse |
+|-------|-----------------|----------------------|
+| **In Transit** | Sellable reduced | In-transit quantity shown |
+| **Completed Shipment** | — | Sellable inventory added |
+
+### Production Steps
+
+| State | Components | Finished Goods |
 |-------|------------|----------------|
-| Draft | None | None |
-| Allocated | Reserved | None |
-| Consumed | Deducted | None |
-| Completed | - | Added |
+| **Committed** | Reserved from sellable | — |
+| **Backordered** | Insufficient inventory flagged | — |
+| **In Production** | — | Being produced |
+| **Consumed** | Fully deducted | — |
+| **Completed Production** | — | Added to sellable |
 
 ## Best Practices
 

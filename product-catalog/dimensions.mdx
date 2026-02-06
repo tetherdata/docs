@@ -38,16 +38,28 @@ Understanding when to use dimensions:
 
 ## The Dimensions Dashboard
 
-Access the dimensions dashboard at **SKUs** → **Dimensions** tab.
+Access the dimensions dashboard from **SKUs** → **Dimensions** in the main navigation.
 
 ### Dashboard Features
 
 | Feature | Description |
 |---------|-------------|
-| **Dimension List** | All dimensions across collections |
-| **Search** | Find dimensions by name |
-| **Filter by Collection** | Show dimensions for specific collections |
-| **Create Button** | Add new dimensions |
+| **Dimension Hierarchy** | Shows the current ordering of dimensions with drag-and-drop reordering |
+| **Dimension List** | All dimensions with their ranges, values, and position |
+| **Search** | Find dimensions by name or description |
+| **New Dimension** | Create new dimensions |
+
+### Current Dimension Hierarchy
+
+The dashboard prominently displays the **Current Dimension Hierarchy** card, which shows the order dimensions are applied throughout the application. This ordering affects SKU code generation and how variants are organized.
+
+- Click **Reorder** to enter drag mode
+- Drag dimensions using the grip handle to rearrange
+- Click **Save Order** to persist changes, or **Cancel** to discard
+
+<Info>
+  The Reorder button is only available when you have at least 2 dimensions.
+</Info>
 
 ## Creating Dimensions
 
@@ -55,30 +67,38 @@ Access the dimensions dashboard at **SKUs** → **Dimensions** tab.
 
 <Steps>
   <Step title="Navigate to Dimensions">
-    Go to **SKUs** → **Dimensions** tab
+    Go to **SKUs** → **Dimensions** in the navigation menu
   </Step>
 
-  <Step title="Click Create Dimension">
-    Click the **Create Dimension** button
+  <Step title="Click New Dimension">
+    Click the **New Dimension** button
   </Step>
 
-  <Step title="Configure the Dimension">
-    Enter dimension details:
-    - **Name**: Display name (e.g., "Size")
-    - **Code**: Short identifier (e.g., "SZ")
-    - **Collection**: Which collection this belongs to
+  <Step title="Enter Basic Information">
+    - **Dimension Name** (required): Display name (e.g., "Size", "Color", "Material")
+    - **Description** (optional): Explain the dimension's purpose
   </Step>
 
   <Step title="Add Values">
-    Add possible values for this dimension (covered below)
+    Add values with both a name and a SKU code:
+    - **Value Name**: Human-readable label (e.g., "Small")
+    - **SKU Code**: Short identifier used in SKU generation (e.g., "SM")
+    - Press **Enter** or click **+** to add each value
+    - At least one value is required
   </Step>
 
-  <Step title="Save">
-    Save the dimension
+  <Step title="Create Dimension">
+    Click **Create Dimension** to save. A default "Standard" range is automatically created containing your values.
   </Step>
 </Steps>
 
+<Info>
+  Dimensions are organization-wide, not collection-specific. Once created, dimensions can be assigned to any collection from the collection's **Dimensions** tab.
+</Info>
+
 ### From a Collection
+
+You can also assign existing dimensions to a collection:
 
 <Steps>
   <Step title="Open the Collection">
@@ -89,146 +109,144 @@ Access the dimensions dashboard at **SKUs** → **Dimensions** tab.
     Select the **Dimensions** tab
   </Step>
 
-  <Step title="Add Dimension">
-    Click **Add Dimension** and configure
+  <Step title="Assign Dimensions">
+    Use the dimension manager to assign existing dimensions to the collection
   </Step>
 </Steps>
 
-## Managing Dimension Values
+## Dimension Detail Page
 
-Values are the specific options for a dimension.
+Click on any dimension in the list to open its detail page. The detail page shows:
 
-### Adding Values
+- **Dimension Details**: Name, description, default range, and total range count
+- **Dimension Ranges**: Cards for each range showing its values
+
+You can edit the dimension's name and description by clicking the **Edit** button in the Dimension Details card.
+
+## Ranges and Values
+
+Dimensions use a **range-based** structure. Each dimension has one or more ranges, and each range contains a set of values. This allows the same dimension to have different value sets for different contexts.
+
+**Example:** A "Size" dimension might have:
+- **US Sizes** range: XS, S, M, L, XL
+- **EU Sizes** range: 34, 36, 38, 40, 42
+
+When you create a dimension, a default "Standard" range is automatically created with your initial values.
+
+### Adding a Range
 
 <Steps>
   <Step title="Open the Dimension">
-    Click on a dimension to open its detail view
+    Click on a dimension to open its detail page
   </Step>
 
-  <Step title="Click Add Value">
-    In the values section, click **Add Value**
+  <Step title="Click Add Range">
+    Click the **Add Range** button
   </Step>
 
-  <Step title="Enter Value Details">
-    - **Name**: Display name (e.g., "Medium")
-    - **Code**: Short code (e.g., "M")
-    - **Sort Order**: Position in lists (optional)
+  <Step title="Enter Range Details">
+    - **Range Name** (required): e.g., "EU Sizes"
+    - **Description** (optional): Explain the range's purpose
+    - Add values with names and SKU codes
   </Step>
 
   <Step title="Save">
-    Value is added to the dimension
+    Click **Add Range** to save
   </Step>
 </Steps>
 
-### Editing Values
+### Editing Values in a Range
 
-1. Click on a value to edit
-2. Modify name, code, or sort order
-3. Save changes
+<Steps>
+  <Step title="Open the Dimension">
+    Click on a dimension to open its detail page
+  </Step>
+
+  <Step title="Click Edit Values">
+    On the range card, click **Edit Values**
+  </Step>
+
+  <Step title="Make Changes">
+    In the modal:
+    - Click **Add Value** to add new values (name + SKU code required)
+    - Click the edit icon to modify existing values
+    - Click the delete icon to remove values
+    - New and modified items show status badges
+  </Step>
+
+  <Step title="Save">
+    Click **Save Changes** — all changes are batched and saved together
+  </Step>
+</Steps>
 
 <Info>
   Changing a value's name doesn't change existing SKUs that use it. The relationship is by ID, not name.
 </Info>
 
-### Deleting Values
+### Validation Rules
 
-Values can only be deleted if:
-- No SKUs currently use the value
-- No active references exist
+- Value name and SKU code are both required
+- SKU codes must be unique within a range
+- SKU codes can be up to 20 characters
+- SKU codes can contain letters, numbers, and: `- . / _ % # ( ) : + = @`
+- Duplicate value names within a range are not allowed
 
-<Warning>
-  If SKUs use a dimension value, you must update or archive those SKUs before deleting the value.
-</Warning>
+## Dimension Hierarchy
 
-### Reordering Values
+The dimension hierarchy determines the order in which dimensions appear throughout the application, including how product variants are organized and SKU codes are generated.
 
-Set the sort order to control how values appear:
-- In dropdowns
-- In filter lists
-- In generated SKU names
+### Viewing the Hierarchy
 
-**Example sort order for sizes:**
-| Value | Sort Order |
-|-------|------------|
-| XS | 1 |
-| S | 2 |
-| M | 3 |
-| L | 4 |
-| XL | 5 |
-| XXL | 6 |
+The **Current Dimension Hierarchy** section on the dimension dashboard shows all active dimensions in their current order. Each dimension displays its position number and name.
 
-## Multi-Level Dimensions
+<Info>
+  The dimension hierarchy determines the order used throughout the application for organizing product variants and generating SKU codes.
+</Info>
 
-Some dimensions benefit from hierarchical organization.
-
-### When to Use Multi-Level
-
-Use hierarchical values when:
-- Values have natural groupings
-- You need to filter at different levels
-- Reporting requires rollup capabilities
-
-**Example - Color with shades:**
-```
-Color
-├── Blue
-│   ├── Navy
-│   ├── Royal Blue
-│   └── Sky Blue
-├── Red
-│   ├── Crimson
-│   ├── Burgundy
-│   └── Scarlet
-└── Green
-    ├── Forest
-    ├── Olive
-    └── Mint
-```
-
-### Creating Multi-Level Values
+### Reordering the Hierarchy
 
 <Steps>
-  <Step title="Create Parent Value">
-    Add the top-level value (e.g., "Blue")
+  <Step title="Click Reorder">
+    Click the **Reorder** button in the hierarchy section header (requires at least 2 dimensions)
   </Step>
 
-  <Step title="Add Child Values">
-    When adding new values, select the parent:
-    - Name: "Navy"
-    - Parent: "Blue"
+  <Step title="Drag and Drop">
+    Drag dimensions to rearrange them into the desired order. A drag handle appears next to each dimension.
   </Step>
 
-  <Step title="Continue Building Hierarchy">
-    Add all child values under their parents
+  <Step title="Save or Cancel">
+    Click **Save Order** to apply the new hierarchy, or **Cancel** to discard changes
   </Step>
 </Steps>
 
-### Using Multi-Level Dimensions
+<Warning>
+  Reordering the hierarchy will affect future SKU generation. Existing SKU codes are not changed.
+</Warning>
 
-- SKUs are assigned to the most specific (leaf) value
-- Filtering by "Blue" shows all SKUs in any shade of blue
-- Reports can aggregate at any level
+## Value SKU Codes
 
-## Dimension Codes
+Each dimension value has a **SKU code** — a short identifier used in SKU code generation. SKU codes are set when you create or edit values.
 
-Codes are short identifiers used in:
-- SKU code generation
-- System integrations
-- Compact displays
+### SKU Code Rules
 
-### Best Practices for Codes
+- Maximum 20 characters
+- Allowed characters: letters, numbers, and `- . / _ % # ( ) : + = @`
+- Must be unique within a range
+- Automatically converted to uppercase
+
+### Best Practices
 
 | Guideline | Good | Bad |
 |-----------|------|-----|
 | Keep short | "M", "BLU" | "MEDIUM", "BLUECOLOR" |
 | Be consistent | All 2-3 chars | Mix of lengths |
-| Avoid special chars | "NVY" | "N/B" |
+| Avoid ambiguity | "NVY" for Navy | "N" (too vague) |
 | Use uppercase | "XL" | "xl" |
 
-### Code Examples
+### Examples
 
-| Dimension | Value | Code |
-|-----------|-------|------|
+| Dimension | Value | SKU Code |
+|-----------|-------|----------|
 | Size | Extra Small | XS |
 | Size | Small | S |
 | Size | Medium | M |
@@ -242,51 +260,33 @@ Dimensions power the SKU Generator, which creates variant combinations automatic
 
 ### How It Works
 
-1. Define dimensions with values
-2. Open SKU Generator
-3. Select which values to include
-4. Generator creates all combinations
+1. Define dimensions with values and SKU codes
+2. Open the SKU Generator from a collection
+3. Select which dimension values to include
+4. The generator creates all combinations
 
 **Example:**
 - Size: S, M, L (3 values)
 - Color: Red, Blue (2 values)
 - Result: 6 SKUs (3 × 2)
 
-### Naming Templates
-
-Use dimension codes in templates:
-
-```
-Name: {collection} - {Size} - {Color}
-Code: {collection_code}-{Size}-{Color}
-```
-
-Result:
-- Name: "T-Shirts - Medium - Blue"
-- Code: "TSH-M-BLU"
+The dimension hierarchy order determines how SKU codes are assembled. For example, if Size is first and Color is second, the generated code might be `TSH-M-BLU` (collection code + size code + color code).
 
 ## Dimension Filtering
 
-Dimensions appear as filters throughout Tether:
-
-### SKU Dashboard
-Filter products by any dimension value.
-
-### Demand Forecasting
-Group and filter forecasts by dimensions.
-
-### Inventory Views
-See inventory broken down by dimension.
+Dimensions appear as filters on the SKU dashboard. Each active dimension with values becomes a filter group in the filter panel.
 
 ### Tri-State Filtering
 
 Dimension filters support three states:
 
-| State | Action |
-|-------|--------|
-| **Include** | Show only SKUs with this value |
-| **Exclude** | Hide SKUs with this value |
-| **Indifferent** | Don't filter by this value |
+| State | Visual | Action |
+|-------|--------|--------|
+| **Indifferent** | Empty checkbox | Don't filter by this value (default) |
+| **Include** | Green checkmark | Show only SKUs with this value |
+| **Exclude** | Red X | Hide SKUs with this value |
+
+Click a value once to include it, click again to exclude it, and click a third time to return to indifferent.
 
 ## Common Dimension Patterns
 
@@ -340,31 +340,30 @@ Dimension filters support three states:
 
 ## Troubleshooting
 
-### Cannot Delete Dimension Value
-
-**Cause:** SKUs are using this value
-
-**Solution:**
-1. Find SKUs using this value (filter by dimension)
-2. Either update SKUs to use a different value
-3. Or archive the SKUs
-4. Then delete the value
-
 ### Dimension Not Appearing in Filters
 
 **Cause:** No SKUs have values for this dimension
 
 **Solution:**
 1. Assign dimension values to SKUs
-2. Or use SKU Generator to create variants
+2. Or use the SKU Generator to create variants with dimension values
 
-### Duplicate Codes
+### Duplicate SKU Codes
 
-**Cause:** Same code used in multiple dimensions
+**Cause:** Same SKU code used within a range
 
 **Solution:**
-- Codes only need to be unique within a dimension
-- If this causes confusion, use more specific codes
+- SKU codes only need to be unique within a single range
+- Different ranges can have overlapping SKU codes
+- If this causes confusion, use more descriptive codes
+
+### Cannot Reorder Hierarchy
+
+**Cause:** Only one dimension exists
+
+**Solution:**
+- The **Reorder** button requires at least two dimensions
+- Create additional dimensions before reordering
 
 ## Next Steps
 

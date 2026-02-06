@@ -27,59 +27,120 @@ The Forecast Admin page has multiple tabs:
 
 ## Model Selection
 
-### Available Models
+A **model** is a method for generating a possible forecast. Each model uses an **algorithm** that defines how forecast values are calculated. Your organization can define multiple models with different algorithms and compare their outputs before selecting one as active.
 
-Tether may offer multiple forecast models:
+<Tip>
+  For a deep dive into how each algorithm works, including mathematical formulas and parameter details, see the [Forecast Algorithms](/demand-forecasting/algorithms) page.
+</Tip>
 
-| Model | Description | Best For |
-|-------|-------------|----------|
-| **Moving Average** | Average of recent periods | Stable demand |
-| **Exponential Smoothing** | Weighted recent data | Trending products |
-| **Seasonal Decomposition** | Captures seasonality | Seasonal products |
-| **Machine Learning** | AI-based predictions | Complex patterns |
-| **Consensus** | Combination of models | General use |
+### Available algorithms
 
-### Selecting a Model
+Tether provides 11 forecast algorithms you can assign to models:
+
+| Algorithm | Description | Best for | Supports auto-tune |
+|-----------|-------------|----------|:------------------:|
+| **90-Day Rolling Average** | Simple arithmetic mean of the last 90 days of sales | Stable, predictable demand | No |
+| **120-Day Rolling Average (Recursive)** | Sliding window average that incorporates prior forecast values as it projects forward | Volatile products, strategic planning | No |
+| **Exponentially Weighted Moving Average (EWMA)** | Applies exponential decay weighting to emphasize recent sales | Trending products, fashion items | Yes |
+| **Linear Trend** | Least-squares linear regression projected forward | Products with consistent growth or decline | No |
+| **Simplified Seasonal** | Weighted combination of weekly (80%) and monthly (20%) seasonal patterns | Seasonal and holiday-driven products | Yes |
+| **Simple Seasonal with Trend Adjustment** | Seasonal patterns blended with a year-over-year growth factor | Seasonal products with growth trends | Yes |
+| **Seasonal Year-over-Year Growth** | Seasonal baseline multiplied by observed year-over-year growth rate | Seasonal products with strong annual growth | Yes |
+| **Rolling Momentum** | Detects acceleration or deceleration by comparing short-term vs long-term moving averages | Viral, accelerating, or declining products | Yes |
+| **Holt-Winters (Triple Exponential Smoothing)** | Captures level, trend, and seasonality with separate smoothing factors | Complex seasonal patterns with trends | Yes |
+| **SARIMA** | Seasonal AutoRegressive Integrated Moving Average for complex time series | Complex time series with seasonal and trend components | Yes |
+| **Static Baseline** | Directly uses uploaded baseline forecast values with no algorithmic processing | External forecasts, manual imports, hybrid workflows | No |
+
+### Creating a model
 
 <Steps>
-  <Step title="Go to Settings Tab">
-    Open the **Settings** tab in Forecast Admin
+  <Step title="Open the Models tab">
+    Navigate to **Demand Forecast** → **Admin** and open the **Models** tab.
   </Step>
 
-  <Step title="View Current Model">
-    See which model is currently selected
+  <Step title="Click Create Model">
+    Click **Create Model** to open the model creation dialog.
   </Step>
 
-  <Step title="Select New Model">
-    Choose a different model from the options
-  </Step>
-
-  <Step title="Configure Parameters">
-    Adjust model-specific settings (if available)
+  <Step title="Configure the model">
+    Provide a name and description, then select an algorithm from the list above.
   </Step>
 
   <Step title="Save">
-    Apply the new model selection
+    Click **Save**. The system calculates the model's output for all SKU-channel combinations.
   </Step>
 </Steps>
 
-### Model Parameters
+### Selecting the active model
 
-Some models have configurable parameters:
+Only one model can be active at a time. The active model drives the official sales forecast used by downstream processes (consumption forecast, inventory forecast, and reorder calculations).
 
-**Moving Average:**
-- Number of periods to average
-- Weighting (equal or weighted)
+<Steps>
+  <Step title="Compare model outputs">
+    Use the [Forecast Comparison](/demand-forecasting/comparison) view or click a row in the forecast table to open the model selection dialog and see outputs from all models side by side.
+  </Step>
 
-**Exponential Smoothing:**
-- Smoothing factor (alpha)
-- Trend factor (beta)
-- Seasonal factor (gamma)
+  <Step title="Select a model">
+    Choose the model you want to activate and confirm your selection.
+  </Step>
 
-**Machine Learning:**
-- Feature selection
-- Training period
-- Update frequency
+  <Step title="Forecast regenerates">
+    The system regenerates the official sales forecast using the selected model's algorithm.
+  </Step>
+</Steps>
+
+<Note>
+  Changing the active model triggers an immediate forecast regeneration for all SKU-channel combinations.
+</Note>
+
+### Parameter optimization (auto-tune)
+
+Seven of the 11 algorithms support **automatic parameter optimization**. When enabled, the system finds the best parameter values by minimizing forecast error on historical data.
+
+**Optimization methods:**
+- **Nelder-Mead Simplex** — used for algorithms with continuous parameters (e.g., smoothing factors, weights). Iteratively adjusts parameters to minimize error.
+- **Grid Search** — used for SARIMA, which has discrete integer parameters (AR/MA orders). Tests all combinations within specified ranges.
+
+**Error metrics available for optimization:**
+
+| Metric | Description |
+|--------|-------------|
+| **MSE** (Mean Squared Error) | Penalizes large errors heavily (default) |
+| **MAE** (Mean Absolute Error) | More robust to outliers |
+| **MAPE** (Mean Absolute Percentage Error) | Scale-independent comparison across SKUs |
+
+**Per-SKU/channel optimization:** Optimized parameters are stored per SKU-channel combination, so each product-channel pair can have its own tuned settings within a model.
+
+### Key algorithm parameters
+
+Each algorithm has configurable parameters. Here are the most commonly tuned ones:
+
+**Rolling Average:**
+- `window_days` — number of days to average (default: 90 or 120)
+
+**EWMA:**
+- `window_days` — window size in days (default: 60)
+- `weight_factor` — exponential decay factor, 0.1–0.99 (default: 0.8). Lower values emphasize recent data more heavily.
+
+**Holt-Winters:**
+- `alpha` — level smoothing, 0.0–1.0 (default: 0.2)
+- `beta` — trend smoothing, 0.0–1.0 (default: 0.1)
+- `gamma` — seasonal smoothing, 0.0–1.0 (default: 0.1)
+- `phi` — trend damping, 0.8–1.0 (default: 0.95). Values below 1.0 prevent unrealistic long-term trend extrapolation.
+
+**SARIMA:**
+- `ar_order`, `diff_order`, `ma_order` — non-seasonal ARIMA orders
+- `seasonal_ar_order`, `seasonal_diff_order` — seasonal orders
+- `seasonal_period` — season length in days (default: 365)
+
+**Rolling Momentum:**
+- `short_window_days` — recent performance window (default: 30)
+- `long_window_days` — baseline comparison window (default: 90)
+- `sensitivity` — momentum reaction strength, 0.0–1.0 (default: 0.5)
+
+<Info>
+  For the full list of parameters, defaults, and optimization ranges, see [Forecast Algorithms](/demand-forecasting/algorithms).
+</Info>
 
 ## Forecast Settings
 
@@ -87,20 +148,8 @@ Some models have configurable parameters:
 
 | Setting | Description |
 |---------|-------------|
-| **Forecast Horizon** | How far ahead to forecast |
-| **Update Frequency** | How often forecasts regenerate |
-| **Granularity** | Daily, weekly, or monthly |
-| **Default Channel** | Channel for new SKUs |
-
-### Threshold Settings
-
-Configure alerts and indicators:
-
-| Setting | Description |
-|---------|-------------|
-| **Accuracy Threshold** | Alert if accuracy drops below |
-| **Change Threshold** | Highlight changes above X% |
-| **Confidence Interval** | Display range (e.g., 95%) |
+| **Forecast Horizon** | How far ahead to forecast (in days) |
+| **Granularity** | Forecast output is always at the day × SKU × channel level |
 
 ## Bulk Upload
 
@@ -307,145 +356,135 @@ To revert to a previous version:
 
 ## Forecast Regeneration
 
-### When Forecasts Regenerate
+### When forecasts regenerate
 
-Forecasts typically regenerate:
+The system recalculates model outputs automatically when:
 
-- On a scheduled basis (daily, weekly)
-- When model settings change
-- When historical data is updated
-- On manual trigger
+- **A model definition is modified** — the system immediately recalculates that model's outputs for all SKU-channel combinations. If the modified model is the currently selected model, the official forecast is also regenerated.
+- **The active model is changed** — selecting a different model triggers a full forecast regeneration using the new model's algorithm.
+- **Historical data is updated** — events like data syncs or manual sales history uploads trigger a recalculation of all active model outputs.
+- **A daily update occurs** — scheduled regeneration recalculates forecasts with the latest available data.
 
-### Manual Regeneration
+### Manual regeneration
 
-To trigger a forecast update:
+To manually trigger a forecast update:
 
 <Steps>
-  <Step title="Go to Settings">
-    Open Forecast Admin Settings
+  <Step title="Go to Forecast Admin">
+    Navigate to **Demand Forecast** → **Admin**.
   </Step>
 
   <Step title="Click Regenerate">
-    Find the **Regenerate Forecasts** button
-  </Step>
-
-  <Step title="Select Scope">
-    Choose what to regenerate:
-    - All forecasts
-    - Specific channels
-    - Specific collections
+    Click the **Regenerate Forecasts** button.
   </Step>
 
   <Step title="Confirm">
-    Start the regeneration process
-  </Step>
-
-  <Step title="Monitor">
-    Track progress and completion
+    Confirm to start the regeneration process. The system recalculates model outputs for all SKU-channel combinations using the currently selected model's algorithm.
   </Step>
 </Steps>
 
 <Info>
-  Regeneration may take time for large datasets. User edits are typically preserved unless specifically overwritten.
+  Regeneration recalculates algorithmic model outputs. User edits made through the [Consensus Model editing workflow](/demand-forecasting/editing) are preserved — they are not overwritten by regeneration.
 </Info>
 
 ## Data Quality
 
-### Monitoring Data Quality
+### Data requirements by algorithm
 
-Good forecasts require good data:
+Different algorithms have different minimum data requirements:
 
-| Quality Issue | Impact | Solution |
-|---------------|--------|----------|
-| Missing history | Inaccurate baseline | Import historical data |
-| Outliers | Distorted patterns | Clean or flag anomalies |
-| Gaps | Incomplete patterns | Fill or interpolate |
-| Late data | Delayed updates | Improve sync timing |
+| Algorithm | Minimum history |
+|-----------|----------------|
+| Rolling Average, EWMA, Linear Trend, Rolling Momentum | 30–120 days (depending on window size) |
+| Simplified Seasonal, Seasonal YoY Growth, Holt-Winters, SARIMA | 365+ days (at least 1 full seasonal cycle) |
+| Static Baseline | No historical data needed (uses uploaded values) |
 
-### Data Quality Indicators
+<Warning>
+  Seasonal algorithms (Simplified Seasonal, Holt-Winters, SARIMA, Seasonal YoY Growth) automatically fall back to a 90-day rolling average if fewer than 365 days of history are available.
+</Warning>
+
+### Data quality indicators
 
 Watch for warnings about:
 
-- SKUs with no history
-- Channels with sparse data
-- Products with high variability
-- Recent data gaps
+- SKUs with insufficient sales history for the selected algorithm
+- Channels with sparse or missing data
+- Products with high variability that may need a different algorithm
+- Recent data gaps that could skew forecasts
 
 ## Best Practices
 
 <AccordionGroup>
-  <Accordion title="Model Selection">
-    Choose models carefully:
-    - Start with simpler models
-    - Compare performance before switching
-    - Consider product segments
-    - Document selection rationale
+  <Accordion title="Model selection">
+    - Start with simpler algorithms (e.g., 90-Day Rolling Average) and compare against more complex ones (e.g., Holt-Winters, SARIMA).
+    - Use the [Forecast Comparison](/demand-forecasting/comparison) view to evaluate accuracy before switching.
+    - Consider using different models for different product segments — stable products may perform best with Rolling Average, while seasonal products benefit from Simplified Seasonal or Holt-Winters.
+    - Enable parameter optimization (auto-tune) for algorithms that support it to find the best settings per SKU-channel combination.
   </Accordion>
 
-  <Accordion title="Regular Updates">
+  <Accordion title="Regular updates">
     Keep forecasts current:
-    - Ensure regular regeneration
-    - Monitor data freshness
-    - Review model performance
+    - Ensure regular regeneration so forecasts incorporate the latest sales data.
+    - Monitor data freshness — stale sales history leads to outdated forecasts.
+    - Periodically review model accuracy and consider switching algorithms if performance degrades.
   </Accordion>
 
-  <Accordion title="Version Discipline">
+  <Accordion title="Version discipline">
     Use versioning effectively:
-    - Create versions before major changes
-    - Name versions descriptively
-    - Compare versions during planning
+    - Create a version snapshot before switching the active model.
+    - Name versions descriptively (e.g., "Before SARIMA switch Q1 2026").
+    - Compare versions during planning cycles to track forecast evolution.
   </Accordion>
 
-  <Accordion title="Upload Carefully">
+  <Accordion title="Upload carefully">
     Handle bulk uploads with care:
-    - Validate data before upload
-    - Preview changes
-    - Keep backup of current state
-    - Document upload purpose
+    - Validate data before upload — ensure SKU codes and channel names match existing records.
+    - Always preview changes before confirming.
+    - Create a version snapshot of the current forecast state before uploading.
   </Accordion>
 </AccordionGroup>
 
 ## Troubleshooting
 
-### Forecasts Not Updating
+### Forecasts not updating
 
 **Possible causes:**
-- Regeneration not scheduled
-- Processing error
-- Data sync issues
+- No regeneration has been triggered (manual or automatic).
+- The modified model is not the currently selected model — only the selected model drives the official forecast.
+- Data sync has not completed, so the latest sales history is not yet available.
 
 **Solutions:**
-1. Check regeneration schedule
-2. Trigger manual regeneration
-3. Review system logs
-4. Verify data sources
+1. Trigger a manual regeneration from the Admin page.
+2. Verify which model is currently selected and confirm it's the one you expect.
+3. Check that data integrations have synced successfully.
 
-### Upload Errors
+### Upload errors
 
 **Common issues:**
-- Wrong file format
-- Invalid SKU codes
-- Date format problems
+- Wrong template type (date template vs. period template).
+- SKU codes or channel names that don't match existing records.
+- Invalid date format (use `MM/DD/YYYY` or `YYYY-MM-DD`).
+- Mixing date and period columns in the same file.
 
 **Solutions:**
-1. Use the provided template
-2. Verify SKU codes exist in system
-3. Use standard date formats
-4. Check for special characters
+1. Download the correct template for your organization's period configuration.
+2. Verify all SKU codes and channel names exist in the system before uploading.
+3. Check for non-numeric or negative quantity values.
+4. Ensure no special characters or encoding issues in the CSV file.
 
 ## Next Steps
 
 <CardGroup cols={2}>
+  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
+    Learn how each algorithm works, its parameters, and when to use it
+  </Card>
   <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
-    Compare forecast model performance
+    Compare model outputs and accuracy side by side
   </Card>
   <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
     View and edit forecasts
   </Card>
-  <Card title="Promotions" icon="tag" href="/demand-forecasting/promotions">
-    Manage promotional impacts
-  </Card>
   <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
-    Configure change tracking
+    Track forecast changes
   </Card>
 </CardGroup>

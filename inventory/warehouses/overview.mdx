@@ -25,23 +25,9 @@ Navigate to **Inventory** → **Warehouses** to access the warehouse dashboard.
 
 | Feature | Description |
 |---------|-------------|
-| **Warehouse List** | All warehouses with key information |
+| **Warehouse List** | All warehouses displayed in a data table |
 | **Search** | Find warehouses by name or code |
-| **Status Filter** | Show active, inactive, or all |
 | **Create Button** | Add new warehouses |
-
-### Warehouse Information
-
-Each warehouse shows:
-
-| Column | Description |
-|--------|-------------|
-| **Name** | Warehouse display name |
-| **Code** | Short identifier |
-| **Description** | Optional details |
-| **Address** | Physical location |
-| **Status** | Active or Inactive |
-| **Created Date** | When added to system |
 
 ## Creating a Warehouse
 
@@ -54,24 +40,18 @@ Each warehouse shows:
     Click the **Create Warehouse** button
   </Step>
 
-  <Step title="Enter Basic Information">
+  <Step title="Enter Warehouse Information">
     | Field | Required | Description |
     |-------|----------|-------------|
-    | **Name** | Yes | Descriptive name |
-    | **Code** | Yes | Short identifier (used in orders) |
-    | **Description** | No | Additional details |
-  </Step>
-
-  <Step title="Add Address (Optional)">
-    Enter the physical location:
-    - Street address
-    - City, State/Province
-    - Country
-    - Postal code
+    | **Warehouse Code** | Yes | Short identifier (2-10 characters, letters, numbers, and underscores only) |
+    | **Warehouse Name** | Yes | Descriptive display name (up to 100 characters) |
+    | **Description** | No | Additional details about the warehouse (up to 500 characters) |
+    | **Address** | No | Physical location of the warehouse |
+    | **Contact Information** | No | Phone, email, or other contact details |
   </Step>
 
   <Step title="Save">
-    Click **Save** to create the warehouse
+    Click **Create Warehouse** to create the warehouse
   </Step>
 </Steps>
 
@@ -85,13 +65,22 @@ Click on a warehouse to open its detail page with multiple tabs:
 
 ### Overview Tab
 
-Basic warehouse information:
+The Overview tab displays basic warehouse information and lead time settings.
 
-- Name and code
-- Description
-- Address
-- Status
-- Metadata (created date, etc.)
+**Warehouse details shown:**
+
+| Field | Description |
+|-------|-------------|
+| **Warehouse Code** | Short identifier |
+| **Warehouse Name** | Display name |
+| **Management** | Internally Managed or Externally Managed |
+| **Description** | Additional details (if set) |
+| **Address** | Physical location (street, city, state/province, postal code, country) |
+| **Contact Information** | Contact name, email, and phone (if set) |
+| **Created Date** | When the warehouse was added |
+| **Last Modified** | When the warehouse was last updated |
+
+**Lead time settings** are also displayed in the Overview tab, showing transit lead times from this warehouse to other warehouses. See [Lead Time Configuration](/inventory/warehouses/lead-times) for details.
 
 ### Inventory Tab
 
@@ -111,34 +100,26 @@ Transaction history for this warehouse:
 - Recent activity
 - Pending transactions
 
-### Lead Time Settings Tab
+### Inventory Settings Tab
 
-Configure transfer times to/from this warehouse. See [Lead Time Configuration](/inventory/warehouses/lead-times).
+Configure SKU-warehouse assignments for this warehouse. This determines which SKUs are tracked and managed at this location.
 
-## Warehouse Types
+### Replenishment Settings Tab
 
-Tether supports different warehouse purposes:
+Configure inventory and forecast settings specific to this warehouse, including safety stock levels, reorder points, and overstock thresholds.
 
-| Type | Purpose | Typical Use |
-|------|---------|-------------|
-| **Distribution Center** | Main storage | Primary inventory holding |
-| **Retail Store** | Customer-facing | Store inventory |
-| **3PL** | Third-party logistics | Outsourced fulfillment |
-| **Manufacturing** | Production facility | Raw materials and WIP |
-| **Virtual** | Non-physical | Dropship or pre-orders |
+## Externally Managed Warehouses
 
-## Warehouse Status
+Warehouses can be flagged as **Externally Managed**:
 
-Warehouses can be Active or Inactive:
+| Management Type | Behavior |
+|-----------------|----------|
+| **Internally Managed** | Standard warehouse managed within Tether |
+| **Externally Managed** | Warehouse managed by a third party (e.g., 3PL, supplier). Displayed with an "Externally Managed" badge |
 
-| Status | Behavior |
-|--------|----------|
-| **Active** | Available for inventory and operations |
-| **Inactive** | Hidden from operations, data preserved |
-
-<Warning>
-  Deactivating a warehouse doesn't move its inventory. Transfer inventory before deactivating.
-</Warning>
+<Note>
+  Externally managed warehouses may be linked to suppliers. See [Supplier Held Inventory](/inventory/suppliers#supplier-held-inventory) for details.
+</Note>
 
 ## Multi-Warehouse Operations
 
@@ -181,8 +162,9 @@ See [Inventory Settings](/administration/inventory-settings) for configuration.
 
   <Accordion title="Code Standards">
     Keep codes short and systematic:
-    - 3-6 characters
-    - Uppercase letters
+    - 2-10 characters
+    - Letters, numbers, and underscores only
+    - Uppercase letters recommended
     - Include region if multi-location
   </Accordion>
 
@@ -197,7 +179,7 @@ See [Inventory Settings](/administration/inventory-settings) for configuration.
     Periodically verify warehouse data:
     - Is inventory accurate?
     - Are addresses current?
-    - Are inactive warehouses cleaned up?
+    - Are lead times still correct?
   </Accordion>
 </AccordionGroup>
 
@@ -228,14 +210,12 @@ See [Inventory Settings](/administration/inventory-settings) for configuration.
 ### Warehouse Not Showing in Dropdowns
 
 **Possible causes:**
-- Warehouse is inactive
 - No inventory at warehouse
 - Filter is excluding it
 
 **Solutions:**
-1. Check warehouse status
-2. Verify filters include all warehouses
-3. Ensure warehouse is configured for the operation
+1. Verify filters include all warehouses
+2. Ensure warehouse is configured for the operation
 
 ### Inventory Mismatch
 

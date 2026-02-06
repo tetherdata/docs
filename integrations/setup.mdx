@@ -1,11 +1,11 @@
 ---
 title: Integration Setup
-description: Connect Tether to your e-commerce and ERP systems
+description: Connect Tether to your e-commerce and data systems
 ---
 
 # Integration Setup
 
-Integrations connect Tether to your existing systems, automatically syncing orders, inventory, and product data.
+Integrations connect Tether to your external systems, automatically syncing sales orders, inventory, products, and other data.
 
 <Note>
   Integration setup requires Admin access. Contact your administrator if you need to set up integrations.
@@ -16,45 +16,43 @@ Integrations connect Tether to your existing systems, automatically syncing orde
 | Benefit | Description |
 |---------|-------------|
 | **Automated Data Flow** | No manual data entry |
-| **Real-Time Sync** | Up-to-date information |
+| **Scheduled Sync** | Data stays current with cron-based scheduling |
 | **Reduced Errors** | Eliminate manual mistakes |
 | **Time Savings** | Focus on analysis, not data entry |
 
-## Available Integrations
+## Supported External Services
 
-### E-Commerce Platforms
+Tether connects to external systems through the ingestion service. The following external services are currently supported:
 
-| Platform | Data Synced |
-|----------|-------------|
-| **Shopify** | Orders, products, inventory |
-| **WooCommerce** | Orders, products |
-| **BigCommerce** | Orders, products |
-| **Magento** | Orders, products |
+| External Service | Description |
+|-----------------|-------------|
+| **Shopify** | E-commerce platform for sales orders and products |
+| **BigQuery** | Google Cloud data warehouse for sales history and other data |
+| **Redshift** | AWS data warehouse for sales history and other data |
+| **TrackStar** | Warehouse management system for inventory data |
+| **Brewman** | Brewery management system |
 
-### Marketplaces
+<Note>
+  The available external services and their supported capabilities are loaded dynamically from the system metadata. New services may be added without requiring a documentation update.
+</Note>
 
-| Platform | Data Synced |
-|----------|-------------|
-| **Amazon** | Orders, inventory |
-| **eBay** | Orders |
-| **Walmart** | Orders |
-| **Etsy** | Orders |
+### Data Types (Capabilities)
 
-### ERP Systems
+Each external service supports a subset of the following data types that can be synced:
 
-| System | Data Synced |
-|--------|-------------|
-| **NetSuite** | Full ERP data |
-| **QuickBooks** | Orders, inventory |
-| **SAP** | Inventory, orders |
+| Data Type | Description |
+|-----------|-------------|
+| **Sales Orders** | Individual sales order records |
+| **Sales History** | Aggregated historical sales data |
+| **Pending Sales** | Orders not yet completed |
+| **Warehouse Inventory** | Stock levels from warehouse systems |
+| **Products** | Product and SKU information |
+| **Channels** | Channel configuration data |
+| **Pricing** | Pricing information |
+| **Forecast Versions** | Forecast data |
+| **Sales Forecast** | Sales forecast data |
 
-### Other Systems
-
-| Type | Examples |
-|------|----------|
-| **3PL/WMS** | ShipBob, Flexport |
-| **Accounting** | QuickBooks, Xero |
-| **Custom** | API integrations |
+When creating an integration, you select which data types (capabilities) to enable based on what the chosen external service supports.
 
 ## Setting Up an Integration
 
@@ -62,263 +60,246 @@ Integrations connect Tether to your existing systems, automatically syncing orde
 
 <Steps>
   <Step title="Navigate to Integrations">
-    Go to **Settings** → **Integrations** (or **Integrations** in sidebar)
+    Go to **Integrations** in the sidebar
   </Step>
 
-  <Step title="Select Integration">
-    Choose the platform you want to connect
+  <Step title="Click Create Integration">
+    Click the **Create Integration** button to open the setup dialog
   </Step>
 
-  <Step title="Authenticate">
-    Connect your account:
-    - OAuth login
-    - API credentials
-    - Both methods depending on platform
+  <Step title="Enter Basic Information">
+    | Field | Required | Description |
+    |-------|----------|-------------|
+    | **Integration Name** | Yes | A descriptive name (e.g., "Shopify Production") |
+    | **External Service** | Yes | Select from the dropdown of available services |
   </Step>
 
-  <Step title="Configure Settings">
-    Set up sync preferences:
-    - What data to sync
-    - How often to sync
-    - Field mappings
+  <Step title="Configure Schedule">
+    Set the sync schedule:
+
+    | Field | Default | Description |
+    |-------|---------|-------------|
+    | **Cron Expression** | `0 0 0 * * *` | When the sync runs (daily at midnight by default) |
+    | **Timezone** | UTC | Timezone for the cron schedule |
   </Step>
 
-  <Step title="Test Connection">
-    Verify the integration works
+  <Step title="Select Capabilities">
+    Check the data types you want to sync. The available options depend on the selected external service. Each capability shows a display name and description.
   </Step>
 
-  <Step title="Enable">
-    Activate the integration
+  <Step title="Enter Credentials">
+    Provide the required credentials for the selected service. The credential fields are dynamic — each service defines its own required fields (e.g., API keys, store URLs, access tokens).
+  </Step>
+
+  <Step title="Create">
+    Click **Create Integration** to save. You will be navigated to the integration detail page.
   </Step>
 </Steps>
 
 ### Shopify Integration
 
+To connect a Shopify store:
+
 <Steps>
-  <Step title="Go to Integrations">
-    Navigate to integration settings
+  <Step title="Create Integration">
+    Click **Create Integration** and select **Shopify** as the external service
   </Step>
 
-  <Step title="Select Shopify">
-    Choose Shopify from available integrations
+  <Step title="Enter Credentials">
+    Provide the required Shopify credentials:
+
+    | Credential | Description |
+    |-----------|-------------|
+    | **Store URL** | Your Shopify store URL (e.g., `your-store.myshopify.com`) |
+    | **Admin API Access Token** | Generated from Shopify Admin → Settings → Apps and sales channels |
   </Step>
 
-  <Step title="Connect Store">
-    Enter your Shopify store URL and authorize access
+  <Step title="Select Capabilities">
+    Choose which data types to sync (e.g., sales orders, products)
   </Step>
 
-  <Step title="Map Fields">
-    Configure how Shopify data maps to Tether:
-    - Products → SKUs
-    - Locations → Warehouses
-    - Orders → Sales Orders
+  <Step title="Set Schedule">
+    Configure the cron expression for sync frequency. A daily sync is recommended for most use cases.
   </Step>
 
-  <Step title="Set Sync Schedule">
-    Choose sync frequency:
-    - Real-time
-    - Hourly
-    - Daily
-  </Step>
-
-  <Step title="Enable">
-    Start syncing data
+  <Step title="Create and Enable">
+    Create the integration. It will be enabled by default and begin syncing on the configured schedule.
   </Step>
 </Steps>
 
-### Amazon Integration
+**Shopify sync details:**
+- Uses the Shopify GraphQL Admin API to fetch orders
+- Syncs new and updated orders since the last sync
+- Filters orders by financial status (paid, partially refunded)
+- Maps Shopify SKUs to Tether SKUs via external ID matching
+
+### Data Warehouse Integrations (BigQuery / Redshift)
+
+For importing data from data warehouses:
 
 <Steps>
-  <Step title="Go to Integrations">
-    Navigate to integration settings
+  <Step title="Create Integration">
+    Select **BigQuery** or **Redshift** as the external service
   </Step>
 
-  <Step title="Select Amazon">
-    Choose Amazon Seller Central
+  <Step title="Enter Connection Credentials">
+    Provide the required database connection details as prompted by the credential fields
   </Step>
 
-  <Step title="Authorize Access">
-    Log in to Amazon and grant permissions
+  <Step title="Select Data Types">
+    Choose which data types to import (e.g., sales history, products, pricing)
   </Step>
 
-  <Step title="Select Marketplaces">
-    Choose which Amazon marketplaces to sync
+  <Step title="Configure Schedule">
+    Set the cron expression for how often to pull data
+  </Step>
+</Steps>
+
+### Warehouse Integration (TrackStar)
+
+For syncing inventory data from warehouse management systems:
+
+<Steps>
+  <Step title="Create Integration">
+    Select **TrackStar** as the external service
   </Step>
 
-  <Step title="Configure Settings">
-    Set up sync options:
-    - Order sync
-    - Inventory sync
-    - FBA vs. FBM handling
+  <Step title="Enter Credentials">
+    Provide the required TrackStar API credentials
   </Step>
 
-  <Step title="Enable">
-    Activate the integration
+  <Step title="Select Capabilities">
+    Enable **Warehouse Inventory** and any other supported data types
+  </Step>
+
+  <Step title="Configure Schedule">
+    Set the sync frequency using a cron expression
   </Step>
 </Steps>
 
 ## Integration Configuration
 
-### Data Sync Settings
+### Schedule Settings
 
-| Setting | Options |
-|---------|---------|
-| **Sync Direction** | One-way or bidirectional |
-| **Sync Frequency** | Real-time, hourly, daily |
-| **Historical Data** | How far back to sync |
-| **Data Types** | Which entities to sync |
+Integrations use cron expressions for scheduling with timezone support:
 
-### Field Mapping
+| Setting | Description | Example |
+|---------|-------------|---------|
+| **Cron Expression** | Standard 6-field cron format | `0 0 0 * * *` (daily at midnight) |
+| **Timezone** | IANA timezone for the schedule | `America/New_York`, `Europe/London`, `UTC` |
 
-Map external fields to Tether fields:
+Common cron patterns:
 
-| External Field | Tether Field |
-|----------------|--------------|
-| Product Title | SKU Name |
-| Product SKU | SKU Code |
-| Location | Warehouse |
-| Order Number | Sales Order ID |
+| Schedule | Cron Expression |
+|----------|----------------|
+| Daily at midnight | `0 0 0 * * *` |
+| Every 6 hours | `0 0 */6 * * *` |
+| Every hour | `0 0 * * * *` |
 
-### Channel Assignment
+### Capabilities
 
-Connect integrations to channels:
+Capabilities define which data types the integration syncs. You can enable or disable individual capabilities from the integration detail page after creation.
 
-1. Integration syncs orders
-2. Orders assigned to a channel
-3. Channel used for forecasting
+### Dry Run Mode
+
+Integrations can operate in **dry run mode**, which validates data mapping without saving any data to Tether. This is useful for:
+
+- Verifying field mappings before going live
+- Testing new integration configurations
+- Debugging data quality issues
 
 ## Managing Integrations
 
-### Viewing Integration Status
+### Integration Dashboard
 
-The integration dashboard shows:
+The integrations dashboard shows all configured integrations with:
 
-| Status | Meaning |
+| Column | Description |
+|--------|-------------|
+| **Name** | Integration display name |
+| **External Service** | The connected platform (e.g., Shopify, BigQuery) |
+| **Status** | Enabled or disabled |
+| **Last Sync** | When the integration last ran |
+| **Next Sync** | When the next scheduled sync will occur |
+| **Capabilities** | Which data types are configured |
+
+### Integration Detail Page
+
+Click on an integration to view its detail page, which includes:
+
+- **Integration info**: Name, external service, enabled status, dry run mode
+- **Schedule settings**: Cron expression and timezone (editable)
+- **Capabilities**: List of enabled data types (editable)
+- **Sync execution history**: Table of past sync runs with status, domain type, duration, and record counts
+
+### Enabling / Disabling an Integration
+
+Toggle the integration's enabled status from the integration detail page or the dashboard. Disabling an integration stops all scheduled syncs but preserves the configuration.
+
+### Triggering a Manual Sync
+
+From the integration detail page, click **Trigger Sync** to run an immediate sync outside the regular schedule.
+
+### Resetting Sync State
+
+<Warning>
+  This action is only available to administrators. Resetting sync state deletes all execution history for the integration and forces the next sync to perform a full data fetch.
+</Warning>
+
+Use **Reset Sync State** when you need to re-import all data from scratch, such as after fixing a mapping issue.
+
+### Deleting an Integration
+
+To permanently remove an integration:
+
+1. Navigate to the integration detail page
+2. Click **Delete Integration**
+3. Confirm the deletion
+
+<Warning>
+  Deleting an integration removes all its configuration and sync history. Historical data already synced to Tether is preserved.
+</Warning>
+
+## Credential Management
+
+Each external service defines its own credential fields. Credentials are entered during integration creation and stored securely.
+
+| Aspect | Details |
 |--------|---------|
-| **Connected** | Active and syncing |
-| **Paused** | Temporarily stopped |
-| **Error** | Issue needs attention |
-| **Disconnected** | Not connected |
-
-### Pausing an Integration
-
-<Steps>
-  <Step title="Go to Integrations">
-    Navigate to integration settings
-  </Step>
-
-  <Step title="Select Integration">
-    Choose the integration to pause
-  </Step>
-
-  <Step title="Click Pause">
-    Temporarily stop syncing
-  </Step>
-</Steps>
-
-**When to pause:**
-- During system maintenance
-- When troubleshooting
-- During bulk data changes
-
-### Editing Integration Settings
-
-<Steps>
-  <Step title="Go to Integrations">
-    Navigate to integration settings
-  </Step>
-
-  <Step title="Select Integration">
-    Choose the integration to edit
-  </Step>
-
-  <Step title="Modify Settings">
-    Change configuration as needed
-  </Step>
-
-  <Step title="Save">
-    Apply changes
-  </Step>
-</Steps>
-
-### Disconnecting an Integration
-
-<Warning>
-  Disconnecting stops all data sync. Historical data remains in Tether.
-</Warning>
-
-<Steps>
-  <Step title="Go to Integrations">
-    Navigate to integration settings
-  </Step>
-
-  <Step title="Select Integration">
-    Choose the integration to disconnect
-  </Step>
-
-  <Step title="Click Disconnect">
-    Remove the connection
-  </Step>
-
-  <Step title="Confirm">
-    Confirm the disconnection
-  </Step>
-</Steps>
-
-## Authentication Methods
-
-### OAuth
-
-Most integrations use OAuth:
-
-1. Click "Connect"
-2. Redirected to platform login
-3. Authorize Tether access
-4. Redirected back to Tether
-
-### API Credentials
-
-Some integrations require API keys:
-
-| Credential | Where to Find |
-|------------|---------------|
-| API Key | Platform developer settings |
-| API Secret | Platform developer settings |
-| Store URL | Your platform URL |
-
-<Warning>
-  Keep API credentials secure. Never share them publicly.
-</Warning>
+| **Dynamic Fields** | Credential fields vary by service — the form adapts automatically |
+| **Field Types** | Text fields, number fields, with labels and placeholders |
+| **Required Fields** | Marked with an asterisk (*) in the form |
+| **Security** | Credentials are stored securely and not displayed after creation |
 
 ## Integration Best Practices
 
 <AccordionGroup>
-  <Accordion title="Test Before Enabling">
-    Before going live:
-    - Test with sample data
-    - Verify mappings are correct
-    - Check sync direction
+  <Accordion title="Use Dry Run First">
+    Before enabling a new integration for production use:
+    - Run in dry run mode to validate mappings
+    - Review the sync execution results for errors
+    - Check for unmapped SKUs or channels
   </Accordion>
 
-  <Accordion title="Monitor Initially">
+  <Accordion title="Monitor Initial Syncs">
     After enabling:
-    - Watch first few syncs
-    - Verify data accuracy
-    - Check for errors
+    - Watch the first few sync executions
+    - Verify data accuracy in Tether
+    - Check for failed or skipped records
   </Accordion>
 
-  <Accordion title="Document Configuration">
-    Keep records of:
-    - Integration settings
-    - Field mappings
-    - Custom configurations
+  <Accordion title="Choose Appropriate Schedules">
+    Set sync frequency based on your needs:
+    - Daily syncs are sufficient for most sales data
+    - More frequent syncs for real-time inventory needs
+    - Consider API rate limits of the external service
   </Accordion>
 
   <Accordion title="Regular Review">
     Periodically check:
-    - Sync status
-    - Error logs
-    - Data quality
+    - Sync execution history for failures
+    - Credential validity
+    - Data quality and completeness
   </Accordion>
 </AccordionGroup>
 
@@ -326,21 +307,23 @@ Some integrations require API keys:
 
 ### Managing Multiple Sources
 
-When connecting multiple platforms:
+You can create multiple integrations, even for the same external service:
 
-- Each becomes a separate channel
-- Data flows to appropriate channel
-- Consolidated in Tether
+- Each integration has its own schedule and capabilities
+- Data flows to appropriate channels based on mapping
+- All data is consolidated within Tether
 
-### Avoiding Duplicates
+### Integration Architecture Options
 
-Prevent duplicate records:
+Tether supports different integration architectures depending on your needs:
 
-| Strategy | Description |
-|----------|-------------|
-| **Unique Identifiers** | Use external IDs |
-| **Channel Separation** | Keep sources distinct |
-| **Deduplication Rules** | Configure matching logic |
+| Pattern | Description |
+|---------|-------------|
+| **Individual Channel Integrations** | One integration per sales channel (e.g., one Shopify integration per store) |
+| **Centralized ERP Integration** | A single ERP or data warehouse integration that provides all sales data |
+| **Hybrid** | Combination of direct channel integrations and centralized data sources |
+
+See [Sync Sessions](/integrations/sync-sessions) for details on monitoring your integrations.
 
 ## Next Steps
 

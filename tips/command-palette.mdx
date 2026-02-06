@@ -38,81 +38,61 @@ The command palette provides quick access to any feature in Tether. Use it to na
 
 ### Search Types
 
-The command palette searches across:
+The command palette searches across two categories:
 
 | Type | Examples |
 |------|----------|
-| **Pages** | SKUs, Inventory, Forecasting |
-| **Actions** | Create SKU, Run Simulation |
-| **Records** | Specific SKUs, orders, suppliers |
-| **Settings** | User access, terminology |
+| **Pages** | SKUs, Inventory, Forecasting, Settings, Integrations |
+| **Records** | Specific SKUs, collections, transactions, warehouses, suppliers |
 
-## Command Categories
+## How It Works
 
-### Navigation Commands
+### Page Navigation
 
-Quickly jump to any page:
+Type a page name to filter matching navigation items. The palette matches against page titles and related keywords.
 
-| Command | Navigates To |
-|---------|--------------|
-| `skus` | SKU list |
+| Example Query | Matches |
+|---------------|---------|
+| `sku` | SKUs page |
 | `collections` | Collections page |
 | `inventory` | Inventory dashboard |
-| `forecast` | Demand forecasting |
-| `transactions` | Transaction list |
+| `forecast` | Demand Forecast pages |
 | `settings` | Settings page |
+| `integrations` | Integrations page |
 
-### Action Commands
+### Record Search
 
-Execute common actions:
+As you type, the palette also searches across your data to find matching records:
 
-| Command | Action |
-|---------|--------|
-| `create sku` | Open SKU creation |
-| `create collection` | Open collection creation |
-| `create transaction` | Start new transaction |
-| `run simulation` | Execute supply simulation |
-| `export` | Open export options |
+| Record Type | What's Searched |
+|-------------|----------------|
+| **SKUs** | SKU code and name |
+| **Collections** | Collection name and SKU prefix |
+| **Transactions** | Reference number, name, or ID |
+| **Warehouses** | Warehouse code and name |
+| **Suppliers** | Supplier code and name |
 
-### Search Commands
-
-Find specific records:
-
-| Command | Finds |
-|---------|-------|
-| `sku:` + name | Specific SKU |
-| `collection:` + name | Specific collection |
-| `order:` + number | Specific transaction |
-| `supplier:` + name | Specific supplier |
+Selecting a record navigates directly to its detail page.
 
 ## Tips for Effective Use
 
-### Fuzzy Matching
+### Partial Matching
 
-You don't need exact matches:
+You don't need to type full names — partial matches work:
 
 | Type | Matches |
 |------|---------|
 | `inv` | Inventory |
-| `sku cre` | Create SKU |
-| `fore dash` | Forecasting Dashboard |
-
-### Recent Items
-
-Command palette shows:
-
-- Recent pages visited
-- Recent searches
-- Recent actions
+| `sku` | SKUs page and SKU records |
+| `fore` | Demand Forecast pages |
 
 ### Keyboard Navigation
 
 | Key | Action |
 |-----|--------|
 | `↑` `↓` | Navigate results |
-| `Enter` | Select highlighted |
+| `Enter` | Select highlighted item |
 | `Esc` | Close palette |
-| `Tab` | Autocomplete |
 
 ## Common Workflows
 
@@ -152,43 +132,38 @@ Command palette shows:
   </Step>
 </Steps>
 
-### Quick Actions
+### Quick Record Lookup
 
 <Steps>
   <Step title="Open Palette">
     `Cmd + K`
   </Step>
 
-  <Step title="Type Action">
-    Type action (e.g., "create sku")
+  <Step title="Type Record Info">
+    Type a SKU code, warehouse name, supplier name, etc.
   </Step>
 
-  <Step title="Execute">
-    Press Enter to start action
+  <Step title="Select Result">
+    Choose from the matching records displayed below the pages
   </Step>
 </Steps>
 
-## Advanced Features
+## Results Layout
 
-### Filtering Results
+The command palette organizes results into groups:
 
-Narrow results by type:
+| Group | What It Shows |
+|-------|---------------|
+| **Pages** | Matching navigation items |
+| **SKUs** | Matching SKU records |
+| **Collections** | Matching collection records |
+| **Transactions** | Matching transaction records |
+| **Warehouses** | Matching warehouse records |
+| **Suppliers** | Matching supplier records |
 
-| Prefix | Filter |
-|--------|--------|
-| `>` | Actions only |
-| `@` | Records only |
-| `#` | Pages only |
-
-### Contextual Commands
-
-Commands change based on current page:
-
-| Current Page | Available Commands |
-|--------------|-------------------|
-| **SKU List** | Filter, sort, export |
-| **Forecast** | Edit, compare, export |
-| **Transaction** | Update status, add items |
+<Tip>
+  Results update as you type. A loading indicator appears while searching for records.
+</Tip>
 
 ## Best Practices
 
@@ -250,7 +225,7 @@ Commands change based on current page:
   <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
     Work with multiple items
   </Card>
-  <Card title="Navigation" icon="compass" href="/getting-started/navigation">
+  <Card title="Navigation" icon="compass" href="/navigation">
     Interface overview
   </Card>
   <Card title="Exports" icon="download" href="/tips/exports">

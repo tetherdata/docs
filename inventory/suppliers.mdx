@@ -19,215 +19,229 @@ A supplier is any external party that provides goods to your business:
 
 ## The Suppliers Dashboard
 
-Navigate to **Inventory** → **Suppliers** (or through the sidebar).
+Navigate to **Suppliers** from the sidebar.
 
-### Dashboard Features
+### Dashboard Columns
 
-| Feature | Description |
-|---------|-------------|
-| **Supplier List** | All suppliers with key information |
-| **Search** | Find suppliers by name |
-| **Status Filter** | Active, inactive, or all |
-| **Create Button** | Add new suppliers |
-
-### Supplier Information
-
-Each supplier shows:
+The supplier list displays the following information:
 
 | Column | Description |
 |--------|-------------|
-| **Name** | Supplier company name |
+| **Supplier Name** | Company name (links to supplier detail page) |
 | **Code** | Short identifier |
-| **Contact** | Primary contact person |
-| **Status** | Active or Inactive |
-| **SKU Count** | Products they supply |
+| **Status** | Active or inactive |
+| **Address** | Physical location |
+| **Contact Name** | Primary contact person |
+| **Contact Email** | Contact email address |
+| **Contact Phone** | Contact phone number |
 
 ## Creating a Supplier
 
 <Steps>
   <Step title="Navigate to Suppliers">
-    Go to **Inventory** → **Suppliers**
+    Go to **Suppliers** from the sidebar
   </Step>
 
-  <Step title="Click Create Supplier">
-    Click the **Create Supplier** button
+  <Step title="Click New Supplier">
+    Click the **New Supplier** button
   </Step>
 
   <Step title="Enter Basic Information">
     | Field | Required | Description |
     |-------|----------|-------------|
-    | **Name** | Yes | Company name |
-    | **Code** | Yes | Short identifier |
-    | **Contact Name** | No | Primary contact |
-    | **Email** | No | Contact email |
-    | **Phone** | No | Contact phone |
+    | **Supplier Name** | Yes | Company name |
+    | **Supplier Code** | Yes | Short identifier |
+    | **Description** | No | Brief description of the supplier's capabilities |
   </Step>
 
   <Step title="Add Address (Optional)">
-    Enter supplier location for reference
+    Click **Add Address** to expand the address section:
+
+    | Field | Description |
+    |-------|-------------|
+    | **Street Address** | Street address |
+    | **City** | City |
+    | **State/Province** | State or province |
+    | **Postal Code** | Zip or postal code |
+    | **Country** | Country |
+  </Step>
+
+  <Step title="Add Contact Information (Optional)">
+    Click **Add Contact** to expand the contact section:
+
+    | Field | Description |
+    |-------|-------------|
+    | **Contact Name** | Primary contact person |
+    | **Email** | Contact email address |
+    | **Phone** | Contact phone number |
   </Step>
 
   <Step title="Save">
-    Click **Save** to create the supplier
+    Click **Create Supplier** to create the supplier. You'll be redirected to the new supplier's detail page.
   </Step>
 </Steps>
 
 ## Supplier Detail View
 
-Click on a supplier to see full details:
+Click on a supplier to see full details. The detail page has the following tabs:
 
-### Overview Section
+| Tab | Description |
+|-----|-------------|
+| **Overview** | Supplier details and SKU capabilities table |
+| **Transactions** | Transaction history with this supplier |
+| **Inventory** | Inventory held by this supplier (if linked warehouse exists) |
+| **Inventory Settings** | SKU-warehouse assignments for the supplier's linked warehouse |
+| **Lead Times** | Transit lead times from supplier's linked warehouse to other warehouses |
 
-Basic supplier information:
-- Name and code
-- Contact details
-- Address
-- Status
-- Notes
+<Note>
+  The **Inventory**, **Inventory Settings**, and **Lead Times** tabs are fully functional only when a supplier has a linked warehouse. Otherwise, they display a message indicating no warehouse is linked.
+</Note>
 
-### Capabilities Section
+### Overview Tab
 
-What products this supplier provides and their terms. This is the critical section for supply planning.
+The Overview tab contains two main sections:
+
+1. **Supplier Details** — Editable form showing name, code, description, address, and contact information. Click **Edit** to modify.
+2. **SKU Capabilities** — Data table showing which products this supplier provides and the terms for each.
 
 ## Supplier Capabilities
 
-Capabilities define what a supplier can provide and the terms.
+Capabilities define what SKUs a supplier can provide and the terms for each.
 
-### Configuring Capabilities
+### Capabilities Table Columns
 
-<Steps>
-  <Step title="Open Supplier Detail">
-    Click on a supplier to open their page
-  </Step>
+| Column | Description |
+|--------|-------------|
+| **Collection** | Product collection the SKU belongs to (links to collection page) |
+| **Type** | SKU type (e.g., Finished Good, Raw Material) |
+| **SKU Code** | Product code identifier |
+| **SKU Name** | Product name (links to SKU detail page) |
+| **Lead Time (days)** | Production/delivery lead time in days |
+| **MOQ** | Minimum order quantity |
+| **Cost** | Total cost per unit, with breakdown by cost items |
+| **Unit** | Unit of measurement for ordering |
+| **Vendor SKU** | Supplier's internal code for this product |
 
-  <Step title="Go to Capabilities">
-    Navigate to the capabilities section
-  </Step>
+### Viewing and Filtering Capabilities
 
-  <Step title="Add SKU">
-    Click **Add SKU** to add a product this supplier provides
-  </Step>
+The capabilities table supports several filters:
 
-  <Step title="Configure Terms">
-    For each SKU, set:
-    - Lead time
-    - Cost
-    - Minimum order quantity
-    - Supplier SKU code
-  </Step>
+- **Product Hierarchy** — Filter by hierarchy fields (if configured)
+- **Collection** — Filter by product collection
+- **SKU** — Filter by specific SKUs
+- **Status Toggle** — Switch between **All**, **Enabled** (SKUs with capabilities), and **Disabled** (SKUs without capabilities)
 
-  <Step title="Save">
-    Save the capability configuration
-  </Step>
-</Steps>
+### Editing Capabilities
 
-### Capability Fields
+Click on any editable field (Lead Time, MOQ, Vendor SKU) to modify it inline:
 
-| Field | Description |
-|-------|-------------|
-| **SKU** | The product this supplier provides |
-| **Supplier SKU Code** | Their internal code for this product |
-| **Lead Time** | Days from order to delivery |
-| **Cost per Unit** | Purchase price |
-| **Minimum Quantity** | Minimum order size |
-| **Lot Size** | Order must be in multiples of this |
-| **Priority** | Preference ranking among suppliers |
+1. Click the field value to enter edit mode
+2. Type the new value
+3. Press **Enter** or click away to confirm
+4. Pending changes are highlighted in blue
+5. Click **Save** to save all pending changes, or **Discard** to revert
 
-### Example Capability
+### Bulk Editing
 
-```
-SKU: Blue T-Shirt (Medium)
-Supplier SKU: BTS-M-BL
-Lead Time: 14 days
-Cost: $8.50 per unit
-Minimum Quantity: 100 units
-Lot Size: 50 units
-Priority: 1 (Primary supplier)
-```
+Apply settings to multiple SKUs at once:
 
-## Lead Times
+1. Set values in the **Lead Time** and/or **MOQ** bulk input fields
+2. Click **Apply to N Enabled** to apply those values to all enabled (with capabilities) SKUs matching the current filters
 
-Lead times are critical for supply planning.
+## Cost Configuration
 
-### Components of Lead Time
+Costs are managed through a **cost items** approach, where each SKU's total cost is composed of individual cost components.
 
-| Component | Description |
-|-----------|-------------|
-| **Order Processing** | Time for supplier to process order |
-| **Manufacturing** | Time to produce (if made-to-order) |
-| **Shipping** | Transit time to your warehouse |
-| **Customs** | International shipping delays |
-| **Receiving** | Time to receive and stock |
+### How Cost Items Work
+
+Each SKU-supplier combination can have multiple cost items that sum to the total cost per unit:
+
+| Cost Item | Cost per Unit |
+|-----------|---------------|
+| Raw Material | $5.00 |
+| Manufacturing | $2.50 |
+| Packaging | $1.00 |
+| **Total** | **$8.50** |
+
+### Managing Cost Items
+
+Click on the **Cost** column for any SKU to open the cost breakdown popover:
+
+1. **View** — See all cost items and their amounts
+2. **Add** — Enter a cost name and amount, then click the **+** button
+3. **Edit** — Modify existing cost item names or amounts inline
+4. **Delete** — Remove a cost item by clicking the trash icon
+5. **Save** — Click **Save** to apply changes (only appears when changes are pending)
+
+<Info>
+  Cost is always expressed per the SKU's default unit of measurement.
+</Info>
+
+## Supplier Lead Times
+
+Lead times for each SKU are configured directly in the capabilities table.
 
 ### Setting Lead Times
 
-Enter the total lead time that covers all components.
+1. Navigate to the supplier's **Overview** tab
+2. Find the SKU in the capabilities table
+3. Click the **Lead Time (days)** value
+4. Enter the total lead time in days
+5. Save changes
+
+### What Lead Time Includes
+
+The lead time value should account for the total time from placing an order to having inventory available:
+
+- Order processing time
+- Manufacturing time (if made-to-order)
+- Shipping time to your warehouse
+- Customs clearance (if international)
+- Receiving and stocking time
 
 <Info>
   Use realistic lead times. Overly optimistic times lead to stockouts. Add buffer for reliability.
 </Info>
 
-### Different Lead Times
+## Supplier Held Inventory
 
-Consider variations:
+Some suppliers hold inventory on your behalf in a linked warehouse. This is the **Supplier Held Inventory** feature.
 
-| Situation | Adjustment |
-|-----------|------------|
-| Standard order | Base lead time |
-| Rush order | Shorter (if supplier offers) |
-| Peak season | Add buffer for delays |
-| New relationship | Add buffer until proven |
+### How It Works
 
-## Cost Configuration
+A supplier can be linked to a specific warehouse (the `linked_warehouse_id`). When linked:
 
-Track costs for purchasing decisions and margin analysis.
+- The **Inventory** tab shows inventory at the supplier's linked warehouse
+- The **Inventory Settings** tab allows configuring SKU-warehouse assignments for the linked warehouse
+- The **Lead Times** tab shows transit lead times from the supplier's linked warehouse to your other warehouses (using the same interface as warehouse lead time configuration)
 
-### Cost Fields
+### When to Use
 
-| Field | Description |
-|-------|-------------|
-| **Base Cost** | Standard unit price |
-| **Currency** | Cost currency |
-| **Volume Discounts** | Price breaks at quantities |
-| **Effective Date** | When pricing is valid |
+Supplier Held Inventory is useful when:
 
-### Volume Pricing
+- A supplier maintains stock in their own facility on your behalf
+- You need to track inventory at a supplier's location
+- Transfer times from the supplier's warehouse to yours need to be configured
 
-Configure price breaks:
+## Suppliers in Supply Planning
 
-| Quantity | Cost per Unit |
-|----------|---------------|
-| 1-99 | $10.00 |
-| 100-499 | $9.00 |
-| 500-999 | $8.50 |
-| 1000+ | $8.00 |
+Supplier data powers the supply plan:
 
-## Multiple Suppliers
+### Order Recommendations
 
-Many SKUs have multiple potential suppliers.
+Tether recommends orders based on:
+1. Demand forecast
+2. Current inventory levels
+3. Supplier lead times for each SKU
+4. Minimum order quantities
 
-### Why Multiple Suppliers
+### Order Timing
 
-- **Backup** - Alternative if primary can't deliver
-- **Capacity** - Primary can't meet full demand
-- **Geographic** - Different suppliers for different regions
-- **Cost** - Price competition
-
-### Supplier Priority
-
-Set priority to indicate preference:
-
-| Priority | Meaning |
-|----------|---------|
-| 1 | Primary supplier (first choice) |
-| 2 | Secondary supplier |
-| 3+ | Backup suppliers |
-
-### How Tether Uses Priority
-
-1. Recommendations use highest priority supplier
-2. If capacity exceeded, moves to next priority
-3. Can manually override for specific orders
+```
+Stockout projected: Day 30
+Lead time: 14 days
+Order must be placed by: Day 16
+```
 
 ## Supplier Status
 
@@ -253,17 +267,17 @@ Suppliers can be Active or Inactive:
 <AccordionGroup>
   <Accordion title="Complete All Capabilities">
     For supply planning to work well:
-    - Add all SKUs each supplier provides
+    - Add capabilities for all SKUs each supplier provides
     - Set accurate lead times
-    - Include cost information
-    - Define minimum quantities
+    - Include cost information with detailed cost items
+    - Define minimum order quantities
   </Accordion>
 
-  <Accordion title="Maintain Multiple Suppliers">
-    Reduce risk with backup suppliers:
-    - Have at least 2 suppliers for critical SKUs
-    - Verify backup can actually deliver
-    - Keep relationships active
+  <Accordion title="Use Detailed Cost Breakdown">
+    Break costs into components for better analysis:
+    - Separate raw material, manufacturing, and packaging costs
+    - Makes it easier to identify cost optimization opportunities
+    - Provides transparency into total cost composition
   </Accordion>
 
   <Accordion title="Regular Updates">
@@ -274,66 +288,44 @@ Suppliers can be Active or Inactive:
   </Accordion>
 
   <Accordion title="Document Terms">
-    Use notes to record:
+    Use the description field to record:
     - Payment terms
     - Special agreements
-    - Contact preferences
-    - Historical issues
+    - Historical notes
   </Accordion>
 </AccordionGroup>
-
-## Suppliers in Supply Planning
-
-Supplier data powers the supply plan:
-
-### Order Recommendations
-
-Tether recommends orders based on:
-1. Demand forecast
-2. Current inventory
-3. Supplier lead times
-4. Minimum order quantities
-
-### Order Timing
-
-```
-Stockout projected: Day 30
-Lead time: 14 days
-Order must be placed by: Day 16
-```
-
-### Supplier Selection
-
-Recommendations use:
-1. Primary supplier (Priority 1)
-2. Unless capacity issue → Secondary
-3. Unless specified → Manual override
 
 ## Troubleshooting
 
 ### Supplier Not Appearing in Recommendations
 
 **Possible causes:**
-- No capabilities configured
+- No capabilities configured for the relevant SKUs
 - Supplier is inactive
-- Priority is lower than alternatives
+- Lead times not set
 
 **Solutions:**
 1. Add capabilities for relevant SKUs
 2. Verify supplier is active
-3. Check priority settings
+3. Set lead times in the capabilities table
 
-### Wrong Supplier Recommended
+### Inventory/Lead Times Tabs Show "No Warehouse Linked"
 
-**Possible causes:**
-- Priority misconfigured
-- Cost or lead time favors other supplier
-- Capacity constraints
+**Possible cause:**
+- Supplier doesn't have a linked warehouse configured
 
-**Solutions:**
-1. Review and adjust priorities
-2. Manually select preferred supplier when ordering
-3. Check capacity settings
+**Solution:**
+The Inventory, Inventory Settings, and Lead Times tabs require a linked warehouse. These tabs are used for the Supplier Held Inventory feature. If the supplier doesn't hold inventory for you, this is expected behavior.
+
+### Cost Not Showing
+
+**Possible cause:**
+- No cost items have been configured for the SKU
+
+**Solution:**
+1. Click the cost cell for the SKU
+2. Add cost items with names and amounts
+3. Save changes
 
 ## Next Steps
 
@@ -345,9 +337,9 @@ Recommendations use:
     Create purchase orders
   </Card>
   <Card title="Lead Times" icon="clock" href="/inventory/warehouses/lead-times">
-    Configure transfer times
+    Configure warehouse transfer times
   </Card>
-  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
-    Configure replenishment rules
+  <Card title="Forecasts" icon="chart-line" href="/inventory/forecasts-flow">
+    View demand and supply projections
   </Card>
 </CardGroup>

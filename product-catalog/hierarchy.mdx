@@ -5,33 +5,26 @@ description: Organizing products with multi-level categorization
 
 # Product Hierarchy
 
-Product hierarchy provides a multi-level categorization system for organizing your products for reporting, filtering, and analysis. Unlike dimensions (which vary within a product), hierarchy defines how products are categorized.
+Product hierarchy provides a field-based categorization system for organizing your products for reporting, filtering, and analysis. Unlike dimensions (which vary within a product), hierarchy defines how products are categorized.
 
 ## What is Product Hierarchy?
 
-Product hierarchy is a tree structure that categorizes your products. It's commonly used for:
+Product hierarchy uses up to 5 independent classification fields to categorize your products. Each field can be activated with a custom label and populated with values. Common uses include:
 
-- **Reporting** - Aggregate data at different levels
-- **Filtering** - Find products by category
-- **Organization** - Logical grouping of products
-- **Analysis** - Compare performance across categories
+- **Reporting** — Aggregate data at different categorization levels
+- **Filtering** — Find products by category on the SKU dashboard
+- **Organization** — Logical grouping of products
+- **Analysis** — Compare performance across categories
 
-### Example Hierarchy
+### Example Fields
 
-```
-Level 1: Category
-└── Level 2: Subcategory
-    └── Level 3: Product Line
-        └── Level 4: Sub-Line
-            └── Level 5: Specific Type
-
-Example:
-Apparel
-└── Tops
-    └── T-Shirts
-        └── Graphic Tees
-            └── Band Tees
-```
+| Field | Custom Label | Example Values |
+|-------|-------------|----------------|
+| Field 1 | Category | Apparel, Accessories, Footwear |
+| Field 2 | Sub-Category | Tops, Bottoms, Outerwear |
+| Field 3 | Product Line | T-Shirts, Dress Shirts, Polos |
+| Field 4 | Brand | Premium, Standard, Basics |
+| Field 5 | Season | Spring 2026, Summer 2026 |
 
 ## Hierarchy vs. Collections vs. Dimensions
 
@@ -39,168 +32,155 @@ Understanding when to use each:
 
 | Feature | Purpose | Example |
 |---------|---------|---------|
-| **Hierarchy** | Categorization for reporting | Category > Subcategory |
+| **Hierarchy** | Categorization for reporting | Category, Sub-Category |
 | **Collections** | Group products with shared dimensions | "T-Shirts" collection |
 | **Dimensions** | Product variants | Size, Color |
 
 <Info>
-  A product can belong to one collection but be categorized in multiple hierarchy paths if needed.
+  Hierarchy fields are independent of each other. Each field has its own set of values, and a product can be assigned a value for any combination of active fields.
 </Info>
 
-## Configuring Product Hierarchy
+## The Hierarchy Dashboard
 
-### Access Hierarchy Settings
+Navigate to **SKUs** → **Product Hierarchy** to access the hierarchy dashboard.
 
-Navigate to **SKUs** → **Product Hierarchy** (or through Settings).
+### Dashboard Overview
 
-### Setting Up Hierarchy Levels
+The dashboard displays:
 
-Tether supports up to 5 hierarchy levels:
+| Feature | Description |
+|---------|-------------|
+| **Active Fields** | Count of currently activated fields out of 5 total |
+| **Total Values** | Combined count of values across all active fields |
+| **Hierarchy Fields Table** | All 5 fields with their status, label, values, and actions |
+
+### Field Table Columns
+
+Each row in the hierarchy fields table shows:
+
+- **Field #** — Field number (1–5)
+- **Status** — Active or Inactive badge
+- **Custom Label** — The label you've assigned (e.g., "Category")
+- **Values** — All values for the field shown as badges, with a **+** button to add more
+- **Actions** — Dropdown menu with field management options
+
+## Configuring Hierarchy Fields
+
+Tether supports up to 5 hierarchy fields. Each field starts as inactive and must be activated with a custom label before you can add values.
+
+### Activating a Field
 
 <Steps>
-  <Step title="Define Level Names">
-    Name each level of your hierarchy:
-
-    | Level | Example Name |
-    |-------|--------------|
-    | Level 1 | Category |
-    | Level 2 | Subcategory |
-    | Level 3 | Product Line |
-    | Level 4 | Sub-Line |
-    | Level 5 | Type |
+  <Step title="Open the Actions Menu">
+    Click the **⋯** menu on an inactive field row
   </Step>
 
-  <Step title="Create Values for Each Level">
-    Add possible values at each level:
-
-    **Level 1 (Category):**
-    - Apparel
-    - Accessories
-    - Footwear
-
-    **Level 2 (Subcategory):**
-    - Tops
-    - Bottoms
-    - Outerwear
+  <Step title="Click Activate Field">
+    Select **Activate Field** from the dropdown
   </Step>
 
-  <Step title="Define Valid Paths">
-    Specify which level 2 values can appear under each level 1:
-    - Apparel → Tops, Bottoms, Outerwear
-    - Accessories → Bags, Hats, Jewelry
+  <Step title="Enter a Custom Label">
+    Provide a label for the field (e.g., "Category", "Sub-Category", "Brand"). Example placeholders shown: Category, Sub-Category, Brand.
   </Step>
 
-  <Step title="Save Configuration">
-    Save the hierarchy structure
+  <Step title="Activate">
+    Click **Activate Field** to save
   </Step>
 </Steps>
 
-### Hierarchy Value Configuration
+### Editing a Field Label
 
-For each value, you can configure:
+For active fields, click **⋯** → **Edit Label** to change the custom label.
 
-| Property | Description |
-|----------|-------------|
-| **Name** | Display name for the value |
-| **Code** | Short identifier |
-| **Parent** | Which value this belongs under |
-| **Sort Order** | Position in lists |
+### Deactivating a Field
+
+Click **⋯** → **Deactivate** on an active field to deactivate it. Deactivated fields retain their configuration but are no longer shown in filters or assignment options.
+
+### Managing Field Values
+
+<Steps>
+  <Step title="Open Value Management">
+    Click **⋯** → **Manage Values** on an active field, or click the **+** button in the Values column
+  </Step>
+
+  <Step title="Add Values">
+    Click **Add Value**, enter a value name, and click **Add Value** to confirm. Values are simple text labels (e.g., "Apparel", "Tops", "T-Shirts").
+  </Step>
+
+  <Step title="Edit Values">
+    Click directly on a value name in the table to edit it inline. Edited values show a blue "(edited)" indicator.
+  </Step>
+
+  <Step title="Remove Values">
+    Click the trash icon to mark a value for deletion. Deleted values show with strikethrough text and can be restored before saving.
+  </Step>
+
+  <Step title="Save Changes">
+    Click **Save Changes** to apply all additions, edits, and deletions at once
+  </Step>
+</Steps>
+
+<Info>
+  The "unassigned" value is a system value that cannot be edited or deleted.
+</Info>
 
 ## Assigning Hierarchy to Products
 
-### Collection-Level Assignment
+Products can be assigned hierarchy values to categorize them within your organizational structure.
 
-Assign hierarchy values to a collection:
+### Collection-Level Hierarchy
 
-<Steps>
-  <Step title="Open Collection">
-    Navigate to the collection's detail page
-  </Step>
+Each collection shows its assigned hierarchy values in the **Hierarchy** tab on the collection detail page. This tab displays:
 
-  <Step title="Go to Hierarchy Tab">
-    Select the **Hierarchy** tab
-  </Step>
+- Each active hierarchy field with its custom label
+- The assigned value (or "Not set" if unassigned)
+- The field level number
 
-  <Step title="Select Values">
-    For each hierarchy level, select the appropriate value:
-    - Category: Apparel
-    - Subcategory: Tops
-    - Product Line: T-Shirts
-  </Step>
-
-  <Step title="Save">
-    All SKUs in the collection inherit these values
-  </Step>
-</Steps>
-
-### SKU-Level Override
-
-Individual SKUs can have different hierarchy values than their collection:
-
-1. Open the SKU detail page
-2. Navigate to the hierarchy section
-3. Select different values as needed
-4. Save the override
-
-<Note>
-  SKU-level hierarchy takes precedence over collection-level settings.
-</Note>
+<Info>
+  Hierarchy fields help organize your products for better reporting and management. Once configured, you can assign products to specific hierarchy values from the Product List page.
+</Info>
 
 ## Using Hierarchy in Tether
 
 ### Filtering by Hierarchy
 
-Hierarchy appears in filter panels throughout Tether:
-
-1. Expand the hierarchy filter section
-2. Select values at any level
-3. View all products in that branch
-
-**Example:** Selecting "Apparel" shows all products under Apparel, including all subcategories.
-
-### Reporting with Hierarchy
-
-Hierarchy enables multi-level reporting:
-
-- **Top Level**: Total sales for Apparel
-- **Drill Down**: Sales by Subcategory within Apparel
-- **Detail**: Sales by Product Line within Subcategory
+Active hierarchy fields appear as filter groups on the SKU dashboard and other views. Each field's values are shown with tri-state filtering support (include, exclude, or indifferent). An "(Unassigned)" option is also available for products without a value for that field.
 
 ### Demand Forecasting
 
-In demand forecasting, group by hierarchy levels to:
-- View forecasts at category level
-- Drill down to specific product lines
-- Compare performance across categories
+In demand forecasting, hierarchy fields can be used to:
+- Group and filter forecasts by category
+- Compare performance across hierarchy values
+- Organize forecast views by product categorization
 
 ## Hierarchy Design Best Practices
 
 <AccordionGroup>
   <Accordion title="Start with Business Needs">
-    Design hierarchy based on how you need to report and analyze:
+    Choose field labels based on how you need to report and analyze:
     - How does leadership want to see performance?
     - What comparisons are meaningful?
     - How is the business organized?
   </Accordion>
 
-  <Accordion title="Keep It Balanced">
-    Avoid hierarchies that are too deep or too shallow:
-    - 3-4 levels is common
-    - Very deep hierarchies (5+ levels) can be hard to navigate
-    - Very shallow hierarchies (1-2 levels) limit analysis
+  <Accordion title="Activate Only What You Need">
+    You don't need to use all 5 fields:
+    - 2–4 active fields is common
+    - Each field adds a filter dimension to your views
+    - You can always activate more fields later
   </Accordion>
 
   <Accordion title="Use Clear, Mutually Exclusive Values">
-    Each product should fit clearly into one path:
+    Each product should fit clearly into one value per field:
     - Avoid overlapping categories
-    - "Active" vs "Casual" might overlap—be specific
+    - "Active" vs "Casual" might overlap — be specific
   </Accordion>
 
   <Accordion title="Plan for Growth">
     Consider future product lines:
-    - Leave room for new categories
-    - Don't make current structure too specific
-    - Values can be added later
+    - Leave room for new values
+    - Don't make labels too specific
+    - Values can be added or edited at any time
   </Accordion>
 
   <Accordion title="Align with External Systems">
@@ -215,94 +195,66 @@ In demand forecasting, group by hierarchy levels to:
 
 ### Fashion / Apparel
 
-```
-Gender
-└── Category
-    └── Subcategory
-        └── Style
-
-Example:
-Women's
-└── Tops
-    └── Blouses
-        └── Silk Blouses
-```
+| Field | Label | Example Values |
+|-------|-------|----------------|
+| Field 1 | Gender | Men's, Women's, Unisex |
+| Field 2 | Category | Tops, Bottoms, Outerwear |
+| Field 3 | Sub-Category | T-Shirts, Blouses, Jeans |
+| Field 4 | Style | Casual, Formal, Active |
 
 ### Consumer Electronics
 
-```
-Division
-└── Category
-    └── Product Family
-        └── Product Type
-
-Example:
-Computing
-└── Laptops
-    └── MacBook
-        └── MacBook Pro
-```
+| Field | Label | Example Values |
+|-------|-------|----------------|
+| Field 1 | Division | Computing, Mobile, Audio |
+| Field 2 | Category | Laptops, Tablets, Headphones |
+| Field 3 | Product Family | MacBook, iPad, AirPods |
+| Field 4 | Product Type | Pro, Air, Standard |
 
 ### Food & Beverage
 
-```
-Category
-└── Subcategory
-    └── Brand
-        └── Product Line
-
-Example:
-Beverages
-└── Coffee
-    └── Premium Roast
-        └── Single Origin
-```
+| Field | Label | Example Values |
+|-------|-------|----------------|
+| Field 1 | Category | Beverages, Snacks, Meals |
+| Field 2 | Sub-Category | Coffee, Tea, Juice |
+| Field 3 | Brand | Premium Roast, House Blend |
+| Field 4 | Product Line | Single Origin, Decaf |
 
 ### Home Goods
 
-```
-Room
-└── Category
-    └── Style
-        └── Material
-
-Example:
-Bedroom
-└── Bedding
-    └── Modern
-        └── Cotton
-```
+| Field | Label | Example Values |
+|-------|-------|----------------|
+| Field 1 | Room | Bedroom, Living Room, Kitchen |
+| Field 2 | Category | Bedding, Furniture, Decor |
+| Field 3 | Style | Modern, Classic, Rustic |
+| Field 4 | Material | Cotton, Linen, Microfiber |
 
 ## Managing Hierarchy Changes
 
 ### Adding New Values
 
-Adding values is straightforward:
-1. Navigate to hierarchy configuration
-2. Add the new value at the appropriate level
-3. Assign to collections/SKUs as needed
+1. Open the hierarchy dashboard
+2. Click **⋯** → **Manage Values** on the target field
+3. Click **Add Value** and enter the new value name
+4. Click **Save Changes**
 
-### Renaming Values
+### Editing Values
 
-Renaming updates displays but preserves relationships:
-1. Edit the value's name
-2. All products using this value update automatically
-3. Historical data remains linked
-
-### Restructuring Hierarchy
-
-Larger changes require more care:
+1. Open the Manage Values modal for the field
+2. Click directly on the value name to edit inline
+3. Modified values show a blue "(edited)" indicator
+4. Click **Save Changes** to apply
 
 <Warning>
-  Restructuring hierarchy can affect historical reporting. Plan carefully and consider the impact on year-over-year comparisons.
+  Renaming hierarchy values can affect how existing products are categorized. Consider the impact on reporting before making changes.
 </Warning>
 
-**Steps for restructuring:**
-1. Document current structure
-2. Plan new structure
-3. Update hierarchy configuration
-4. Reassign products to new values
-5. Verify reports work correctly
+### Removing Values
+
+1. Open the Manage Values modal for the field
+2. Click the trash icon on the value to mark it for deletion
+3. Deleted values show with strikethrough and can be restored before saving
+4. Click **Save Changes** to apply
 
 ## Troubleshooting
 
@@ -310,34 +262,30 @@ Larger changes require more care:
 
 **Possible causes:**
 - Product doesn't have hierarchy values assigned
-- Collection doesn't have hierarchy values
-- Filter is set to a different branch
+- The hierarchy field is not activated
 
 **Solution:**
-1. Check product/collection hierarchy settings
-2. Verify values are assigned at all required levels
-3. Clear and reset filters
+1. Verify the hierarchy field is active on the dashboard
+2. Assign hierarchy values to products
+3. Use the "(Unassigned)" filter option to find products without values
 
-### Hierarchy Levels Not Showing
+### Field Not Showing in Filters
 
 **Possible causes:**
-- Level isn't configured
-- No values exist for that level
-- Permissions restrict access
+- Field is not activated
+- No values have been added
 
 **Solution:**
-1. Verify hierarchy configuration includes all needed levels
-2. Add values to empty levels
-3. Check user permissions
+1. Activate the field with a custom label
+2. Add at least one value to the field
 
-### Can't Delete Hierarchy Value
+### Cannot Delete a System Value
 
-**Cause:** Products are assigned to this value
+**Cause:** The "unassigned" value is a system value
 
 **Solution:**
-1. Find products using this value
-2. Reassign them to another value
-3. Then delete the unused value
+- System values like "unassigned" cannot be edited or deleted
+- They are automatically managed by the system
 
 ## Next Steps
 

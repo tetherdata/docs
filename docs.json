@@ -71,6 +71,7 @@
               "demand-forecasting/sales-history",
               "demand-forecasting/comparison",
               "demand-forecasting/admin",
+              "demand-forecasting/algorithms",
               "demand-forecasting/promotions"
             ]
           },
