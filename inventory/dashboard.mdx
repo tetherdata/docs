@@ -115,21 +115,26 @@ Each SKU/warehouse combination has a health status determined by the supply simu
 
 ## Inventory States
 
-Tether tracks inventory in different states:
+Tether tracks inventory across ten states:
 
 | State | Description |
 |-------|-------------|
-| **Sellable** | Available for sale |
-| **On Hand** | Physically in warehouse |
-| **Committed** | Reserved for orders |
-| **Incoming** | In transit or on order |
-| **Damaged** | Not available for sale |
+| **Sellable** | Available for new sales |
+| **On Hand** | Physical inventory at the warehouse |
+| **Committed** | Reserved for specific orders |
+| **Fulfillable** | Available to fulfill orders |
+| **Unfulfillable** | Cannot be sold (damaged, on hold) |
+| **Unsellable** | Cannot be sold (regulatory, expiry) |
+| **Awaiting In-Transit** | In transit to the warehouse |
+| **Awaiting In-Production** | Currently being manufactured |
+| **Consumed** | Components consumed in production |
+| **Backordered** | Negative availability — demand exceeds supply |
 
-### Understanding the Relationship
+### Understanding the Relationships
 
 ```
-On Hand = Sellable + Committed + Damaged
-Available to Promise = Sellable + Incoming
+On Hand = Sellable + Committed + Unfulfillable + Unsellable
+Available to Promise = Sellable + Awaiting In-Transit + Awaiting In-Production
 ```
 
 ## Refreshing Simulation Data

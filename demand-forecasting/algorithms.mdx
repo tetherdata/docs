@@ -21,7 +21,7 @@ Tether generates demand forecasts using **11 statistical algorithms**, each desi
 | [Exponentially Weighted Moving Average](#exponentially-weighted-moving-average-ewma) | Trending products, recent pattern changes | Yes | None |
 | [Linear Trend](#linear-trend) | Products with consistent growth or decline | No | None |
 | [Simplified Seasonal](#simplified-seasonal) | Seasonal or cyclical products | Yes | 365 days |
-| [Simple Seasonal with Trend](#simple-seasonal-with-trend) | Seasonal products with growth trends | Yes | 365 days |
+| [Simple Seasonal with Trend Adjustment](#simple-seasonal-with-trend-adjustment) | Seasonal products with growth trends | Yes | 365 days |
 | [Seasonal Year-over-Year Growth](#seasonal-year-over-year-growth) | Seasonal products with observed YoY growth | Yes | 365 days |
 | [Rolling Momentum](#rolling-momentum) | Accelerating or decelerating products | Yes | 90 days |
 | [Holt-Winters](#holt-winters-triple-exponential-smoothing) | Complex seasonal patterns with trends | Yes | 365 days |
@@ -53,7 +53,7 @@ The Rolling Average computes the simple arithmetic mean of daily sales over a hi
     |-----------|---------|-------------|
     | `window_days` | 90 | Number of days to include in the average |
 
-    **Type ID:** `last_90_day_average`
+    **Type ID:** `rolling_average`
     **Supports optimization:** No
   </Tab>
 
@@ -66,7 +66,7 @@ The Rolling Average computes the simple arithmetic mean of daily sales over a hi
     |-----------|---------|-------------|
     | `window_days` | 120 | Number of days in the sliding window |
 
-    **Type ID:** `rolling_window`
+    **Type ID:** `rolling_average_120`
     **Supports optimization:** No
   </Tab>
 </Tabs>
@@ -150,7 +150,7 @@ Weights are normalized to sum to 1.0 during optimization.
 
 ---
 
-## Simple Seasonal with Trend
+## Simple Seasonal with Trend Adjustment
 
 Builds on Simplified Seasonal by adding a **growth factor** that blends observed year-over-year trends with a planned growth assumption. Near-term forecasts emphasize observed performance, while longer-horizon forecasts shift toward the planned growth rate.
 
@@ -390,7 +390,7 @@ The optimizer can minimize any of three error metrics:
 | EWMA | **Yes** | Nelder-Mead | `weight_factor` |
 | Linear Trend | No | — | — |
 | Simplified Seasonal | **Yes** | Nelder-Mead | `weekly_weight`, `monthly_weight` |
-| Simple Seasonal with Trend | **Yes** | Nelder-Mead | `growth_factor`, observation/horizon windows, `initial_trend_weight` |
+| Simple Seasonal with Trend Adjustment | **Yes** | Nelder-Mead | `growth_factor`, observation/horizon windows, `initial_trend_weight` |
 | Seasonal YoY Growth | **Yes** | Nelder-Mead | `weekly_weight`, `monthly_weight` |
 | Rolling Momentum | **Yes** | Nelder-Mead | Window sizes, `sensitivity`, `max_daily_growth_cap` |
 | Holt-Winters | **Yes** | Nelder-Mead | `alpha`, `beta`, `gamma`, `phi` |
@@ -413,7 +413,7 @@ Use this guide to choose the right algorithm based on your data patterns.
   </Accordion>
 
   <Accordion title="Seasonal demand — recurring annual cycles">
-    Start with **Simplified Seasonal** for straightforward seasonal products. If your products also exhibit year-over-year growth, use **Seasonal YoY Growth** or **Simple Seasonal with Trend**. For complex patterns with both trend and seasonality, **Holt-Winters** offers the most flexibility.
+    Start with **Simplified Seasonal** for straightforward seasonal products. If your products also exhibit year-over-year growth, use **Seasonal YoY Growth** or **Simple Seasonal with Trend Adjustment**. For complex patterns with both trend and seasonality, **Holt-Winters** offers the most flexibility.
   </Accordion>
 
   <Accordion title="Momentum-driven demand — acceleration or deceleration">
