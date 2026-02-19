@@ -316,6 +316,29 @@ Tether tracks changes to SKUs:
 
 This audit trail helps with troubleshooting and compliance.
 
+## Common Confusions
+
+<AccordionGroup>
+  <Accordion title="My product is a multi-pack — should I use Additional Unit Conversion?">
+    **No.** Additional Unit and Additional Unit Conversion are for tracking the **same SKU** in different units of measure. For example, you buy almonds by the pound but track inventory in ounces — so you'd set the default unit to "oz" and add "lb" as the additional unit with a conversion of 16. Both units refer to the same product.
+
+    If you sell a 6-pack that contains 6 individual boxes, the 6-pack and the single box are **separate SKUs**. The relationship between them — "producing 1 six-pack consumes 6 singles" — is a **Bill of Materials (BOM)** relationship. You set that up in the BOM / SKU Mapping template, not through unit conversion.
+
+    **Rule of thumb:**
+
+    - *"What's another way to measure or count this same SKU?"* → **Additional Unit Conversion**
+    - *"What other SKUs go into this SKU when it's produced or assembled?"* → **BOM**
+
+    **Examples:**
+
+    | Scenario | Setup | Why |
+    |----------|-------|-----|
+    | **Almonds**: default unit = oz, additional unit = lb, conversion = 16 | UOM conversion | Same product, different measurement |
+    | **6-Pack of Date Bites**: contains 6 individual Date Bites boxes | BOM | Different SKUs, one is made from the other |
+    | **Case of 6-Packs**: you ship 6-packs in cases of 4 for wholesale | UOM conversion on the 6-pack SKU (additional unit = case, conversion = 4) | Same SKU, different counting unit |
+  </Accordion>
+</AccordionGroup>
+
 ## Next Steps
 
 <CardGroup cols={2}>
