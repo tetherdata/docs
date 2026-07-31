@@ -1,206 +1,130 @@
 ---
-title: Inventory Dashboard
-description: Monitor inventory health and alerts across your warehouses
+title: Inventory Management
+description: View stock levels across warehouses, track changes, and manage on-hand adjustments
+sidebarTitle: Inventory
 ---
 
-# Inventory Dashboard
+# Inventory Management
 
-The Inventory Dashboard is your central hub for monitoring inventory health, identifying issues, and taking action to prevent stockouts and overstocks.
+The **Inventory Management** page is your central view of current stock levels across all warehouses. From here you can inspect positions, upload inventory in bulk, review the full change history, and propose or approve on-hand adjustments.
+
+## Accessing the page
+
+Navigate to **Inventory** in the sidebar. The page opens on the **Inventory** tab.
+
+## Page tabs
+
+| Tab | Purpose | Who sees it |
+|-----|---------|-------------|
+| **Inventory** | Current stock levels across warehouses | Everyone |
+| **History** | The full inventory change feed and point-in-time snapshots | Everyone |
+| **Approvals** | Queue of adjustment requests waiting for a decision | Users with the `inventory:approve` permission |
+| **My requests** | Your own adjustment requests and their outcomes | Users with the `inventory:adjust` permission |
+
+See [Inventory history](/inventory/history) for the History tab and [Inventory adjustments](/inventory/adjustments) for the Approvals and My requests tabs.
+
+## Inventory tab
+
+The Inventory tab shows a grid of stock positions — one per SKU and warehouse pairing.
+
+### Filtering and grouping
+
+- Use the search box and filters to narrow the grid to specific SKUs, warehouses, or product groups.
+- Group rows by warehouse, health status, collection, SKU, product hierarchy fields, or attributes.
+- Toggle **Pivot by location** to fold the grid into one row per SKU with a column per warehouse. Warehouse and health status grouping are unavailable while pivoted, since those values are per-position.
+
+### Row actions
+
+Right-click a row (or, in the pivoted view, a location's cell) to open the context menu:
+
+- **Adjust on-hand…** — propose a change to the position's on-hand count. See [Inventory adjustments](/inventory/adjustments).
+- **Remove from warehouse** — zero out a position through an audited adjustment.
 
 <Note>
-  The Inventory Dashboard is available to Admin users only. Sales Rep users should use the Demand Forecast views.
+  In the pivoted view a row spans locations, so both actions apply to the location of the cell you clicked, not the whole row.
 </Note>
 
-## Accessing the Dashboard
+## Uploading inventory
 
-Navigate to **Inventory** in the sidebar. The dashboard opens to the Overview tab by default.
+Users with write permissions see an **Upload Inventory** button in the page header.
 
-## Dashboard Tabs
+<Steps>
+  <Step title="Open the upload dialog">
+    Click **Upload Inventory** in the top-right corner of the page.
+  </Step>
 
-The Inventory page has four main tabs:
+  <Step title="Provide your inventory file">
+    Follow the dialog to upload your inventory data. An upload is treated as a batch of inventory adjustments.
+  </Step>
 
-| Tab | Purpose |
-|-----|---------|
-| **Overview** | Alerts and health status summary |
-| **Inventory** | Current stock levels across warehouses |
-| **Forecast** | Inventory projection charts and flow diagrams |
-| **Supply Plan** | Scheduled orders and recommendations |
-
-## Overview Tab
-
-The Overview tab provides a snapshot of your inventory health across all warehouses and SKUs.
-
-### Alert Summary Cards
-
-At the top, summary cards show counts of alerts by issue type. Click a card to filter the alert table to that issue type.
-
-<CardGroup cols={3}>
-  <Card title="Stockout Alerts" icon="triangle-exclamation">
-    SKUs projected to run out of stock
-  </Card>
-  <Card title="Safety Stock Breaches" icon="shield-exclamation">
-    SKUs projected to fall below safety stock thresholds
-  </Card>
-  <Card title="Overstock Alerts" icon="boxes-packing">
-    SKUs with excess inventory above overstock thresholds
-  </Card>
-</CardGroup>
-
-### Understanding Alert Levels
-
-Alerts are categorized into five levels based on severity:
-
-| Level | Color | Description |
-|-------|-------|-------------|
-| **Urgent** | Red | Immediate action required — stockout is imminent or already occurring |
-| **Important** | Orange | Action needed soon — safety stock breach is projected |
-| **Overstock** | Yellow | Excess inventory detected above overstock thresholds |
-| **Expedite** | Blue | Existing plan can be improved — consider adjusting order timing |
-| **Plan Good** | Green | Your current plan already covers the issue |
-
-### Alert Table
-
-The main table shows individual alerts for each SKU/warehouse pairing:
-
-| Column | Description |
-|--------|-------------|
-| **Alert** | Alert level badge (Urgent, Important, Overstock, Expedite, Plan Good) |
-| **SKU** | Product name with link to SKU detail |
-| **Warehouse** | Warehouse where the issue is detected |
-| **Issues** | List of issue types (Stockout, Safety Stock Breach, Overstock) with date ranges |
-| **Draft** | Indicator showing if a draft transaction already exists for this alert |
-
-Click on any row to open the **Alert Resolution Modal** for detailed analysis and actions.
-
-### Filtering Alerts
-
-Filter the alert list using the controls at the top:
-
-- **Warehouse** — Focus on specific locations
-- **Collection** — Filter by product group
-- **Days Ahead** — Set the projection horizon (e.g., 30, 60, 90, 180, or 360 days)
-
-You can also click the alert summary cards to filter by issue type (Stockout, Safety Stock Breach, or Overstock).
-
-### Alert Resolution Modal
-
-Click on an alert row to open the Alert Resolution Modal, which provides:
-
-- **Breach Timeline** — A left sidebar showing all issues for this SKU/warehouse with clickable breach periods
-- **Projection Chart** — An inventory projection chart with six lines:
-  - Current Plan inventory (solid blue)
-  - System Plan inventory (solid green)
-  - Current Safety Stock threshold (dashed orange)
-  - System Safety Stock threshold (dotted orange)
-  - Current Overstock threshold (dashed red)
-  - System Overstock threshold (dotted red)
-- **Issue Details** — Specific information about the selected breach period, including date range and severity
-- **Draft vs. System Comparison** — Side-by-side view of any existing draft transaction and the system's recommended order
-- **Actions** — Navigate between alerts using arrow buttons, or view the full scheduled order details
-
-## Inventory Health Status
-
-Each SKU/warehouse combination has a health status determined by the supply simulation:
-
-| Status | Meaning | Typical Action |
-|--------|---------|----------------|
-| **Healthy** | Stock levels are within target range | No action needed |
-| **Low Inventory** | Below target but above safety stock | Plan replenishment |
-| **Out of Stock** | Zero sellable inventory | Emergency order |
-| **Overstock** | Above overstock threshold | Reduce orders or promote sales |
+  <Step title="Verify the results">
+    Check the [History tab](/inventory/history) to confirm the changes landed as expected.
+  </Step>
+</Steps>
 
 <Info>
-  Health statuses are computed from daily inventory snapshots generated by the supply simulation engine. Each snapshot records the projected inventory level and its health classification for that day.
+  The **Upload Inventory** button is hidden for users without write permissions and for the stock-counting role, which has no direct-commit path to on-hand. See [Roles & Permissions](/roles-permissions) for details.
 </Info>
 
-## Inventory States
+## Planning and replenishment
 
-Tether tracks inventory across ten states:
+Inventory levels feed directly into supply planning. Order recommendations, transfer suggestions, and coverage projections live in the [Supply Planning](/supply-planning/overview) section, not on this page.
 
-| State | Description |
-|-------|-------------|
-| **Sellable** | Available for new sales |
-| **On Hand** | Physical inventory at the warehouse |
-| **Committed** | Reserved for specific orders |
-| **Fulfillable** | Available to fulfill orders |
-| **Unfulfillable** | Cannot be sold (damaged, on hold) |
-| **Unsellable** | Cannot be sold (regulatory, expiry) |
-| **Awaiting In-Transit** | In transit to the warehouse |
-| **Awaiting In-Production** | Currently being manufactured |
-| **Consumed** | Components consumed in production |
-| **Backordered** | Negative availability — demand exceeds supply |
-
-### Understanding the Relationships
-
-```
-On Hand = Sellable + Committed + Unfulfillable + Unsellable
-Available to Promise = Sellable + Awaiting In-Transit + Awaiting In-Production
-```
-
-## Refreshing Simulation Data
-
-The Overview tab includes a **Refresh** button that triggers both User and System supply simulations. This recalculates all inventory projections, alerts, and recommendations based on the latest data.
-
-<Tip>
-  Use the Refresh button after making changes to inventory settings, safety stock levels, or supplier capabilities to see updated alerts.
-</Tip>
-
-## Best Practices
+## Best practices
 
 <AccordionGroup>
-  <Accordion title="Daily Review">
-    Check the dashboard daily:
-    - Review new Urgent alerts first
-    - Check Important alerts for upcoming safety stock breaches
-    - Monitor Overstock alerts to prevent excess inventory
+  <Accordion title="Reconcile counts through adjustments">
+    When a physical count disagrees with the system, use **Adjust on-hand…** rather than editing data elsewhere. Adjustments are audited, carry a reason and note, and flow through approval when required.
   </Accordion>
 
-  <Accordion title="Address Urgent First">
-    Prioritize by alert level:
-    1. Handle Urgent alerts immediately — these indicate imminent stockouts
-    2. Plan for Important alerts — schedule replenishment before breaches occur
-    3. Review Overstock and Expedite alerts periodically
-    4. Plan Good alerts confirm your current plan is working
+  <Accordion title="Use pivot by location for cross-warehouse review">
+    When you carry the same SKUs in several warehouses, the pivoted view puts every location's count on one row so imbalances stand out immediately.
   </Accordion>
 
-  <Accordion title="Use Filters Strategically">
-    Different filters for different purposes:
-    - No filter for an overall health check
-    - Warehouse filter for location-specific review
-    - Collection filter for product line analysis
-    - Click summary cards to focus on specific issue types
+  <Accordion title="Check History after bulk uploads">
+    Every upload lands in the [History feed](/inventory/history) with its source recorded. Review it after an upload to confirm the batch applied cleanly.
   </Accordion>
 
-  <Accordion title="Look Beyond Today">
-    Extend the time horizon:
-    - Short-term (30 days) for operations
-    - Medium-term (90 days) for planning
-    - Long-term (180+ days) for strategy
+  <Accordion title="Keep planning in the Supply Planning section">
+    Use this page to verify what you have; use [Supply Planning](/supply-planning/overview) to decide what to order, transfer, or produce next.
   </Accordion>
 </AccordionGroup>
 
-## Related Features
+## Troubleshooting
 
-The dashboard connects to other Tether features:
+### Approvals or My requests tab is missing
 
-- **[Supply Plan](/inventory/supply-plan)** — Manage recommended and draft orders
-- **[Transactions](/transactions/overview)** — Create and track purchase and transfer orders
-- **[Demand Forecasting](/demand-forecasting/dashboard)** — Understand consumption projections
-- **[Supply Simulation](/supply-simulation/running)** — Generate projections and recommendations
+**Possible cause:** These tabs are permission-gated — Approvals requires `inventory:approve` and My requests requires `inventory:adjust`.
+
+**Solution:** Ask your administrator to review your role. See [Roles & Permissions](/roles-permissions).
+
+### Upload Inventory button is missing
+
+**Possible cause:** Your account lacks write permissions, or you are on the stock-counting role.
+
+**Solution:** Uploads write on-hand directly, so they require a write permission. Ask your administrator if you believe you should have access.
+
+### A count looks wrong
+
+**Possible causes:** A pending adjustment has not been approved yet, or a sync from an integration is still in flight.
+
+**Solutions:**
+1. Check the [Approvals queue](/inventory/adjustments) for a pending request against that position.
+2. Open the [History tab](/inventory/history) and drill into the position to see every change with its source and actor.
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
-    Manage replenishment orders
+  <Card title="Inventory History" icon="clock-rotate-left" href="/inventory/history">
+    Trace every change to your stock levels
   </Card>
-  <Card title="Inventory Forecasts" icon="chart-line" href="/inventory/forecasts-flow">
-    View projection charts and flow diagrams
+  <Card title="Inventory Adjustments" icon="clipboard-check" href="/inventory/adjustments">
+    Propose and approve on-hand corrections
   </Card>
   <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
     Configure warehouse settings
   </Card>
-  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
-    Manage supplier relationships
+  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
+    Plan replenishment from your current stock
   </Card>
 </CardGroup>

@@ -1,0 +1,95 @@
+---
+title: Data Issues
+description: Structural findings from the solver's data audit, grouped for triage
+---
+
+# Data Issues
+
+The Data issues page surfaces findings from the solver's data audit — both structural mismatches caught before the solve ran and observations only knowable from the returned plan (for example, demand left unmet beside idle inventory). Fixing these removes misleading unmet-demand rows from the plan.
+
+Navigate to **Data issues** under the Supply Chain group in the sidebar. The subtitle counts the findings from the latest solve, and a badge next to the title flags findings that are new since the last plan.
+
+## Filtering findings
+
+The filter row above the list offers:
+
+- **Search** — free-text across findings.
+- **Severity** — a multi-select of **Errors**, **Warnings**, and **Info**.
+- **Category** — a multi-select of the finding categories present in the current audit (missing suppliers, production with no consumer, and so on).
+- **SKU** and **Location** filters — shown when the audit's findings reference SKUs or locations. The location label follows your organization's [terminology](/administration/terminology).
+
+A counter shows how many findings match ("N of M"), and **Expand all** / **Collapse all** toggles every section at once.
+
+## Reading a finding
+
+Findings are grouped by category so you can triage one class at a time. Each section header shows the category name, its finding count, and severity badges (errors, warnings, info). Sections start collapsed; expanding one renders its cards, with a **Show N more findings** control for very large categories.
+
+Each finding card carries:
+
+- A **severity badge** (Error, Warning, or Info) and a headline naming the entities involved.
+- An explanation of what the audit detected and why it matters.
+- A **scope row** of label:value pairs (SKU, location, candidate suppliers, and so on) — long lists open in a popover.
+- A **Suggested fix** where the audit can state one, and mechanical fix actions where the issue is fixable in place.
+
+<Info>
+  Severity is a triage signal: **Errors** are structural problems that distort the plan (fix these first), **Warnings** are likely problems worth confirming, and **Info** findings are observations that may be intentional.
+</Info>
+
+## Dismissing findings
+
+Each card has a **Dismiss** button. Dismissing removes the finding from the list and shows a toast:
+
+> **Dismissed** — Returns to the queue if the next solve re-flags it.
+
+The toast carries an **Undo** action that restores the finding immediately.
+
+<Note>
+  Unlike recommendation dismissals (a 14-day set-aside), a dismissed finding stays gone unless the next solve's audit flags it again. If the underlying condition persists, it will keep coming back — which is the point: a recurring finding is one you should fix rather than dismiss.
+</Note>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Clear errors before reading the plan">
+    An error-level finding (a SKU with no supplier, a location outside the network) usually shows up downstream as unexplained unmet demand. Fix errors, re-solve, then judge the plan.
+  </Accordion>
+
+  <Accordion title="Work one category at a time">
+    Findings within a category share a root cause and usually a fix. Expanding one section and clearing it end to end beats bouncing across a flat list.
+  </Accordion>
+
+  <Accordion title="Dismiss only intentional configurations">
+    Dismiss is for findings that describe deliberate choices (a SKU you intentionally don't stock somewhere). If a finding re-appears each solve and isn't intentional, fix the data instead.
+  </Accordion>
+
+  <Accordion title="Watch the new-since-last-plan badge">
+    New findings after a configuration change are the fastest signal that the change had unintended structural side effects.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| "No structural issues detected in the latest solve" | The audit found nothing — or no solve has produced findings yet | Nothing to do; run a solve if the plan is new |
+| A dismissed finding came back | The next solve re-flagged the same condition | The underlying data problem persists — fix it rather than re-dismissing |
+| The page is slow with very large audits | Thousands of findings render lazily per section | Keep sections collapsed and filter by severity or category before expanding |
+| A SKU/location filter disappeared | Its last finding was dismissed or filtered out | The filter clears itself automatically; re-add it if findings return |
+| An entity shows as a raw ID | The audit couldn't resolve a display name for it | Check the entity still exists in the [Principal Catalog](/principal-catalog/overview) |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="compass" href="/supply-planning/overview">
+    How the audit relates to solves and plan freshness
+  </Card>
+  <Card title="Principal Catalog" icon="layer-group" href="/principal-catalog/overview">
+    Fix catalog structure the audit flags
+  </Card>
+  <Card title="SKU groups" icon="object-group" href="/principal-catalog/sku-groups">
+    Group membership fixes for scope findings
+  </Card>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Resolve missing-supplier findings
+  </Card>
+</CardGroup>

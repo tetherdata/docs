@@ -1,0 +1,118 @@
+---
+title: Coverage
+description: How Tether measures and displays days of supply across the planning surfaces
+---
+
+# Coverage
+
+Coverage — days of supply (DOS) — is how the planning surfaces express inventory health: how many days the current position lasts at the projected consumption rate. This page explains where coverage appears, how the before/after impact sections in drawers work, and the vocabulary behind the numbers.
+
+## Coverage status
+
+Coverage status is computed server-side from coverage versus your authored thresholds and rendered directly — the client never re-derives it:
+
+| Status | Meaning | Color cue |
+|--------|---------|-----------|
+| **Out of stock** | No coverage | Red |
+| **Low** | Below the safety stock threshold | Yellow |
+| **Healthy** | Between safety stock and the overstock threshold | Green |
+| **Overstock** | Above the overstock threshold | Blue chip tint (orange fill on bars) |
+
+Grids show these as tinted DOS chips; drawers show them as colored bars. A row with no status (a plan solved before status existed) renders neutral until the next solve.
+
+## Coverage impact in drawers
+
+Recommendation drawers carry a **Coverage impact** section showing what the movement does to days of supply:
+
+- **Purchase** and **Production** recommendations show an **Across network** row on top, then per-node rows.
+- **Transfer** recommendations are headed **Coverage impact — source & destination**, and highlight the source and destination nodes; there is no network row.
+
+Each node row is a before/after bar: a muted segment for the current position and a delta segment for the change — green-tinted when the movement lifts coverage, red-tinted when it drops it. Up to three threshold ticks overlay the bar — **S** (safety), **T** (target), **O** (overstock) — rendered only where a threshold is authored.
+
+### The measurement date
+
+A caption under the heading names the date the before/after numbers are measured at — they are forward-looking projections at the moment the supply lands, not "today":
+
+- Purchases: **Coverage on PO Land Date**
+- Production: **Coverage on Run Completion Date**
+- Transfers: **Coverage on Arrival Date**
+
+### What the rows do and don't show
+
+- Nodes with no coverage signal *and* no authored threshold (suppliers, off-SKU warehouses the plan touches but never stocks) are suppressed — they'd tell you nothing.
+- A zero-DOS node **with** an authored target is kept and rendered as a red bar: that's a managed stocking location that is out of stock.
+- When a recommendation bundles several SKUs, transfer and production drawers show one SKU's walk at a time — the heading says "Showing this SKU only (N SKUs on the rec)" and you click another row to switch. Purchase impact already aggregates across the PO's items.
+
+### Special outcomes
+
+Two outcomes deliberately render without a number:
+
+- **Beyond the horizon** — the position outlives the planning horizon at its (very slow) depletion rate. Rendered as a fully-covered bar, not "0d".
+- **N/A — no demand signal** — nothing consumes this SKU from this point forward in this scenario, so coverage is *unmeasurable* — not zero, and not the same as overstocked.
+
+## Coverage per lens
+
+Coverage is lens-scoped. Each [scenario lens](/supply-planning/overview) is walked end to end — supply *and* demand: "Do nothing" and "Follow my plan" drop the supply their decision set excludes and re-derive the consumption that supply would have driven. They are true counterfactuals, not the full-plan demand shape with supply removed.
+
+Consequently the same cell can legitimately show different DOS values — and different chip tints — under different lenses, and a chip never falls back to another lens's numbers. If a value can't be measured under the active lens, it says so rather than borrowing one.
+
+## Coverage glossary
+
+The same word — "coverage" — is rendered at more than one grain, and the grains are not interchangeable:
+
+| Term | Definition |
+|------|------------|
+| **Node coverage** | One location's sellable on-hand runway for the current period. Excludes goods in transit and in production. |
+| **Network coverage** | The whole network's sellable position, including inventory in transit between your own nodes, sampled per month. |
+| **Worst status across nodes** | A status aggregation, not a coverage value — a period is shaded by the worst coverage status across the SKU's nodes, so one out-of-stock node shows red even when the others are healthy. |
+
+<Warning>
+  Network coverage is not the sum of node coverage, and a status aggregation is never a DOS value. When two surfaces disagree on "coverage" for the same SKU, check which grain each one labels — the difference is usually by construction, not an error.
+</Warning>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Read the delta, not the absolute bar">
+    The before/after delta segment is the decision signal: it shows the direction and magnitude of a movement's effect regardless of where the absolute numbers sit on the scale.
+  </Accordion>
+
+  <Accordion title="Anchor on the measurement date">
+    "Coverage on PO Land Date" measured months out can look healthy while the intervening weeks stock out. Pair the drawer's impact section with the Worksheet's period-by-period view for the full path.
+  </Accordion>
+
+  <Accordion title="Don't read 'no demand signal' as overstock">
+    An item with stock but nothing consuming it reports N/A, not a runway. Investigate why demand is absent (channel gating, forecast gaps) before writing the stock off — see [Data issues](/supply-planning/data-issues).
+  </Accordion>
+
+  <Accordion title="Author thresholds where you manage stock">
+    Threshold ticks and status tints only appear where safety, target, or overstock thresholds are authored. Nodes without thresholds fall back to defaults and get suppressed when idle — set thresholds at every location you actively manage.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A drawer shows no coverage section | No coverage impact was authored for that movement (common for synthesized committed rows) | Check the SKU's coverage on the grid or Worksheet instead |
+| An expected node is missing from the impact rows | It has no coverage signal and no authored threshold | Author a coverage threshold at that node if you manage stock there |
+| Two pages show different DOS for one SKU | Different grains (node vs network) or different lenses | Check the grain label and the active lens on each page |
+| A stocked node reads "no demand signal" | Nothing consumes the SKU from that point forward under the active lens | Verify the forecast and channel setup for that SKU/location |
+| Chips are gray with no tint | The plan predates status computation, or no plan is solved | Run a solve; statuses populate from the new plan |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="compass" href="/supply-planning/overview">
+    The scenario lenses that scope every coverage number
+  </Card>
+  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
+    The drawers where coverage impact drives decisions
+  </Card>
+  <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
+    Current-period inventory health by location
+  </Card>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
+    The consumption projections coverage is measured against
+  </Card>
+</CardGroup>

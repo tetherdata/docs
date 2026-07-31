@@ -119,14 +119,13 @@ If a supplier has a **linked warehouse** (Supplier Held Inventory), the supplier
 
 ## Lead Times and Supply Planning
 
-Lead times directly impact supply recommendations:
+Lead times directly impact [supply planning](/supply-planning/overview) recommendations:
 
 ### How Tether Uses Lead Times
 
 1. **Calculates order timing** — When to place orders so they arrive before a stockout or safety stock breach
 2. **Projects inventory** — When incoming stock will be available at the destination
-3. **Generates alerts** — Warns when current inventory coverage is shorter than the lead time
-4. **Forecast visualization** — Shows lead time periods in the forecast replenishment rows
+3. **Times recommendations** — Recommended [transfers](/supply-planning/transfers) and [purchases](/supply-planning/purchases) are scheduled around lead times
 
 ### Example Calculation
 
@@ -136,7 +135,7 @@ Transfer lead time: 5 days
 Order should be placed by: March 10
 ```
 
-If coverage drops below lead time, you'll see an urgent alert on the Inventory Dashboard.
+If coverage drops below the lead time, the shortfall surfaces in [inventory coverage](/supply-planning/coverage).
 
 ## Factors Affecting Lead Times
 
@@ -269,10 +268,10 @@ Create additional warehouses to configure lead times between them.
   <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
     Configure supplier lead times
   </Card>
-  <Card title="Supply Plan" icon="clipboard-list" href="/inventory/supply-plan">
+  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
     See lead times in action
   </Card>
-  <Card title="Forecasts" icon="chart-line" href="/inventory/forecasts-flow">
+  <Card title="Inventory Coverage" icon="chart-line" href="/supply-planning/coverage">
     View lead time impact on projections
   </Card>
 </CardGroup>

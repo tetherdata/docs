@@ -37,7 +37,7 @@ Tether has three user roles:
 | **Inventory** | | | |
 | View Inventory Dashboard | ✓ | - | ✓ |
 | View Inventory Alerts | ✓ | - | ✓ |
-| Manage Supply Plan | ✓ | - | ✓ |
+| View Inventory History | ✓ | - | ✓ |
 | Create/Edit Warehouses | ✓ | - | ✓ |
 | Manage Suppliers | ✓ | - | ✓ |
 | **Demand Forecasting** | | | |
@@ -55,8 +55,9 @@ Tether has three user roles:
 | **Integrations** | | | |
 | View Integrations | ✓ | - | ✓ |
 | Configure Integrations | ✓ | - | ✓ |
-| **Supply Simulation** | | | |
-| Run Simulations | ✓ | - | ✓ |
+| **Supply Planning** | | | |
+| View Planning Pages | ✓ | - | ✓ |
+| Run Plans & Manage Recommendations | ✓ | - | ✓ |
 | **Analytics** | | | |
 | View Metrics | ✓ | ✓ | ✓ |
 | **Administration** | | | |
@@ -83,7 +84,7 @@ Admins have complete access to Tether's functionality.
   <Accordion title="Inventory Control">
     - View and manage inventory across all warehouses
     - Monitor and respond to inventory alerts
-    - Manage the supply plan
+    - Review and accept supply planning recommendations
     - Create and configure warehouses
     - Add and manage suppliers
     - Configure lead times and fulfillment rules
@@ -206,33 +207,30 @@ Beyond roles, Admins can configure granular channel access to control which data
 
 ### Admin Sidebar
 
-Admins see the full navigation menu:
+Admins with all features enabled see the full navigation menu:
 
 ```
-├── SKUs (Dimensions, Collections, Product Hierarchy, SKUs)
-├── Inventory (Report, Warehouses, Suppliers)
-├── Demand Forecast (Dashboard, Comparison, Admin, Sales History, Promotions, Edit Log)
-├── Integrations (Data Ingestion)
-├── Channels (Channel List, Hierarchy)
-└── Transactions
+├── Agent (Chat Sessions, Memory)
+├── Demand (Dashboard, Comparison, Edit Log, Admin)
+├── Marketing & Promotions (Drivers, Promotions)
+├── Inventory (Dashboard, Warehouses, Suppliers, Lots)
+├── Transactions
+├── Supply Chain (Locations, Policies, Connected Planning, Transfer, Production,
+│                 Purchase, MRP, Execution plan, Data issues)
+├── Principal Catalog (Attribute, SKU, SKU Group, BOM)
+└── Sales (Sales Channels, Sales History)
 ```
 
 <Info>
-  **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not the sidebar. Only Admins see the Settings option in their user menu.
+  **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not the sidebar. Only Admins see the Settings option in their user menu. Sidebar groups appear only when the corresponding feature is enabled for your organization, and several labels can be renamed in **Settings** → **Terminology**.
 </Info>
 
 ### Sales Rep Sidebar
 
-Sales Reps see a simplified menu:
-
-```
-├── SKUs (Collections, SKUs)
-├── Demand Forecast (Dashboard, Comparison, Sales History, Edit Log)
-└── Channels (Channel List)
-```
+Sales Reps see a simplified menu limited to sales-related pages, such as the Demand dashboard, forecast comparison, sales history, and catalog viewing.
 
 <Info>
-  The navigation automatically adjusts based on the user's role. You'll only see menu items you have access to.
+  The navigation automatically adjusts based on the user's role and permissions. You'll only see menu items you have access to.
 </Info>
 
 ## Best Practices
@@ -278,5 +276,11 @@ If you need access to features you can't see:
   </Card>
   <Card title="Quick Start Guide" icon="rocket" href="/quickstart">
     Get started with Tether's core features
+  </Card>
+  <Card title="Navigation guide" icon="compass" href="/navigation">
+    See which sections your role can reach
+  </Card>
+  <Card title="Inventory adjustments" icon="clipboard-check" href="/inventory/adjustments">
+    See how adjust and approve permissions differ
   </Card>
 </CardGroup>

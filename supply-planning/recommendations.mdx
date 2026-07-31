@@ -1,0 +1,125 @@
+---
+title: Recommendations
+description: The lifecycle of a solver recommendation — from suggestion to committed supply
+---
+
+# Recommendations
+
+Every solve produces recommendations — suggested purchases, production runs, and transfers. Recommendations aren't a separate destination: they appear as rows in each planning page's **List** tab, overlaid alongside your committed plan and in-progress supply, and as detail drawers you can act on directly.
+
+## Where recommendations appear
+
+### List rows
+
+In the **List** tab on [Transfers](/supply-planning/transfers), [Production](/supply-planning/production), and [Purchases](/supply-planning/purchases), each row carries a provenance badge:
+
+| Badge | Meaning |
+|-------|---------|
+| **rec** (bot icon) | An uncommitted solver suggestion |
+| **committed** (lock icon) | A movement you've accepted into the execution plan |
+| **in progress** (lock icon, muted) | Real supply already in motion — an open PO, in-flight transfer, or running production |
+| **receipt** (package icon) | A lane move whose origin is a supplier — goods arriving inbound against a purchase, not stock you ship |
+
+Rows show urgency, type, SKU, location, period, quantity, and dollar value, and the list can be sorted by any of these. In-progress rows also show their backing transaction reference (the open PO or transfer-order number) when known.
+
+### Row actions
+
+Actions depend on the row's badge:
+
+- **rec** rows: **Accept** and **Dismiss**
+- **committed** rows: **Edit** and **Order**
+- **in progress** rows: **Inspect**
+
+Clicking a row opens its drawer for full detail.
+
+## The recommendation drawer
+
+Opening a recommendation shows a right-side drawer with a fact grid, the solver's rationale, related policy chips, domain detail (coverage impact, materials, supplier context), and a footer with three actions:
+
+- **Accept** — commit the recommendation to the execution plan. The solver respects it on the next solve.
+- **Modify** — open the movement editor to change quantity or dates before committing.
+- **Reject** — decline the recommendation.
+
+A **Open full page** link deep-links to the recommendation on its full domain page.
+
+## Dismissing recommendations
+
+Dismissing is a set-aside, not a deletion. When you dismiss a recommendation, a toast confirms:
+
+> **Dismissed** — Removed from queue for 14 days.
+
+The recommendation is hidden from the queue for 14 days, after which it returns if the solver still suggests it.
+
+### Finding and restoring dismissals
+
+On List tabs that support dismissal, a **Queue ⇄ Dismissed** switch sits next to the search box. The **Dismissed** position shows a count of set-aside recommendations, and each dismissed row offers a **Restore** button that returns it to the queue immediately (confirmed with a "Restored — Returned to queue." toast).
+
+<Tip>
+  The Dismissed view is the only place to find a dismissal when you've forgotten which SKU it was for. If it's empty, the view says so: "Nothing dismissed. Recommendations you dismiss appear here for 14 days."
+</Tip>
+
+## Accepted recommendations: committed supply
+
+Accepting a recommendation turns it into committed supply on the [Execution plan](/supply-planning/execution-plan). The drawer for a committed movement shows a **Committed** badge in its header, and the footer changes:
+
+- **Place order** — flip an accepted purchase into a real ERP order. Once ordered, the header badge becomes a **PO** mark showing the PO number when known.
+- **Un-accept** — remove the acceptance. The recommendation returns to the queue.
+
+Committed rows in the List offer **Order** as a row action too — converting the commitment to a real transaction via a confirmation dialog.
+
+## Stale recommendations
+
+When you edit a committed movement after the last solve, the solver's old recommendation for that same movement predates your edit. Those resurfaced rows are hidden from the List until the next solve — the committed layer and recomputed projections already reflect your edit, so showing the outdated suggestion would only mislead.
+
+## The approval flow: Review staged
+
+Organizations with the approval flow enabled see a **Review staged (N)** button on the Purchases and MRP pages, where N counts purchase lines still pending review. Clicking it routes to the [Execution plan](/supply-planning/execution-plan) review surface where a reviewer signs off staged buys.
+
+Without the approval flow, staged movements convert directly and the button doesn't appear.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Read the rationale before accepting">
+    Each drawer carries the solver's rationale and the policies that shaped the recommendation. Understanding *why* the solver suggests a buy or transfer catches data problems (a wrong lead time, an outdated policy) before they become real orders.
+  </Accordion>
+
+  <Accordion title="Modify instead of reject-and-recreate">
+    If a recommendation is directionally right but the quantity or timing is off, use **Modify**. You keep the solver's context and coverage analysis instead of authoring a movement from scratch.
+  </Accordion>
+
+  <Accordion title="Dismiss, don't ignore">
+    A recommendation you don't plan to act on should be dismissed so your queue stays actionable. It's reversible — restore it any time from the Dismissed view, and it returns on its own in 14 days if the solver still sees the need.
+  </Accordion>
+
+  <Accordion title="Un-accept rather than deleting when plans change">
+    If you accepted something you no longer want, **Un-accept** returns the recommendation to the queue cleanly. The solver stops respecting the commitment on its next run.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A recommendation disappeared from the List | It was dismissed, or an edit after the last solve made it stale | Check the **Dismissed** view; stale rows return refreshed at the next solve |
+| Accept seems to do nothing | The row moved from the rec band to the committed band | Switch the lens or check the [Execution plan](/supply-planning/execution-plan) — it now shows as committed |
+| No Accept/Dismiss buttons on a row | The row is committed or in-progress, not a recommendation | Only **rec**-badged rows carry Accept/Dismiss; committed rows offer Edit/Order |
+| No **Review staged** button | Your organization doesn't run the approval flow | Staged movements convert directly without a review step |
+| **Place order** missing from a committed drawer | Ordering from the drawer applies to purchases | Use the **Order** action on the row or the Execution plan for transfers and production |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
+    Review and edit everything you've committed
+  </Card>
+  <Card title="Coverage" icon="chart-bar" href="/supply-planning/coverage">
+    Read the before/after coverage impact in each drawer
+  </Card>
+  <Card title="Transfers" icon="right-left" href="/supply-planning/transfers">
+    Work transfer recommendations by node and lane
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    Where placed orders become real ERP transactions
+  </Card>
+</CardGroup>

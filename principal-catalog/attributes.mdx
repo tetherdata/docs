@@ -1,0 +1,98 @@
+---
+title: "Attributes"
+description: "Define product attributes like Size and Color, manage their values, and control display order"
+---
+
+# Attributes
+
+Attributes are named dimensions — such as Size, Color, or Fit — that describe your SKUs. Each attribute holds an ordered list of values, and each value carries a short SKU code used when generating variant SKU codes. Manage attributes at `/principal/attributes` in the **Principal Catalog** section.
+
+<Note>
+Your organization may use a different name for attributes. Administrators can rename this and other catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
+</Note>
+
+## Attributes list
+
+The list page shows every attribute with its position, **Name**, **Description**, and a **Values** count. Use the search box to filter by name or description, and the table settings menu to export the list to CSV.
+
+- Click a row to open the attribute's detail page.
+- Click **New attribute** to create one.
+
+## Creating an attribute
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **New attribute** on the attributes list page.
+  </Step>
+  <Step title="Name and describe it">
+    Enter a **Name** (for example, Size, Color, or Fit) and an optional **Description** for context.
+  </Step>
+  <Step title="Add values">
+    Click **Add value** for each value. Give each a display name (for example, Small) and a short code (for example, SM). Codes are limited to 4 characters, uppercase letters and numbers only, and auto-generate from the name until you edit them.
+  </Step>
+  <Step title="Save">
+    Click **Create attribute**.
+  </Step>
+</Steps>
+
+When editing an existing attribute from the dialog, only the name and description are editable there — follow the **Open detail page to edit values** link to manage values.
+
+## Attribute detail page
+
+The detail page has two sections:
+
+- **Metadata** — edit the attribute's **Name** and **Description**.
+- **Values** — the full value list, with columns for the value name, its SKU code, a filter link, and actions.
+
+### Managing values
+
+- **Add a value** — click **Add value** and fill in the name and code. Codes follow the same rules as in the create dialog: up to 4 characters, uppercase, letters and numbers only.
+- **Rename a value or change its code** — edit the row inline.
+- **Reorder values** — drag a row by its handle. The display order is used wherever the values are shown or grouped, and saves as you drop.
+- **Remove a value** — click the trash icon. The row is marked for removal (shown struck through with a **Restore** option) and the removal becomes permanent when you click **Save all**. Removal can fail server-side if any SKUs still reference the value.
+- **See which SKUs use a value** — click the **View skus** link in the row to open the SKU list filtered to that value.
+
+Edits are staged: a sticky bar tracks unsaved changes (added, edited, removed, metadata) with **Discard** and **Save all** buttons. Saving applies additions first, then edits, then removals, and stops at the first failure.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Keep value codes short and meaningful">
+    Value codes (up to 4 characters) are joined together when generating variant SKU codes — for example, NVY and M can become part of TSHIRT-NVY-M. Pick codes your team recognizes at a glance.
+  </Accordion>
+  <Accordion title="Set the value order deliberately">
+    Value order on the detail page controls how values appear wherever they are shown or grouped — filters, columns, and generated variants. Drag sizes into S, M, L order rather than leaving them alphabetical.
+  </Accordion>
+  <Accordion title="Check usage before removing a value">
+    Use the row's **View skus** link to see which SKUs carry a value before removing it. Removal fails if SKUs still reference the value.
+  </Accordion>
+  <Accordion title="Use descriptions to record intent">
+    A short description ("Garment size, US sizing") helps teammates pick the right attribute when several look similar.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A value can't be saved | The SKU code is missing, longer than 4 characters, lowercase, or contains symbols | Use up to 4 uppercase letters and numbers |
+| Removing a value fails on save | SKUs still reference the value | Reassign or clear the value on those SKUs first, then remove it |
+| **Save all** stopped partway | Changes apply in order (adds, then edits, then removals) and stop at the first failure | Fix the reported error and click **Save all** again — remaining changes are still staged |
+| Values can't be edited in the edit dialog | The dialog edits only name and description | Follow **Open detail page to edit values** to manage values |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
+    Assign attribute values to SKUs and filter the catalog by them
+  </Card>
+  <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
+    Attach attributes to primary groups and bulk-generate variants
+  </Card>
+  <Card title="Principal catalog overview" icon="book-open" href="/principal-catalog/overview">
+    How attributes fit into the master catalog
+  </Card>
+  <Card title="Terminology" icon="language" href="/administration/terminology">
+    Rename "Attribute" to match your organization's vocabulary
+  </Card>
+</CardGroup>

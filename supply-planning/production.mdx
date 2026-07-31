@@ -1,0 +1,111 @@
+---
+title: Production
+description: Plan production runs with the Schedule, Worksheet, and List views
+---
+
+# Production
+
+The Production page plans manufacturing: which SKUs to produce, on which lines, at which locations, and when. It combines runs already underway, your committed run schedule, and the solver's suggested runs in one surface.
+
+Navigate to **Production** under the Supply Chain group in the sidebar. The page header shows the plan freshness indicator ("Plan as of…").
+
+## The production lens
+
+Production carries its own two-axis lens strip instead of the shared four-position scenario strip:
+
+- **Base** — the standing position the schedule is read against: **In progress** (real supply only) or **Committed** (in progress plus your accepted commitments).
+- **Compare** — the recommendation world overlaid on the base: **With recs** (the solver's plan) or **No input limits** (the counterfactual where no production stage is constrained by its inputs).
+
+**No input limits** is served from its own paired solve; when it isn't selectable, the position stays visible and states the specific reason (not enabled, never solved, no comparison produced, or unreadable). When it's active, a stamp shows when the counterfactual was solved. If you arrive from another planning page, a notice explains what carried over — other pages set Base only, and the comparison choice stays on Production.
+
+## Tabs
+
+| Tab | Purpose |
+|-----|---------|
+| **Schedule** | The run workbench — production by line, SKU, and period |
+| **Worksheet** | The per-SKU inventory flow across the horizon |
+| **List** | A flat, sortable list of every run row — in progress, committed, and recommended |
+
+## Shared controls
+
+One toolbar drives all three tabs:
+
+- **Search** — by SKU name or code, location, or line.
+- **Filter chips** — add filters via the **Add filter** popover; **Clear all** resets them.
+- **Date range picker** — with Weekly/Monthly granularity; shown on Schedule and Worksheet (the flat List has no time axis).
+- **Saved views** — round-trip filters, grouping, sort, and granularity.
+- **Create run** — on the Schedule tab, for users with planning write access. Opens the create drawer, prefilled with the cell's node, line, SKU, and period when opened from a schedule cell.
+- **Table settings** — grouping, sort, Qty/$ display, an **In-progress** toggle ("Open orders / runs already underway"), a **Recommendations** toggle ("The solver's suggested runs"), and **Export CSV** (`production-runs.csv`). On the Worksheet, a **Rec timing** control buckets recommendations by **Landing date** (arrival bucket) or **Order date** (order bucket).
+
+## The run drawer
+
+Clicking a run from the Schedule or List opens the run drawer. A schedule cell can bundle several runs (committed and suggested); the drawer shows them all in a "runs in this period" table with:
+
+- Per-run detail and daily breakdown.
+- An inline **edit** affordance on committed runs — the route to the editable run form from multi-run cells.
+- Raw-material coverage tinting on committed rows.
+- **Accept**, **Dismiss** ("Removed from queue for 14 days."), and **Restore** on suggested runs — the standard [recommendation lifecycle](/supply-planning/recommendations).
+
+<Info>
+  Under the **No input limits** comparison, the suggested runs shown are the counterfactual plan's own program, served as of its solve. They are read-only — accept and dismiss are suppressed — while committed rows stay editable.
+</Info>
+
+### Raw-material coverage
+
+The drawer's raw-material coverage section shows the projected inventory status of every SKU in the run's [BOM](/principal-catalog/boms) at the run's period, with required quantities. Short components get an inbound-supply sub-line — for example "1,200 arriving by Aug 12 · 300 in transit", or "Nothing inbound" — so a shortfall covered by incoming POs is distinguished from a real one. Coverage is identical for committed and suggested runs; it's read from the solver projections either way.
+
+### Why-no-production attribution
+
+A demand-bearing cell the plan schedules **no** production for can be opened too: the attribution drawer explains why — the run is material-bound (an input is short) or capacity-bound (the line is saturated). From there, **Create run anyway** opens the create drawer prefilled with the cell's node, line, SKU, and period, so you can overrule the solver deliberately.
+
+## Creating and editing runs
+
+- **Create run** (toolbar) or **Create run anyway** (attribution drawer) opens the production create drawer. Creating requires planning write permission; a dirty form guards against accidental close.
+- Committed runs are edited through the shared movement drawer, and **Order** converts a committed run into a real production transaction at the run's node — reserving its BOM components — via a confirmation dialog. See [Execution plan](/supply-planning/execution-plan).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Compare against No input limits to find binding materials">
+    If the counterfactual produces more than the solver's plan for a SKU, an input is the constraint. The run drawer's raw-material coverage and the attribution drawer tell you which one; [MRP](/supply-planning/mrp) shows how to fill it.
+  </Accordion>
+
+  <Accordion title="Check raw-material coverage before accepting a run">
+    A suggested run with short components and nothing inbound will slip. Accept the upstream buy (or transfer) alongside it, or use MRP's gap fills.
+  </Accordion>
+
+  <Accordion title="Use Rec timing to match your planning question">
+    On the Worksheet, **Landing date** answers "when does this supply arrive?" while **Order date** answers "when must I act?". Switch depending on whether you're reviewing coverage or building a work queue.
+  </Accordion>
+
+  <Accordion title="Author runs from the cell, not from scratch">
+    Opening create from a schedule cell (or the attribution drawer) prefills node, line, SKU, and period — less re-keying and fewer wrong-line mistakes than the blank header form.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| No scenario strip on this page | Production uses its own two-axis lens instead | Use the **Base** and **Compare** controls at the top of the page |
+| **No input limits** disabled | The reason is stated below the control | Enable the feature, run a solve, or retry — as the message directs |
+| Can't accept a suggested run | The **No input limits** comparison is active (read-only), or the recommendation no longer exists | Switch Compare to **With recs**; if it persists, the rec was superseded by a newer solve |
+| **Create run** button missing | You lack planning write permission, or you're not on the Schedule tab | Switch to Schedule; ask an admin about [permissions](/roles-permissions) |
+| Date range picker missing on the List | The List is a flat view with no time axis | Use Schedule or Worksheet for time-bucketed views |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
+    Material requirements for your committed runs
+  </Card>
+  <Card title="BOMs" icon="diagram-project" href="/principal-catalog/boms">
+    The bills of materials behind raw-material coverage
+  </Card>
+  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
+    Accept, dismiss, and restore suggested runs
+  </Card>
+  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
+    Edit and order committed production runs
+  </Card>
+</CardGroup>

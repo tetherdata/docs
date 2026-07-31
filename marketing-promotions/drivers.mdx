@@ -1,0 +1,141 @@
+---
+title: Demand drivers
+description: Track spend, events, and promo calendars as driver series that inform forecasts
+---
+
+# Demand drivers
+
+Demand drivers are time series — marketing spend, events, promo calendars — that your organization tracks alongside sales. Driver-aware forecast models use the fitted relationship between a driver and demand, so changing a driver's projected values changes the forecast. The drivers surface lets you maintain each series, import data by CSV, and preview What-If scenarios before committing them.
+
+<Info>
+  Demand drivers are feature-flagged and enabled per organization. If you don't see **Marketing & Promotions** → **Drivers** in the sidebar, the feature is not switched on for your organization.
+</Info>
+
+## Drivers list
+
+Navigate to **Marketing & Promotions** → **Drivers** (`/marketing-promotions/drivers`). The list shows every driver with its name, kind, unit, and aggregation. Click a driver's name to open its detail page.
+
+To add a driver, click **New driver** and fill in the create dialog: name, kind, unit, and aggregation.
+
+## Driver detail page
+
+Each driver's detail page shows:
+
+- **Header chips** — the driver's kind, unit, aggregation, and grain (daily is the canonical grain).
+- **Series chart** — a solid line for actual observed values, a dashed line for the editable projection, and a dashed vertical "today seam" separating them.
+- **Points table** — every point in the series. Projection rows are inline-editable, and a manual add-point row appends new projection points. Actual points are read-only — corrections come via re-upload.
+
+The page's actions are **Import CSV** (opens the upload wizard), **What-if** (opens the scenario drawer), and **Configure model** (links to **Settings** → **Forecast Admin** → **Models**, where a driver's consuming models are configured).
+
+## Importing driver data
+
+Click **Import CSV** to open the upload wizard, which walks through four stages:
+
+<Steps>
+  <Step title="Upload">
+    Select your CSV file for the driver.
+  </Step>
+
+  <Step title="Validation">
+    Review summary cards — rows parsed, valid, warnings, errors — and the validation results.
+  </Step>
+
+  <Step title="Preview">
+    Review the parsed points in a table alongside a series-shape chart and any remaining issues before anything is written.
+  </Step>
+
+  <Step title="Apply">
+    Apply the valid points to the driver's series. The footer shows how many valid points will be applied and when the upload session expires.
+  </Step>
+</Steps>
+
+<Note>
+  Uploads are how actual values enter and get corrected — the points table never edits actuals directly.
+</Note>
+
+## What-If scenarios
+
+The **What-if** drawer answers "what happens to demand if this driver changes?" without touching the committed forecast. It re-runs the assigned driver model on a perturbed value using the same fitted relationship the committed forecast uses — and nothing is saved until you commit.
+
+<Steps>
+  <Step title="Pick a projection point">
+    Select a projected date from the driver's series. The current value pre-fills so you edit from a known baseline. Only projection points can be perturbed — add one from the points table first if the driver has none.
+  </Step>
+
+  <Step title="Enter a perturbed value">
+    Type the hypothetical value for that date.
+  </Step>
+
+  <Step title="Preview">
+    Click **Preview**. The server computes the demand response and shows three totals — current demand, preview demand, and the unit delta — plus a "Biggest movers" table of the SKU-channel pairings that respond most.
+  </Step>
+
+  <Step title="Apply or discard">
+    Click **Apply** to commit: the perturbed values are persisted as manual projection points, and the next forecast run picks them up. **Reset** clears the scenario, and closing the drawer discards it with zero side effects.
+  </Step>
+</Steps>
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Keep actuals flowing">
+    Driver models are only as good as the series behind them. Import actuals regularly so the fitted relationship reflects recent reality, and re-upload to correct bad actuals.
+  </Accordion>
+
+  <Accordion title="Preview before you commit">
+    Use the What-If preview to sanity-check the demand response before applying. A surprising delta usually means the perturbation is outside the range the model was fitted on — or the series has data issues.
+  </Accordion>
+
+  <Accordion title="Watch the biggest movers">
+    The movers table shows which SKU-channel pairings carry the response. If the wrong products move, review which models consume the driver via **Configure model**.
+  </Accordion>
+
+  <Accordion title="Choose units and aggregation deliberately">
+    Pick the driver's unit and aggregation to match how the source data is reported — mixing units across uploads makes the series, and the fitted relationship, meaningless.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Drivers pages are not visible
+
+**Possible causes:**
+- The Marketing & Promotions section is not enabled for your organization.
+
+**Solutions:**
+1. Contact your Tether administrator about feature availability.
+
+### What-If preview shows no response
+
+**Possible causes:**
+- No driver-aware model is assigned to consume this driver.
+- The perturbed value equals the current value.
+
+**Solutions:**
+1. Click **Configure model** to check the driver's consuming models in Forecast Admin.
+2. Change the perturbed value and preview again.
+
+### Cannot edit a point in the table
+
+**Possible causes:**
+- The point is an actual — actuals are read-only.
+
+**Solutions:**
+1. Correct actual values by re-uploading via **Import CSV**. Only projection points are editable inline.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Promotions" icon="tag" href="/marketing-promotions/promotions">
+    Define promotional events and measure their lift
+  </Card>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Manage the forecast models that consume drivers
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    See driver-informed forecasts by SKU and channel
+  </Card>
+  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
+    Turn forecasted demand into supply recommendations
+  </Card>
+</CardGroup>

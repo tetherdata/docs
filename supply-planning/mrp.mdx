@@ -1,0 +1,106 @@
+---
+title: MRP
+description: Material requirements for your committed production runs
+---
+
+# MRP
+
+MRP (material requirements planning) answers a committed-only question: given the production runs you've committed to, which components do you have, which are short, and what should you do about it this week? It works entirely from your committed plan — no solver recommendations are mixed in.
+
+Navigate to **MRP** under the Supply Chain group in the sidebar. The page header shows the plan freshness indicator, and a footer stamps when the worksheet data was captured.
+
+## Tabs
+
+| Tab | Purpose |
+|-----|---------|
+| **Needs action** | The buyer's "what do I do this week" — the component list bucketed by urgency |
+| **Production gap** | Run-centric — each upcoming committed run's shortages, with a transfer or purchase fill |
+| **Worksheet** | The full per-component material worksheet, with its own filters and settings |
+
+Organizations with the approval flow also see the **Review staged (N)** button here — see [Recommendations](/supply-planning/recommendations).
+
+## Shared controls
+
+On the Needs action and Production gap tabs:
+
+- **Filter bar** — search by component name or code, plus entity filters. Filtering to the components of a finished good scopes the gap view to the runs drawing those materials.
+- **Horizon** — a "Next N days" selector that bounds which runs and requirements are in scope.
+- **Saved views**, **Table settings** (with **Export CSV** — `mrp-needs-action.csv` or `mrp-production-gap.csv`), and a **Refresh** control that recomputes the MRP worksheet live from the current plan.
+
+If no worksheet exists for the current plan yet, the page offers **Compute live** to build one.
+
+## Needs action
+
+The component list, bucketed by urgency, with per-row actions:
+
+- **Stage** — opens the prefilled, editable create-purchase drawer. Quantity, landing date, order-by date, and unit cost are prefilled from the gap row (quantities already reflect the supplier's minimum, order multiple, and unit precision).
+- **Order now** — opens the born-ordered dialog, buying the net shortfall (the portion in-time covering POs don't already cover).
+- **Expedite** — jumps to [Transactions](/transactions/overview) to chase the covering PO.
+
+Staged lines land on the [Execution plan](/supply-planning/execution-plan); the worksheet refreshes so the triage list stays current.
+
+## Production gap
+
+The run-centric view: a summary line ("N of M committed run(s) short in next Xd") above each short run's component shortages. Each shortage carries a **fill** action that opens the shared movement create drawer:
+
+- A **transfer fill** when another location holds the component — prefilled with source, destination, and the run's period.
+- A **purchase fill** otherwise — prefilled with supplier, the placeable quantity, a landing date aligned to the run start, and an order-by date clamped so overdue gaps still read "order today" rather than a past date.
+
+<Warning>
+  If some committed runs' BOMs can't be resolved, a warning banner lists them: "N committed run(s) aren't reflected." The worksheet understates material need until those BOMs are fixed — see [BOMs](/principal-catalog/boms).
+</Warning>
+
+## Worksheet
+
+The Worksheet tab is self-contained: it brings its own filter bar, settings popover, and committed-only flow statement. Use it when you need the full per-component picture rather than the triage or gap framing.
+
+## Stale suggestions
+
+If you edit a committed purchase after the last solve, the resurfaced buy suggestion for that component predates your edit and is suppressed here until the next solve — the same stale-recommendation rule used across planning.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Run Needs action weekly at a short horizon">
+    A 7–14 day horizon keeps the triage list to what genuinely needs a decision this week. Widen the horizon for a monthly buying pass.
+  </Accordion>
+
+  <Accordion title="Prefer Stage over Order now when review matters">
+    Stage puts the buy on the execution plan (and through the approval flow, where enabled) with an editable form; Order now mints the PO immediately for the net shortfall. Use Order now for genuine emergencies.
+  </Accordion>
+
+  <Accordion title="Fix unresolved-BOM banners before trusting the numbers">
+    Every run in the banner is missing from the material math. Resolve the BOM, refresh, and re-check before placing component orders.
+  </Accordion>
+
+  <Accordion title="Scope the gap view through the filter bar">
+    Filtering to a finished good's components narrows the Production gap view to the runs that draw those materials — the fastest way to answer "can this product's schedule actually run?"
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| "No worksheet for the current plan yet" | The MRP snapshot hasn't been computed for this plan | Click **Compute live** |
+| Numbers look outdated after staging a line | The worksheet snapshot predates the change | Click **Refresh** to recompute live |
+| A run you committed isn't reflected | Its BOM couldn't be resolved (see the warning banner) | Fix the BOM in the [Principal Catalog](/principal-catalog/boms), then refresh |
+| Expedite lands on the transactions list, not a specific PO | The inbound order doesn't carry a transaction deep link | Search the list for the covering PO by supplier or SKU |
+| No solver suggestions on this page | MRP is committed-only by design | Solver recommendations live on [Purchases](/supply-planning/purchases) and the other planning pages |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Production" icon="industry" href="/supply-planning/production">
+    The committed runs that drive material requirements
+  </Card>
+  <Card title="Purchases" icon="cart-shopping" href="/supply-planning/purchases">
+    The buying workbench for component and finished-good POs
+  </Card>
+  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
+    Where staged fills land for review and ordering
+  </Card>
+  <Card title="BOMs" icon="diagram-project" href="/principal-catalog/boms">
+    Keep bills of materials resolvable so MRP sees every run
+  </Card>
+</CardGroup>

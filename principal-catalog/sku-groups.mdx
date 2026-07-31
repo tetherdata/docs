@@ -1,0 +1,131 @@
+---
+title: "SKU groups"
+description: "Organize SKUs into primary and standard groups, bulk-create variants, and move members between groups"
+---
+
+# SKU groups
+
+SKU groups organize your catalog at `/principal/sku-groups` in the **Principal Catalog** section. There are two kinds: **Primary SKU Groups**, which define a product hierarchy with attributes (every SKU belongs to exactly one), and **Standard** groups, which are flat lists for cross-cutting purposes like assortments or planning.
+
+<Note>
+Your organization may use different names for SKU groups. Administrators can rename catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
+</Note>
+
+## Groups list
+
+The list page splits groups into two tabs, each with a count: **Primary SKU Groups** and **Standard**. Both show **Name** and **Description** plus a member count; the primary tab adds hierarchy columns (such as Category and Subcategory, when enabled) and an attribute count.
+
+- Search by name or description, and filter with the **Planning groups** chip to find groups that carry demand aggregation.
+- Click **New sku group** to create a group.
+- Each row's menu offers **View details**, **Edit**, **Duplicate** (standard groups only), and **Delete**. Deletion asks for confirmation and can fail if a policy still references the group.
+
+### Creating a group
+
+In the create dialog, choose the **Type** — **Standard** or **Primary SKU Group** — then enter a **Name** and optional **Description**. Primary SKU Groups define a product hierarchy with attributes; Standard groups are flat lists. The type cannot be changed after creation. Primary groups can also be classified against your hierarchy levels.
+
+## Group detail page
+
+A group's detail page shows its name, description, and tabs for **Members**, **Inventory**, **Purchasing**, **Production**, **Storage**, and **Policies**. Header actions depend on the group type:
+
+- **Edit** — always available with write access.
+- **Duplicate** — standard groups only.
+- **Bulk Create SKUs** — primary groups only.
+
+Primary groups also show a **Hierarchy** card for classification metadata.
+
+## Members grid
+
+The **Members** tab lists the group's SKUs with **Code**, **Name**, and the date each was **Added**. Names are editable inline with batched saves. Click a row to open that SKU's detail page.
+
+### Selecting and bulk actions
+
+With write access, each row has a checkbox for multi-select. Selecting rows shows a selection bar with the count, a **Clear** link, and two bulk actions:
+
+- **Move to…** — move the selected SKUs to another group. The list offers only groups of the same type: standard-to-standard moves change secondary membership, while primary-to-primary moves re-point each SKU's single primary group.
+- **Remove** — remove the selected SKUs from the group. A confirmation dialog explains that this removes the membership only — the SKUs themselves are not deleted and can be re-added later.
+
+Each row also has a menu with the same **Move to…** targets and a single-row **Remove**.
+
+### Adding SKUs to a group
+
+The add control differs by group type:
+
+- **Standard groups** — use the SKU picker to search by code or name, select several, and click **Add**. This adds secondary memberships without affecting each SKU's primary group.
+- **Primary groups** — the control is labeled **Move SKUs into this group**, because each SKU has exactly one primary group: moving a SKU in removes it from its current primary group. Each search result shows which group the SKU currently belongs to, and the button reads **Move N into** the group name.
+
+## Bulk Create SKUs wizard
+
+On a primary group's detail page, **Bulk Create SKUs** opens a five-step wizard that generates a SKU for every combination of selected attribute values:
+
+<Steps>
+  <Step title="Attributes">
+    For each attribute configured on the group, toggle the values to include. A running count shows how many SKUs will be generated (the product of your selections, for example 3 × 2).
+  </Step>
+  <Step title="Codes">
+    Review and edit the generated code, name, and type for every combination. Codes default to the attribute value codes joined with hyphens; names join the value names. An optional **Code prefix** with **Apply** rewrites all codes at once.
+  </Step>
+  <Step title="Preview">
+    A read-only review of the SKUs about to be created.
+  </Step>
+  <Step title="Confirm">
+    Confirm and click **Create N SKUs**.
+  </Step>
+  <Step title="Results">
+    See created and failed counts. Failed rows can be edited and retried individually with **Retry**, or in bulk via **Edit & Retry**, which returns you to the Codes step.
+  </Step>
+</Steps>
+
+If everything succeeds, the wizard closes automatically.
+
+## Duplicating a group
+
+For standard groups, **Duplicate** copies the group and all its members under a new name (pre-filled as the original name plus "(Copy)"). A **Copy policies** toggle also copies policies scoped directly to the group, rescoped onto the copy — this requires network write permission. Groups carrying a demand-aggregation policy can be duplicated only with **Copy policies** turned off, since the same SKUs can't be aggregated in two groups.
+
+## Policies tab
+
+The **Policies** tab lists planning policies scoped to the group, grouped by domain, and lets you create new ones pre-scoped to it. Editing requires network write permission. Groups whose policies carry demand aggregation are badged as **Planning group** in the list and detail pages. Policies feed planning — see [Supply planning](/supply-planning/overview).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Treat primary groups as products">
+    Model each product as a primary group with attributes (Size, Color), and its variants as member SKUs. Use standard groups for everything else — assortments, launches, planning cohorts.
+  </Accordion>
+  <Accordion title="Prefer Bulk Create SKUs for variant matrices">
+    Generating variants from attribute combinations keeps codes and names consistent and creates the whole matrix in one pass, instead of hand-creating each SKU.
+  </Accordion>
+  <Accordion title="Move, don't re-add, between primary groups">
+    A SKU can only have one primary group. Use **Move to…** (or the move control on the destination group) so membership stays consistent — there is no way to add a second primary membership.
+  </Accordion>
+  <Accordion title="Check policy references before deleting a group">
+    Group deletion fails if a policy still references it. Review the group's **Policies** tab first and re-scope or remove policies before deleting.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| **Move to…** doesn't list the group you want | Moves are restricted to groups of the same type (primary-to-primary, standard-to-standard) | Check which tab the target group lives on; cross-type moves aren't offered |
+| **Duplicate** is missing on a group | Only standard groups can be duplicated | Create a new primary group and move SKUs into it instead |
+| Duplicating fails with a name error | A standard group with that name already exists | Choose a different name |
+| Duplicating a planning group is blocked | Its demand-aggregation policy can't exist on two groups covering the same SKUs | Turn off **Copy policies** and duplicate again |
+| The wizard won't advance past Codes | One or more generated codes are blank | Fill in every code before clicking **Next** |
+| Deleting a group fails | A policy still references the group | Remove or re-scope those policies first |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
+    Define the attribute values the bulk-create wizard combines
+  </Card>
+  <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
+    Manage the SKUs that belong to your groups
+  </Card>
+  <Card title="BOMs" icon="file-lines" href="/principal-catalog/boms">
+    Define production recipes for the SKUs in your groups
+  </Card>
+  <Card title="Supply planning" icon="chart-gantt" href="/supply-planning/overview">
+    See how group-scoped policies shape the plan
+  </Card>
+</CardGroup>

@@ -1,33 +1,84 @@
 ---
-title: Forecast Administration
-description: Configure and manage forecast settings in Tether
+title: Forecast Admin
+description: Configure forecast generation, models, versioning, uploads, and availability in Tether
 ---
 
-# Forecast Administration
+# Forecast Admin
 
-The Forecast Admin section provides tools for configuring how forecasts are generated, managing bulk data, and controlling forecast versions. These settings significantly impact forecast quality.
-
-<Note>
-  Forecast Administration is restricted to Admin users.
-</Note>
+The Forecast Admin surface provides tools for configuring how demand forecasts are generated, managing forecast models, submitting versions, and importing bulk data. These settings significantly impact forecast quality.
 
 ## Accessing Forecast Admin
 
-Navigate to **Demand Forecast** → **Admin** (or through the settings menu).
+The same surface is available from two entry points:
 
-## Admin Tabs
+| Entry point | Page title | Access |
+|-------------|-----------|--------|
+| **Demand** → **Admin** in the sidebar (`/demand-forecast/admin`) | Forecast Admin | Non-admin users see only the **Availability** tab |
+| **Settings** → **Forecast Admin** | Demand Forecast Admin | Admin users only |
 
-The Forecast Admin page has multiple tabs:
+Both entry points show the same five tabs:
 
 | Tab | Purpose |
 |-----|---------|
-| **Settings** | Model selection and configuration |
-| **Upload** | Bulk forecast data imports |
-| **Versioning** | Manage forecast versions |
+| **Admin** | Forecast date range configuration, forecast generation, and historical sales calculation |
+| **Models** | Create and manage forecast models |
+| **Versioning** | Submit and download forecast versions |
+| **Upload** | Bulk forecast and sales data imports |
+| **Availability** | SKU-channel availability matrix |
 
-## Model Selection
+<Note>
+  The **Admin**, **Models**, **Versioning**, and **Upload** tabs are restricted to Admin users. **Availability** is visible to all users with demand access.
+</Note>
 
-A **model** is a method for generating a possible forecast. Each model uses an **algorithm** that defines how forecast values are calculated. Your organization can define multiple models with different algorithms and compare their outputs before selecting one as active.
+## Admin tab
+
+### Forecast date range configuration
+
+The **Forecast Date Range Configuration** card controls how far forward forecasts extend:
+
+- **Forecast end date mode** — choose one year out, end of the current year, end of the next year, or a custom end date. When custom periods are configured, a quick-select lets you pick a period's end date directly.
+- **New period initialization** — choose whether newly added periods start at zero or copy values forward.
+
+Click **Save Configuration** to apply. A confirmation appears: "Configuration updated. Regenerate forecasts to apply changes." — configuration changes do not take effect in forecast values until the next generation run.
+
+### Forecast generation status
+
+The **Forecast Generation Status** card shows the current state of demand forecast generation and lets you trigger a run:
+
+- A status indicator shows **Generating...**, **Last generation successful**, or **Last generation failed**.
+- Click **Generate Forecasts** to start a run. While a run is in progress the button label switches to **Generating...** and a progress bar appears.
+- After a run completes, the card shows the **Last Generated** timestamp and the **Total Forecasts** count.
+- If the last run failed, a Generation Error alert shows the error message.
+
+<Note>
+  **Generate Forecasts** regenerates the *demand forecast* (model outputs for SKU-channel combinations). It is a separate system from the supply-planning solve, which is triggered with **Run now** on the Connected Planning page. Generating forecasts does not create a new supply plan — see the [Supply Planning overview](/supply-planning/overview) for how planning consumes forecasts.
+</Note>
+
+### Calculation coverage summary
+
+This card summarizes the calculated historical sales data that feeds the forecast algorithms: total records, active channels, active SKUs, coverage percentage, the covered date range, and the calculation status.
+
+### Calculate historical sales
+
+Use the **Calculate Historical Sales** card to aggregate sales orders into daily historical sales records for a date range:
+
+<Steps>
+  <Step title="Pick a date range">
+    Set the **Start Date** and **End Date**. The default range is roughly the last year, ending yesterday.
+  </Step>
+
+  <Step title="Click Calculate Historical Sales">
+    The calculation aggregates sales by date, channel, and SKU. It may take several minutes for large datasets.
+  </Step>
+
+  <Step title="Review the result">
+    A confirmation reports how many records were calculated, and the coverage summary updates.
+  </Step>
+</Steps>
+
+## Models tab
+
+The Models tab (**Model Management**) is where you create and manage forecast models. A **model** is a method for generating a possible forecast. Each model uses an **algorithm** that defines how forecast values are calculated. Your organization can define multiple models with different algorithms and compare their outputs.
 
 <Tip>
   For a deep dive into how each algorithm works, including mathematical formulas and parameter details, see the [Forecast Algorithms](/demand-forecasting/algorithms) page.
@@ -55,11 +106,11 @@ Tether provides 11 forecast algorithms you can assign to models:
 
 <Steps>
   <Step title="Open the Models tab">
-    Navigate to **Demand Forecast** → **Admin** and open the **Models** tab.
+    Navigate to **Demand** → **Admin** and open the **Models** tab.
   </Step>
 
   <Step title="Click Create Model">
-    Click **Create Model** to open the model creation dialog.
+    Click **Create Model** to open the model creation form.
   </Step>
 
   <Step title="Configure the model">
@@ -67,31 +118,23 @@ Tether provides 11 forecast algorithms you can assign to models:
   </Step>
 
   <Step title="Save">
-    Click **Save**. The system calculates the model's output for all SKU-channel combinations.
+    Save the model. The system calculates the model's output for all SKU-channel combinations.
   </Step>
 </Steps>
 
-### Selecting the active model
+### Quick actions
 
-Only one model can be active at a time. The active model drives the official sales forecast used by downstream processes (consumption forecast, inventory forecast, and reorder calculations).
+The **Quick Actions** card on the Models tab includes:
 
-<Steps>
-  <Step title="Compare model outputs">
-    Use the [Forecast Comparison](/demand-forecasting/comparison) view or click a row in the forecast table to open the model selection dialog and see outputs from all models side by side.
-  </Step>
+- **Generate Forecasts** — a second entry point for regenerating model outputs, equivalent to the button on the Admin tab.
+- **Optimize All** — runs parameter optimization for every model whose algorithm supports auto-tune.
+- **New Model** — opens the model creation form.
 
-  <Step title="Select a model">
-    Choose the model you want to activate and confirm your selection.
-  </Step>
+The **Current Selection** card shows which model currently drives the official sales forecast, and the **Model Overview** table lists every model with edit, delete, and optimize actions.
 
-  <Step title="Forecast regenerates">
-    The system regenerates the official sales forecast using the selected model's algorithm.
-  </Step>
-</Steps>
+### Consensus Model
 
-<Note>
-  Changing the active model triggers an immediate forecast regeneration for all SKU-channel combinations.
-</Note>
+If your organization has no Consensus Model yet, the Models tab offers **Create Consensus Forecast Model**. The Consensus Model enables direct editing of forecast values for specific SKU-channel combinations, so you can override algorithmic forecasts with business knowledge. See [Editing Forecasts](/demand-forecasting/editing).
 
 ### Parameter optimization (auto-tune)
 
@@ -111,70 +154,43 @@ Seven of the 11 algorithms support **automatic parameter optimization**. When en
 
 **Per-SKU/channel optimization:** Optimized parameters are stored per SKU-channel combination, so each product-channel pair can have its own tuned settings within a model.
 
-### Key algorithm parameters
-
-Each algorithm has configurable parameters. Here are the most commonly tuned ones:
-
-**Rolling Average:**
-- `window_days` — number of days to average (default: 90 or 120)
-
-**EWMA:**
-- `window_days` — window size in days (default: 60)
-- `weight_factor` — exponential decay factor, 0.1–0.99 (default: 0.8). Lower values emphasize recent data more heavily.
-
-**Holt-Winters:**
-- `alpha` — level smoothing, 0.0–1.0 (default: 0.2)
-- `beta` — trend smoothing, 0.0–1.0 (default: 0.1)
-- `gamma` — seasonal smoothing, 0.0–1.0 (default: 0.1)
-- `phi` — trend damping, 0.8–1.0 (default: 0.95). Values below 1.0 prevent unrealistic long-term trend extrapolation.
-
-**SARIMA:**
-- `ar_order`, `diff_order`, `ma_order` — non-seasonal ARIMA orders
-- `seasonal_ar_order`, `seasonal_diff_order` — seasonal orders
-- `seasonal_period` — season length in days (default: 365)
-
-**Rolling Momentum:**
-- `short_window_days` — recent performance window (default: 30)
-- `long_window_days` — baseline comparison window (default: 90)
-- `sensitivity` — momentum reaction strength, 0.0–1.0 (default: 0.5)
-
 <Info>
-  For the full list of parameters, defaults, and optimization ranges, see [Forecast Algorithms](/demand-forecasting/algorithms).
+  For the full list of parameters, defaults, and optimization ranges, see [Forecast Algorithms](/demand-forecasting/algorithms). To assign different models to different SKU-channel pairings, see [Model assignment](/demand-forecasting/model-assignment).
 </Info>
 
-## Forecast Settings
+## Versioning tab
 
-### General Settings
+The Versioning tab manages forecast version submissions:
 
-| Setting | Description |
-|---------|-------------|
-| **Forecast Horizon** | How far ahead to forecast (in days) |
-| **Granularity** | Forecast output is always at the day × SKU × channel level |
-
-## Bulk Upload
-
-### Upload Tab
-
-The Upload tab allows importing forecast data in bulk.
-
-### Template Types
-
-Tether provides **two different upload templates** depending on your period configuration:
-
-| Template | When to Use | Download |
-|----------|-------------|----------|
-| **Standard Date Template** | Default - when custom periods are NOT enabled | Default template download |
-| **Custom Period Template** | When custom time aggregations are enabled | Select "Period" format |
+- **Versioning Status** — shows whether versioning is enabled and the current period. Admin users can enable versioning and open **Versioning Settings**.
+- **Submit Version** — snapshots the current forecast as a named version for the current period.
+- **Submission History** — lists past submissions with name, submitted timestamp and user, and version label. Each submission can be downloaded.
 
 <Note>
-  The custom period template is only available if your organization has enabled custom time aggregations in period settings.
+  Sales representatives cannot submit forecast versions — contact an admin user if the **Submit Version** button is disabled.
 </Note>
 
-### Standard Date Template
+## Upload tab
 
-Use this template when your organization uses standard calendar dates.
+The Upload tab imports forecast or sales data in bulk from CSV.
 
-**Required Columns:**
+### Data types
+
+Choose what the upload targets:
+
+| Data type | Effect |
+|-----------|--------|
+| **Consensus Forecast** | Uploads directly to the Consensus Model (overwrites current values) |
+| **Baseline Dataset** | Creates or updates a labeled baseline dataset that forecast models can reference (e.g., for the Static Baseline algorithm) |
+| **Historical Sales** | Updates actual historical sales data (affects all models that use sales history) |
+
+For baseline uploads, pick an existing label or enter a new one (e.g., "Q4 2024 Optimistic"). Existing baselines are listed on the tab and can be managed there.
+
+### Templates
+
+Click **Download Template** to get a starter CSV. The template format follows your organization's period configuration automatically:
+
+**Standard date template** (default):
 
 | Column | Required | Description |
 |--------|----------|-------------|
@@ -183,18 +199,7 @@ Use this template when your organization uses standard calendar dates.
 | `date` | Yes | Date in `MM/DD/YYYY` or `YYYY-MM-DD` format |
 | `quantity` | Yes | Forecast quantity (integer) |
 
-**Example:**
-```csv
-sku_code,channel_name,date,quantity
-SKU001,Amazon US,2025-01-01,1000
-SKU002,Shopify,01/15/2025,500
-```
-
-### Custom Period Template
-
-Use this template when your organization has custom periods enabled (e.g., fiscal periods like P1-P12).
-
-**Required Columns:**
+**Custom period template** (when custom time aggregations are enabled):
 
 | Column | Required | Description |
 |--------|----------|-------------|
@@ -204,190 +209,53 @@ Use this template when your organization has custom periods enabled (e.g., fisca
 | `fiscal_year` | Yes | Fiscal year (e.g., `FY2025`, `2024`) |
 | `quantity` | Yes | Forecast quantity (integer) |
 
-**Example:**
-```csv
-sku_code,channel_name,period_label,fiscal_year,quantity
-SKU001,Amazon US,P1,FY2025,1000
-SKU002,Shopify,P3,FY2025,500
-```
-
 <Warning>
-  Do not mix date and period columns in the same file. The system will reject files that contain both a `date` column and `period_label`/`fiscal_year` columns.
+  Do not mix date and period columns in the same file. The system rejects files that contain both a `date` column and `period_label`/`fiscal_year` columns.
 </Warning>
 
-### Upload Process
+### Upload process
 
 <Steps>
-  <Step title="Download Template">
-    Click **Download Template** and select the appropriate format:
-    - **Standard** for date-based uploads
-    - **Period** for custom period uploads (if enabled)
+  <Step title="Download the template">
+    Click **Download Template** and fill it in with your values.
   </Step>
 
-  <Step title="Prepare Data">
-    Fill in the template with your forecast values. Ensure all required columns are populated.
+  <Step title="Choose the data type">
+    Select **Consensus Forecast**, **Baseline Dataset**, or **Historical Sales**.
   </Step>
 
-  <Step title="Upload File">
-    Click **Upload** and select your CSV file
+  <Step title="Upload the file">
+    Select your CSV file to validate it.
   </Step>
 
-  <Step title="Preview">
-    Review the preview of changes:
-    - New forecasts to be added
-    - Existing forecasts to be updated
-    - Errors to resolve
+  <Step title="Preview changes">
+    Review the preview: new records, updated records, and rows with errors.
   </Step>
 
-  <Step title="Confirm">
-    Click **Apply** to import the forecasts
+  <Step title="Apply">
+    Confirm to import the valid rows.
   </Step>
 </Steps>
 
-### Upload Validation
+### Upload validation
 
 The system validates all uploads:
 
-**Common Validations:**
 - SKU codes must exist in the system
 - Channel names must match existing channels
 - Quantities must be numeric and non-negative
-- Duplicate SKU + Channel + Date/Period combinations are flagged
-
-**Date Template Validations:**
-- Dates must be in valid format (`MM/DD/YYYY` or `YYYY-MM-DD`)
-
-**Period Template Validations:**
-- Period labels must match configured periods
-- Fiscal years must match configured fiscal years
-
-<Info>
-  Non-whole number quantities are automatically rounded to the nearest integer with a warning.
-</Info>
+- Dates must be in a valid format; period labels and fiscal years must match configured periods
+- Duplicate SKU + channel + date/period combinations are flagged
 
 <Warning>
   Invalid rows are rejected. You can fix errors and re-upload, or proceed with valid rows only.
 </Warning>
 
-### Upload History
+## Availability tab
 
-View past uploads:
+The Availability tab shows the SKU availability matrix — which SKUs are available on which channels. Unlike the other tabs, it is visible to all users with demand access, and it is the only tab non-admin users see at **Demand** → **Admin**.
 
-- Upload date and time
-- User who uploaded
-- File name
-- Record count
-- Status (success, partial, failed)
-
-## Versioning
-
-### What is Forecast Versioning?
-
-Versioning maintains historical snapshots of forecasts:
-
-| Version Type | Description |
-|--------------|-------------|
-| **Current** | Active forecast being used |
-| **Historical** | Past versions for comparison |
-| **Draft** | Work-in-progress (not active) |
-
-### Versioning Tab
-
-The Versioning tab shows:
-
-- List of forecast versions
-- Version dates and descriptions
-- Actions (view, restore, compare)
-
-### Creating a Version
-
-<Steps>
-  <Step title="Go to Versioning Tab">
-    Open the Versioning tab
-  </Step>
-
-  <Step title="Click Create Version">
-    Start a new version snapshot
-  </Step>
-
-  <Step title="Add Details">
-    - Name: "Q1 2024 Plan"
-    - Description: Reason for version
-  </Step>
-
-  <Step title="Save">
-    Version is created and stored
-  </Step>
-</Steps>
-
-### Comparing Versions
-
-Compare forecast versions:
-
-1. Select two versions
-2. Click **Compare**
-3. View differences by SKU/channel/period
-
-### Restoring a Version
-
-To revert to a previous version:
-
-<Steps>
-  <Step title="Select Version">
-    Click on the version to restore
-  </Step>
-
-  <Step title="Click Restore">
-    Choose **Restore** action
-  </Step>
-
-  <Step title="Confirm">
-    Review what will change and confirm
-  </Step>
-
-  <Step title="Version Active">
-    Selected version becomes current
-  </Step>
-</Steps>
-
-<Warning>
-  Restoring a version replaces the current forecast. Consider creating a version of the current state first.
-</Warning>
-
-## Forecast Regeneration
-
-### When forecasts regenerate
-
-The system recalculates model outputs automatically when:
-
-- **A model definition is modified** — the system immediately recalculates that model's outputs for all SKU-channel combinations. If the modified model is the currently selected model, the official forecast is also regenerated.
-- **The active model is changed** — selecting a different model triggers a full forecast regeneration using the new model's algorithm.
-- **Historical data is updated** — events like data syncs or manual sales history uploads trigger a recalculation of all active model outputs.
-- **A daily update occurs** — scheduled regeneration recalculates forecasts with the latest available data.
-
-### Manual regeneration
-
-To manually trigger a forecast update:
-
-<Steps>
-  <Step title="Go to Forecast Admin">
-    Navigate to **Demand Forecast** → **Admin**.
-  </Step>
-
-  <Step title="Click Regenerate">
-    Click the **Regenerate Forecasts** button.
-  </Step>
-
-  <Step title="Confirm">
-    Confirm to start the regeneration process. The system recalculates model outputs for all SKU-channel combinations using the currently selected model's algorithm.
-  </Step>
-</Steps>
-
-<Info>
-  Regeneration recalculates algorithmic model outputs. User edits made through the [Consensus Model editing workflow](/demand-forecasting/editing) are preserved — they are not overwritten by regeneration.
-</Info>
-
-## Data Quality
+## Data quality
 
 ### Data requirements by algorithm
 
@@ -403,44 +271,32 @@ Different algorithms have different minimum data requirements:
   Seasonal algorithms (Simplified Seasonal, Holt-Winters, SARIMA, Seasonal YoY Growth) automatically fall back to a 90-day rolling average if fewer than 365 days of history are available.
 </Warning>
 
-### Data quality indicators
-
-Watch for warnings about:
-
-- SKUs with insufficient sales history for the selected algorithm
-- Channels with sparse or missing data
-- Products with high variability that may need a different algorithm
-- Recent data gaps that could skew forecasts
-
-## Best Practices
+## Best practices
 
 <AccordionGroup>
   <Accordion title="Model selection">
     - Start with simpler algorithms (e.g., 90-Day Rolling Average) and compare against more complex ones (e.g., Holt-Winters, SARIMA).
     - Use the [Forecast Comparison](/demand-forecasting/comparison) view to evaluate accuracy before switching.
-    - Consider using different models for different product segments — stable products may perform best with Rolling Average, while seasonal products benefit from Simplified Seasonal or Holt-Winters.
-    - Enable parameter optimization (auto-tune) for algorithms that support it to find the best settings per SKU-channel combination.
+    - Consider different models for different product segments — stable products may perform best with Rolling Average, while seasonal products benefit from Simplified Seasonal or Holt-Winters. See [Model assignment](/demand-forecasting/model-assignment) for per-pairing assignment.
+    - Enable parameter optimization (auto-tune) for algorithms that support it.
   </Accordion>
 
-  <Accordion title="Regular updates">
-    Keep forecasts current:
-    - Ensure regular regeneration so forecasts incorporate the latest sales data.
-    - Monitor data freshness — stale sales history leads to outdated forecasts.
-    - Periodically review model accuracy and consider switching algorithms if performance degrades.
+  <Accordion title="Regenerate after configuration changes">
+    - After saving date range configuration, click **Generate Forecasts** so the change takes effect in forecast values.
+    - Monitor data freshness — stale sales history leads to outdated forecasts. Recalculate historical sales after large data corrections.
+    - User edits made through the [Consensus Model editing workflow](/demand-forecasting/editing) are preserved — forecast generation does not overwrite them.
   </Accordion>
 
   <Accordion title="Version discipline">
-    Use versioning effectively:
-    - Create a version snapshot before switching the active model.
+    - Submit a version before making major changes to models or configuration.
     - Name versions descriptively (e.g., "Before SARIMA switch Q1 2026").
-    - Compare versions during planning cycles to track forecast evolution.
+    - Download past submissions to compare forecast evolution across planning cycles.
   </Accordion>
 
   <Accordion title="Upload carefully">
-    Handle bulk uploads with care:
     - Validate data before upload — ensure SKU codes and channel names match existing records.
-    - Always preview changes before confirming.
-    - Create a version snapshot of the current forecast state before uploading.
+    - Always review the preview before applying.
+    - Pick the right data type: Consensus Forecast uploads overwrite current consensus values.
   </Accordion>
 </AccordionGroup>
 
@@ -449,14 +305,25 @@ Watch for warnings about:
 ### Forecasts not updating
 
 **Possible causes:**
-- No regeneration has been triggered (manual or automatic).
+- No generation run has happened since the change — configuration changes wait for the next run.
 - The modified model is not the currently selected model — only the selected model drives the official forecast.
 - Data sync has not completed, so the latest sales history is not yet available.
 
 **Solutions:**
-1. Trigger a manual regeneration from the Admin page.
-2. Verify which model is currently selected and confirm it's the one you expect.
-3. Check that data integrations have synced successfully.
+1. Click **Generate Forecasts** on the Admin or Models tab.
+2. Check the **Current Selection** card on the Models tab to confirm which model is active.
+3. Check that data integrations have synced, then recalculate historical sales if needed.
+
+### Generation fails
+
+**Possible causes:**
+- Insufficient historical sales data for the selected algorithm.
+- A generation run is already in progress.
+
+**Solutions:**
+1. Check the Generation Error alert on the **Forecast Generation Status** card for the specific message.
+2. Review the **Calculation Coverage Summary** — if coverage is low, run **Calculate Historical Sales** first.
+3. Wait for the in-progress run to finish before starting another.
 
 ### Upload errors
 
@@ -467,10 +334,9 @@ Watch for warnings about:
 - Mixing date and period columns in the same file.
 
 **Solutions:**
-1. Download the correct template for your organization's period configuration.
+1. Download the template again — it matches your organization's period configuration.
 2. Verify all SKU codes and channel names exist in the system before uploading.
 3. Check for non-numeric or negative quantity values.
-4. Ensure no special characters or encoding issues in the CSV file.
 
 ## Next Steps
 
@@ -478,13 +344,13 @@ Watch for warnings about:
   <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
     Learn how each algorithm works, its parameters, and when to use it
   </Card>
+  <Card title="Model assignment" icon="wand-magic-sparkles" href="/demand-forecasting/model-assignment">
+    Assign forecast models per SKU-channel pairing
+  </Card>
   <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
     Compare model outputs and accuracy side by side
   </Card>
   <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
     View and edit forecasts
-  </Card>
-  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
-    Track forecast changes
   </Card>
 </CardGroup>

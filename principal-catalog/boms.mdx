@@ -1,0 +1,123 @@
+---
+title: "BOMs"
+description: "Build and maintain bills of materials — components, outputs, and where each BOM is used"
+---
+
+# BOMs
+
+A bill of materials (BOM) defines how a SKU is produced: the components it consumes, the outputs it yields, and which output is primary. Manage BOMs at `/principal/boms` in the **Principal Catalog** section.
+
+<Note>
+Your organization may use a different name for BOMs. Administrators can rename catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
+</Note>
+
+## BOM list
+
+The list page shows every BOM with its **Name**, what it **Produces**, the output's **SKU type**, **Notes**, a **Status** badge, and a component count. Status distinguishes **Top-level** BOMs (the output isn't consumed by any other BOM — a finished good) from **Sub-assembly** BOMs (consumed as a component by other BOMs, with a count).
+
+- **Search** by name, notes, or output SKU.
+- **Filter** with chips for **Size** (component count ranges), **Usage** (Sub-assembly or Top-level), and **Type** (the output's SKU type).
+- **Export** the list to CSV from the table settings menu.
+- Click **New BOM** to create one.
+
+Each row's menu offers **Open**, **Edit metadata**, and **Delete**. Deletion asks for confirmation and can fail if a policy still references the BOM.
+
+### Grouped and flat views
+
+The table settings menu has a **View** setting with two options:
+
+- **Grouped** (the default) — BOMs are organized into collapsible sections by demand-aggregation SKU group, based on each BOM's output SKU, with an **Ungrouped** section for outputs not in such a group.
+- **Flat** — a single table of all BOMs.
+
+Your choice is remembered between visits.
+
+## Creating a BOM
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **New BOM** on the list page.
+  </Step>
+  <Step title="Name it and pick the output">
+    Enter a **Name** and optional **Notes**, then choose the **Produces SKU** — the primary SKU this BOM produces. Additional co-product outputs can be added later from the detail page.
+  </Step>
+  <Step title="Add line items">
+    Click **Add line item** for each component. Pick the component SKU with the searchable picker, then set its quantity, unit, and optional notes.
+  </Step>
+  <Step title="Create">
+    Click **Create BOM**.
+  </Step>
+</Steps>
+
+When editing an existing BOM from the dialog, only the name and notes are editable — line items are managed on the detail page.
+
+<Tip>
+You can also build a BOM from a SKU's detail page: on its **BOM** tab, adding the first component creates a BOM automatically with that SKU as the primary output. See [SKUs](/principal-catalog/skus).
+</Tip>
+
+## BOM detail page
+
+The detail page has a main column with three sections, a **Used by** panel on the right, and an **Export CSV** header action for the line items.
+
+### Metadata
+
+Edit the BOM's **Name** and **Notes**. A badge shows whether the BOM is **Top-level** or a **Sub-assembly**, and a yield rate line appears when a yield-rate policy targets an output SKU.
+
+### Outputs
+
+The **Outputs** section lists what the BOM produces: each row has the SKU, a **Yield qty**, a **Primary** radio selector, and a remove button. Click **Add output** to add a co-product via the component picker. Exactly one output is primary; to remove the current primary while other outputs exist, mark another output as primary first. Output changes save immediately.
+
+### Line items
+
+The **Line items** section lists components with position, quantity, unit, and an optional flag. Click **Add component** to add one, drag rows to reorder, and edit quantities and units inline. Removing a component marks it for removal (struck through, with **Restore**) until you commit. Line item edits are staged: a sticky bar tracks unsaved changes with **Discard** and **Save all**.
+
+### Component picker
+
+The picker used for outputs, line items, and the SKU detail BOM tab is a searchable dialog: type a code, name, or description, and results appear grouped by each SKU's primary group. Click a SKU to select it. SKUs already used in the BOM (and the BOM's own outputs) are excluded, and circular references — a component that directly or indirectly consumes a SKU this BOM produces — are blocked.
+
+### Used by panel
+
+The **Used by** panel shows which SKU variant preferences reference this BOM: each entry links to the SKU, shows its rank and reason, and links to the policy that declares it. If nothing references the BOM, the panel says so — and when the BOM also has no outputs, it flags the BOM as safe to delete. When no variant preference exists, the primary output SKU defaults to this BOM when producing.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Keep one clear primary output">
+    The primary output is what the BOM is "for" — co-products are secondary. Set the primary deliberately, especially on multi-output BOMs, since production defaults follow it.
+  </Accordion>
+  <Accordion title="Use sub-assemblies for shared intermediates">
+    If several finished goods share a built component, give that component its own BOM. The list's **Status** column and **Usage** filter make the top-level versus sub-assembly structure easy to audit.
+  </Accordion>
+  <Accordion title="Match line item units to the component's conversions">
+    A line item's unit must be one the component SKU actually defines. Set up unit conversions on the component SKU first so quantities mean what you intend.
+  </Accordion>
+  <Accordion title="Check the Used by panel before deleting">
+    A BOM referenced by variant preferences or policies is load-bearing. The panel tells you when a BOM is safe to delete.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Adding a component is blocked as circular | The component (directly or transitively) consumes a SKU this BOM produces | Restructure so no SKU depends on itself, typically via a separate sub-assembly |
+| Can't remove an output | It's the primary output and other outputs exist | Mark another output as primary first |
+| A line item's unit shows as invalid | The stored unit isn't among the component SKU's defined conversions | Add the conversion on the component SKU, or pick a valid unit |
+| Deleting a BOM fails | A policy still references the BOM | Remove or re-scope the referencing policy first |
+| A BOM is missing from a grouped section | Its output SKU isn't in a demand-aggregation group | Look in the **Ungrouped** section, or switch to the **Flat** view |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
+    Manage the SKUs that BOMs produce and consume
+  </Card>
+  <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
+    Organize outputs into groups that drive the grouped BOM view
+  </Card>
+  <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
+    Define the attributes behind your variant SKUs
+  </Card>
+  <Card title="Supply planning" icon="chart-gantt" href="/supply-planning/overview">
+    See how BOMs drive production planning
+  </Card>
+</CardGroup>

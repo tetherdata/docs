@@ -1,0 +1,147 @@
+---
+title: Inventory Adjustments
+description: Propose corrections to on-hand counts and approve or reject adjustment requests
+---
+
+# Inventory Adjustments
+
+Adjustments are the audited way to correct a position's on-hand count — after a cycle count, damage, a found carton, or any other discrepancy between the shelf and the system. Adjustments are proposed as a **signed change**, and depending on your permissions they either apply immediately or wait in an approval queue.
+
+## How adjustments work
+
+You always enter the **difference** you found — for example `-2` or `+5` — never a replacement count. The change that eventually lands is your delta applied to whatever on-hand is at approval time. This matters because stock keeps moving while a proposal waits: an absolute count captured at proposal time would silently discard everything that sold in between.
+
+Who can do what:
+
+| Permission | What it grants |
+|------------|----------------|
+| `inventory:adjust` | Propose adjustments and see the **My requests** tab |
+| `inventory:approve` | See the **Approvals** tab, decide requests, and apply your own adjustments immediately |
+
+See [Roles & Permissions](/roles-permissions) for how permissions are assigned.
+
+## Proposing an adjustment
+
+<Steps>
+  <Step title="Open the adjustment dialog">
+    On the [Inventory tab](/inventory/dashboard), right-click the position's row — or, in the pivoted-by-location view, the specific location's cell — and choose **Adjust on-hand…**. The dialog title names the SKU and the warehouse so you can confirm exactly which position you are about to change.
+  </Step>
+
+  <Step title="Enter the change in on-hand">
+    Type a signed, non-zero delta such as `-2` or `+5`. Below the field, a preview shows the current on-hand and what it would become if applied now.
+
+    <Note>
+      The preview is an estimate for orientation. The delta is re-applied against on-hand at approval time, so the final figure can differ if stock moves while the request waits.
+    </Note>
+  </Step>
+
+  <Step title="Pick a reason">
+    Choose one of: **Got new inventory**, **Lost inventory**, **Cycle count correction**, **Damaged goods**, **Returns processed**, **Manual correction**, or **Other**. A reason is required.
+  </Step>
+
+  <Step title="Add a note and the count time (optional)">
+    Add a free-text note for context (for example, "water damage, back stockroom"). Set **When was this counted?** back if you counted earlier than now — the approver uses it to tell a miscount from stock that has since moved.
+  </Step>
+
+  <Step title="Submit">
+    The submit button tells you what will happen:
+    - **Apply adjustment** — you hold `inventory:approve`, so the change applies as soon as you submit it.
+    - **Submit for approval** — the request goes to the approval queue. On-hand does not change until an approver resolves it.
+  </Step>
+</Steps>
+
+## My requests tab
+
+Users who can propose adjustments see a **My requests** tab on the Inventory Management page listing their own submissions, with:
+
+| Column | Description |
+|--------|-------------|
+| **Requested** | When you submitted the request |
+| **What** | A summary of the proposed change |
+| **Status** | Where the request stands |
+| **Approver's note** | The note left when the request was resolved |
+
+Statuses you may see: **Waiting for approval**, **Approved, applying**, **Applied**, **Turned down**, **Could not be applied**, and **Expired**.
+
+<Warning>
+  A rejected request never becomes an inventory change, so it appears nowhere in the [History feed](/inventory/history). The approver's note on the My requests tab is the only feedback you receive.
+</Warning>
+
+## Approvals tab
+
+Users with `inventory:approve` see an **Approvals** tab: the queue of adjustment requests waiting for a decision, newest first. Each row shows the SKU, the proposed change, **On hand now** and **After apply**, who requested it and when, the reason, any note, and when the count was taken.
+
+<Info>
+  **On hand now** and **After apply** are read live when you view the queue, not frozen at submission — the preview reflects the shelf as it stands at the moment of decision.
+</Info>
+
+### Approving
+
+Click **Approve** to apply the request's delta to current on-hand. If current on-hand cannot be read, the Approve button is disabled and its tooltip explains that the effect of approving cannot be shown yet — approving without the numbers would be a blind decision.
+
+### Rejecting
+
+Click **Reject** to turn a request down. A dialog asks for a note explaining the decision; on-hand is left untouched, and your note is the only feedback the requester sees, on their My requests tab. Rejecting stays available even when the on-hand preview fails, since it applies nothing.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Report the difference, not the count">
+    Count the shelf, subtract what the system says, and enter that difference. Entering the shelf total as if it were a delta will double-count the position.
+  </Accordion>
+
+  <Accordion title="Set the count time honestly">
+    If the count happened this morning and you are submitting after lunch, set **When was this counted?** back. It is the approver's main tool for separating a genuine miscount from stock that moved after the count.
+  </Accordion>
+
+  <Accordion title="Write notes for the approver">
+    A reason code plus a one-line note ("found a carton behind the racking") resolves most requests without a follow-up conversation.
+  </Accordion>
+
+  <Accordion title="Always leave a rejection note">
+    Your note is the only thing the requester sees when a request is turned down. "Recount please" beats silence — without it, the requester learns nothing.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### I don't see "Adjust on-hand…" in the context menu
+
+**Possible cause:** Proposing adjustments requires the `inventory:adjust` permission.
+
+**Solution:** Ask your administrator to review your role. See [Roles & Permissions](/roles-permissions).
+
+### The submit button is rejecting my entry
+
+**Possible causes:** The change must be a non-zero number (for example `-2` or `+5`), and a reason must be chosen before submitting.
+
+**Solution:** Enter a signed, non-zero delta and pick a reason from the list.
+
+### Approve is disabled on a request
+
+**Possible cause:** Current on-hand for the position could not be read, so the **After apply** preview cannot be shown.
+
+**Solution:** Hover the button for the tooltip explanation and retry once inventory data loads. You can still **Reject** the request, since rejecting changes nothing.
+
+### The applied amount differs from the dialog preview
+
+**Possible cause:** The preview was computed against on-hand at proposal time; the delta is applied against on-hand at approval time, and stock moved in between.
+
+**Solution:** This is by design — the counted difference is preserved, not the projected total. Check the position in [History](/inventory/history) to see the surrounding changes.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Inventory Management" icon="boxes-stacked" href="/inventory/dashboard">
+    Return to current stock levels
+  </Card>
+  <Card title="Inventory History" icon="clock-rotate-left" href="/inventory/history">
+    See applied adjustments in the change feed
+  </Card>
+  <Card title="Roles & Permissions" icon="user-shield" href="/roles-permissions">
+    Understand who can propose and approve
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    Move stock with orders instead of adjustments
+  </Card>
+</CardGroup>
