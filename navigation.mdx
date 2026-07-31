@@ -1,56 +1,68 @@
 ---
-title: Navigation & Interface
+title: Navigation & interface
 description: Learn how to navigate the Tether interface effectively
 ---
 
-# Navigation & Interface Overview
+# Navigation & interface
 
 Tether's interface is designed for efficiency, with intuitive navigation and powerful data management capabilities. This guide helps you understand the layout and key interface patterns.
 
-## Main Layout
+## Main layout
 
 The Tether interface consists of these primary areas:
 
-- **Top Navigation Bar** - Logo, search, and user menu
-- **Sidebar Navigation** - Main feature navigation (collapsible)
-- **Main Content Area** - Where you'll do most of your work
+- **Top navigation bar** - Logo, search, and user menu
+- **Sidebar navigation** - Main feature navigation (collapsible)
+- **Main content area** - Where you'll do most of your work
 
-## Sidebar Navigation
+## Sidebar navigation
 
 The sidebar is your primary navigation tool. It can be expanded or collapsed to maximize screen space.
 
-### Admin Navigation
+The sidebar is organized into groups. Which groups you see depends on your role, your permissions, and which features are enabled for your organization — so your sidebar may show a subset of the groups below.
 
-Admin users see the full navigation menu:
+| Group | Pages |
+|-------|-------|
+| **Command Center** | A configurable landing dashboard (shown only for organizations with a Command Center preset) |
+| **Agent** | Chat Sessions, Memory |
+| **Demand** | Dashboard, Comparison, Edit Log, Admin |
+| **Marketing & Promotions** | Drivers, Promotions |
+| **Inventory** | Dashboard, Warehouses, Suppliers, Lots |
+| **Transactions** | Transactions |
+| **Supply Chain** | Locations, Policies, Connected Planning, Transfer, Production, Purchase, MRP, Execution plan, Data issues |
+| **Principal Catalog** | Attribute, SKU, SKU Group, BOM |
+| **Catalog** | Collections, SKUs (legacy organizations only) |
+| **Sales** | Sales Channels, Sales History |
 
-| Section | Sub-items |
-|---------|-----------|
-| **SKUs** | Dimensions, Collections, Product Hierarchy, SKUs |
-| **Inventory** | Report, Warehouses, Suppliers |
-| **Demand Forecast** | Dashboard, Comparison, Admin, Sales History, Promotions, Edit Log |
-| **Integrations** | Data Ingestion |
-| **Channels** | Channel List, Hierarchy |
-| **Transactions** | *(direct link)* |
+<Note>
+  Several sidebar labels (such as Locations, Policies, Attribute, SKU, SKU Group, and BOM) can be renamed per organization in **Settings** → **Terminology**, so your labels may differ from the defaults shown here.
+</Note>
 
 <Info>
   **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not from the sidebar. Only Admins can see the Settings option.
 </Info>
 
-### Sales Rep Navigation
-
-Sales Rep users see a simplified menu:
-
-| Section | Sub-items |
-|---------|-----------|
-| **SKUs** | Collections, SKUs |
-| **Demand Forecast** | Dashboard, Comparison, Sales History, Edit Log |
-| **Channels** | Channel List |
-
-### Collapsing the Sidebar
+### Collapsing the sidebar
 
 Click the collapse button at the bottom of the sidebar to minimize it. This gives you more screen space for data-heavy views like the SKU dashboard or forecast tables.
 
-## Top Navigation Bar
+## Settings navigation
+
+Settings pages open in their own layout with a dedicated sidebar, organized into these groups:
+
+| Group | Pages |
+|-------|-------|
+| **General** | Profile, Theme, Terminology, Documents |
+| **Catalog** | Collection Hierarchy, SKU Group Hierarchy, Channel Hierarchy, Working-days Calendars, Lot Tracking |
+| **Forecasting** | Forecast Admin, Inventory & Forecast, Period Management, Forecast Edit Log, Automatic Re-planning |
+| **Integrations** | Data Ingestion, BigQuery, API Keys, MCP |
+| **Agent** | Agent Templates, Agent Files |
+| **Access** | Channel Access, Members |
+| **Administration** | Setup & Health, Principal Setup & Health, ERP SKU ID Sync, Mapper Config, Data Management, Feature Flags, Organizations |
+
+Like the main sidebar, settings pages are gated by role and permissions — most users see only a subset of these pages.
+
+## Top navigation bar
 
 The top bar provides:
 
@@ -58,22 +70,22 @@ The top bar provides:
 - **Search**: Quick access to the command palette (also `Cmd+K` / `Ctrl+K`)
 - **User Menu**: Access settings (Admin only), view your role, and log out
 
-## Page Layouts
+## Page layouts
 
-### Tab-Based Pages
+### Tab-based pages
 
 Many pages use tabs to organize related content. For example, the Inventory page has:
 
-- **Overview** - Alerts and health status
-- **Supply Plan** - Scheduled orders
-- **Forecast** - Inventory projections
-- **Flow** - Visual replenishment diagram
+- **Inventory** - Current stock levels across warehouses
+- **History** - Inventory changes and adjustments over time
+- **Approvals** - Adjustment requests awaiting review
+- **My requests** - Adjustment requests you've submitted
 
 <Tip>
   Tab selection is preserved in the URL, so you can bookmark or share links to specific tabs.
 </Tip>
 
-### Detail Pages
+### Detail pages
 
 When you click into a specific item (SKU, warehouse, transaction, etc.), you'll see a detail page with:
 
@@ -81,11 +93,11 @@ When you click into a specific item (SKU, warehouse, transaction, etc.), you'll 
 - **Tabs**: Different aspects of the item
 - **Content Area**: Forms, tables, or visualizations
 
-## Data Tables
+## Data tables
 
 Tether uses powerful data tables throughout the application. Here's how to use them effectively:
 
-### Column Features
+### Column features
 
 | Feature | How to Use |
 |---------|------------|
@@ -95,7 +107,7 @@ Tether uses powerful data tables throughout the application. Here's how to use t
 | **Pin** | Right-click header to pin columns left or right |
 | **Hide** | Use column visibility controls to show/hide columns |
 
-### Inline Editing
+### Inline editing
 
 Many tables support inline editing:
 
@@ -117,13 +129,13 @@ Tables typically include a filter panel on the left side:
 - **Tri-State Selection**: Some filters support Include/Exclude/Indifferent states
 - **Date Ranges**: Select start and end dates for time-based filtering
 
-### Row Selection
+### Row selection
 
 - **Single Select**: Click a row to select it
 - **Multi-Select**: Hold `Cmd` (Mac) or `Ctrl` (Windows) and click multiple rows
 - **Range Select**: Click first row, hold `Shift`, click last row
 
-## Modal Dialogs
+## Modal dialogs
 
 Modals appear for:
 
@@ -132,7 +144,7 @@ Modals appear for:
 - Confirming actions
 - Viewing additional information
 
-### Modal Controls
+### Modal controls
 
 - **Close**: Click the X button or press `Escape`
 - **Save**: Click the primary action button (usually blue)
@@ -142,16 +154,16 @@ Modals appear for:
   Some modals have multiple steps. Look for "Next" and "Back" buttons to navigate.
 </Info>
 
-## Filters & Saved Views
+## Filters & saved views
 
-### Using Filters
+### Using filters
 
 1. Open the filter panel (usually on the left side of data tables)
 2. Expand filter sections by clicking the headers
 3. Select values to include or exclude
 4. Results update automatically
 
-### Tri-State Filtering
+### Tri-state filtering
 
 Some filters support three states:
 
@@ -161,7 +173,7 @@ Some filters support three states:
 | **Exclude** | ✗ | Hide items matching this value |
 | **Indifferent** | - | Don't filter by this value |
 
-### Saving Views
+### Saving views
 
 If you frequently use the same filter combination:
 
@@ -170,9 +182,9 @@ If you frequently use the same filter combination:
 3. Enter a name for the view
 4. Access saved views from the dropdown
 
-## Command Palette
+## Command palette
 
-The command palette provides quick access to navigation and search:
+The command palette provides quick access to navigation and search. It lists every page you can see in the main sidebar and the settings sidebar (respecting your permissions and your organization's terminology), plus a few pages that live outside both navs, such as Location Groups and Sales Orders.
 
 <Steps>
   <Step title="Open Command Palette">
@@ -191,7 +203,7 @@ The command palette provides quick access to navigation and search:
   </Step>
 </Steps>
 
-## Responsive Design
+## Responsive design
 
 Tether works on various screen sizes:
 
@@ -203,7 +215,7 @@ Tether works on various screen sizes:
   For the best experience with data-heavy features like forecasting, use a desktop or large tablet display.
 </Tip>
 
-## Keyboard Shortcuts
+## Keyboard shortcuts
 
 | Shortcut | Action |
 |----------|--------|
@@ -221,5 +233,11 @@ Tether works on various screen sizes:
   </Card>
   <Card title="Command Palette" icon="keyboard" href="/tips/command-palette">
     Master quick navigation with keyboard shortcuts
+  </Card>
+  <Card title="Supply Planning Overview" icon="clipboard-list" href="/supply-planning/overview">
+    See how plans are generated and reviewed
+  </Card>
+  <Card title="Agent Chat" icon="message" href="/agent/chat">
+    Work with Tether's AI agent from anywhere in the app
   </Card>
 </CardGroup>

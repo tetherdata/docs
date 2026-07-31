@@ -1,0 +1,137 @@
+---
+title: "SKUs"
+description: "Create, import, edit, and archive SKUs in the principal catalog, and manage their units, external IDs, BOMs, and policies"
+---
+
+# SKUs
+
+SKUs are the individual items in your principal catalog — everything you make, buy, or sell. Manage them at `/principal/skus` in the **Principal Catalog** section: browse and filter the full list, create SKUs one at a time or import them from CSV, and open a detail page for units, external IDs, BOM components, and policies.
+
+<Note>
+Your organization may use a different name for SKUs. Administrators can rename catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
+</Note>
+
+## SKU list
+
+The list page shows every SKU with its **SKU code**, **Name**, **Type**, **Status**, unit of measurement, and **Primary SKU Group**. Additional columns — description, UPC, archive reason, dimensions and weights, created/updated details, and one column per attribute — are hidden by default and can be enabled from the table settings menu.
+
+- **Search** by code or name.
+- **Filter** with chips for **Primary Group**, **Secondary Group**, **Type**, **Status** (Active or Archived), and one chip per attribute. Add chips with **+ Filter** and reset with **Clear all**. Filter views can be saved.
+- **Group** rows by **Type**, **Status**, **Primary SKU Group**, or any attribute.
+- **Edit inline** — fields like type, description, UPC, and attribute values are editable directly in the grid, with a banner to save or discard batched edits.
+- **Export** the filtered list to CSV from the table settings menu.
+
+Each row has a quick **Archive** (or **Restore**) button plus a menu with **Edit**, **Archive**/**Restore**, and **Delete**. Deleting asks for confirmation and cannot be undone.
+
+## Creating a SKU
+
+<Steps>
+  <Step title="Open the form">
+    Click **Create SKU** on the SKU list page.
+  </Step>
+  <Step title="Pick the primary group">
+    Select a **Primary SKU Group** — every SKU belongs to exactly one, and only primary groups appear in the picker.
+  </Step>
+  <Step title="Enter core details">
+    Fill in **Name** and **SKU code** (the code auto-generates from the name; override it if needed), and set **Type** and **Unit of measurement**.
+  </Step>
+  <Step title="Optionally add dimensions and weight">
+    Expand **Dimensions & Weight (optional)** to enter length, width, and height (all three together or none) and gross/net weight. You can pre-fill these by copying from another SKU in the same primary group.
+  </Step>
+  <Step title="Create">
+    Click **Create SKU**. Attributes, units, and policies can be set afterward on the detail page.
+  </Step>
+</Steps>
+
+<Tip>
+To generate many variant SKUs at once from attribute combinations (for example, every Size × Color), use **Bulk Create SKUs** on a primary SKU group's detail page instead. See [SKU groups](/principal-catalog/sku-groups).
+</Tip>
+
+## Importing SKUs from CSV
+
+Click **Import CSV** on the SKU list page to open the import dialog:
+
+<Steps>
+  <Step title="Upload">
+    Click **Download template** to get a CSV with the right columns (including one column per attribute), fill it in with one row per SKU, then drop the file on the dialog or click to browse. Only `.csv` files are accepted.
+  </Step>
+  <Step title="Review">
+    The **Review import** step validates every row and shows results inline. You can edit rows and revalidate before applying.
+  </Step>
+  <Step title="Import">
+    Click **Import N skus** to apply. The import both creates new SKUs and updates existing ones.
+  </Step>
+  <Step title="Done">
+    The completion screen summarizes how many SKUs were created, updated, and skipped, and lists any groups or attribute values the import created along the way. Click **Done** to close.
+  </Step>
+</Steps>
+
+## SKU detail page
+
+Open any SKU to see its detail page, titled with the SKU code. Tabs cover:
+
+| Tab | Contents |
+|-----|----------|
+| **Overview** | SKU information (name, code, UPC, description, unit, type — all editable inline), dimensions and weight, attribute values, and SKU group memberships |
+| **External IDs** | Identifiers from other systems, as type/value pairs you can add and remove |
+| **Units** | Alternate units of measurement with conversion ratios (for example, 1 case = 12 each) via **Add Conversion** |
+| **BOM** | The components this SKU is built from, and a **Used in** table of other BOMs that consume this SKU |
+| **Inventory** | Inventory details for the SKU |
+| **Purchasing / Production / Storage** | Supplier, production, and warehouse relationships |
+| **Policies** | Planning policies scoped to this SKU |
+
+On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU Group** (with a link and a **Primary** badge) and any other group memberships, which you can add to or remove. The **Attribute Values** card lists assigned values and lets you **Add Attribute** or remove one.
+
+On the **BOM** tab, click **Add component** to pick a component SKU from a searchable picker. If the SKU has no BOM yet, adding the first component creates one automatically with this SKU as the primary output. Circular BOMs are blocked.
+
+## Archiving a SKU
+
+Click **Archive** in the list or on the detail page. Archiving is more than a confirmation — you select a **Reason** (such as Product Discontinued, Supplier Change, Quality Issues, Seasonal End, or Other) and can add optional notes. Archived SKUs get an **Archived** status badge and can be brought back with **Restore**.
+
+## Policies tab
+
+The **Policies** tab lists planning policies scoped to this SKU, grouped by domain, and lets you create new ones pre-scoped to the SKU. Editing policies requires network write permission, which is separate from catalog write permission. Policies drive planning behavior — see [Supply planning](/supply-planning/overview).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Let SKU codes auto-generate, then standardize">
+    The create form generates a code from the name; override it only to match an established convention. Consistent codes make search, imports, and integrations far more reliable.
+  </Accordion>
+  <Accordion title="Use the template for imports">
+    Always start from **Download template** — it includes a column for each of your current attributes, so rows map cleanly and validation passes on the first try.
+  </Accordion>
+  <Accordion title="Archive with an accurate reason">
+    The archive reason (discontinued, supplier change, quality issues, and so on) becomes part of the SKU's record and is exportable as a list column — future you will want to know why an item was retired.
+  </Accordion>
+  <Accordion title="Set unit conversions before transacting in cases">
+    If you buy in cases but sell in eaches, add the conversion on the **Units** tab early. Conversion ratios express how many base units make up the alternate unit.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A secondary group filter returns no SKUs | The group was selected under **Primary Group** instead of **Secondary Group** | Primary and secondary memberships are different — use the matching filter chip |
+| Dimensions won't save | Length, width, and height must be set all together or left all blank | Fill in all three, or clear all three |
+| CSV file won't upload | The import accepts only `.csv` files | Save your spreadsheet as CSV and try again |
+| Adding a component is blocked with a circular BOM message | The component (directly or indirectly) consumes a SKU this BOM produces | Restructure the BOM so no SKU depends on itself |
+| Can't create or edit policies on the Policies tab | Policy editing requires network write permission, separate from catalog write | Ask an administrator to review your permissions |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
+    Organize SKUs into groups and bulk-create variants from attributes
+  </Card>
+  <Card title="BOMs" icon="file-lines" href="/principal-catalog/boms">
+    Define how SKUs are produced from components
+  </Card>
+  <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
+    Manage the attributes and values assigned to SKUs
+  </Card>
+  <Card title="Supply planning" icon="chart-gantt" href="/supply-planning/overview">
+    See how SKU policies drive planning recommendations
+  </Card>
+</CardGroup>

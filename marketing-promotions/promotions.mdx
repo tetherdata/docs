@@ -1,0 +1,198 @@
+---
+title: Promotions
+description: Managing promotional events and their forecast impact
+---
+
+# Promotions
+
+Promotions are marketing events that affect demand. Tether allows you to define promotions so their impact on forecasts can be properly accounted for, and to measure realized lift against what you expected.
+
+<Info>
+  The Marketing & Promotions section is enabled per organization. If you don't see it in the sidebar, it is not switched on for your organization.
+</Info>
+
+## Why track promotions?
+
+Promotions cause demand spikes that disrupt normal patterns:
+
+| Without promotion tracking | With promotion tracking |
+|---------------------------|------------------------|
+| Forecast assumes normal demand | Forecast adjusts for promotion |
+| May stockout during event | Adequate inventory planned |
+| May overstock after event | Smooth transition back to normal |
+| Hard to measure promo impact | Clear lift measurement |
+
+## Promotions dashboard
+
+Navigate to **Marketing & Promotions** → **Promotions** (`/marketing-promotions/promotions`).
+
+<Note>
+  Promotions previously lived under Demand Forecast. Old links redirect to the new location automatically.
+</Note>
+
+The page has two tabs:
+
+| Tab | Contents |
+|-----|----------|
+| **Overview** | Summary cards (Total Promotions, Active, Upcoming, Completed), search and filters, and the promotions table |
+| **Settings** | Promotion type management |
+
+### Promotion status
+
+Status is derived from the promotion's date range:
+
+| Status | Description |
+|--------|-------------|
+| **Active** | Currently running |
+| **Upcoming** | Scheduled for the future |
+| **Past** | Completed |
+
+## Creating a promotion
+
+<Steps>
+  <Step title="Click Create Promotion">
+    From the promotions dashboard, click **Create Promotion**.
+  </Step>
+
+  <Step title="Enter promotion details">
+    - **Name** — e.g., "Summer Sale 2025"
+    - **Promotion Type** — the category (see types below). When the type has measured history, the form shows its median realized lift so you can start from data, not a guess.
+    - **Start Date** and **End Date** — when the promotion runs. Consider lead time for inventory.
+    - **Notes** — optional context about the promotion.
+  </Step>
+
+  <Step title="Add SKU × channel assignments">
+    Assign the SKUs and channels the promotion covers, each with an optional **expected lift percentage**. New rows default their expected lift from the type's measured median realized lift, and remain fully editable.
+  </Step>
+
+  <Step title="Save">
+    Save the promotion.
+  </Step>
+</Steps>
+
+## Promotion types
+
+Manage promotion categories in the **Settings** tab of the promotions dashboard. Types group similar events (e.g., "Flash Sale", "Holiday Event") so their measured performance can inform future promotions of the same type.
+
+## Promotion detail view
+
+Click a promotion to open its detail page:
+
+- **Promotion Details** — name, type, date range, notes, and a status badge.
+- **SKU × Channel Assignments** — every SKU-channel pairing in the promotion with its expected lift percentage. Filter by SKU or channel to find pairings quickly.
+- **View Impact** — for past promotions, opens the impact analysis.
+
+## Promotion impact analysis
+
+For completed promotions, the **Promotion impact — realized vs expected** view compares what happened against what you declared:
+
+| Metric | Meaning |
+|--------|---------|
+| **Expected lift** | The lift you declared on the promotion |
+| **Realized lift** | The lift actually observed in sales |
+| **Actual units** | Units sold during the promotion window |
+| **Coverage** | How much of the promotion's scope has measurable data |
+
+Below the summary:
+
+- **Per-pairing detail** — realized vs expected lift for each SKU-channel assignment.
+- **Per-type history** — measured performance across past promotions of the same type, which grounds the default expected lift for the next promotion of that type.
+
+## Promotions and forecasts
+
+Promotions feed the demand forecast for their date range and scope, and the Demand dashboard can visualize them: enable **Show promo overlay** in the dashboard's table settings to see promotion windows alongside forecast values. See the [Forecast Dashboard](/demand-forecasting/dashboard).
+
+### Pre and post effects
+
+Consider effects outside the promotion window:
+
+| Period | Effect |
+|--------|--------|
+| **Pre-promotion** | Customers may wait to buy |
+| **During promotion** | Lift occurs |
+| **Post-promotion** | Demand may dip below normal |
+
+<Tip>
+  For major promotions, review the surrounding periods on the Demand dashboard and adjust forecasts manually where you expect pull-forward or post-event dips. See [Editing Forecasts](/demand-forecasting/editing).
+</Tip>
+
+## Measuring promotion performance
+
+After a promotion ends:
+
+1. Open **View Impact** on the promotion detail page.
+2. Compare realized lift against expected lift, per pairing.
+3. Let the per-type history inform the expected lift on the next promotion of that type.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Plan ahead">
+    Enter promotions early:
+    - Before inventory planning cycles
+    - Allow time for supply chain response
+    - At least lead time plus a safety buffer
+  </Accordion>
+
+  <Accordion title="Be specific">
+    Define scope carefully:
+    - Only include affected SKU-channel pairings
+    - Use accurate date ranges
+    - Set expected lift per pairing where products respond differently
+  </Accordion>
+
+  <Accordion title="Anchor lift estimates in measured history">
+    Base expected lift on data:
+    - Start from the type's median realized lift shown in the form
+    - Adjust for what makes this event different
+    - Be conservative if uncertain
+  </Accordion>
+
+  <Accordion title="Review past performance">
+    Learn from previous promotions:
+    - Use the impact view to compare realized vs expected lift
+    - Build clean per-type history by categorizing promotions consistently
+    - Adjust future estimates based on findings
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Promotions not visible in the sidebar
+
+**Possible causes:**
+- The Marketing & Promotions section is not enabled for your organization.
+- You lack the required permissions.
+
+**Solutions:**
+1. Contact your Tether administrator about enabling the section.
+2. Check your role's permissions with your administrator.
+
+### Unexpected lift numbers in the impact view
+
+**Possible causes:**
+- Overlapping promotions on the same products
+- Assignments missing pairings that actually ran the promotion
+- Low coverage — not enough measurable data in the window
+
+**Solutions:**
+1. Check for overlapping promotions on the same SKU-channel pairings.
+2. Review the promotion's assignments against what actually ran.
+3. Check the **Coverage** metric before drawing conclusions.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Demand drivers" icon="chart-line-up" href="/marketing-promotions/drivers">
+    Model marketing spend and events as demand drivers
+  </Card>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View promotion-adjusted forecasts with the promo overlay
+  </Card>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Make additional adjustments around promotion windows
+  </Card>
+  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
+    Plan inventory for promotional demand
+  </Card>
+</CardGroup>

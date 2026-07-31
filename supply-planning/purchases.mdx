@@ -1,0 +1,103 @@
+---
+title: Purchases
+description: Plan supplier buys with the Schedule, Worksheet, and List views
+---
+
+# Purchases
+
+The Purchases page is the buying workbench: open POs already placed, the purchases you've committed, and the solver's suggested POs, organized by supplier and period. It sits under the shared [scenario strip](/supply-planning/overview), and the page header shows the plan freshness indicator.
+
+Navigate to **Purchase** under the Supply Chain group in the sidebar.
+
+## Tabs
+
+| Tab | Purpose |
+|-----|---------|
+| **Schedule** | The default buying workbench — purchases by supplier and period |
+| **Worksheet** | The per-SKU inventory flow across the horizon |
+| **List** | A flat, sortable list of every purchase row — in progress, committed, and recommended |
+
+The active tab is URL-driven (`?tab=`), so deep links land on the right view. Each tab keeps its state (scroll, expansion, selection) when you switch away and back.
+
+Organizations with the approval flow also see the **Review staged (N)** button beside the tabs — see [Recommendations](/supply-planning/recommendations).
+
+## Shared controls
+
+The Worksheet and List share one view: filters (SKU, groups, type, supplier, BOM), the date range, granularity, Qty/$ display, and saved views all carry across the two tabs and round-trip through the URL. Table settings also offer:
+
+- **Group by urgency** on the Worksheet (the List stays a flat triage grid).
+- An **Anchor** control on the Schedule that re-buckets purchase dates by order date or arrival date.
+- **Export CSV** for the current rows.
+
+## The suggested PO drawer
+
+Clicking a suggested PO opens its recommendation drawer — the same drawer shape used across planning, scoped to the SKU you clicked. From it you can:
+
+- **Accept** the PO, or accept a single line ("Line accepted — Committed to the execution plan.").
+- **Modify** — routes through the shared movement-editing flow. Editing operates on the committed/accepted PO, never the live suggestion.
+- **Dismiss** a SKU's line ("Dismissed — Removed from queue for 14 days.") and **Restore** it ("Restored — Returned to queue.").
+
+The body shows the PO's line items, coverage impact ("Coverage on PO Land Date" — see [Coverage](/supply-planning/coverage)), and supplier context.
+
+### Aggregate minimums (MOQ)
+
+When a PO's items share an aggregate-minimum group, the drawer's **Aggregate minimums (MOQ)** section rolls them up: the group name, its member lines with quantities, the ordered total, and whether the floor is met. The minimum binds on the *summed* order across the group's SKUs — the rollup saves you from adding up per-SKU buys and guessing the floor.
+
+## The locked PO drawer
+
+Clicking a committed open PO (or a locked suggestion) opens a read-only summary drawer in the same visual language, with no action buttons. Its fact grid shows Supplier, PO number(s), Period, Order date, Arrival date, Lines, Total cost, and Total units, plus the per-line breakdown.
+
+<Note>
+  If a suggested PO's recommendation can no longer be found (it was dismissed, or filtered by the latest solve), the click falls back to this locked summary so it still shows something useful.
+</Note>
+
+## From plan to order
+
+Accepted purchases live on the [Execution plan](/supply-planning/execution-plan) as committed rows. From the committed drawer or List row, **Place order** / **Order** flips the accepted PO to ordered and mints the supplier transaction — the committed row stays the source of truth, and the header badge becomes a **PO** mark with the PO number once known. Ordered POs then appear on [Transactions](/transactions/overview).
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Work the Schedule by supplier, triage in the List">
+    The Schedule groups the buy by supplier and period — the shape a PO actually takes. The List is best for a cross-supplier urgency pass; sort by urgency or value, then open drawers to act.
+  </Accordion>
+
+  <Accordion title="Check the MOQ rollup before trimming lines">
+    Removing or shrinking one line can drop the group's summed order below its aggregate minimum, invalidating the whole PO. The rollup's met/not-met state tells you how much slack you have.
+  </Accordion>
+
+  <Accordion title="Accept lines, not just whole POs, when confidence varies">
+    Per-line accept lets you commit the lines you're sure of and leave the rest in the queue for the next solve to reconsider.
+  </Accordion>
+
+  <Accordion title="Use the anchor to match your calendar">
+    Bucketing the Schedule by order date builds this week's work queue; bucketing by arrival date shows the receiving calendar. Same data, different question.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A suggested PO opens as a read-only summary | Its recommendation was dismissed or filtered by the latest solve | Check the Dismissed view in the List; the locked summary still shows the PO's contents |
+| Modify doesn't change the suggestion | Editing always operates on the committed PO, not the live suggestion | Accept first (or accept the line), then edit the committed movement |
+| MOQ section missing from a drawer | None of the PO's items carry an aggregate-minimum group | Nothing to roll up — per-line minimums still apply through the order form's rounding |
+| **Review staged** missing | Your organization doesn't run the approval flow | Staged movements convert directly without review |
+| Grouping control missing on the List | Urgency grouping applies to the Worksheet only | The List stays flat by design; use column sort instead |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
+    Manage the suppliers behind your POs
+  </Card>
+  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
+    Component buys driven by committed production
+  </Card>
+  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
+    Review, edit, and order committed purchases
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    Track placed POs as ERP transactions
+  </Card>
+</CardGroup>

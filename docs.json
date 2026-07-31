@@ -46,11 +46,21 @@
             ]
           },
           {
+            "group": "Principal Catalog",
+            "pages": [
+              "principal-catalog/overview",
+              "principal-catalog/attributes",
+              "principal-catalog/skus",
+              "principal-catalog/sku-groups",
+              "principal-catalog/boms"
+            ]
+          },
+          {
             "group": "Inventory Management",
             "pages": [
               "inventory/dashboard",
-              "inventory/supply-plan",
-              "inventory/forecasts-flow",
+              "inventory/history",
+              "inventory/adjustments",
               {
                 "group": "Warehouses",
                 "pages": [
@@ -67,12 +77,33 @@
               "demand-forecasting/dashboard",
               "demand-forecasting/filtering",
               "demand-forecasting/editing",
+              "demand-forecasting/model-assignment",
               "demand-forecasting/edit-log",
               "demand-forecasting/sales-history",
               "demand-forecasting/comparison",
               "demand-forecasting/admin",
-              "demand-forecasting/algorithms",
-              "demand-forecasting/promotions"
+              "demand-forecasting/algorithms"
+            ]
+          },
+          {
+            "group": "Marketing & Promotions",
+            "pages": [
+              "marketing-promotions/drivers",
+              "marketing-promotions/promotions"
+            ]
+          },
+          {
+            "group": "Supply Planning",
+            "pages": [
+              "supply-planning/overview",
+              "supply-planning/recommendations",
+              "supply-planning/transfers",
+              "supply-planning/production",
+              "supply-planning/purchases",
+              "supply-planning/mrp",
+              "supply-planning/execution-plan",
+              "supply-planning/data-issues",
+              "supply-planning/coverage"
             ]
           },
           {
@@ -94,12 +125,9 @@
             ]
           },
           {
-            "group": "Supply Simulation",
+            "group": "AI Agent",
             "pages": [
-              "supply-simulation/running",
-              "supply-simulation/configurations",
-              "supply-simulation/charts",
-              "supply-simulation/what-if"
+              "agent/chat"
             ]
           },
           {
@@ -147,6 +175,36 @@
       ]
     }
   },
+  "redirects": [
+    {
+      "source": "/supply-simulation/running",
+      "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/supply-simulation/configurations",
+      "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/supply-simulation/charts",
+      "destination": "/supply-planning/coverage"
+    },
+    {
+      "source": "/supply-simulation/what-if",
+      "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/inventory/supply-plan",
+      "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/inventory/forecasts-flow",
+      "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/demand-forecasting/promotions",
+      "destination": "/marketing-promotions/promotions"
+    }
+  ],
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"

@@ -1,0 +1,177 @@
+---
+title: Model assignment
+description: Assign forecast models per SKU-channel pairing and manage stale overrides
+---
+
+# Model assignment
+
+Beyond selecting one organization-wide forecast model, Tether lets you assign a different forecast model to individual SKU-channel pairings directly from the Demand dashboard. Pairings without an assignment inherit the organization default model. This page covers per-row and bulk model assignment, and the stale-override exception worklist that flags manual edits whose underlying model output has since drifted.
+
+<Info>
+  Availability of these features varies by organization. If you don't see model chips, row checkboxes, or the stale-overrides worklist, they are not enabled for your organization.
+</Info>
+
+## Source model chips
+
+Each row of the Demand dashboard can display a **source model chip** showing which forecast model produces that row's values.
+
+<Steps>
+  <Step title="Open table settings">
+    On the Demand dashboard, open the table settings menu in the toolbar.
+  </Step>
+
+  <Step title="Enable Show source model">
+    Toggle **Show source model**. A chip appears at the end of each row.
+  </Step>
+</Steps>
+
+The chip's appearance tells you where the model comes from:
+
+| Chip | Meaning |
+|------|---------|
+| Solid chip with the model name and algorithm | The pairing has an **assigned** model |
+| Dashed chip labeled "org default" | The pairing **inherits** the organization default model |
+| Muted chip labeled "Mixed · N models" | A group row whose descendant pairings resolve to different models |
+
+## Assigning a model to a pairing
+
+<Steps>
+  <Step title="Click the chip">
+    Click a row's source model chip to open the model picker popover. The header shows which pairing (or how many pairings) the choice applies to.
+  </Step>
+
+  <Step title="Pick a model">
+    Search by model name or algorithm and click a model to assign it. A checkmark marks the pairing's currently assigned model.
+  </Step>
+
+  <Step title="Or reset to the org default">
+    Click **Reset to org default** to clear the assignment so the pairing inherits the organization default model again.
+  </Step>
+</Steps>
+
+Clicking the chip on a **group row** (for example, a SKU grouped across channels) applies the choice to every descendant pairing in that group.
+
+## Bulk assignment
+
+To change the model for many pairings at once, use row selection:
+
+<Steps>
+  <Step title="Select rows">
+    Check the row checkboxes for the pairings you want to change. Selecting a group row contributes all of its descendant pairings.
+  </Step>
+
+  <Step title="Open the selection bar">
+    A bar appears above the grid showing "N pairings selected".
+  </Step>
+
+  <Step title="Click Assign model to selection">
+    Choose a model from the picker, or click **Reset to org default** to clear the selected pairings' assignments. Applying the choice regenerates the selected cells with the new model's output.
+  </Step>
+</Steps>
+
+Click **Clear selection** to dismiss the bar without changing anything.
+
+<Note>
+  Assigning a model regenerates forecast values only for the affected pairings — it does not trigger a full forecast generation run. See [Forecast Admin](/demand-forecasting/admin) for organization-wide generation.
+</Note>
+
+## Stale-override exceptions
+
+When you manually override a forecast value, Tether records the model baseline at the time of the edit. If the model's baseline later drifts past your organization's threshold — or the pairing's model is reassigned — the override is flagged as **stale** so you can decide whether the number still stands.
+
+### Opening the worklist
+
+When stale overrides exist, a warning badge appears in the Demand dashboard toolbar (for example, "3 stale overrides"). Click it to open the **Stale-override exceptions** worklist at `/demand-forecast/stale-overrides`.
+
+### Working the list
+
+The worklist has two groups:
+
+- **Stale — baseline drifted ≥ N% or model reassigned** — overrides whose captured baseline has drifted past the org threshold, or whose source model changed. Each row shows the override value, the old baseline, the new baseline, and either the signed drift percentage or a "model reassigned" badge.
+- **Baseline unknown — overrides from before drift tracking** — older overrides with no captured baseline.
+
+For each row, choose:
+
+| Action | Effect |
+|--------|--------|
+| **Re-affirm** | Keeps your override value and resets the drift clock against the current baseline |
+| **Clear** | Removes the override and restores the model value |
+
+Select multiple rows with the checkboxes and use **Re-affirm selected** or **Clear selected** to resolve them in bulk.
+
+<Tip>
+  Re-affirming a baseline-unknown item captures today's model value as its baseline, so it joins the normal fresh/stale lifecycle going forward.
+</Tip>
+
+### Scoping the worklist
+
+The worklist can be scoped to a single SKU and/or channel. When a scope is active, a **Scope** chip shows the SKU and channel; click it to remove the scope and see all flagged overrides.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Use assignments for exceptions, not the rule">
+    Keep the organization default model as the baseline for most pairings, and assign specific models only where a product's demand pattern clearly favors a different algorithm. Fewer assignments are easier to audit.
+  </Accordion>
+
+  <Accordion title="Compare before assigning">
+    Use the [Forecast Comparison](/demand-forecasting/comparison) view to check which model performs best for a pairing before assigning it.
+  </Accordion>
+
+  <Accordion title="Work stale overrides regularly">
+    Stale overrides mean the model now disagrees with your manual number. Review the worklist on a regular cadence — a drifted baseline is often new information (trend change, data correction) worth re-checking.
+  </Accordion>
+
+  <Accordion title="Prefer Reset to org default over re-assigning the same model">
+    If a pairing should follow the organization default, clear its assignment rather than assigning the default model explicitly — inherited pairings automatically follow future changes to the org default.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### No model chips appear
+
+**Possible causes:**
+- **Show source model** is toggled off in table settings.
+- The feature is not enabled for your organization.
+
+**Solutions:**
+1. Open table settings and enable **Show source model**.
+2. Contact your Tether administrator about feature availability.
+
+### The bulk-assign bar doesn't appear
+
+**Possible causes:**
+- No rows are checkbox-selected.
+- The feature is not enabled for your organization — row selection is only offered where bulk assignment can be applied.
+
+**Solutions:**
+1. Select at least one row with the checkboxes.
+2. Contact your Tether administrator about feature availability.
+
+### An override keeps coming back as stale
+
+**Possible causes:**
+- The model baseline continues to drift with each generation run.
+- The pairing's model was reassigned again.
+
+**Solutions:**
+1. Re-affirm resets the drift clock against the *current* baseline — repeated flags mean the baseline keeps moving. Consider clearing the override or revisiting the value.
+2. Check the pairing's source model chip to confirm which model now drives it.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
+    View forecasts and open the model picker from any row
+  </Card>
+  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
+    Make manual overrides and understand edit distribution
+  </Card>
+  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
+    Manage models and the organization default
+  </Card>
+  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
+    Review the history of forecast changes
+  </Card>
+</CardGroup>

@@ -1,0 +1,124 @@
+---
+title: "AI agent chat"
+description: "Work with the Tether Agent — chat from anywhere in the app, attach files, and approve actions before they're applied"
+---
+
+# AI agent chat
+
+The Tether Agent is an in-app AI assistant you can chat with from anywhere in the application. Ask it questions, hand it files, and let it carry out multi-step work — with you approving any action that changes data before it's applied.
+
+<Info>
+Agent availability varies by organization and role. The agent pages require agent read permission, and some capabilities — like managing shared memories or templates — require additional permissions or an administrator role. See [Roles and permissions](/roles-permissions).
+</Info>
+
+## The chat widget
+
+The chat widget is available throughout the app in two layouts:
+
+- **Compact popup** — a floating panel in the bottom-right corner of the screen.
+- **Sidebar panel** — a full-height panel docked to the right edge, alongside the page you're on.
+
+Toggle between them with the expand/collapse button in the widget header (**Expand to sidebar** / **Collapse to popup**). The header also has:
+
+- A maximize button (**Open full view**) that opens the conversation as a full session page.
+- A close button (**Close chat**) to dismiss the widget.
+
+Type a message and press Enter to send (Shift+Enter adds a line break). While the agent works, a **Tether Agent is thinking...** indicator shows, responses appear in the conversation in real time, and a stop button lets you cancel the run. If the agent proposes a plan or needs your approval or a file, the widget hands off to the full session page automatically so you can respond there.
+
+### Attaching files
+
+Click the paperclip (**Attach file**) in the message box to attach one or more files, or drag files onto the widget — a **Drop files to attach** overlay confirms the target. Attached files appear as removable chips above the message box. You can also paste images directly (PNG, JPEG, WebP, or GIF, up to 10 MB each). The agent can also request a file from you mid-task with an upload card, which may include a template to download.
+
+## Starting a chat
+
+There are two entry points:
+
+- **Sidebar** — click **New chat** (the sparkles button) at the top of the sidebar. If you're currently viewing a live chat session, a confirmation dialog asks **Start a new chat?** before leaving it — choose **Start new chat** or **Cancel**.
+- **Command palette** — press **Cmd+K** (or **Ctrl+K**), type your question, and choose **Ask Tether Agent** with your text. The widget opens and sends your prompt as the first message. See [Command palette](/tips/command-palette).
+
+## Approvals: you stay in control
+
+The agent never changes data on its own. When a step would modify something, the session shows an **Approval Required** card before anything is applied:
+
+- The card names the **Tool** being run and summarizes the **Action**, along with a preview of what will change — the entities involved and the key quantities.
+- The proposed input is shown in an editable table, so you can adjust values before approving.
+- Click **Approve** to let the step run (it becomes **Approve with edits** if you changed anything), or **Reject** to block it.
+
+For larger pieces of work, the agent can first propose a plan. A **Plan Proposal** card shows the plan for review with **Approve**, **Reject**, and **Edit** buttons — **Edit** lets you revise the plan text and then **Approve with Edits**.
+
+<Warning>
+Review approval cards carefully — approving applies the change with the values shown, including any edits you made.
+</Warning>
+
+## Full pages
+
+Beyond the widget, the **Agent** section in the sidebar has dedicated pages:
+
+| Page | Location | Purpose |
+|------|----------|---------|
+| **Chat Sessions** | `/agentic/sessions` | Dashboard of all sessions with title, status, and creation time. Filter by status (Running, Idle, Needs attention), search, export, or start a **New Session** |
+| Session detail | `/agentic/sessions/...` | Split view: the agent's workspace on the left, chat on the right |
+| **Memory** | `/agentic/memory` | Durable facts the agent can recall |
+| **Session Templates** | `/agentic/sessions/templates` | Reusable session setups (administrators) |
+
+### Session detail
+
+The session page pairs a chat pane with a workspace showing the agent's work as it happens, in three tabs:
+
+- **Plan** — the task list and any plan proposals, with progress.
+- **Active Items** — approvals and file-upload requests waiting on you, with a count badge.
+- **Tether Agent Log** — a per-tool record of what the agent has done.
+
+You can minimize the chat pane (**Minimize chat**) to keep working while the conversation continues in the compact widget, and bring it back with **Restore Chat**.
+
+### Memory
+
+The Memory page holds durable facts the agent recalls across sessions, in two sections: **Organization memories**, shared with everyone in your org, and **Your memories**, visible only to you. Click **Add memory** to save a fact as a label and value (for example, "Preferred warehouse"), and edit or delete entries at any time. Writing organization memories requires its own permission.
+
+### Templates
+
+Administrators can manage **Session Templates** — named, categorized session setups with a system prompt — from the **Manage Templates** action on the Chat Sessions dashboard. Templates can be created, edited, and deactivated; new sessions can start from a template.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Be specific in your first message">
+    The first message names the session and sets the agent's direction. "Why is SKU TSHIRT-NVY-M short in the plan?" gets a better session than "help with inventory."
+  </Accordion>
+  <Accordion title="Attach the data you're asking about">
+    The agent works best with the actual file — attach the CSV or export you're discussing rather than describing it.
+  </Accordion>
+  <Accordion title="Read approval previews before clicking Approve">
+    The preview lists the entities and quantities that will change. Use the editable input table to correct values instead of rejecting and re-explaining.
+  </Accordion>
+  <Accordion title="Save recurring facts to Memory">
+    Preferences you repeat every session — a default warehouse, a naming convention — belong in Memory so the agent recalls them automatically.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Agent pages are missing from the sidebar | Your role lacks agent read permission | Ask an administrator to review your access |
+| The widget disappeared mid-conversation | The agent proposed a plan or needs an approval or file, so the conversation moved to the session page | Continue on the session detail page — nothing was lost |
+| A pasted image was rejected | Pasted images are limited to PNG, JPEG, WebP, or GIF up to 10 MB | Attach the file with the paperclip instead, or reduce the image size |
+| Nothing happens after you send a message | The agent may be waiting on an item in **Active Items** | Open the session page and check for pending approvals or upload requests |
+| You can't add an organization memory | Writing shared memories requires a separate permission | Save it under **Your memories**, or ask an administrator |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Command palette" icon="terminal" href="/tips/command-palette">
+    Start an agent chat straight from Cmd+K
+  </Card>
+  <Card title="Roles and permissions" icon="user-shield" href="/roles-permissions">
+    Understand the permissions behind agent access
+  </Card>
+  <Card title="Supply planning" icon="chart-gantt" href="/supply-planning/overview">
+    The planning data the agent can help you interrogate
+  </Card>
+  <Card title="Inventory dashboard" icon="warehouse" href="/inventory/dashboard">
+    Inventory views to pair with agent questions
+  </Card>
+</CardGroup>

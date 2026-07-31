@@ -1,0 +1,102 @@
+---
+title: Execution Plan
+description: Every committed movement the solver respects, in one place
+---
+
+# Execution Plan
+
+The Execution plan is the roll-up of everything you've committed: every purchase, production run, and transfer the solver must respect, grouped by kind and lifecycle status. It's the counterpart to the recommendation queue — the queue is what the solver suggests, this is what you've committed.
+
+Navigate to **Execution plan** under the Supply Chain group in the sidebar.
+
+## Page layout
+
+The header shows total counts as badges — **N committed** and **N ordered** — plus a **New movement** button that creates a movement directly (a dropdown of **Purchase**, **Transfer**, and **Production**).
+
+Below it, three collapsible sections:
+
+| Section | Contents |
+|---------|----------|
+| **Purchases** | Committed and ordered POs, grouped by supplier and period; for orgs with the approval flow, this is also the review surface for staged buys |
+| **Production** | Committed and ordered runs — node, line, SKU, order-by date, land date, units, cost |
+| **Transfers** | Committed and ordered transfers — from → to, SKU, ship date, land date, units, cost |
+
+Each section repeats its own **N committed** / **N ordered** badges, and rows carry a status badge:
+
+- **Committed** — accepted but still editable.
+- **Ordered** — transaction-backed; a real ERP order exists. Ordered rows sort first and are no longer editable here.
+
+If nothing is committed yet, the page says so: "Execution plan is empty — Stage a recommendation to commit it here; the solver will then respect it."
+
+## Row actions
+
+Committed (not yet ordered) rows offer three actions:
+
+### Edit
+
+Opens the movement drawer — the shared editing surface for purchase, transfer, and production movements. Change quantities and dates; the edit is version-guarded so concurrent changes can't silently clobber each other. Edits show on the planning grids immediately, and count toward the freshness strip's "N edits since" until the next solve.
+
+### Order
+
+Opens the order confirmation dialog, which flips the accepted movement to ordered and mints the real transaction:
+
+- **Order this purchase** — mints the supplier transaction.
+- **Order this transfer** — mints the ship transaction between the lane's warehouses.
+- **Order this production run** — mints the production transaction at the run's node, reserving its BOM components.
+
+In every case the committed row stays the source of truth; ordering records the real order. The resulting transaction appears on [Transactions](/transactions/overview).
+
+### Remove
+
+Removes the row from the execution plan via a two-step inline confirm (**Remove** → **Confirm** / **Cancel**). When the row backs a live recommendation, removal is reversible — the recommendation reappears in the queue. For a directly-entered movement it's a real delete, which is why the confirm step exists.
+
+## Creating movements directly
+
+**New movement** authors a movement that never passed through a recommendation — a purchase, transfer, or production run you know you need. It lands as a committed row like any accepted recommendation, and the solver respects it from the next solve.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Treat committed as a promise to the solver">
+    Everything here constrains the next solve — the solver plans around your commitments rather than second-guessing them. Keep the plan honest: remove commitments you no longer intend to execute.
+  </Accordion>
+
+  <Accordion title="Order from here, not from scratch">
+    Ordering a committed row carries its full context (quantities, dates, routing) into the minted transaction. Creating the transaction by hand on the Transactions page severs that link.
+  </Accordion>
+
+  <Accordion title="Edit before ordering, not after">
+    Ordered rows are transaction-backed and no longer editable from this page. Make quantity and date changes while the row is still Committed.
+  </Accordion>
+
+  <Accordion title="Use Remove deliberately">
+    Removal of a recommendation-backed row is safe (the rec returns to the queue), but a directly-entered movement is gone for good. The two-step confirm is there for a reason — read the row before confirming.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| No Edit/Order/Remove buttons on a row | The row is already Ordered | Manage the real order on [Transactions](/transactions/overview) |
+| A removed row's recommendation didn't return | The movement was directly entered, not recommendation-backed | Recreate it via **New movement**, or wait for the next solve to re-suggest it |
+| The planning grids don't reflect an edit | Grids show committed edits immediately, but recommendations refresh only at the next solve | Check the freshness strip; run a solve if needed |
+| Purchases section shows lines pending review | Your organization runs the approval flow | Review and approve staged lines here; the **Review staged (N)** button on other pages counts them |
+| Empty page despite accepted recommendations | You may be looking at a different organization or plan | Confirm acceptance succeeded on the source page's List (rows show the **committed** badge) |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
+    How movements get committed in the first place
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    The real orders minted when you order a committed row
+  </Card>
+  <Card title="Overview" icon="compass" href="/supply-planning/overview">
+    How committed edits interact with solves and freshness
+  </Card>
+  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
+    Material needs driven by your committed production
+  </Card>
+</CardGroup>

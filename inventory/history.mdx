@@ -1,0 +1,142 @@
+---
+title: Inventory History
+description: Trace every change to your stock levels, view point-in-time snapshots, and export the full audit trail
+---
+
+# Inventory History
+
+The **History** tab on the [Inventory Management](/inventory/dashboard) page is the audit trail for your stock. It shows every recorded change to on-hand across all warehouses and sources — syncs, fulfillments, imports, adjustments, transactions, and more — and can also reconstruct what inventory looked like at any point in time.
+
+## The change feed
+
+By default the tab shows the change feed: a server-paginated list of inventory changes, newest first, 50 per page. Each entry records the position (warehouse and SKU), what changed, when, from which source, and who did it.
+
+### Change sources
+
+Every change carries a source badge:
+
+| Source | Meaning |
+|--------|---------|
+| **Sync** | Written by an integration sync |
+| **Fulfillment** | Stock consumed by order fulfillment |
+| **Import** | Loaded through a bulk import or upload |
+| **Adjustment** | An approved on-hand [adjustment](/inventory/adjustments) |
+| **Transaction** | Moved by a Purchase Order, Transfer Order, or Production Order |
+| **Reconcile** | A reconciliation pass |
+| **Manual SQL** | A direct database change made by support |
+| **User Action** | Another in-app user action |
+
+<Note>
+  Rejected adjustment proposals never appear in History — a rejected request never becomes an inventory change. Proposers can see rejection outcomes and the approver's note on the [My requests tab](/inventory/adjustments#my-requests-tab).
+</Note>
+
+## Filtering the feed
+
+The toolbar gives you several ways to narrow the feed:
+
+- **Search** — matches SKU code, SKU name, and actor.
+- **Date range** — a preset dropdown: **Last 7 days**, **Last 30 days** (the default), **Last month**, **Last 90 days**, or **All time**. Presets are rolling, so a saved view or shared URL of "Last 90 days" always shows the most recent 90 days.
+- **Filter chips** — multi-select chips for **Source**, **SKU**, and **Location**. Each chip matches rows against any of the selected values, and you can combine chips.
+- **Clear all** — removes every active filter at once.
+
+Changing any filter returns you to the first page of results.
+
+### Saved views and columns
+
+- **Views** — save the current filter and column setup as a named view and reload it later. Views are available on the change feed only, not the as-of snapshot.
+- **Table Settings** — show or hide columns, and set the **As of** control described below.
+
+## Point-in-time snapshots
+
+Open **Table Settings** and set **As of** to a date and time to swap the feed for a snapshot grid: every position's inventory state exactly as it stood at that moment.
+
+While a snapshot is showing, the same search and Source, SKU, and Location filters apply. Clear the **As of** value to return to the change feed.
+
+<Tip>
+  Use a snapshot to answer questions like "what did we have on the shelf at month end?" without reconstructing it from individual changes.
+</Tip>
+
+## Position detail
+
+Click any row — in either the feed or a snapshot — to open the detail dialog for that warehouse and SKU pairing. The dialog shows the position's complete change history across **all** sources (it ignores the tab's Source filter), read oldest to newest so on-hand deltas follow the position's actual timeline.
+
+Each entry in the dialog shows:
+
+- The source badge and timestamp
+- The actor who made the change
+- On-hand after the change, with the delta
+- Committed, unsellable, and sellable quantities
+- The reason (for adjustments) and order references (for order-driven changes), when present
+
+<Info>
+  The dialog shows the 100 most recent changes for the position; older history is not shown.
+</Info>
+
+## Exporting to CSV
+
+The grid's export walks **every** page of results under your active filters — not just the page on screen — so the CSV is the complete filtered history. Actor IDs are resolved to email addresses in the export.
+
+See [Exports](/tips/exports) for general export behavior.
+
+## Where did the Adjustment Log go?
+
+The former Adjustment Log is now part of History. Legacy Adjustment Log links land on the History tab with the **Source** filter pre-set to **Adjustment**, which reproduces the old adjustment-only view. Remove the Source chip to see all changes.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Start from the position, not the feed">
+    When investigating a suspect count, click the row to open the position detail dialog. Reading one position's film oldest-to-newest is much faster than scanning the global feed.
+  </Accordion>
+
+  <Accordion title="Save views for recurring audits">
+    If you regularly review the same slice — for example, all adjustments at one warehouse — save it as a view so the filters are one click away.
+  </Accordion>
+
+  <Accordion title="Use snapshots for period-end questions">
+    Set **As of** to the period boundary instead of mentally replaying changes. The snapshot shows every position exactly as it stood.
+  </Accordion>
+
+  <Accordion title="Export with filters applied">
+    The CSV export honors your active filters and walks all pages, so narrow the feed first to get a clean, complete extract of just the changes you care about.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### A change I expected is missing
+
+**Possible causes:** The date range excludes it (the default is Last 30 days), a filter chip narrows it out, or it was a rejected adjustment proposal.
+
+**Solutions:**
+1. Set the date range to **All time** and clear filters with **Clear all**.
+2. Remember that rejected proposals never appear in History — check [My requests](/inventory/adjustments#my-requests-tab) instead.
+
+### The Views button is missing
+
+**Possible cause:** An **As of** value is set. Saved views apply to the change feed only.
+
+**Solution:** Clear **As of** in **Table Settings** to return to the feed.
+
+### The export takes a while
+
+**Possible cause:** The export pages through the entire filtered result set, not just the visible page.
+
+**Solution:** Narrow the date range or add filters before exporting.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Inventory Management" icon="boxes-stacked" href="/inventory/dashboard">
+    Return to current stock levels
+  </Card>
+  <Card title="Inventory Adjustments" icon="clipboard-check" href="/inventory/adjustments">
+    Propose and approve on-hand corrections
+  </Card>
+  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
+    Follow the orders behind transaction-sourced changes
+  </Card>
+  <Card title="Exports" icon="file-csv" href="/tips/exports">
+    Learn how grid exports work across Tether
+  </Card>
+</CardGroup>
