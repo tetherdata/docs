@@ -1,0 +1,256 @@
+---
+title: How runout and coverage status work
+description: How Tether computes days of supply, what each coverage status means at the location and network grains, and how to author the policies behind them
+sidebarTitle: Runout and coverage status
+---
+
+# How runout and coverage status work
+
+Every coverage number on the planning surfaces answers one question: **how long does the position last against the demand it has to serve?** Every coverage status answers a second one: **is that position the right size, given what you told us to hold?**
+
+This page explains both — the policies you author, the number that gets displayed, and the status that judges it. If you have ever looked at a green chip and wondered which demand it divided by, this is the page that says.
+
+<Note>
+  Status is computed server-side on every solve and rendered directly. No surface re-derives it, so two pages showing the same grain for the same SKU will always agree.
+</Note>
+
+## The three policy layers
+
+Coverage is judged against what you author. There are three layers per location and SKU, and they are independent — you can use one, two, or all three.
+
+| Layer | Fields | What it covers |
+|-------|--------|----------------|
+| **Location coverage** | **Safety days**, **Target days**, **Max days** | This location's *own* demand only — what it fulfills and what it consumes to build something else. Stock moving onward to another location is never counted here. |
+| **Downstream buffer** | **Downstream buffer (days)** | Demand at the locations *downstream* of this one. This is how a hub holds cover for the sites it feeds. |
+| **Unit limits** | **Minimum units**, **Maximum units** | A flat band in units, independent of demand. Useful as a floor or ceiling of last resort. |
+
+You author all of these on a location's policy, alongside **Target units**.
+
+### How the layers combine
+
+The two demand-based layers **add together**, because they cover different demand — your own, and your subtree's. The unit limits **compete**: whichever is larger on each side wins.
+
+```
+Requirement = max( Safety days × local rate + Downstream buffer days × downstream rate,  Minimum units )
+Cap         = max( Max days × local rate + downstream buffer allowance,  Maximum units,  Requirement )
+```
+
+Two consequences worth knowing:
+
+- A location with a **Downstream buffer** but little demand of its own still gets a real requirement. The buffer is measured against the *subtree's* forecast, not the hub's.
+- The requirement is folded into the cap, so **an amount you explicitly asked for can never read as overstock**.
+
+<Tip>
+  **Target days** is a reference line, not a constraint. It renders as the **T** tick on coverage bars and shapes nothing in the plan. **Safety days** and **Max days** are the ones that bind.
+</Tip>
+
+### Where the rate comes from
+
+The demand rate is always **your customer demand** — forecast entries plus demand exploded through your BOMs. It is never the plan's own transfer decisions. That matters: it means a location's coverage number does not move just because the solver re-routed something.
+
+The window matches the policy. A 45-day **Safety days** figure is measured against the next 45 days of forecast; a 14-day **Downstream buffer** against the next 14 days of the subtree's forecast. Longer policies therefore smooth more, and a short policy will move more sharply across a seasonal boundary.
+
+## The two coverage grains
+
+The same SKU legitimately reads different numbers on different pages, because "coverage" is measured over different things.
+
+| Grain | What it measures |
+|-------|------------------|
+| **Node coverage** | One location's sellable on-hand runway for the current period. Excludes goods in transit and in production. |
+| **Network coverage** | The whole network's sellable position, including inventory in transit between your own nodes, sampled per month. |
+
+<Warning>
+  Network coverage is not the sum of node coverage. When two surfaces disagree for one SKU, check which grain each is labeled with — the difference is usually by construction, not an error.
+</Warning>
+
+### When the position outlives the horizon
+
+If a position survives every bit of forecast demand in the planning horizon, you see **52+ wk** — never an extrapolated day count.
+
+This is deliberate. Extrapolating past the horizon means inventing a demand rate for a period with no forecast, and the old behavior did exactly that: it produced confident numbers like "580 days" that were arithmetic on a diluted average rather than statements about your plan. **52+ wk** means "still covered at the end of the planning horizon, so no day count can be given" — which is the true statement.
+
+## The status ladder
+
+One vocabulary applies at both grains. Status is judged **in units** — your position against the requirement and cap above — not from the days number.
+
+| Status | Meaning | Grain |
+|--------|---------|-------|
+| **No demand** | Nothing consumes this SKU here this horizon | Both |
+| *Not set* | No policy is authored, so the position is not judged. **Renders no pill.** | Both |
+| **Out of stock** | Effectively empty, with live demand | Both |
+| **Low** | Position below the requirement | Both |
+| **Healthy** | Position within the requirement and the cap | Both |
+| **Constrained** | Above cap, but the excess is forced by a downstream storage limit | **Location only** |
+| **Rebalance** | The network total is fine, but at least one location is short | **Network only** |
+| **Overstock** | Above the cap, with nothing forcing it | Both |
+
+The two grain-specific statuses are genuinely exclusive, and enforced as such in the database rather than only by convention:
+
+- **Constrained** is location-only. It attributes one location's excess to *another* location's storage limit, and it carries its citation with it: **Held for _\<nodes\>_; storage binding _\<span\>_**, alongside the forced quantity. Excess beyond that forced amount is still ordinary overstock — the citation bounds the claim rather than excusing the whole position.
+- **Rebalance** is network-only. A single location cannot disagree with itself.
+
+### Reading a Rebalance verdict
+
+**Rebalance** takes precedence over **Overstock**: if the total is above cap *and* somewhere is starving, you see Rebalance. Moving stock is the cheaper fix, and it should be considered before making more. In the drawer it reads:
+
+> The network holds enough — the shortfall is at specific locations, so making more will not fix it. Check the per-location rows below before ordering.
+
+Compare that to network **Low**, which means the network is thin *everywhere* — no amount of moving fixes a total shortfall, so that one really is buy or produce.
+
+## When a cell carries no verdict
+
+Six states share one muted, pill-free appearance because none of them is a judgment. They are distinguished by their words, because your next action differs completely in each case.
+
+| Label | What it means | What to do |
+|-------|---------------|------------|
+| **Not set** | No coverage policy is authored here, so the position is deliberately not judged | Author a policy, if you manage stock here |
+| **No demand** | Nothing consumes this SKU here in this horizon | Nothing — no amount is right or wrong |
+| **No forecast** | Recent sales exist, but there is no forward forecast to measure against | Load or fix the forecast |
+| **Awaiting re-solve** | The plan was solved before the coverage model changed | Re-solve |
+| **Not in this plan** | The plan produced no network row for this SKU | Nothing, usually |
+| **Not consumed here** | Nothing draws on this SKU at this location at all | Nothing |
+
+An unrecognized status reads **Not judged** rather than guessing at one of the above.
+
+<Warning>
+  **No forecast** never reads Healthy or Overstock. A SKU that is selling but carries no forward forecast has no honest denominator, so it degrades visibly instead of showing a confident wrong verdict.
+</Warning>
+
+### Unpoliced locations are not judged, on purpose
+
+A location with no authored policy reads **Not set** and shows no pill — even when it is empty and demand exists. This is deliberate noise control: unpoliced cells are places you have chosen not to be alerted about, and an empty one should not light up red or pull the whole SKU into **Rebalance**.
+
+If you want a location judged, author a policy there. Which leads to a useful pattern.
+
+### The zero-day policy
+
+Authoring **Safety days = 0** opts a location *into* judgment while demanding no stock.
+
+The location is then judged like any other: empty with live demand reads **Out of stock**, and it counts toward the network verdict, so it can trigger **Rebalance**. But because the requirement is zero, you are never told to hold anything there.
+
+Use it for locations you want visibility on but no stock at — a co-manufacturer you ship through, or a site you are winding down.
+
+## A worked example
+
+One SKU, three locations. **Hub H** feeds two distribution centers and also fulfills some demand itself.
+
+**What is authored:**
+
+| Location | Own demand | Policy |
+|----------|-----------|--------|
+| **Hub H** | 500/day | Safety days 30, Max days 60, **Downstream buffer 14 days** |
+| **DC-A** | 2,000/day | Safety days 45, Max days 60 |
+| **DC-B** | 1,000/day | *(none)* |
+
+Hub H's subtree demand is DC-A plus DC-B: 3,000/day.
+
+**At Hub H (location grain):**
+
+```
+Requirement = 30 × 500  +  14 × 3,000  =  15,000 + 42,000  =  57,000
+Cap         = 60 × 500  +  42,000 allowance                =  72,000
+Position    = 47,000
+```
+
+47,000 is below the requirement of 57,000, so **Hub H reads Low** — short by 10,000 units.
+
+**At the network grain**, the same ladder one level up. Requirement and cap are the sums of the location stacks:
+
+```
+Position    = 47,000 (H) + 95,000 (DC-A) + 20,000 (DC-B)  =  162,000
+Requirement = 57,000 (H) + 90,000 (DC-A) + 0 (DC-B)       =  147,000
+Cap         = 72,000 (H) + 120,000 (DC-A) + 0 (DC-B)      =  192,000
+```
+
+162,000 sits comfortably inside the band — but Hub H is **Low**, so the network reads **Rebalance**, not Healthy.
+
+### Reading the disagreement
+
+This is the case worth internalizing. **The grains disagree, and neither is wrong.**
+
+- The network has 15,000 more units than it needs in total.
+- Hub H is 10,000 short.
+- DC-A is holding 95,000 against its own 90,000 requirement.
+
+**The answer is move, not make.** Producing more would push an already-above-requirement network further up while leaving H short until the new stock arrives. Pulling from DC-A fixes H immediately, and DC-A stays above its own floor.
+
+If instead the network total had been *below* 147,000, the network would read **Low** — and then moving stock genuinely cannot help, because there is not enough in the system. That is the buy-or-produce case.
+
+Note also that **DC-B contributes 0** to the requirement. It has no authored policy, so it is not judged and demands nothing — its demand is covered through Hub H's downstream buffer instead. If you wanted DC-B judged, the zero-day policy above is the tool.
+
+## Status is not a reorder trigger
+
+**No lead time participates in the status ladder.** Status answers "is this position the right size?" — a stock-health question. It does not answer "is it too late to reorder?"
+
+This differs from tools you may be migrating from. NetSuite, Cin7 and Inventory Planner all judge urgency against demand over *lead time plus safety*, so a SKU with a 60-day lead time and 14 days of safety stock screams reorder-now in those tools while reading **Healthy** here at 20 days of cover.
+
+**The convention is to author the lead time into your Safety days.** If replenishing a location takes 60 days and you want 14 days of buffer on top, author **Safety days = 74**. This is the same pattern Cin7 and Inventory Planner migrators already use, and it makes the requirement mean what you actually need.
+
+<Tip>
+  You do not have to catch these by hand. A pre-solve data issue fires whenever a location's replenishment lead time is greater than or equal to its authored cover — by the time such a policy is breached, a reorder is already late. See [Data issues](/supply-planning/data-issues).
+</Tip>
+
+## Minimum order quantities
+
+Health is deliberately blind to lot sizes. If a supplier's minimum order quantity forces more stock than your cap allows, that position reads **Overstock** — by design, because it genuinely is more than you need to hold.
+
+The ordering surfaces still apply minimum order quantity and case-pack rounding when they build recommendations. The status is telling you about the position; the recommendation is telling you what is orderable.
+
+## What isn't shown yet
+
+Three displays described in the coverage design are not yet available, and are not on any screen today:
+
+- **Downstream cover** at storage locations — a hub's position measured against its subtree's demand rate.
+- **Runs remaining** — a component's position expressed in production runs rather than days.
+- An **including inbound** variant of the runout number.
+
+Each needs values the server does not yet publish, and computing them in the browser would mean re-deriving coverage in a second place — the thing this model exists to eliminate. They are tracked and will be documented here when they ship.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Author policies where you manage stock, not everywhere">
+    Coverage status only appears where a policy is authored, and that is a feature. Blanketing every location with policies produces alerts you will learn to ignore. Author them where you actually hold and decide, and use the zero-day policy for locations you want visible but empty.
+  </Accordion>
+
+  <Accordion title="Put the lead time in the safety days">
+    Status does not know your lead times. A location whose replenishment takes longer than its authored cover will read Healthy right up to the point where reordering is already late. Author the lead time into Safety days and the requirement starts meaning what you need.
+  </Accordion>
+
+  <Accordion title="Buffer at the hub instead of stacking floors">
+    If a hub exists to feed downstream sites, use **Downstream buffer (days)** rather than a large **Safety days** at the hub. The buffer is measured against the demand it actually covers, so the number stays explicable — and it does not silently double-count against the floors already authored downstream.
+  </Accordion>
+
+  <Accordion title="Check the grain before escalating a disagreement">
+    A SKU reading Rebalance at the network and Low at one location is not a bug — it is the two grains telling you different, useful things. Read both before deciding whether to move stock or make more.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| A location shows a coverage number but no status pill | No policy is authored there, so the position is not judged | Author a policy, or a zero-day policy if you want judgment without a stock requirement |
+| An empty location with demand shows no alert | Same — unpoliced locations are never judged, by design | Author **Safety days = 0** to opt it into judgment |
+| A cell reads **52+ wk** instead of a day count | The position outlives every bit of forecast demand in the horizon | Nothing is wrong; no honest day count exists past the horizon |
+| A SKU reads **Overstock** because of a supplier minimum | Health is lot-size blind by design | Expected. Ordering surfaces still apply minimum order quantity rounding |
+| A cell reads **No forecast** | Recent sales exist but there is no forward forecast | Check the SKU's forecast and channel setup in [Demand Forecasting](/demand-forecasting/dashboard) |
+| The network says **Rebalance** but every location looks fine | At least one location is below its requirement | Check the per-location rows; the shortfall is somewhere specific |
+| Statuses look stale or read **Awaiting re-solve** | The plan predates the current coverage model | Run a solve |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coverage" icon="chart-bar" href="/supply-planning/coverage">
+    Where coverage appears across the planning surfaces
+  </Card>
+  <Card title="Data issues" icon="triangle-exclamation" href="/supply-planning/data-issues">
+    The pre-solve checks that catch thin and misplaced policies
+  </Card>
+  <Card title="Inventory Dashboard" icon="gauge" href="/inventory/dashboard">
+    Current-period inventory health by location
+  </Card>
+  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
+    The forecast every coverage number is measured against
+  </Card>
+</CardGroup>

@@ -253,10 +253,14 @@ Define thresholds for health status:
 
 | Status | Default Rule |
 |--------|--------------|
-| **Out of Stock** | Sellable = 0 |
-| **Low Inventory** | Below safety stock |
-| **Healthy** | Between safety and overstock |
-| **Overstock** | Above overstock threshold |
+| **Out of stock** | Effectively empty, with live demand |
+| **Low** | Position below the requirement from your authored layers |
+| **Healthy** | Position within the requirement and the cap |
+| **Constrained** | Above cap, forced by a downstream storage limit |
+| **Overstock** | Above the cap, with nothing forcing it |
+| **No demand** | Nothing consumes the SKU here this horizon |
+
+A location with no authored coverage policy is not judged at all — it reads **Not set** and shows no status. See [How runout and coverage status work](/inventory/coverage-and-runout) for how the requirement and cap are computed.
 
 ### Customizing Health Rules
 
