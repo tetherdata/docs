@@ -59,6 +59,10 @@ The same SKU legitimately reads different numbers on different pages, because "c
 | **Node coverage** | One location's sellable on-hand runway for the current period. Excludes goods in transit and in production. |
 | **Network coverage** | The whole network's sellable position, including inventory in transit between your own nodes, sampled per month. |
 
+<Note>
+  **Looking for "days on hand"?** That label has been retired. It never said which demand it divided by — which is exactly the confusion this page exists to remove. The number you want is one of the two grains above: **Node coverage** for a single location, **Network coverage** for the whole network. Both are days of supply; they differ in what they measure over.
+</Note>
+
 <Warning>
   Network coverage is not the sum of node coverage. When two surfaces disagree for one SKU, check which grain each is labeled with — the difference is usually by construction, not an error.
 </Warning>
