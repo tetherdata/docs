@@ -9,16 +9,23 @@ Coverage — days of supply (DOS) — is how the planning surfaces express inven
 
 ## Coverage status
 
-Coverage status is computed server-side from coverage versus your authored thresholds and rendered directly — the client never re-derives it:
+Coverage status is computed server-side from your position versus the policies you author, and rendered directly — the client never re-derives it:
 
-| Status | Meaning | Color cue |
-|--------|---------|-----------|
-| **Out of stock** | No coverage | Red |
-| **Low** | Below the safety stock threshold | Yellow |
-| **Healthy** | Between safety stock and the overstock threshold | Green |
-| **Overstock** | Above the overstock threshold | Blue chip tint (orange fill on bars) |
+| Status | Meaning | Grain |
+|--------|---------|-------|
+| **No demand** | Nothing consumes this SKU here this horizon | Both |
+| **Out of stock** | Effectively empty, with live demand | Both |
+| **Low** | Below the requirement | Both |
+| **Healthy** | Within the requirement and the cap | Both |
+| **Constrained** | Above cap, forced by a downstream storage limit — carries its citation | Location only |
+| **Rebalance** | The network total is fine, but a location is short | Network only |
+| **Overstock** | Above the cap, with nothing forcing it | Both |
 
-Grids show these as tinted DOS chips; drawers show them as colored bars. A row with no status (a plan solved before status existed) renders neutral until the next solve.
+Grids show these as tinted chips; drawers show them as colored bars. A location with **no authored policy** is not judged at all: it renders **Not set**, with no pill. A row with no status (a plan solved before the current model) reads **Awaiting re-solve** until the next solve.
+
+<Note>
+  For what each status means, how the requirement and cap are computed from your authored layers, and a worked example across two grains, see [How runout and coverage status work](/inventory/coverage-and-runout).
+</Note>
 
 ## Coverage impact in drawers
 
@@ -27,7 +34,7 @@ Recommendation drawers carry a **Coverage impact** section showing what the move
 - **Purchase** and **Production** recommendations show an **Across network** row on top, then per-node rows.
 - **Transfer** recommendations are headed **Coverage impact — source & destination**, and highlight the source and destination nodes; there is no network row.
 
-Each node row is a before/after bar: a muted segment for the current position and a delta segment for the change — green-tinted when the movement lifts coverage, red-tinted when it drops it. Up to three threshold ticks overlay the bar — **S** (safety), **T** (target), **O** (overstock) — rendered only where a threshold is authored.
+Each node row is a before/after bar: a muted segment for the current position and a delta segment for the change — green-tinted when the movement lifts coverage, red-tinted when it drops it. Up to three threshold ticks overlay the bar — **S** (Safety days), **T** (Target days), **M** (Max days) — rendered only where that layer is authored.
 
 ### The measurement date
 

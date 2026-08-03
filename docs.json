@@ -59,6 +59,7 @@
             "group": "Inventory Management",
             "pages": [
               "inventory/dashboard",
+              "inventory/coverage-and-runout",
               "inventory/history",
               "inventory/adjustments",
               {
