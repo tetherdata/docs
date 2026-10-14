@@ -27,7 +27,27 @@ The Worksheet and List share one view: filters (SKU, groups, type, supplier, BOM
 
 - **Group by urgency** on the Worksheet (the List stays a flat triage grid).
 - An **Anchor** control on the Schedule that re-buckets purchase dates by order date or arrival date.
+- **Group by** on the Schedule: by supplier, by SKU group, by buy group, or by **SKU** alone. SKU lists every SKU as its own row with nothing collapsed, the way the Worksheet reads.
 - **Export CSV** for the current rows.
+
+## Worksheet settings
+
+Open **Table settings** on the Worksheet to change how its numbers read. Each setting shows a one-line explanation under its name, and the chosen option's explanation under its control.
+
+| Setting | What it changes | Example |
+|---------|-----------------|---------|
+| **Recs only** | Shows only SKUs with a recommended purchase in the dates shown. | A SKU whose next buy falls after the last column is hidden. |
+| **Shortfalls only** | Shows only SKUs whose stock goes negative, or below its coverage target, in the dates shown. | A SKU that dips to −20 in July stays; one that stays covered is hidden. |
+| **Days of supply** | How the Days of supply figure is counted: stock carried forward week by week against the demand ahead of it, or month-end stock divided by that month's forecast per day. | 400 on hand with 100 a week of demand reads 28 days. 600 at month end against a forecast of 900 reads 20 days. |
+| **Base position** | Which supply the Starting and Ending figures count. Each choice counts everything the one before it does, plus more. | **In progress** counts open POs, transfers and runs already under way; **Committed** adds the plan you've accepted. |
+| **Recommendations** | Shown where your organization takes orders from an engine: whose recommended orders the table shows. The other source's are left out, so no order is counted twice. | **Tether's plan**: a buy Tether proposes for June shows in June. **Engine run**: the engine's June buy shows instead, and Tether's doesn't. |
+| **Production use from** | How much of each component production uses up. It changes the figures for components, not finished goods. | **From the runs already committed**: a run of 1,000 bottles in May uses 1,000 caps in May. **Estimated from demand**: 500 bottles of demand in May uses 500 caps in May, run or not, and stock may go negative. |
+| **Unapproved edits** | Whether edits nobody has approved yet count in the figures. | Typing 500 into June raises June's Ending by 500 under **In the base**; under **Hidden** the edit stays marked but June's Ending doesn't change until it is approved. |
+| **Rec dates** | Which date a recommended purchase sits on. | A buy that must go out 3 May to land 14 June shows in June under **Landing date**, in May under **Order date**, and in both under **Both**. |
+
+<Note>
+Recommendations only appear under **From the runs already committed**. **Estimated from demand** shows no recommendations, so **Recs only** isn't offered there. Organizations that take orders from an engine open on **From the runs already committed**; others open on **Estimated from demand**.
+</Note>
 
 ## The suggested PO drawer
 
