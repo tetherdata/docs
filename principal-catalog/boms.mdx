@@ -130,13 +130,15 @@ You can switch one BOM, or the whole SKU, on or off at one site or everywhere. A
 
 After a split, a BOM you add to the SKU later is not on at that site until you switch it on there. If a rule you disable also covered other sites, those sites each get their own rule, so they keep running what they ran.
 
+Whether a SKU is made is held by its own rules, not by its SKU groups. If the rule a switch has to change is on a SKU group (or names several SKUs), the switch moves every other SKU in it onto its own rule, at the same site and for the same BOMs, then changes the switched SKU's rule as above. The group, its members and its other rules, such as a line's throughput, stay as they are. The preview says how many SKUs move and that nothing changes for them, for example: "Produce Amazon ASIN Kit on AERONET-ATL-MarketplaceASIN: 16 other members move from it to their own yes, no planning change."
+
 **Every switch shows a preview first.** It lists the rules it will add, disable, or split, and for each site the BOM it runs now and the BOM it will run afterwards, or that the site will stop making the SKU. Nothing changes until you confirm. If the rules change between the preview and your confirmation, you're asked to preview again.
 
 For example, Mamata makes FG0373 under "FG0373 · Mamata → yes" and ranks TS first, then IB. Switching IB off at Mamata previews: "Mamata: still runs TS. IB off here. IB still on at IB Foods." Confirming replaces the Mamata rule with "FG0373 · Mamata · TS → yes" and "FG0373 · Mamata · Evo → yes".
 
 A switch is refused, and nothing changes, when:
 
-- The rule to change covers other SKUs too, such as a rule on a SKU group. Changing it would change every SKU in the group, so the preview names the rule instead.
+- The rule to change names no SKU at all, so it covers every SKU.
 - The rule to change holds other rules in the same policy, which disabling it would turn off too.
 - You switch on an **Archived** BOM. You can switch on a **Draft** BOM, but it isn't planned until you make it Active.
 - You switch the whole SKU on everywhere and it has no Active BOM. Make a BOM Active, or switch the SKU on at a site.
