@@ -20,7 +20,7 @@ Each row shows the BOM's name and its **Status**:
 | Status | Meaning |
 |--------|---------|
 | **Draft** | Still being written |
-| **Active** | In use |
+| **Active** | Planned wherever a production rule switches it on (see [Which BOMs run where](#which-boms-run-where)) |
 | **Archived** | Kept as history |
 
 Status is only where the BOM is in its life. Production rules decide whether the plan runs it. If the BOM has other outputs besides its main one (co-products or by-products), the row says **Also makes** and names them.
@@ -102,6 +102,30 @@ The **Line items** section lists components with position, quantity, unit, and a
 
 The picker used for outputs, line items, and the SKU detail BOM tab is a searchable dialog: type a code, name, or description, and results appear grouped by each SKU's primary group. Click a SKU to select it. SKUs already used in the BOM (and the BOM's own outputs) are excluded, and circular references — a component that directly or indirectly consumes a SKU this BOM produces — are blocked.
 
+## Which BOMs run where
+
+A SKU can have several BOMs, for example one per co-packer. Whether a BOM runs at a site is set only by **production rules** (`assign_production` policies), never by the BOM's status. A production rule switches BOMs on at one of three levels:
+
+| Level | The rule | Example |
+|-------|----------|---------|
+| One BOM at one site | Names the SKU, the site (or a line there), and the BOM | "FG0373 · True Spice · TS BOM → yes" turns on only the TS BOM at True Spice |
+| One BOM everywhere | Names the SKU and the BOM, and no site | "FG0373 · IB BOM → yes" turns on the IB BOM at every production site |
+| The whole SKU at a site | Names the SKU and the site, and no BOM | "FG0373 · Mamata → yes" turns on every BOM of FG0373 at Mamata |
+
+**No rule means off.** A BOM no enabled production rule covers is not planned at that site. There are no "no" rules: to switch something off, disable the rule that switches it on. To switch off one BOM where a whole-SKU rule covers it, replace that rule with one rule per BOM you want to keep.
+
+Where several BOMs are on at one site, the site's BOM ranking picks which one new runs use. With no ranking, the oldest BOM is used and the plan flags the site so you can rank them. Rules about a BOM, such as a throughput rate for it on a line, apply whenever that BOM runs.
+
+### BOM status
+
+A BOM's status is where it is in its life. It never switches a BOM on or off.
+
+| Status | Meaning |
+|--------|---------|
+| **Draft** | Still being written. It can carry production rules, but it is never planned until you make it **Active**. |
+| **Active** | Planned wherever an enabled production rule covers it. |
+| **Archived** | Kept as history; its components and outputs can't change. Archiving disables every production rule that names the BOM and removes it from every site's ranking. Making it Active again does not turn those rules back on: enable the ones you want. |
+
 ## Best practices
 
 <AccordionGroup>
@@ -128,6 +152,8 @@ The picker used for outputs, line items, and the SKU detail BOM tab is a searcha
 | A line item's unit shows as invalid | The stored unit isn't among the component SKU's defined conversions | Add the conversion on the component SKU, or pick a valid unit |
 | Deleting a BOM fails | A policy still references the BOM | Remove or re-scope the referencing policy first |
 | A BOM is missing from the list | It is **Archived**, and the list hides archived BOMs by default | Add **Archived** in the **Status** filter |
+| An Active BOM is never planned at a site | No enabled production rule covers it there | Enable or add a production rule naming the BOM at that site, or one for the whole SKU |
+| An archived BOM is Active again but still not planned | Archiving disabled its production rules, and making it Active does not re-enable them | Enable the production rules you want for it |
 
 ## Next Steps
 
