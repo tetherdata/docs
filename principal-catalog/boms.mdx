@@ -126,6 +126,18 @@ A BOM's status is where it is in its life. It never switches a BOM on or off.
 | **Active** | Planned wherever an enabled production rule covers it. |
 | **Archived** | Kept as history; its components and outputs can't change. Archiving disables every production rule that names the BOM and removes it from every site's ranking. Making it Active again does not turn those rules back on: enable the ones you want. |
 
+### New revisions from a connected system
+
+When your BOMs come from a connected system such as NetSuite, a formula change there is a new revision of the BOM, for example **FG0373-BOM1-REV2** after **FG0373-BOM1-REV1**. Each sync keeps every revision's components in step with the source and changes nothing else.
+
+- **A new revision arrives as a Draft BOM** on the SKU it makes, named for the revision. It is not planned until you make it **Active**.
+- **It brings a copy of the previous revision's production rules, all disabled.** Every production rule, throughput rate, capacity and yield that names the previous revision is copied to name the new one, with "(copied from …)" added to its name. For example, if REV1 runs on the EVO line at 2,500/h, REV2 arrives with "EVO · 2,500/h (copied from FG0373-BOM1-REV1)", switched off. Site rankings are not copied.
+- **The previous revision is untouched.** It keeps its status and its rules, and keeps running wherever it ran.
+- **To move to the new revision**, make it **Active** and enable the copied rules you want. Disable the previous revision's rules where it should stop.
+- **A revision the source marks inactive keeps its status and its rules here.** The sync reports it as inactive in the source and never switches a BOM off. Disable its production rules if it should stop running.
+
+The previous revision is the latest earlier revision of the same BOM in the source that makes the same SKU. If the source does not say which BOM a revision belongs to, nothing is copied.
+
 ## Best practices
 
 <AccordionGroup>
@@ -154,6 +166,7 @@ A BOM's status is where it is in its life. It never switches a BOM on or off.
 | A BOM is missing from the list | It is **Archived**, and the list hides archived BOMs by default | Add **Archived** in the **Status** filter |
 | An Active BOM is never planned at a site | No enabled production rule covers it there | Enable or add a production rule naming the BOM at that site, or one for the whole SKU |
 | An archived BOM is Active again but still not planned | Archiving disabled its production rules, and making it Active does not re-enable them | Enable the production rules you want for it |
+| A new revision from the source is never planned | It arrives as a Draft, and its copied production rules are disabled | Make it **Active** and enable the copied rules you want |
 
 ## Next Steps
 
