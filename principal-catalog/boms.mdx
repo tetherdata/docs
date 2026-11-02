@@ -126,6 +126,15 @@ A BOM's status is where it is in its life. It never switches a BOM on or off.
 | **Active** | Planned wherever an enabled production rule covers it. |
 | **Archived** | Kept as history; its components and outputs can't change. Archiving disables every production rule that names the BOM and removes it from every site's ranking. Making it Active again does not turn those rules back on: enable the ones you want. |
 
+### New revisions from a connected system
+
+When your BOMs come from a connected system such as NetSuite, a formula change there is a new revision of the BOM, for example **FG0373-BOM1-REV2** after **FG0373-BOM1-REV1**. Each sync keeps every revision's components in step with the source and changes nothing else.
+
+- **A new revision arrives as a Draft BOM** on the SKU it makes, named for the revision. It has no production rules and no place in any site's ranking, so it runs nowhere.
+- **The previous revision is untouched.** It keeps its status and its rules, and keeps running wherever it ran.
+- **To start using the new revision**, make it **Active** and add a production rule for it at each site it should run (and rank it there if the site runs several BOMs). Disable the previous revision's rules where it should stop.
+- **A revision the source marks inactive keeps its status and its rules here.** The sync reports it as inactive in the source and never switches a BOM on or off. Disable its production rules if it should stop running.
+
 ## Best practices
 
 <AccordionGroup>
@@ -154,6 +163,7 @@ A BOM's status is where it is in its life. It never switches a BOM on or off.
 | A BOM is missing from the list | It is **Archived**, and the list hides archived BOMs by default | Add **Archived** in the **Status** filter |
 | An Active BOM is never planned at a site | No enabled production rule covers it there | Enable or add a production rule naming the BOM at that site, or one for the whole SKU |
 | An archived BOM is Active again but still not planned | Archiving disabled its production rules, and making it Active does not re-enable them | Enable the production rules you want for it |
+| A new revision from the source is never planned | It arrives as a Draft with no production rules | Make it **Active** and add a production rule for it at each site it should run |
 
 ## Next Steps
 
