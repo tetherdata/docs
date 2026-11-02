@@ -75,14 +75,21 @@ Open any SKU to see its detail page, titled with the SKU code. Tabs cover:
 | **Overview** | SKU information (name, code, UPC, description, unit, type — all editable inline), dimensions and weight, attribute values, and SKU group memberships |
 | **External IDs** | Identifiers from other systems, as type/value pairs you can add and remove |
 | **Units** | Alternate units of measurement with conversion ratios (for example, 1 case = 12 each) via **Add Conversion** |
-| **BOM** | The components this SKU is built from, and a **Used in** table of other BOMs that consume this SKU |
+| **BOM** | Every BOM that makes this SKU (**Made by**), and a **Used in** table of the BOMs that consume it |
 | **Inventory** | Inventory details for the SKU |
 | **Purchasing / Production / Storage** | Supplier, production, and warehouse relationships |
 | **Policies** | Planning policies scoped to this SKU |
 
 On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU Group** (with a link and a **Primary** badge) and any other group memberships, which you can add to or remove. The **Attribute Values** card lists assigned values and lets you **Add Attribute** or remove one.
 
-On the **BOM** tab, click **Add component** to pick a component SKU from a searchable picker. If the SKU has no BOM yet, adding the first component creates one automatically with this SKU as the primary output. Circular BOMs are blocked.
+On the **BOM** tab, **Made by** lists every BOM whose main output is this SKU, oldest first, with each BOM's status (**Draft**, **Active** or **Archived**) and component count. A SKU can have several BOMs, for example one per co-packer.
+
+- Click a BOM's name to open its page.
+- Click the arrow at the start of a row to open its components underneath. There you can add and remove components and change each one's quantity, unit and optional flag. Each change saves as you make it.
+- Click **New BOM** to add another BOM for this SKU. The dialog opens with this SKU already chosen as what the BOM produces.
+- If the SKU has no BOM yet, click **Add component**. Adding the first component creates a BOM named after the SKU, with this SKU as its main output.
+
+**Used in** lists every BOM that takes this SKU as a component, with that BOM's status, the quantity and unit it uses, and what it produces. Circular BOMs are blocked.
 
 ## Archiving a SKU
 
