@@ -58,6 +58,12 @@ The drawer's raw-material coverage section shows the projected inventory status 
 
 A demand-bearing cell the plan schedules **no** production for can be opened too: the attribution drawer explains why — the run is material-bound (an input is short) or capacity-bound (the line is saturated). From there, **Create run anyway** opens the create drawer prefilled with the cell's node, line, SKU, and period, so you can overrule the solver deliberately.
 
+## Which BOM a run uses
+
+A SKU can have several [BOMs](/principal-catalog/boms). Production rules decide which of them may run at each site: a rule naming a BOM at a site, the same rule with no site (every production site), or a rule naming no BOM (every BOM of the SKU at that site). A BOM no enabled rule covers is off there; there are no "no" rules. Only **Active** BOMs are planned. A **Draft** BOM waits until you make it Active, and an **Archived** BOM is history.
+
+Among the BOMs that are on at a site, the site's BOM ranking picks the one new runs use. With no ranking, the oldest is used and the plan flags the site. Runs already accepted, pinned, or ordered keep the BOM they were placed on.
+
 ## Creating and editing runs
 
 - **Create run** (toolbar) or **Create run anyway** (attribution drawer) opens the production create drawer. Creating requires planning write permission; a dirty form guards against accidental close.
@@ -92,6 +98,7 @@ A demand-bearing cell the plan schedules **no** production for can be opened too
 | Can't accept a suggested run | The **No input limits** comparison is active (read-only), or the recommendation no longer exists | Switch Compare to **With recs**; if it persists, the rec was superseded by a newer solve |
 | **Create run** button missing | You lack planning write permission, or you're not on the Schedule tab | Switch to Schedule; ask an admin about [permissions](/roles-permissions) |
 | Date range picker missing on the List | The List is a flat view with no time axis | Use Schedule or Worksheet for time-bucketed views |
+| A site never plans a SKU on a BOM you expect | No enabled production rule switches that BOM on at the site, or the BOM is Draft | Enable a production rule for the BOM there (or for the whole SKU), and make the BOM Active |
 
 ## Next Steps
 
