@@ -139,6 +139,7 @@ A switch is refused, and nothing changes, when:
 - The rule to change covers other SKUs too, such as a rule on a SKU group. Changing it would change every SKU in the group, so the preview names the rule instead.
 - The rule to change holds other rules in the same policy, which disabling it would turn off too.
 - You switch on an **Archived** BOM. You can switch on a **Draft** BOM, but it isn't planned until you make it Active.
+- You switch the whole SKU on everywhere and it has no Active BOM. Make a BOM Active, or switch the SKU on at a site.
 
 Where several BOMs are on at one site, the site's BOM ranking picks which one new runs use. With no ranking, the oldest BOM is used and the plan flags the site so you can rank them. Rules about a BOM, such as a throughput rate for it on a line, apply whenever that BOM runs.
 
