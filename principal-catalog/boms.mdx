@@ -25,8 +25,13 @@ Each row shows the BOM's name and its **Status**:
 
 Status is only where the BOM is in its life. Production rules decide whether the plan runs it. A BOM with co-products is listed under each of them as well as under its main output. If it has by-products, the row says **Also makes** and names them.
 
+Each row also shows:
+
+- **On**: a switch for the BOM everywhere its SKU is made. It reads **On everywhere**, **On at N of M** (on at some sites only) or **Off**. Switching it previews what the plan will do and asks you to confirm (see [Switching from the pages](#switching-from-the-pages)). A **Draft** BOM shows **Draft** and can't be switched here: switch it on at a site from the SKU's **BOM** tab, or make it Active first.
+- **Plan runs it at**: the sites where this is the BOM the plan uses for the SKU, by the site's ranking or, with no ranking, the oldest BOM that is on there.
+
 - **Search** by BOM name, notes, or the code or name of a SKU the BOM produces.
-- **Filter** by **Status** (everything but **Archived** by default), **Used as** (End product or Component), **Type** (the SKU type of what the BOM produces) and **Size** (component count ranges).
+- **Filter** by **Status** (everything but **Archived** by default), **Running** (**On somewhere** or **Off everywhere**), **Used as** (End product or Component), **Type** (the SKU type of what the BOM produces) and **Size** (component count ranges).
 - Click the arrow at the start of a row to open the BOM's components underneath it. There you can add and remove components and change each one's quantity, unit and optional flag without leaving the list. Each change saves as you make it.
 - Click a row to open the BOM's page.
 - Click **New BOM** to create one.
@@ -41,7 +46,7 @@ Open **Table Settings** to show or hide columns and to export. These columns are
 - **Components**: how many components the BOM has.
 - **Notes**.
 
-**Export CSV** downloads the BOMs the current search and filters show. Each row has the SKU, BOM, status, used as, component count, also-makes, SKU type and notes, whether or not those columns are showing.
+**Export CSV** downloads the BOMs the current search and filters show. Each row has the SKU, BOM, status, the sites it is on at, the sites the plan runs it at, used as, component count, also-makes, SKU type and notes, whether or not those columns are showing.
 
 ## Creating a BOM
 
@@ -72,6 +77,10 @@ The header shows the BOM's status and an **Export CSV** action for its line item
 
 ### Overview
 
+- **On at**, **Plan runs it at** and **Runs on it**: how many of the SKU's sites have the BOM switched on, the sites where the plan uses it, and how many planned runs and open orders name it. Switching a BOM off doesn't move runs or orders already on it.
+- **Where it runs:** each site that makes the SKU or could, with this BOM's switch there, why it is off (for example **Off here** or **Draft**), and which BOM the plan runs at that site.
+- **Production rules:** the policies that decide where this BOM may run (a rule naming it, or naming no BOM of the SKU), and the rates or capacities that name it, each **Enabled** or **Off**. Click one to open it, or **All rules** for the SKU's **Policies** tab.
+- **Site rankings:** each site whose ranking includes the BOM, in order. **Edit** opens the SKU's **BOM** tab, where rankings are changed.
 - **Metadata:** edit the BOM's **Name** and **Notes**. A badge says **End product** when no other BOM uses what this BOM makes. Otherwise it says **Sub-assembly · N**, where N is the number of other BOMs that use it as a component. A yield rate line appears when a yield-rate policy targets an output SKU.
 - **Other BOMs of** the SKU: every other BOM that makes the same SKU, each with its status. Click one to open it.
 - **Used in:** every BOM that takes something this BOM makes as a component, with what that BOM produces and its status.
@@ -142,6 +151,21 @@ A switch is refused, and nothing changes, when:
 - The rule to change holds other rules in the same policy, which disabling it would turn off too.
 - You switch on an **Archived** BOM. You can switch on a **Draft** BOM, but it isn't planned until you make it Active.
 - You switch the whole SKU on everywhere and it has no Active BOM. Make a BOM Active, or switch the SKU on at a site.
+
+### Switching from the pages
+
+Three places have switches, and every one previews and asks you to confirm before anything is written:
+
+| Where | Switch | Does |
+|-------|--------|------|
+| BOM list, **On** column | One per BOM | Switches the BOM on or off everywhere |
+| SKU's **BOM** tab, **Where it's made** | One per site card | Switches the whole SKU on or off at that site |
+| SKU's **BOM** tab, **Where it's made** | One per BOM on each site card | Switches that BOM on or off at that site |
+| BOM page, **Overview** → **Where it runs** | One per site | Switches this BOM on or off at that site |
+
+The confirmation shows **What the plan does after**, each site whose BOM changes, for example "Mamata: IB → TS" or "stops making it", and **Production rules written**: each rule it disables (−) and adds (+), and why. **Confirm** applies exactly what the preview showed. If it's refused, the confirmation says why and **Confirm** stays off.
+
+On the SKU's **BOM** tab, each site card also lists the site's BOMs in ranking order, with **Plan runs** next to the one the plan uses. Use the arrows beside a BOM to move it up or down. The confirmation shows the new order and which BOM the site would run under it. Confirming writes the site's BOM ranking (a `set_bom_preference` policy for that site and SKU), changing the site's own ranking in place if it has one. A card that says **No ranking: the plan uses the oldest** has several BOMs on and none ranked.
 
 Where several BOMs are on at one site, the site's BOM ranking picks which one new runs use. With no ranking, the oldest BOM is used and the plan flags the site so you can rank them. Rules about a BOM, such as a throughput rate for it on a line, apply whenever that BOM runs.
 
