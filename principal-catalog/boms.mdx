@@ -13,7 +13,7 @@ Your organization may use a different name for BOMs. Administrators can rename c
 
 ## BOM list
 
-The list groups BOMs under the SKU each one makes (its main output). A SKU with several BOMs, for example one per co-packer, shows them together, oldest first. Each group header shows the SKU's code, its name and how many BOMs it has. Click **Open SKU** in the header to go to the SKU's **BOM** tab.
+The list groups BOMs under the SKU each one makes: its main output, and also each co-product. A SKU with several BOMs, for example one per co-packer, shows them together, oldest first. Each group header shows the SKU's code, its name and how many BOMs it has. Click **Open SKU** in the header to go to the SKU's **BOM** tab.
 
 Each row shows the BOM's name and its **Status**:
 
@@ -23,7 +23,7 @@ Each row shows the BOM's name and its **Status**:
 | **Active** | Planned wherever a production rule switches it on (see [Which BOMs run where](#which-boms-run-where)) |
 | **Archived** | Kept as history |
 
-Status is only where the BOM is in its life. Production rules decide whether the plan runs it. If the BOM has other outputs besides its main one (co-products or by-products), the row says **Also makes** and names them.
+Status is only where the BOM is in its life. Production rules decide whether the plan runs it. A BOM with co-products is listed under each of them as well as under its main output. If it has by-products, the row says **Also makes** and names them.
 
 - **Search** by BOM name, notes, or the code or name of a SKU the BOM produces.
 - **Filter** by **Status** (everything but **Archived** by default), **Used as** (End product or Component), **Type** (the SKU type of what the BOM produces) and **Size** (component count ranges).
@@ -92,7 +92,7 @@ Each output has one of three kinds:
 | **Co-product** | An equal product of the same run — for example a premix run that makes two premixes alike. The BOM belongs to it as much as to the main. |
 | **By-product** | Something the run makes along the way, such as a seconds can. The BOM shows it only as **Also makes**. |
 
-Choosing **Main** for another output makes it the main, and the previous main becomes a co-product. The main output can't be changed to another kind or removed while other outputs exist: make another output main first. Outputs created before kinds existed are main (the one that was primary) or co-products (the rest). On the BOM list, a BOM is listed under its main output, and its row names its co-products and by-products under **Also makes**.
+Choosing **Main** for another output makes it the main, and the previous main becomes a co-product. The main output can't be changed to another kind or removed while other outputs exist: make another output main first. Outputs created before kinds existed are main (the one that was primary) or co-products (the rest). On the BOM list, a BOM is listed under its main output and under each co-product, and its row names its by-products under **Also makes**.
 
 #### Line items
 
