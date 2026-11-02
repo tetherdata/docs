@@ -112,7 +112,36 @@ A SKU can have several BOMs, for example one per co-packer. Whether a BOM runs a
 | One BOM everywhere | Names the SKU and the BOM, and no site | "FG0373 · IB BOM → yes" turns on the IB BOM at every production site |
 | The whole SKU at a site | Names the SKU and the site, and no BOM | "FG0373 · Mamata → yes" turns on every BOM of FG0373 at Mamata |
 
-**No rule means off.** A BOM no enabled production rule covers is not planned at that site. There are no "no" rules: to switch something off, disable the rule that switches it on. To switch off one BOM where a whole-SKU rule covers it, replace that rule with one rule per BOM you want to keep.
+**No rule means off.** A BOM no enabled production rule covers is not planned at that site. There are no "no" rules: switching something off disables the rule that switches it on.
+
+### Switching a BOM or SKU on or off
+
+You can switch one BOM, or the whole SKU, on or off at one site or everywhere. A switch only adds or disables production rules. Rankings, and rates or capacities that name the BOM, stay as they are.
+
+| You switch | What changes |
+|------------|--------------|
+| A BOM **on** at a site | A rule naming the BOM at that site is added, unless one already covers it |
+| A BOM **on** everywhere | A rule naming the BOM with no site is added |
+| A BOM **off** where its own rule covers it | That rule is disabled |
+| A BOM **off** where a whole-SKU rule covers it | The whole-SKU rule is **split**: it is disabled and replaced by one rule per remaining Active BOM, so the other BOMs keep running |
+| The whole SKU **on** at a site | A rule naming the SKU and the site, and no BOM, is added |
+| The whole SKU **on** everywhere | A rule per Active BOM, with no site, is added |
+| The whole SKU **off** | Every rule switching it on there is disabled |
+
+After a split, a BOM you add to the SKU later is not on at that site until you switch it on there. If a rule you disable also covered other sites, those sites each get their own rule, so they keep running what they ran.
+
+Whether a SKU is made is held by its own rules, not by its SKU groups. If the rule a switch has to change is on a SKU group (or names several SKUs), the switch moves every other SKU in it onto its own rule, at the same site and for the same BOMs, then changes the switched SKU's rule as above. The group, its members and its other rules, such as a line's throughput, stay as they are. The preview says how many SKUs move and that nothing changes for them, for example: "Produce Amazon ASIN Kit on AERONET-ATL-MarketplaceASIN: 16 other members move from it to their own yes, no planning change."
+
+**Every switch shows a preview first.** It lists the rules it will add, disable, or split, and for each site the BOM it runs now and the BOM it will run afterwards, or that the site will stop making the SKU. Nothing changes until you confirm. If the rules change between the preview and your confirmation, you're asked to preview again.
+
+For example, Mamata makes FG0373 under "FG0373 · Mamata → yes" and ranks TS first, then IB. Switching IB off at Mamata previews: "Mamata: still runs TS. IB off here. IB still on at IB Foods." Confirming replaces the Mamata rule with "FG0373 · Mamata · TS → yes" and "FG0373 · Mamata · Evo → yes".
+
+A switch is refused, and nothing changes, when:
+
+- The rule to change names no SKU at all, so it covers every SKU.
+- The rule to change holds other rules in the same policy, which disabling it would turn off too.
+- You switch on an **Archived** BOM. You can switch on a **Draft** BOM, but it isn't planned until you make it Active.
+- You switch the whole SKU on everywhere and it has no Active BOM. Make a BOM Active, or switch the SKU on at a site.
 
 Where several BOMs are on at one site, the site's BOM ranking picks which one new runs use. With no ranking, the oldest BOM is used and the plan flags the site so you can rank them. Rules about a BOM, such as a throughput rate for it on a line, apply whenever that BOM runs.
 
