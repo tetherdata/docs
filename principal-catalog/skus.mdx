@@ -80,11 +80,11 @@ Open any SKU to see its detail page, titled with the SKU code. Tabs cover:
 | **Purchasing / Production / Storage** | Supplier, production, and warehouse relationships |
 | **Policies** | Planning policies scoped to this SKU |
 
+On the **Purchasing**, **Production** and **Storage** tabs, each value carries one mark: **●** set here, **⟳** inherited from a SKU group or a wider rule (hover the value to see which), **○** not granted here. A switch marked **◐** is on through a narrower rule, for one line or one BOM; switching it off adds a rule withholding the row rather than editing that one. Where some BOMs have a rule of their own, for example a throughput rate for one BOM on a line, the value shows an **N bills** chip: the value is the rule for every BOM without one, and clicking the chip lists each BOM's own value.
+
 On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU Group** (with a link and a **Primary** badge) and any other group memberships, which you can add to or remove. The **Attribute Values** card lists assigned values and lets you **Add Attribute** or remove one.
 
-On the **BOM** tab, **Where it's made** has a card for each site that makes the SKU or could. The card's switch turns the whole SKU on or off at that site. Each BOM on the card has its own switch for that site, its place in the site's ranking with arrows to move it, and **Plan runs** next to the BOM the plan uses there. Every switch and reorder previews what the plan will do and asks you to confirm. See [Switching from the pages](/principal-catalog/boms#switching-from-the-pages).
-
-**Made by** lists every BOM whose main output or co-product is this SKU, oldest first, with each BOM's status (**Draft**, **Active** or **Archived**), its **On** switch for everywhere, the sites the plan runs it at, and its component count. A SKU can have several BOMs, for example one per co-packer.
+**Made by**, on the **BOM** tab, lists every BOM whose main output or co-product is this SKU, oldest first, with each BOM's status (**Draft**, **Active** or **Archived**), where it's on (for example **On at True Spice**), the sites the plan runs it at, and its component count. Click a BOM's **On** cell to switch it on or off at each site or everywhere, rank it at a site, or add a site; every switch and reorder previews what the plan will do and asks you to confirm. See [Picking a BOM's sites](/principal-catalog/boms#picking-a-boms-sites). To switch the whole SKU on or off at a site, use the **Assigned** switch on the **Production** tab. A SKU can have several BOMs, for example one per co-packer.
 
 - Click a BOM's name to open its page.
 - Click the arrow at the start of a row to open its components underneath. There you can add and remove components and change each one's quantity, unit and optional flag. Each change saves as you make it.

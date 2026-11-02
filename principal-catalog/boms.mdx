@@ -27,7 +27,7 @@ Status is only where the BOM is in its life. Production rules decide whether the
 
 Each row also shows:
 
-- **On**: a switch for the BOM everywhere its SKU is made. It reads **On everywhere**, **On at N of M** (on at some sites only) or **Off**. Switching it previews what the plan will do and asks you to confirm (see [Switching from the pages](#switching-from-the-pages)). A **Draft** BOM shows **Draft** and can't be switched here: switch it on at a site from the SKU's **BOM** tab, or make it Active first.
+- **On**: where the BOM is on. It reads **On at True Spice** (on at one site), **On at N of M** (on at some of the SKU's sites), **On everywhere** (on at every one of several sites) or **Off**. A **Draft** BOM reads **Draft**. Click it to pick the sites the BOM runs at (see [Picking a BOM's sites](#picking-a-boms-sites)).
 - **Plan runs it at**: the sites where this is the BOM the plan uses for the SKU, by the site's ranking or, with no ranking, the oldest BOM that is on there.
 
 - **Search** by BOM name, notes, or the code or name of a SKU the BOM produces.
@@ -80,7 +80,7 @@ The header shows the BOM's status and an **Export CSV** action for its line item
 - **On at**, **Plan runs it at** and **Runs on it**: how many of the SKU's sites have the BOM switched on, the sites where the plan uses it, and how many planned runs and open orders name it. Switching a BOM off doesn't move runs or orders already on it.
 - **Where it runs:** each site that makes the SKU or could, with this BOM's switch there, why it is off (for example **Off here** or **Draft**), and which BOM the plan runs at that site.
 - **Production rules:** the policies that decide where this BOM may run (a rule naming it, or naming no BOM of the SKU), and the rates or capacities that name it, each **Enabled** or **Off**. Click one to open it, or **All rules** for the SKU's **Policies** tab.
-- **Site rankings:** each site whose ranking includes the BOM, in order. **Edit** opens the SKU's **BOM** tab, where rankings are changed.
+- **Site rankings:** each site whose ranking includes the BOM, in order. **Edit** opens the SKU's **BOM** tab, where the BOM's site picker changes its rankings.
 - **Metadata:** edit the BOM's **Name** and **Notes**. A badge says **End product** when no other BOM uses what this BOM makes. Otherwise it says **Sub-assembly · N**, where N is the number of other BOMs that use it as a component. A yield rate line appears when a yield-rate policy targets an output SKU.
 - **Other BOMs of** the SKU: every other BOM that makes the same SKU, each with its status. Click one to open it.
 - **Used in:** every BOM that takes something this BOM makes as a component, with what that BOM produces and its status.
@@ -154,18 +154,28 @@ A switch is refused, and nothing changes, when:
 
 ### Switching from the pages
 
-Three places have switches, and every one previews and asks you to confirm before anything is written:
+Every switch on the pages previews and asks you to confirm before anything is written:
 
 | Where | Switch | Does |
 |-------|--------|------|
-| BOM list, **On** column | One per BOM | Switches the BOM on or off everywhere |
-| SKU's **BOM** tab, **Where it's made** | One per site card | Switches the whole SKU on or off at that site |
-| SKU's **BOM** tab, **Where it's made** | One per BOM on each site card | Switches that BOM on or off at that site |
+| BOM list, **On** column | The site picker | Switches the BOM on or off everywhere or at one site, and ranks it at a site |
+| SKU's **BOM** tab, **Made by**, **On** column | The same site picker | The same, for each BOM that makes the SKU |
+| SKU's **Production** tab, **Assigned** | One per site or line | Switches the whole SKU on or off there |
 | BOM page, **Overview** → **Where it runs** | One per site | Switches this BOM on or off at that site |
 
 The confirmation shows **What the plan does after**, each site whose BOM changes, for example "Mamata: IB → TS" or "stops making it", and **Production rules written**: each rule it disables (−) and adds (+), and why. When the rule to change is shared with a SKU group, the confirmation also shows **Shared rules converted**, in the words of the example above, and counts the other SKUs' new rules in one line. **Confirm** applies exactly what the preview showed. If it's refused, the confirmation says why and **Confirm** stays off.
 
-On the SKU's **BOM** tab, each site card also lists the site's BOMs in ranking order, with **Plan runs** next to the one the plan uses. Use the arrows beside a BOM to move it up or down. The confirmation shows the new order and which BOM the site would run under it. Confirming writes the site's BOM ranking (a `set_bom_preference` policy for that site and SKU), changing the site's own ranking in place if it has one. The ranking names the BOMs on at the site and any it already ranked; a BOM that is off there and unranked stays out of it unless you move it. If the site's ranking policy is turned off or holds other rules, the confirmation says so and nothing is written. A card that says **No ranking: the plan uses the oldest** has several BOMs on and none ranked.
+#### Picking a BOM's sites
+
+Clicking a BOM's **On** cell, on the BOM list or on a SKU's **BOM** tab, opens its site picker:
+
+- **Everywhere** switches the BOM on or off at every site that makes the SKU. A **Draft** BOM can't be switched on everywhere; switch it on site by site, or make it Active first.
+- **One row per site** that makes the SKU or could, with the BOM's switch there, its place in the site's ranking (**#1**, **#2**), **Plan runs** if it's the BOM the plan uses there, and why it's off (for example **Off here**).
+- **Add a site…** lists the SKU's other production sites. Picking one switches the BOM on there.
+
+For example, FG0001's AMAZON PKG BOM is off and True Spice makes FG0001 with the Honduras BOM. Opening AMAZON PKG's picker and switching it on at True Spice previews "True Spice: Honduras → AMAZON PKG" before anything is written.
+
+In the picker, use the arrows beside a site to move the BOM up or down that site's ranking. The confirmation shows the new order and which BOM the site would run under it. Confirming writes the site's BOM ranking (a `set_bom_preference` policy for that site and SKU), changing the site's own ranking in place if it has one. The ranking names the BOMs on at the site and any it already ranked; a BOM that is off there and unranked stays out of it unless you move it. If the site's ranking policy is turned off or holds other rules, the confirmation says so and nothing is written. A site that says **No ranking: the plan uses the oldest** has several BOMs on and none ranked.
 
 Where several BOMs are on at one site, the site's BOM ranking picks which one new runs use. With no ranking, the oldest BOM is used and the plan flags the site so you can rank them. Rules about a BOM, such as a throughput rate for it on a line, apply whenever that BOM runs.
 
