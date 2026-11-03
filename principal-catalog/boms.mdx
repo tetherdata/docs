@@ -189,6 +189,8 @@ A BOM's status is where it is in its life. It never switches a BOM on or off.
 | **Active** | Planned wherever an enabled production rule covers it. |
 | **Archived** | Kept as history; its components and outputs can't change. Archiving disables every production rule that names the BOM and removes it from every site's ranking. Making it Active again does not turn those rules back on: enable the ones you want. |
 
+To change a BOM's status, click its status on the BOM list, on the BOM's page, or in a SKU's **BOM** tab under **Made by**, and pick **Draft**, **Active** or **Archived**. Draft and Active save straight away. Archiving asks you to confirm first, because it switches the BOM off everywhere. For example, a new revision FG0001-BOM3-REV5 arrives as **Draft**: pick **Active** to make it plannable, then switch it on at the sites that should run it (see [Picking a BOM's sites](#picking-a-boms-sites)). You need permission to edit the catalog to change a status; without it the status is shown but can't be clicked.
+
 ### New revisions from a connected system
 
 When your BOMs come from a connected system such as NetSuite, a formula change there is a new revision of the BOM, for example **FG0373-BOM1-REV2** after **FG0373-BOM1-REV1**. Each sync keeps every revision's components in step with the source and changes nothing else.
