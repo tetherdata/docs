@@ -1,6 +1,6 @@
 ---
 title: How runout and coverage status work
-description: How Tether computes days of supply, what each coverage status means at the location and network grains, and how to author the policies behind them
+description: "What do Out of Stock, Low Inventory, Projected stockout, Rebalance, Constrained and Overstock mean? Why does a SKU show no status or 'No coverage reading'? How Tether computes days of supply at location and network grain. Where: the health chips on Inventory → Dashboard and planning pages."
 sidebarTitle: Runout and coverage status
 ---
 
@@ -79,10 +79,11 @@ One vocabulary applies at both grains. Status is judged **in units** — your po
 
 | Status | Meaning | Grain |
 |--------|---------|-------|
-| **No demand** | Nothing consumes this SKU here this horizon | Both |
+| **No Demand** | Nothing consumes this SKU here this horizon | Both |
 | *Not set* | No policy is authored, so the position is not judged. **Renders no pill.** | Both |
-| **Out of stock** | Effectively empty, with live demand | Both |
-| **Low** | Position below the requirement | Both |
+| **Out of Stock** | Effectively empty, with live demand | Both |
+| **Projected stockout** | Counted as Out of Stock: the plan projects the position empty by the end of its period, though stock is still on hand today | Both |
+| **Low Inventory** | Position below the requirement | Both |
 | **Healthy** | Position within the requirement and the cap | Both |
 | **Constrained** | Above cap, but the excess is forced by a downstream storage limit | **Location only** |
 | **Rebalance** | The network total is fine, but at least one location is short | **Network only** |
@@ -93,15 +94,19 @@ The two grain-specific statuses are genuinely exclusive, and enforced as such in
 - **Constrained** is location-only. It attributes one location's excess to *another* location's storage limit, and it carries its citation with it: **Held for _\<nodes\>_; storage binding _\<span\>_**, alongside the forced quantity. Excess beyond that forced amount is still ordinary overstock — the citation bounds the claim rather than excusing the whole position.
 - **Rebalance** is network-only. A single location cannot disagree with itself.
 
-### Reading a Rebalance verdict
+### What does Rebalance mean on my inventory?
+
+Where: the health chip on a network row in Inventory and planning pages.
 
 **Rebalance** takes precedence over **Overstock**: if the total is above cap *and* somewhere is starving, you see Rebalance. Moving stock is the cheaper fix, and it should be considered before making more. In the drawer it reads:
 
 > The network holds enough — the shortfall is at specific locations, so making more will not fix it. Check the per-location rows below before ordering.
 
-Compare that to network **Low**, which means the network is thin *everywhere* — no amount of moving fixes a total shortfall, so that one really is buy or produce.
+Compare that to network **Low Inventory**, which means the network is thin *everywhere* — no amount of moving fixes a total shortfall, so that one really is buy or produce.
 
-## When a cell carries no verdict
+## Why does this SKU show no status?
+
+Where: **Inventory** → **Dashboard** → **No status** card, or a muted label in place of a health chip.
 
 Six states share one muted, pill-free appearance because none of them is a judgment. They are distinguished by their words, because your next action differs completely in each case.
 
@@ -110,7 +115,7 @@ Six states share one muted, pill-free appearance because none of them is a judgm
 | **Not set** | No coverage policy is authored here, so the position is deliberately not judged | Author a policy, if you manage stock here |
 | **No demand** | Nothing consumes this SKU here in this horizon | Nothing — no amount is right or wrong |
 | **No forecast** | Recent sales exist, but there is no forward forecast to measure against | Load or fix the forecast |
-| **Awaiting re-solve** | The plan was solved before the coverage model changed | Re-solve |
+| **No coverage reading** | The plan carries no coverage verdict for this position. Usually the plan predates the current coverage model, or the verdict is published on a different row (for example a pooled SKU's primary) | Nothing is wrong here; check the related row if there is one |
 | **Not in this plan** | The plan produced no network row for this SKU | Nothing, usually |
 | **Not consumed here** | Nothing draws on this SKU at this location at all | Nothing |
 
@@ -130,7 +135,7 @@ If you want a location judged, author a policy there. Which leads to a useful pa
 
 Authoring **Safety days = 0** opts a location *into* judgment while demanding no stock.
 
-The location is then judged like any other: empty with live demand reads **Out of stock**, and it counts toward the network verdict, so it can trigger **Rebalance**. But because the requirement is zero, you are never told to hold anything there.
+The location is then judged like any other: empty with live demand reads **Out of Stock**, and it counts toward the network verdict, so it can trigger **Rebalance**. But because the requirement is zero, you are never told to hold anything there.
 
 Use it for locations you want visibility on but no stock at — a co-manufacturer you ship through, or a site you are winding down.
 
@@ -156,7 +161,7 @@ Cap         = 60 × 500  +  42,000 allowance                =  72,000
 Position    = 47,000
 ```
 
-47,000 is below the requirement of 57,000, so **Hub H reads Low** — short by 10,000 units.
+47,000 is below the requirement of 57,000, so **Hub H reads Low Inventory** — short by 10,000 units.
 
 **At the network grain**, the same ladder one level up. Requirement and cap are the sums of the location stacks:
 
@@ -166,7 +171,7 @@ Requirement = 57,000 (H) + 90,000 (DC-A) + 0 (DC-B)       =  147,000
 Cap         = 72,000 (H) + 120,000 (DC-A) + 0 (DC-B)      =  192,000
 ```
 
-162,000 sits comfortably inside the band — but Hub H is **Low**, so the network reads **Rebalance**, not Healthy.
+162,000 sits comfortably inside the band — but Hub H is **Low Inventory**, so the network reads **Rebalance**, not Healthy.
 
 ### Reading the disagreement
 
@@ -178,7 +183,7 @@ This is the case worth internalizing. **The grains disagree, and neither is wron
 
 **The answer is move, not make.** Producing more would push an already-above-requirement network further up while leaving H short until the new stock arrives. Pulling from DC-A fixes H immediately, and DC-A stays above its own floor.
 
-If instead the network total had been *below* 147,000, the network would read **Low** — and then moving stock genuinely cannot help, because there is not enough in the system. That is the buy-or-produce case.
+If instead the network total had been *below* 147,000, the network would read **Low Inventory** — and then moving stock genuinely cannot help, because there is not enough in the system. That is the buy-or-produce case.
 
 Note also that **DC-B contributes 0** to the requirement. It has no authored policy, so it is not judged and demands nothing — its demand is covered through Hub H's downstream buffer instead. If you wanted DC-B judged, the zero-day policy above is the tool.
 
@@ -240,7 +245,7 @@ Each needs values the server does not yet publish, and computing them in the bro
 | A SKU reads **Overstock** because of a supplier minimum | Health is lot-size blind by design | Expected. Ordering surfaces still apply minimum order quantity rounding |
 | A cell reads **No forecast** | Recent sales exist but there is no forward forecast | Check the SKU's forecast and channel setup in [Demand Forecasting](/demand-forecasting/dashboard) |
 | The network says **Rebalance** but every location looks fine | At least one location is below its requirement | Check the per-location rows; the shortfall is somewhere specific |
-| Statuses look stale or read **Awaiting re-solve** | The plan predates the current coverage model | Run a solve |
+| A cell reads **No coverage reading** | The plan carries no verdict for this position, usually because it predates the current coverage model or the verdict sits on another row | Nothing is wrong; a later plan may carry a verdict |
 
 ## Next Steps
 

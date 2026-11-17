@@ -1,130 +1,101 @@
 ---
 title: Inventory Management
-description: View stock levels across warehouses, track changes, and manage on-hand adjustments
+description: "See stock across warehouses, one row per SKU, inventory value in dollars, consumption columns, status cards, and edit several on-hand quantities at once. Where: Inventory → Dashboard (tabs Inventory, History, Counts, Approvals, My requests)."
 sidebarTitle: Inventory
 ---
 
 # Inventory Management
 
-The **Inventory Management** page is your central view of current stock levels across all warehouses. From here you can inspect positions, upload inventory in bulk, review the full change history, and propose or approve on-hand adjustments.
-
-## Accessing the page
-
-Navigate to **Inventory** in the sidebar. The page opens on the **Inventory** tab.
+The **Inventory Management** page shows current stock for every SKU at every warehouse. From here you inspect positions, see their value, upload inventory, review history, count stock, and propose or approve on-hand adjustments.
 
 ## Page tabs
 
+Where: sidebar → **Inventory** → **Dashboard**.
+
 | Tab | Purpose | Who sees it |
 |-----|---------|-------------|
-| **Inventory** | Current stock levels across warehouses | Everyone |
-| **History** | The full inventory change feed and point-in-time snapshots | Everyone |
-| **Approvals** | Queue of adjustment requests waiting for a decision | Users with the `inventory:approve` permission |
-| **My requests** | Your own adjustment requests and their outcomes | Users with the `inventory:adjust` permission |
+| **Inventory** | Current stock across warehouses | Everyone with inventory access |
+| **History** | The inventory change feed and point-in-time snapshots | Everyone with inventory access |
+| **Counts** | Physical counts (cycle counts) | Orgs on Tether's movement ledger, for users who can adjust or approve inventory |
+| **Approvals** | Adjustment requests waiting for a decision | `inventory:approve` |
+| **My requests** | Your own adjustment requests and their outcomes | `inventory:adjust` |
 
-See [Inventory history](/inventory/history) for the History tab and [Inventory adjustments](/inventory/adjustments) for the Approvals and My requests tabs.
+See [Inventory history](/inventory/history), [Inventory counts](/inventory/counts) and [Inventory adjustments](/inventory/adjustments).
 
-## Inventory tab
+## Status cards
 
-The Inventory tab shows a grid of stock positions — one per SKU and warehouse pairing.
+Where: **Inventory** → **Dashboard** → **Inventory** tab, above the grid.
 
-### Filtering and grouping
+The cards count positions by health: **Out of Stock**, **Low Inventory**, **Healthy**, **Overstock**, and **No status** (shown only when some positions have no verdict). Click a card to filter the grid to it; click **No status** to see why those positions weren't judged. See [How runout and coverage status work](/inventory/coverage-and-runout).
 
-- Use the search box and filters to narrow the grid to specific SKUs, warehouses, or product groups.
-- Group rows by warehouse, health status, collection, SKU, product hierarchy fields, or attributes.
-- Toggle **Pivot by location** to fold the grid into one row per SKU with a column per warehouse. Warehouse and health status grouping are unavailable while pivoted, since those values are per-position.
+## How do I see one row per SKU across warehouses?
 
-### Row actions
+Where: **Inventory** → **Dashboard** → **Inventory** tab → toolbar → **One row per SKU**.
 
-Right-click a row (or, in the pivoted view, a location's cell) to open the context menu:
+**One row per SKU** folds the grid into a single row per SKU with a column group per warehouse. Click it again to go back to one row per SKU and warehouse. Warehouse and health status grouping are unavailable while it's on, since those values belong to each position.
 
-- **Adjust on-hand…** — propose a change to the position's on-hand count. See [Inventory adjustments](/inventory/adjustments).
-- **Remove from warehouse** — zero out a position through an audited adjustment.
+## How do I see inventory value in dollars?
 
-<Note>
-  In the pivoted view a row spans locations, so both actions apply to the location of the cell you clicked, not the whole row.
-</Note>
+Where: **Inventory** → **Dashboard** → **Inventory** tab → toolbar → **Show value**.
+
+Click **Show value** (it then reads **Showing value**). Quantity cells switch to dollars, and a summary bar above the grid shows **Inventory cost**: what the rows on screen are worth **at current Default cost** (each SKU's Default cost × on hand). Filters and search change the total.
+
+If some SKUs have no Default cost, the bar says "N SKUs have no Default cost — total understated". Click it to filter to those SKUs, then set their Default cost on the SKU's **Cost & price** tab.
+
+### Why does the on-hand value say unavailable?
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → **Show value** → the summary bar.
+
+"Inventory cost unavailable — no Default cost is set for the SKUs in view" means none of the SKUs on screen has a Default cost, so there is nothing to multiply by. Set a Default cost on those SKUs (**Products** → **SKUs** → a SKU → **Cost & price**) or widen your filters.
+
+## How do I add consumption columns to the inventory page?
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → **Table Settings** → **Display metrics**.
+
+Pick one or more time windows. Each window adds three columns: what the location consumes itself, what it ships onward, and its whole draw. Save with nothing selected to remove them. The button shows how many windows are on, for example **Display metrics (2)**.
+
+## Filtering, grouping and exporting
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → toolbar.
+
+- **Search inventory…** matches SKU code and name.
+- Filters include warehouse (your org's word for it, for example Location), location group, collection or SKU group, SKU, SKU type and product attributes.
+- **Table Settings** → **Grouping** opens **Configure Grouping**, where you pick and order the levels rows are grouped by.
+- **Show Units** / **Hide Units** shows or hides the unit of measure next to quantities.
+- **Table Settings** → **Export to CSV** downloads the grid as filtered. Table Settings also has density, hide zeros and show all filters.
+- Saved **Views** keep a combination of filters and columns.
+
+## How do I edit several on-hand quantities at once?
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → **Table Settings** → **Edit quantities**.
+
+Turn on **Edit quantities** ("Type counts into On Hand and submit them together"), type the counted figures into the **On Hand** cells across any SKUs and warehouses, pick a reason in **Select reason for adjustment**, and click **Save Changes**. Whether each change applies at once or waits for approval follows the normal [adjustment approval flow](/inventory/adjustments). Turning the toggle off discards what you typed. You need `inventory:adjust` to see the toggle.
+
+For a full shelf count with expected vs counted, use [Counts](/inventory/counts) instead.
+
+## Right-click actions
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → right-click a row (or, with **One row per SKU**, a warehouse's cell).
+
+- **Adjust on-hand…**: propose a change to the position's on-hand. See [Inventory adjustments](/inventory/adjustments).
+- **Committed details & holds**: what makes up the committed quantity and what is held.
+- **Assign unassigned stock to a lot…**: shown for lot-tracked SKUs with stock not yet in a lot. See [Lots](/inventory/lots#how-do-i-assign-stock-to-a-lot).
+- **Remove from warehouse**: zero out a position through an audited adjustment.
+
+With **One row per SKU** on, each action applies to the warehouse of the cell you clicked and its label names that warehouse.
 
 ## Uploading inventory
 
-Users with write permissions see an **Upload Inventory** button in the page header.
+Where: **Inventory** → **Dashboard** → **Upload Inventory** (top right).
 
-<Steps>
-  <Step title="Open the upload dialog">
-    Click **Upload Inventory** in the top-right corner of the page.
-  </Step>
-
-  <Step title="Provide your inventory file">
-    Follow the dialog to upload your inventory data. An upload is treated as a batch of inventory adjustments.
-  </Step>
-
-  <Step title="Verify the results">
-    Check the [History tab](/inventory/history) to confirm the changes landed as expected.
-  </Step>
-</Steps>
-
-<Info>
-  The **Upload Inventory** button is hidden for users without write permissions and for the stock-counting role, which has no direct-commit path to on-hand. See [Roles & Permissions](/roles-permissions) for details.
-</Info>
-
-## Planning and replenishment
-
-Inventory levels feed directly into supply planning. Order recommendations, transfer suggestions, and coverage projections live in the [Supply Planning](/supply-planning/overview) section, not on this page.
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Reconcile counts through adjustments">
-    When a physical count disagrees with the system, use **Adjust on-hand…** rather than editing data elsewhere. Adjustments are audited, carry a reason and note, and flow through approval when required.
-  </Accordion>
-
-  <Accordion title="Use pivot by location for cross-warehouse review">
-    When you carry the same SKUs in several warehouses, the pivoted view puts every location's count on one row so imbalances stand out immediately.
-  </Accordion>
-
-  <Accordion title="Check History after bulk uploads">
-    Every upload lands in the [History feed](/inventory/history) with its source recorded. Review it after an upload to confirm the batch applied cleanly.
-  </Accordion>
-
-  <Accordion title="Keep planning in the Supply Planning section">
-    Use this page to verify what you have; use [Supply Planning](/supply-planning/overview) to decide what to order, transfer, or produce next.
-  </Accordion>
-</AccordionGroup>
+Users with a write permission see **Upload Inventory**. An upload is treated as a batch of inventory adjustments; check the [History tab](/inventory/history) afterwards to confirm it applied. The button is hidden for users without write permission and on the counting view.
 
 ## Troubleshooting
 
-### Approvals or My requests tab is missing
+### Approvals, My requests or Counts tab is missing
 
-**Possible cause:** These tabs are permission-gated — Approvals requires `inventory:approve` and My requests requires `inventory:adjust`.
-
-**Solution:** Ask your administrator to review your role. See [Roles & Permissions](/roles-permissions).
-
-### Upload Inventory button is missing
-
-**Possible cause:** Your account lacks write permissions, or you are on the stock-counting role.
-
-**Solution:** Uploads write on-hand directly, so they require a write permission. Ask your administrator if you believe you should have access.
+Approvals needs `inventory:approve` and My requests needs `inventory:adjust`. Counts also needs your org to be on the movement ledger. See [Roles & Permissions](/roles-permissions) and [Why don't I see the Counts tab?](/inventory/counts#why-dont-i-see-the-counts-tab).
 
 ### A count looks wrong
 
-**Possible causes:** A pending adjustment has not been approved yet, or a sync from an integration is still in flight.
-
-**Solutions:**
-1. Check the [Approvals queue](/inventory/adjustments) for a pending request against that position.
-2. Open the [History tab](/inventory/history) and drill into the position to see every change with its source and actor.
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Inventory History" icon="clock-rotate-left" href="/inventory/history">
-    Trace every change to your stock levels
-  </Card>
-  <Card title="Inventory Adjustments" icon="clipboard-check" href="/inventory/adjustments">
-    Propose and approve on-hand corrections
-  </Card>
-  <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
-    Configure warehouse settings
-  </Card>
-  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
-    Plan replenishment from your current stock
-  </Card>
-</CardGroup>
+A pending adjustment may not be approved yet, or an integration sync may be in flight. Check **Approvals** for a pending request, then open **History** and click the position to see every change with its source.

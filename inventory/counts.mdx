@@ -1,0 +1,84 @@
+---
+title: Inventory counts (cycle counts)
+description: "How do I do a cycle count or stock count in Tether, submit it for approval, and post it? Where: Inventory → Dashboard → Counts tab → Start a count. Also: why you might not see the Counts tab."
+sidebarTitle: Counts
+---
+
+# Inventory counts (cycle counts)
+
+A **count** records what was physically on the shelf at one warehouse at one moment. Tether compares each counted line to what its ledger held **as of the count time**, not today, and posts the differences as adjustments dated to the count. Stock that moved after the count is left alone.
+
+Use a count when someone walks the shelves (a cycle count, a full stock take, a spot check). Use [Adjust on-hand…](/inventory/adjustments) to fix a single position you already know is wrong.
+
+## Why don't I see the Counts tab?
+
+Where: **Inventory** → **Dashboard** → tabs along the top.
+
+The **Counts** tab shows only when both are true:
+
+- Your organization reads and writes stock through Tether's movement ledger. Counts post through the ledger, so orgs that are not on it don't get the tab. If you think your org should have counts, ask Tether to turn the movement ledger on.
+- You can adjust or approve inventory: the `inventory:adjust` or `inventory:approve` permission (or the older `inventory:write`). See [Roles & Permissions](/roles-permissions).
+
+## How do I do a cycle count?
+
+Where: **Inventory** → **Dashboard** → **Counts** → **Start a count**.
+
+<Steps>
+  <Step title="Start the count">
+    Click **Start a count**. Choose the **Warehouse** (the label follows your org's terminology, for example Location), set **When was it counted?** to the date and time the shelf was counted, pick a **Reason**, and add **Notes (optional)**. Click **Start counting**.
+  </Step>
+  <Step title="Record each line">
+    In the count, choose the **SKU**, enter a **Lot (optional)** for lot-tracked stock, and type the quantity found in **Counted**. Click **Record count**. Repeat for every position you counted.
+  </Step>
+  <Step title="Check the variances">
+    The table shows **Expected (at count date)**, **Counted** and **Variance** per line. A line that matches reads **agrees**. The note under the table says how many positions will post an adjustment.
+  </Step>
+  <Step title="Post or submit">
+    If you can approve inventory, click **Post this count**. Otherwise click **Submit for approval**; stock does not change until an approver posts it.
+  </Step>
+</Steps>
+
+<Note>
+  Warehouses whose stock is owned by an outside feed (for example a 3PL that Tether only mirrors) are not offered in **Start a count**. A count there would be overwritten on the next sync, so Tether refuses it.
+</Note>
+
+## How do I submit a stock count for approval?
+
+Where: **Inventory** → **Dashboard** → **Counts** → open the count → **Submit for approval**.
+
+Users with `inventory:adjust` but not `inventory:approve` see **Submit for approval** instead of **Post this count**. The count's status becomes **Awaiting approval** and the page shows "Waiting for an approver. Stock is unchanged until this count is released."
+
+If the count was started without a reason, choose a **Reason** before you submit. Every adjustment the count writes carries that reason.
+
+## How do I approve or reject a count?
+
+Where: **Inventory** → **Dashboard** → **Counts** → filter **Status** to **Awaiting approval** → open the count.
+
+Approvers (`inventory:approve`) see two buttons on a count that is awaiting approval:
+
+- **Approve and post** writes the adjustments, dated to the count time.
+- **Reject** closes the count without changing stock. Add a **Rejection note (optional)** so the counter knows why.
+
+### Posting a count dated well in the past
+
+If the count time is further back than usual, Tether asks you to confirm: **Post this count as of [date]?** Posting backdates the adjustments, so reports run as of that date, and the balances in between, change. Click **Yes, post it as of that date** to go ahead.
+
+## Count statuses
+
+Where: **Inventory** → **Dashboard** → **Counts** → **Status** filter.
+
+| Status | Meaning |
+|--------|---------|
+| **In progress** | Started; lines can still be recorded |
+| **Awaiting approval** | Submitted; waiting for an approver. Stock unchanged |
+| **Posted** | Adjustments written as of the count time |
+| **Rejected** | An approver turned it down. Nothing was posted |
+| **Cancelled** | Closed without posting. Nothing was posted |
+
+The list also filters by **Counted from** / **Counted to** dates and by warehouse, and shows each count's **Reason**, **Variances** and **Posted** time.
+
+## Other ways to correct on-hand
+
+- **Adjust on-hand…** (right-click a position on the Inventory tab) for one SKU at one warehouse. See [Inventory adjustments](/inventory/adjustments).
+- **Edit quantities** in the Inventory grid's Table Settings, to type several on-hand figures and save them together. See [Inventory dashboard](/inventory/dashboard#how-do-i-edit-several-on-hand-quantities-at-once).
+- Posted counts show up in [Inventory history](/inventory/history) like any other adjustment.
