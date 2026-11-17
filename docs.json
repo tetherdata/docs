@@ -23,36 +23,16 @@
             ]
           },
           {
-            "group": "Product Catalog",
-            "pages": [
-              {
-                "group": "SKUs",
-                "pages": [
-                  "product-catalog/skus/overview",
-                  "product-catalog/skus/creating-skus",
-                  "product-catalog/skus/editing-skus",
-                  "product-catalog/skus/filtering"
-                ]
-              },
-              {
-                "group": "Collections",
-                "pages": [
-                  "product-catalog/collections/overview",
-                  "product-catalog/collections/managing"
-                ]
-              },
-              "product-catalog/dimensions",
-              "product-catalog/hierarchy"
-            ]
-          },
-          {
-            "group": "Principal Catalog",
+            "group": "Products",
             "pages": [
               "principal-catalog/overview",
-              "principal-catalog/attributes",
               "principal-catalog/skus",
+              "principal-catalog/cost-and-price",
               "principal-catalog/sku-groups",
-              "principal-catalog/boms"
+              "principal-catalog/boms",
+              "principal-catalog/attributes",
+              "principal-catalog/hierarchy",
+              "product-catalog/legacy-catalog"
             ]
           },
           {
@@ -177,6 +157,38 @@
     }
   },
   "redirects": [
+    {
+      "source": "/product-catalog/skus/overview",
+      "destination": "/principal-catalog/skus"
+    },
+    {
+      "source": "/product-catalog/skus/creating-skus",
+      "destination": "/principal-catalog/skus#creating-a-sku"
+    },
+    {
+      "source": "/product-catalog/skus/editing-skus",
+      "destination": "/principal-catalog/skus#editing-a-sku"
+    },
+    {
+      "source": "/product-catalog/skus/filtering",
+      "destination": "/principal-catalog/skus#finding-skus"
+    },
+    {
+      "source": "/product-catalog/collections/overview",
+      "destination": "/product-catalog/legacy-catalog"
+    },
+    {
+      "source": "/product-catalog/collections/managing",
+      "destination": "/principal-catalog/sku-groups"
+    },
+    {
+      "source": "/product-catalog/dimensions",
+      "destination": "/principal-catalog/attributes"
+    },
+    {
+      "source": "/product-catalog/hierarchy",
+      "destination": "/principal-catalog/hierarchy"
+    },
     {
       "source": "/supply-simulation/running",
       "destination": "/supply-planning/overview"

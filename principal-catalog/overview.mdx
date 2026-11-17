@@ -1,96 +1,74 @@
 ---
-title: "Principal catalog overview"
-description: "Understand the principal catalog — your organization's master catalog of attributes, SKUs, SKU groups, and BOMs"
+title: "Products overview"
+sidebarTitle: "Overview"
+description: "Where: the Products section of the sidebar (SKUs, SKU Groups, BOMs, Attributes). Where do I manage my products? Why don't I see a Catalog menu? Who can edit SKUs? Formerly called the principal catalog."
 ---
 
-# Principal catalog overview
+# Products overview
 
-The principal catalog is your organization's master catalog: the single source of truth for the products you make and sell, the attributes that describe them, the groups that organize them, and the bills of materials (BOMs) that define how they are built. It lives under the **Principal Catalog** section in the sidebar, with pages at `/principal/attributes`, `/principal/skus`, `/principal/sku-groups`, and `/principal/boms`.
+**Products** is the sidebar section where you manage everything you make, buy and sell: your SKUs, the SKU groups that organize them, their bills of materials (BOMs), and the attributes (Size, Color…) that describe them. Earlier versions of these docs called it the "Principal Catalog".
 
-<Info>
-The **Principal Catalog** section appears only for organizations that are on the principal catalog. Nav labels in this section — **SKU**, **SKU Group**, **BOM**, **Attribute**, and related terms like **Location** and **Policy** — are customizable per organization. Administrators can rename them in **Settings** → **Terminology**, so your sidebar may show different names. See [Terminology](/administration/terminology).
-</Info>
+## Where do I manage my products?
 
-## What the principal catalog contains
+Where: sidebar → **Products**.
 
-| Entity | Page | Purpose |
-|--------|------|---------|
-| Attributes | `/principal/attributes` | Named dimensions such as Size or Color, each with an ordered list of values |
-| SKUs | `/principal/skus` | Individual sellable or purchasable items, typed as Finished Good, Variant, Bundle, Kit, Virtual Bundle, or Component |
-| SKU groups | `/principal/sku-groups` | Primary SKU Groups (product hierarchy with attributes) and Standard groups (flat lists) |
-| BOMs | `/principal/boms` | Bills of materials describing which components produce which output SKUs |
+The **Products** section has four items, in this order:
 
-Every SKU belongs to exactly one **Primary SKU Group**, and can additionally belong to any number of Standard groups. Attributes attached to a primary group drive variant generation, filtering, and grouping across the catalog.
+| Item | Page | What it holds |
+|------|------|---------------|
+| **SKUs** | `/principal/skus` | Every item you make, buy or sell, typed as Finished Good, Variant, Bundle, Kit, Virtual Bundle or Component |
+| **SKU Groups** | `/principal/sku-groups` | Primary SKU Groups (a product and its variants) and Standard groups (flat lists). These replaced Collections. |
+| **BOMs** | `/principal/boms` | Bills of materials: which components make which SKUs |
+| **Attributes** | `/principal/attributes` | Size, Color, Material and other attributes, each with an ordered list of values. Formerly called dimensions. Shown only if you have the `attribute:read` permission. |
 
-## Relationship to the legacy Catalog section
+The item names follow your organization's [terminology](/administration/terminology), so your sidebar may say **Styles** instead of **SKU Groups** or **Recipes** instead of **BOMs**. The section label **Products** itself is never renamed.
 
-Organizations use either the principal catalog or the legacy **Catalog** section — never both at once:
-
-- When your organization is on the principal catalog, the sidebar shows the **Principal Catalog** group and hides the legacy **Catalog** group.
-- Organizations not yet on the principal catalog see the legacy **Catalog** group instead, with [SKUs](/product-catalog/skus/overview) and [Collections](/product-catalog/collections/overview).
-
-If your sidebar shows **Collections** rather than **SKU Groups**, the legacy documentation under Product Catalog applies to you.
-
-## The four sub-pages
+Every SKU belongs to exactly one **Primary SKU Group**, and can also belong to any number of Standard groups.
 
 <CardGroup cols={2}>
-  <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
-    Define dimensions like Size and Color, manage their values and display order
-  </Card>
   <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
-    Create, import, edit, and archive SKUs; manage units, external IDs, and policies
+    Create, import, edit and archive SKUs; units, external IDs, vendor codes and policies
+  </Card>
+  <Card title="Cost & price" icon="dollar-sign" href="/principal-catalog/cost-and-price">
+    Default cost, Standard cost, Supplier price, Sales price and what you paid
   </Card>
   <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
-    Organize SKUs into primary and standard groups, bulk-create variants, and move members
+    Group SKUs into products, bulk-create variants and set group-wide prices
   </Card>
   <Card title="BOMs" icon="file-lines" href="/principal-catalog/boms">
-    Build bills of materials with components, outputs, and usage tracking
+    Build bills of materials and choose where each one runs
   </Card>
-</CardGroup>
-
-## Access and permissions
-
-Access to the principal catalog is controlled by your role's permissions. Viewing catalog pages requires catalog read access, and editing requires catalog write access; policy changes on SKUs and SKU groups require network write access. If you can see a page but not its edit controls, ask an administrator about your permissions. See [Roles and permissions](/roles-permissions).
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Model attributes before creating SKUs">
-    Attributes and their values feed SKU code generation, filtering, and bulk variant creation. Set up attributes such as Size and Color first, then attach them to primary SKU groups, so generated SKU codes and names come out consistent.
-  </Accordion>
-  <Accordion title="Keep primary groups as your product hierarchy">
-    A SKU has exactly one Primary SKU Group. Treat primary groups as products (with variants inside) and use Standard groups for cross-cutting lists like seasonal assortments or promotions.
-  </Accordion>
-  <Accordion title="Rename terms to match your vocabulary">
-    If your team says "Style" instead of "SKU Group" or "Recipe" instead of "BOM," an administrator can rename these terms in **Settings** → **Terminology**. The whole app, including the sidebar, updates to use your words.
-  </Accordion>
-  <Accordion title="Use archive instead of delete for retired SKUs">
-    Archiving preserves history and records a reason, and archived SKUs can be restored later. Reserve delete for SKUs created by mistake.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| The Principal Catalog section is missing from the sidebar | Your organization is not on the principal catalog, or you lack catalog read permission | Use the legacy Catalog section instead, or ask an administrator to review your access |
-| Sidebar labels don't match this documentation | Your organization renamed terms in **Settings** → **Terminology** | The pages work the same — only the words differ |
-| Edit buttons don't appear on catalog pages | You have read access but not write access | Ask an administrator to grant catalog write permission |
-| You were redirected to an access denied page | The page requires principal catalog access your organization or role doesn't have | Contact an administrator |
-
-## Next Steps
-
-<CardGroup cols={2}>
   <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
-    Start by defining the attributes that describe your products
+    Define Size, Color and other attributes and their values
   </Card>
-  <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
-    Learn how to create, import, and manage SKUs
-  </Card>
-  <Card title="Terminology" icon="language" href="/administration/terminology">
-    Rename catalog terms to match your organization's vocabulary
-  </Card>
-  <Card title="Roles and permissions" icon="user-shield" href="/roles-permissions">
-    Understand who can view and edit the catalog
+  <Card title="SKU group hierarchy" icon="sitemap" href="/principal-catalog/hierarchy">
+    Set up Category, Subcategory and other classification levels
   </Card>
 </CardGroup>
+
+## Why don't I see a Catalog menu?
+
+Where: sidebar → **Products** (new catalog) or **Catalog** (legacy catalog).
+
+Your organization sees one of two sidebar sections, never both:
+
+- **Products** — the current catalog. Every organization is moving to it. If you see **Products**, use these pages.
+- **Catalog** (with **Collections** and **SKUs**) — the legacy catalog, shown only to organizations that haven't moved yet. See [Legacy catalog](/product-catalog/legacy-catalog).
+
+Organizations on Products are sent to the new pages automatically: old links to `/skus`, `/collections` and `/collections/attributes` open **SKUs**, **SKU Groups** and **Attributes** under Products.
+
+If you see neither section, your role doesn't have access to the catalog. Ask an administrator.
+
+## Who can edit SKUs?
+
+Access comes from your role's permissions, not from a fixed role name. See [Roles and permissions](/roles-permissions).
+
+| Permission | What it lets you do |
+|------------|---------------------|
+| `catalog:access` | See the **Products** section in the sidebar |
+| `catalog:read` | Read SKUs, SKU groups and BOMs |
+| `catalog:write` | Create, edit, archive and delete SKUs, SKU groups and BOMs; edit the **Purchasing**, **Production**, **Storage** and **Sales** tabs |
+| `attribute:read` | See **Attributes** in the sidebar |
+| `network:write` | Edit policies, a SKU's **Default cost** and its **Vendor codes** |
+
+If you can open a page but don't see its edit controls (pencils, **Create SKU**, **Import CSV**), you have read access only. Ask an administrator for the missing permission.

@@ -1,11 +1,13 @@
 ---
 title: "Attributes"
-description: "Define product attributes like Size and Color, manage their values, and control display order"
+description: "Where: Products → Attributes. Add a new size or color option, reorder values (S, M, L), and delete an attribute or a value. Attributes were formerly called dimensions."
 ---
 
 # Attributes
 
-Attributes are named dimensions — such as Size, Color, or Fit — that describe your SKUs. Each attribute holds an ordered list of values, and each value carries a short SKU code used when generating variant SKU codes. Manage attributes at `/principal/attributes` in the **Principal Catalog** section.
+Attributes — such as Size, Color, Material or Fit — describe your SKUs. Each attribute holds an ordered list of values, and each value carries a short code used when generating variant SKU codes. Manage them under **Products → Attributes** (`/principal/attributes`).
+
+Attributes were formerly called **dimensions**. If you're looking for the old Dimensions page or **SKUs → Dimensions**, this is it.
 
 <Note>
 Your organization may use a different name for attributes. Administrators can rename this and other catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
@@ -46,6 +48,11 @@ The detail page has two sections:
 
 ### Managing values
 
+Where: Products → Attributes → an attribute → **Values**.
+
+To add a new size or color, open the Size or Color attribute and click **Add value**.
+
+
 - **Add a value** — click **Add value** and fill in the name and code. Codes follow the same rules as in the create dialog: up to 4 characters, uppercase, letters and numbers only.
 - **Rename a value or change its code** — edit the row inline.
 - **Reorder values** — drag a row by its handle. The display order is used wherever the values are shown or grouped, and saves as you drop.
@@ -54,22 +61,17 @@ The detail page has two sections:
 
 Edits are staged: a sticky bar tracks unsaved changes (added, edited, removed, metadata) with **Discard** and **Save all** buttons. Saving applies additions first, then edits, then removals, and stops at the first failure.
 
-## Best practices
+### What happens to SKUs if I remove a value?
 
-<AccordionGroup>
-  <Accordion title="Keep value codes short and meaningful">
-    Value codes (up to 4 characters) are joined together when generating variant SKU codes — for example, NVY and M can become part of TSHIRT-NVY-M. Pick codes your team recognizes at a glance.
-  </Accordion>
-  <Accordion title="Set the value order deliberately">
-    Value order on the detail page controls how values appear wherever they are shown or grouped — filters, columns, and generated variants. Drag sizes into S, M, L order rather than leaving them alphabetical.
-  </Accordion>
-  <Accordion title="Check usage before removing a value">
-    Use the row's **View skus** link to see which SKUs carry a value before removing it. Removal fails if SKUs still reference the value.
-  </Accordion>
-  <Accordion title="Use descriptions to record intent">
-    A short description ("Garment size, US sizing") helps teammates pick the right attribute when several look similar.
-  </Accordion>
-</AccordionGroup>
+Clicking a value's trash icon asks you to confirm with **Mark for removal**. Nothing changes until you click **Save all**. If any SKU still carries the value, the removal fails, so the SKUs are never left with a missing value. Use **View skus** to find them and change their value first.
+
+## Deleting an attribute
+
+Where: Products → Attributes → an attribute → **Delete attribute** (top right).
+
+Deleting an attribute permanently deletes it and all its values. Every SKU carrying one of those values loses it, and the attribute is removed from any SKU groups using it. This can't be undone.
+
+Before you confirm, the dialog lists the SKUs that will lose the attribute, with their values. If you have unsaved edits on the page, it warns that they'll be discarded. Click **Delete attribute** to confirm. You need catalog write access to see the button.
 
 ## Troubleshooting
 
@@ -79,20 +81,3 @@ Edits are staged: a sticky bar tracks unsaved changes (added, edited, removed, m
 | Removing a value fails on save | SKUs still reference the value | Reassign or clear the value on those SKUs first, then remove it |
 | **Save all** stopped partway | Changes apply in order (adds, then edits, then removals) and stop at the first failure | Fix the reported error and click **Save all** again — remaining changes are still staged |
 | Values can't be edited in the edit dialog | The dialog edits only name and description | Follow **Open detail page to edit values** to manage values |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="SKUs" icon="boxes-stacked" href="/principal-catalog/skus">
-    Assign attribute values to SKUs and filter the catalog by them
-  </Card>
-  <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
-    Attach attributes to primary groups and bulk-generate variants
-  </Card>
-  <Card title="Principal catalog overview" icon="book-open" href="/principal-catalog/overview">
-    How attributes fit into the master catalog
-  </Card>
-  <Card title="Terminology" icon="language" href="/administration/terminology">
-    Rename "Attribute" to match your organization's vocabulary
-  </Card>
-</CardGroup>
