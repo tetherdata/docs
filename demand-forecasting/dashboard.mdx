@@ -1,241 +1,79 @@
 ---
-title: Forecast Dashboard
-description: View and manage demand forecasts in Tether
+title: Demand Dashboard
+sidebarTitle: Dashboard
+description: "Where: Demand → Dashboard. Where to see the demand forecast, switch it to daily, weekly or monthly, show promotions on it, group and filter rows, and why your Dashboard may open the demand plan instead."
 ---
 
-# Forecast Dashboard
+# Demand Dashboard
 
-The Demand Forecast Dashboard is where you view, analyze, and adjust demand predictions for your products. Accurate forecasts are essential for inventory planning and supply chain efficiency.
+The Demand Dashboard shows the forecast for every SKU and channel by period, and is where you edit it. (Older docs called this page "Demand Forecast" or the "Forecast Dashboard".)
 
-## Accessing the Dashboard
+## Where do I see the demand forecast?
 
-Navigate to **Demand Forecast** in the sidebar.
+Where: **Demand** → **Dashboard** in the sidebar (`/demand-forecast`).
 
-<Note>
-  Both Admin and Sales Rep users can access the forecast dashboard. Editing capabilities may vary by role.
-</Note>
+- The page title is **Demand Forecast**. Rows are SKU × channel pairings, grouped by the grouping you choose; columns are periods.
+- You need demand read access to see the **Demand** group. Editing needs forecast write access.
 
-## Dashboard Layout
+<Info>
+  **Why does my Dashboard look different from these docs?** Some organizations have the multi-hierarchy demand plan turned on. For them, **Demand** → **Dashboard** opens the demand plan instead of the page described here: a settings bar with **Rows**, **Filter**, **Time**, **Measures** and **Versions** (or your plan's own controls such as **Group by** and **Save Edits To**), and saved versions shown under **Live**. See [Demand plan](/demand-forecasting/demand-plan). If you'd like it, ask Tether to turn it on.
+</Info>
 
-The forecast dashboard consists of:
+## How do I switch the forecast to weekly or monthly?
 
-1. **Filter Panel** (left) - Narrow down the data
-2. **Toolbar** (top) - Actions, grouping, and view options
-3. **Data Table** (center) - Forecast values by period
-4. **Summary Bar** (bottom) - Aggregate totals
+Where: **Demand** → **Dashboard** → **Table Settings** → **View Type**.
 
-## Understanding the Data Table
+1. Click **Table Settings** in the toolbar.
+2. Under **View Type**, pick **Daily**, **Weekly** or **Monthly**. **Custom Periods** appears when your organization uses its own fiscal periods.
 
-The data table shows forecasts in a grid format:
+The same menu has **Density**, **Show all filters**, **Hide 0s**, **Show SKU name**, and an export option to download the table.
 
-### Rows
+## How do I change the dates shown?
 
-Each row represents a unique combination of:
-- SKU
-- Channel
-- Other grouping dimensions
+Where: **Demand** → **Dashboard** → the **Date Range** chip at the left of the toolbar.
 
-### Columns
+Click **Date Range**, set the range, and apply. Remove the chip to go back to the default range.
 
-Columns represent time periods:
-- Days (for short-term view)
-- Weeks (for medium-term)
-- Months (for longer horizons)
+## How do I show promotions on the forecast?
 
-### Cell Values
+Where: **Demand** → **Dashboard** → **Table Settings** → **Show promo overlay**.
 
-Each cell shows the forecasted quantity for that SKU/channel/period combination.
+**Show promo overlay** is on by default; it marks the forecast cells your [promotions](/marketing-promotions/promotions) lift. Untick it to hide the marks. Promotions are created under **Marketing & Promotions** → **Promotions**.
 
-| Cell State | Meaning |
-|------------|---------|
-| **Number** | Forecasted units |
-| **-** | No forecast (zero or null) |
-| **Highlighted** | Recently edited |
-| **Grayed** | Historical (past period) |
+## How do I see which model produced a row?
 
-## Time Period Selection
+Where: **Demand** → **Dashboard** → **Table Settings** → **Show source model**.
 
-Control which periods are displayed:
+**Show source model** appears for organizations with per-pairing model assignment turned on. It adds a chip on each row naming the model behind that pairing's forecast. See [Model assignment](/demand-forecasting/model-assignment).
 
-### Date Range Picker
+## How do I group and filter the forecast?
 
-1. Click the date range selector
-2. Choose start and end dates
-3. Apply to update the view
+Where: **Demand** → **Dashboard** → **Grouping** button and the filter chips in the toolbar.
 
-### Quick Presets
+- **Grouping** opens **Configure Grouping**: move levels (channel, channel hierarchy levels, SKU group, product hierarchy levels, SKU, and your attributes) from **Available Options** into **Selected Grouping Order**, then click **Save Grouping**.
+- Filter chips narrow the rows by channel, SKU group, SKU, hierarchy level or attribute.
+- Save the layout as a view from **Saved views**.
 
-| Preset | Shows |
-|--------|-------|
-| **This Week** | Current week days |
-| **This Month** | Current month |
-| **This Quarter** | Current 3 months |
-| **This Year** | Full current year |
-| **Next 30 Days** | Coming month |
-| **Next 90 Days** | Coming quarter |
+Details: [Filtering & grouping](/demand-forecasting/filtering).
 
-### Aggregation Levels
+## What is the "stale overrides" badge?
 
-Choose how to aggregate periods:
+Where: **Demand** → **Dashboard** → the **… stale overrides** badge in the toolbar (shown only when there are some).
 
-| Level | View |
-|-------|------|
-| **Daily** | Each day as a column |
-| **Weekly** | Each week as a column |
-| **Monthly** | Each month as a column |
+The badge counts manual forecast edits whose model output has since moved a lot. Click it to open the stale-overrides worklist. See [Model assignment](/demand-forecasting/model-assignment#stale-override-exceptions).
 
-<Tip>
-  Use daily for operational planning, weekly for near-term, and monthly for strategic views.
-</Tip>
+## How do I edit the forecast?
 
-## Metrics Displayed
+Where: **Demand** → **Dashboard** → **Edit Mode**.
 
-Toggle which metrics appear in the table:
+Click **Edit Mode**, type new numbers (or switch the **#** / **%** toggle to adjust by percent), then **Save Changes**. **Exit Edit Mode** asks whether to save or discard. Full rules: [Editing forecasts](/demand-forecasting/editing).
 
-### Available Metrics
+## Other Demand pages
 
-| Metric | Description |
-|--------|-------------|
-| **Forecast** | Predicted future demand |
-| **Sales History** | Actual historical sales |
-| **Actuals** | Confirmed current period data |
-
-### Toggling Metrics
-
-1. Click the metrics toggle in the toolbar
-2. Check/uncheck metrics to show/hide
-3. View updates immediately
-
-### Comparing Forecast vs. Actuals
-
-Show both metrics to compare:
-- How accurate are forecasts?
-- Where are significant variances?
-- Which products need forecast adjustment?
-
-## Grouping Options
-
-Organize the data by different hierarchies:
-
-### Standard Groupings
-
-| Grouping | Organization |
-|----------|--------------|
-| **By SKU** | One row per SKU |
-| **By Channel** | Grouped by sales channel |
-| **By Collection** | Grouped by product collection |
-| **By Hierarchy** | Product hierarchy levels |
-
-### Custom Grouping
-
-Create custom grouping configurations:
-
-1. Click **Grouping** in the toolbar
-2. Select primary, secondary, tertiary groups
-3. Apply the configuration
-4. Data reorganizes accordingly
-
-### Expanding/Collapsing Groups
-
-- Click the arrow (▶) to expand a group
-- Click (▼) to collapse
-- Use "Expand All" / "Collapse All" for bulk control
-
-## Reading Forecast Data
-
-### Interpreting Values
-
-| Pattern | Indicates |
-|---------|-----------|
-| Steady numbers | Stable demand |
-| Increasing trend | Growing demand |
-| Decreasing trend | Declining demand |
-| Spikes | Promotional or seasonal peaks |
-| Zeros | No expected demand |
-
-### Color Coding
-
-Cells may be color-coded:
-
-| Color | Meaning |
-|-------|---------|
-| **White/Default** | Standard forecast |
-| **Yellow** | User-edited value |
-| **Blue** | System-generated |
-| **Gray** | Historical period |
-
-## Dashboard Actions
-
-### Export Data
-
-Export the current view:
-
-1. Click **Export**
-2. Choose format (CSV, Excel)
-3. Download includes current filters and grouping
-
-### Quick Edit
-
-Make fast inline edits:
-
-1. Click on a cell
-2. Enter new value
-3. Press Enter to save
-
-See [Editing Forecasts](/demand-forecasting/editing) for more detail.
-
-### View Edit Log
-
-Access the audit trail:
-
-1. Click **Edit Log** or navigate to the edit log page
-2. See all changes with timestamps and users
-
-## Performance Tips
-
-For large datasets:
-
-<AccordionGroup>
-  <Accordion title="Use Filters">
-    Filter to specific collections or channels instead of viewing all data at once.
-  </Accordion>
-
-  <Accordion title="Limit Date Range">
-    Show only the periods you're actively working with.
-  </Accordion>
-
-  <Accordion title="Use Appropriate Aggregation">
-    Monthly view loads faster than daily for long time ranges.
-  </Accordion>
-
-  <Accordion title="Collapse Groups">
-    Keep groups collapsed when not actively reviewing details.
-  </Accordion>
-</AccordionGroup>
-
-## Dashboard vs. Other Views
-
-| View | Best For |
-|------|----------|
-| **Dashboard** | Daily operations, editing forecasts |
-| **Sales History** | Viewing actual historical performance |
-| **Forecast Comparison** | Comparing forecast models |
-| **Forecast Admin** | Configuration and uploads |
-| **[Algorithms](/demand-forecasting/algorithms)** | Understanding how forecasts are generated |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Filtering Forecasts" icon="filter" href="/demand-forecasting/filtering">
-    Learn to filter and group forecast data
-  </Card>
-  <Card title="Editing Forecasts" icon="pen" href="/demand-forecasting/editing">
-    Make adjustments to forecast values
-  </Card>
-  <Card title="Sales History" icon="clock" href="/demand-forecasting/sales-history">
-    View historical sales data
-  </Card>
-  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
-    Learn how forecast models work
-  </Card>
-</CardGroup>
+| Sidebar entry | What it's for |
+|---------------|---------------|
+| **Demand** → **Comparison** | Compare forecast models, versions, baselines and actuals; forecast accuracy where turned on. [Forecast Comparison](/demand-forecasting/comparison) |
+| **Demand** → **Edit Log** | Who changed the forecast, when, why, and by how much. [Edit log](/demand-forecasting/edit-log) |
+| **Demand** → **Admin** | Forecast models, generation, uploads and assignments (admins only). [Forecast Admin](/demand-forecasting/admin) |
+| **Demand** → **Season Plan**, **Hybrid Demand Plan** | Previews shown to some organizations only. [Preview demand screens](/demand-forecasting/season-plan) |
+| **Sales** → **Sales History** | Actual sales by period and the orders behind them. [Sales History](/demand-forecasting/sales-history) |

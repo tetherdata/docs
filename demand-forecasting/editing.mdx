@@ -1,7 +1,7 @@
 ---
 title: Editing Forecasts
 sidebarTitle: Editing Forecasts
-description: How to edit demand forecast values, including the Consensus Model editing logic and distribution rules
+description: "Where: Demand → Dashboard → Edit Mode. How to change next month's forecast for a whole category, adjust by percent, copy a model or baseline into consensus, undo an edit, and whether a reason is required when saving. On the demand plan, edits save to Live or a version."
 ---
 
 # Editing forecasts
@@ -9,8 +9,25 @@ description: How to edit demand forecast values, including the Consensus Model e
 Tether allows you to edit forecast values directly in the forecast table. This is especially important for the **Consensus Model**, where all forecast values are 100% user-defined. This guide covers how edits work, how values distribute across aggregations, and how to use the editing tools effectively.
 
 <Note>
-  Editing capabilities depend on your user role. Only users with edit permissions can modify forecast values.
+  Editing needs forecast write access. If your organization uses the [demand plan](/demand-forecasting/demand-plan), see [Editing in the demand plan](#editing-in-the-demand-plan) below.
 </Note>
+
+## Turn on Edit Mode
+
+Where: **Demand** → **Dashboard** → **Edit Mode** (top right of the toolbar).
+
+1. Click **Edit Mode**. The toolbar becomes the edit banner.
+2. Use the **#** / **%** toggle to type quantities or percentages. Save or discard before switching between them.
+3. Click **Save Changes** when done, or **Exit Edit Mode**. Leaving with unsaved edits asks whether to **Save & Exit** or discard.
+
+## How do I change next month's forecast for a whole category?
+
+Where: **Demand** → **Dashboard** → **Grouping** + **Table Settings** → **View Type** → **Monthly** → **Edit Mode**.
+
+1. Group the forecast so the category is a row (see [Filtering & grouping](/demand-forecasting/filtering)).
+2. Set **View Type** to **Monthly**.
+3. Click **Edit Mode**, then type the new total into the category's cell for next month.
+4. Tether spreads the change across the SKUs, channels and days under it in proportion to their current values (rules below). Click **Save Changes**.
 
 ## The Consensus Model
 
@@ -68,7 +85,7 @@ Click any editable cell in the forecast table to modify its value.
 | Greyed out / read-only | Historical period locked by actuals |
 
 <Warning>
-  Edits are staged locally and **not saved** until you explicitly click **Save**. If you leave the page without saving, all unsaved edits are lost.
+  Edits are staged locally and **not saved** until you click **Save Changes**. If you leave the page without saving, all unsaved edits are lost.
 </Warning>
 
 ## How edit distribution works
@@ -223,6 +240,8 @@ For partially completed periods (such as the current month):
 
 ## Percentage adjustments
 
+Where: **Demand** → **Dashboard** → click a row → the detail view → row menu → **Adjust %**.
+
 You can adjust forecast values by a percentage rather than entering an absolute number.
 
 <Steps>
@@ -231,7 +250,7 @@ You can adjust forecast values by a percentage rather than entering an absolute 
   </Step>
 
   <Step title="Click Adjust %">
-    Click the **Adjust %** button to open the percentage adjustment dialog.
+    Open the forecast row's menu and click **Adjust %** to open the percentage adjustment dialog.
   </Step>
 
   <Step title="Enter the percentage">
@@ -248,20 +267,11 @@ You can adjust forecast values by a percentage rather than entering an absolute 
 
 Historical periods are automatically skipped during percentage adjustments.
 
-## Copying data to the Consensus Model
+## How do I copy a model or baseline into the consensus forecast?
 
-You can populate the Consensus Model by copying values from other data sources. This is useful when you want to start from an existing baseline rather than entering every value manually.
+Where: **Demand** → **Dashboard** → click a row → the detail view → a source row's menu → **Copy to Consensus**.
 
-### Available copy sources
-
-| Source | Description |
-|--------|-------------|
-| **Budget** | Copy from a budget version |
-| **Rolling forecast (RF)** | Copy from a rolling forecast version |
-| **Historical sales** | Copy last year's sales data, shifted forward by one year |
-| **Shipped & pending** | Combine actual shipped orders with pending sales orders |
-| **Model output** | Copy from any system-generated forecast model |
-| **Baseline** | Copy from an uploaded baseline forecast |
+You can populate the Consensus Model by copying values from the other rows the detail view shows for that SKU and channel, such as another model's output, a baseline, or historical sales. This is useful when you want to start from an existing baseline rather than entering every value manually. You can also ask the agent to copy a model or a baseline into consensus for many SKUs at once.
 
 ### How copying works
 
@@ -278,6 +288,8 @@ Copied values are applied at the leaf level (SKU × channel × day), so the data
 
 ## Push forecast
 
+Where: **Demand** → **Dashboard** → click a row → the detail view → row menu → **Push Forecast** (**Push Forecast Forward** dialog).
+
 The push forecast feature shifts all forecast values forward by a specified number of periods. This is useful when plans are delayed and you need to move the entire forecast timeline.
 
 When you push a forecast:
@@ -286,7 +298,9 @@ When you push a forecast:
 - Historical periods are not affected.
 - If a source period doesn't exist (beginning of the range), the target period is set to 0.
 
-## Reverting changes
+## How do I undo a forecast edit?
+
+Where: **Demand** → **Dashboard** → **Edit Mode** → discard, or the [Edit Log](/demand-forecasting/edit-log) after saving.
 
 ### Discard all changes
 
@@ -299,81 +313,23 @@ Once changes are saved, they cannot be undone through the UI. However, you can:
 - Copy from a data source to restore baseline values
 - Review the edit log to see what was changed and enter corrective values
 
-## Saving changes and change reasons
+## Do I have to enter a reason when I save forecast changes?
 
-When you save your edits, a **Save Reason Modal** appears.
+Where: **Demand** → **Dashboard** → **Edit Mode** → **Save Changes** → **Save Forecast Changes** dialog.
 
-<Steps>
-  <Step title="Review the summary">
-    The modal shows a summary of your changes:
-    - The time periods affected
-    - The number of SKUs and channels modified
-    - Expandable lists of affected SKU and channel names
-  </Step>
+It depends on your organization's settings. When you save, the **Save Forecast Changes** dialog shows what you're saving (periods, SKUs and channels) and a **Reason for changes** box.
 
-  <Step title="Enter a reason">
-    Provide a reason for your changes (up to 500 characters). This is recorded in the edit log.
+- If it says **A reason is required.**, you can't save without one. Admins set this per user and per channel in **Settings** → **Forecast Edit Log** (**Require Comment**, **Log Edits**).
+- Otherwise the reason is optional but recorded with the edit.
+- Press **Cmd/Ctrl + Enter** to save from the dialog.
 
-    Good reasons include specific context:
-    - "Adjusted for Q3 marketing campaign launching July 15"
-    - "Reduced forecast due to supplier delay on raw materials"
-    - "Aligned with updated sales team projections from weekly review"
-  </Step>
+Saved edits appear on the [Edit Log](/demand-forecasting/edit-log) with the reason, user, and quantity and revenue impact.
 
-  <Step title="Save">
-    Click **Save Changes** or press **Cmd/Ctrl + Enter** to confirm. The changes are saved to the Consensus Model and the edit log records the change with your reason, timestamp, and user ID.
-  </Step>
-</Steps>
+## Editing in the demand plan
 
-<Info>
-  The reason field may be required or optional depending on your organization's configuration. If required, you cannot save without providing a reason.
-</Info>
+Where: **Demand** → **Dashboard** (organizations with the demand plan) → type in a cell → **Save To** → **Save**.
 
-## Edit log
-
-Every saved change is recorded in the edit log with full traceability:
-
-| Field | Description |
-|-------|-------------|
-| **Date and time** | When the change was saved |
-| **User** | Who made the change |
-| **Reason** | The reason provided at save time |
-| **Edit count** | Number of individual cell changes |
-| **SKUs affected** | Which SKUs were modified |
-| **Channels affected** | Which channels were modified |
-| **Periods affected** | Which time periods were modified |
-| **Quantity change** | Net change in total quantity (with increase/decrease indicators) |
-| **Revenue impact** | Estimated revenue impact of the change (if pricing data is available) |
-
-You can expand any edit log entry to see a detailed pivot table showing the before and after values for each SKU, channel, and period combination, along with the delta for each cell.
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Always provide meaningful change reasons">
-    Document every significant change with specific context. Future you (and your team) will need to understand why forecasts were adjusted when reviewing accuracy.
-  </Accordion>
-
-  <Accordion title="Start from a data source when possible">
-    Use the copy feature to pull in budget, historical sales, or model output data as a starting point. Then refine individual values rather than entering everything from scratch.
-  </Accordion>
-
-  <Accordion title="Understand distribution before editing aggregated cells">
-    When editing a grouped row or monthly total, the change distributes proportionally to all children. Review the child-level values after making aggregated edits to ensure the distribution looks reasonable.
-  </Accordion>
-
-  <Accordion title="Use percentage adjustments for broad changes">
-    When applying a general growth factor or seasonal adjustment across many periods, use the percentage adjustment tool rather than editing cells individually.
-  </Accordion>
-
-  <Accordion title="Watch for actuals constraints">
-    For the current month or any partially completed period, your forecast total cannot be less than what has already been sold. Check the actuals floor before entering values.
-  </Accordion>
-
-  <Accordion title="Save frequently">
-    Unsaved changes are lost if you navigate away. Save your work regularly, especially after making many edits.
-  </Accordion>
-</AccordionGroup>
+In the [demand plan](/demand-forecasting/demand-plan) there is no Edit Mode: click a cell and type. Unsaved changes collect in a bar with **Save To** (**Live** or an unlocked saved version), a **Why are these numbers changing?** box, **Discard** and **Save**. To put back a saved version's numbers, use **Versions** → **Restore**. The plan's own edit history is under the **Edits** button.
 
 ## Troubleshooting
 
@@ -405,20 +361,3 @@ You can expand any edit log entry to see a detailed pivot table showing the befo
 - Session timeout
 
 **Solution:** Check for error messages. Refresh the page and verify whether the changes persisted. If not, re-enter and save again.
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Edit Log" icon="list" href="/demand-forecasting/edit-log">
-    Review the full history of forecast changes
-  </Card>
-  <Card title="Forecast Comparison" icon="chart-mixed" href="/demand-forecasting/comparison">
-    Compare forecast models and versions
-  </Card>
-  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
-    Configure forecast models and settings
-  </Card>
-  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
-    Understand how forecast values are generated
-  </Card>
-</CardGroup>

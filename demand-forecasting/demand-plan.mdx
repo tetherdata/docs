@@ -1,0 +1,91 @@
+---
+title: Demand plan (multi-hierarchy)
+sidebarTitle: Demand plan
+description: "Where: Demand → Dashboard, for organizations with the multi-hierarchy demand plan turned on. How to group the plan by account then license, show actuals and last year, save edits to Live or a version, compare the plan to a budget or saved version, and restore a saved version."
+---
+
+# Demand plan (multi-hierarchy)
+
+The demand plan is a planning grid over your own hierarchies (for example **Account** → **License** → items) with the live plan, saved versions, actuals and last year side by side.
+
+<Info>
+  The demand plan is available to some organizations only (it is behind the `demand-multi-hierarchy` setting). When it is on, **Demand** → **Dashboard** opens the demand plan instead of the [Demand Dashboard](/demand-forecasting/dashboard). If your Dashboard shows a **Table Settings** button and **Edit Mode**, you have the standard dashboard. Ask Tether if you'd like the demand plan.
+</Info>
+
+## Where is the demand plan?
+
+Where: **Demand** → **Dashboard** (`/demand-forecast`). The old link `/demand-forecast/multi-hierarchy` still opens it.
+
+- **Live** is the current plan. Everything you type is saved to **Live** unless you pick a version in **Save Edits To**.
+- The settings bar across the top sets what rows, columns and lines the grid shows. Tether configures which controls your plan's bar has, so you'll see either the standard set (**Rows**, **Filter**, **Time**, **Measures**, **Versions**) or your plan's own (for example **Group by**, **Dates**, **Show**, **Weeks**, **Open Down To**, **Compare In**, **Save Edits To**, **Variance Rows**, plus filters named for your hierarchy levels).
+- **Expand All** / **Collapse All** at the end of the bar open or close every group.
+
+## How do I see the plan by account and then license?
+
+Where: **Demand** → **Dashboard** → **Rows** (heading **Group Rows By**) or **Group by** in the settings bar.
+
+1. Open **Rows** or **Group by**.
+2. Pick a grouping preset, such as Account → License. With **Rows** you can also build the order yourself, choose how far the rows open (**Open Down To**: the total row, a level, or **Items**), and sort by **Plan Order**, **Name** or **Largest First**.
+3. To narrow to one account or license, use **Filter** (heading **Filter Rows**) or the filter named for that level.
+
+A grouping you pick from **Group by** opens on its total row, collapsed; open it with **Open Down To** or the row arrows.
+
+## How do I change the weeks or months shown?
+
+Where: **Demand** → **Dashboard** → **Time** (or **Dates**, **Show** and **Weeks**) in the settings bar.
+
+- Choose the bucket: **Year**, **Half-Year**, **Quarter**, **Month**, **Week** or **Week-Part**.
+- At week grain, set **Weeks Back** (0, 1, 2, 4 or 8) and **Weeks Forward** (4, 6, 8 or 13). At coarser grains, pick the **Year**.
+- Some plans also let you pick the calendar (for example your retail calendar).
+
+## How do I show actuals and last year in the plan?
+
+Where: **Demand** → **Dashboard** → **Measures** in the settings bar (also in the table settings menu).
+
+Tick the lines to show under each row: **Actuals**, **Last Year**, **Committed Orders** (open orders), **Left to Forecast**, and **Live vs. Last Year**. Where prices are loaded you can also show dollars (**Revenue**, **ASP**). A line that has nothing loaded says so (for example "This plan has no actual sales loaded yet.").
+
+## How do I save my edits to a version?
+
+Where: **Demand** → **Dashboard** → type in a cell → the unsaved-changes bar → **Save To** → **Save**.
+
+1. Click a cell in the plan and type the new number. Typed numbers are held as unsaved changes; the settings fold into a **Stop Editing** chip while you have any.
+2. In the bar that appears, choose **Save To**: **Live**, or one of the plan's unlocked versions. (**Save Edits To** in the settings bar sets the same choice before you start.)
+3. Type why in **Why are these numbers changing?** and click **Save**. **Discard** throws the unsaved changes away.
+
+Locked versions can't be saved to. If you can't edit the plan, **Save Edits To** doesn't appear.
+
+## How do I compare the plan to the budget version?
+
+Where: **Demand** → **Dashboard** → **Versions** in the settings bar.
+
+1. Open **Versions** and tick up to two saved versions (for example your budget). Each version shows a badge for how it was made: **Saved**, **Quarterly** or **Imported**, and **Locked** if it can't be changed.
+2. Choose how rows show them:
+   - **Each Version Under Live**: each version's line sits under the live plan.
+   - **Compare Two**: two sides compared with their difference.
+3. Turn on **Variance From Live** (or **Variance Rows**) to add Live − version lines.
+4. **Compare In** sets whether variances read in **Units**, **Revenue** or **ASP** (when prices are loaded).
+5. **Assignments When Saved** groups a version's numbers the way accounts and licenses were assigned when it was saved; **Today's Assignments** regroups them under today's assignments.
+
+Some plans also have a **Time** / **Versions** switch: **Versions** shows a side-by-side table of versions over a date range you pick, which you can download.
+
+## How do I restore last week's plan version?
+
+Where: **Demand** → **Dashboard** → **Versions** → **Restore** beside the version.
+
+1. Filter or group the plan to the slice you want to put back (for example one account).
+2. Open **Versions** and click **Restore** beside the saved version.
+3. The **Restore …?** dialog names the slice and dates, previews what will change, and asks for a **Reason** ("Why go back to these numbers?"). Confirm.
+
+Weeks that have ended keep their numbers. Only units are restored; prices stay as they are. Your earlier edits stay in the log. If **Restore** is greyed out, hover it to see why (for example, the view is still loading).
+
+## Who changed the plan, and how do I find the cell?
+
+Where: **Demand** → **Dashboard** → **Edits** button at the end of the settings bar.
+
+**Edits** opens the plan's edit log beside the grid, newest first: who set what, where and when. Click **Show in Grid** on an edit to jump to that cell, and **Show earlier edits** to load more.
+
+## How do I download or copy the plan?
+
+Where: **Demand** → **Dashboard** → table settings menu at the end of the settings bar.
+
+Use **Download CSV** to download the view, or **Copy as Text** to paste it elsewhere.

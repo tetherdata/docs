@@ -1,15 +1,15 @@
 ---
 title: Forecast Algorithms
-description: Understand the statistical algorithms Tether uses to generate demand forecasts
+description: "Where: Demand → Admin → Models → Create Model → Algorithm. Which forecast methods Tether supports, which algorithm to use for seasonal or intermittent products, and how a driver-based (Driver Regression) model works."
 sidebarTitle: Algorithms
 ---
 
 # Forecast Algorithms
 
-Tether generates demand forecasts using **11 statistical algorithms**, each designed for different demand patterns and business requirements. Every algorithm operates on individual SKU-channel combinations independently, using only the historical sales data for that specific pair.
+Tether generates demand forecasts using **13 algorithms** (pick one under **Demand** → **Admin** → **Models** → **Create Model**), each designed for different demand patterns and business requirements. Every algorithm operates on individual SKU-channel combinations independently, using only the historical sales data for that specific pair.
 
 <Info>
-  All algorithms support runtime parameter configuration. Seven of the 11 algorithms also support automatic parameter optimization to find the best settings for each SKU-channel combination.
+  All algorithms support runtime parameter configuration. Seven of them also support automatic parameter optimization to find the best settings for each SKU-channel combination.
 </Info>
 
 ## Algorithm overview
@@ -26,6 +26,8 @@ Tether generates demand forecasts using **11 statistical algorithms**, each desi
 | [Rolling Momentum](#rolling-momentum) | Accelerating or decelerating products | Yes | 90 days |
 | [Holt-Winters](#holt-winters-triple-exponential-smoothing) | Complex seasonal patterns with trends | Yes | 365 days |
 | [SARIMA](#sarima) | Complex time series with strong seasonality | Yes | 365 days |
+| [Blended Median](#blended-median) | Intermittent demand (items that don't sell every day) | — | — |
+| [Driver Regression](#driver-regression) | Demand that follows ad spend or other drivers | — | 60 aligned days |
 | [Static Baseline](#static-baseline) | External or manual forecasts | No | N/A |
 
 In addition, the [Consensus Model](#consensus-model) is a special model type where forecast values are entirely user-defined rather than algorithm-generated.
@@ -311,6 +313,43 @@ Seasonal AutoRegressive Integrated Moving Average. A powerful statistical method
 
 ---
 
+## Blended Median
+
+On screen: **Blended Median**. Type ID: `blended_median`.
+
+Blends the median of a short window with the median of a long window. By default: 70% of the last 7 days' median plus 30% of the last 30 days' median.
+
+**How it works:**
+1. Take every calendar day in each window, counting days with no sale as 0. For items that don't sell every day (for example an Amazon SKU), those zero days are real signal; dropping them would push the forecast up.
+2. Blend the two medians by their weights. Weights are normalized, so any pair of positive weights works.
+3. Optionally apply a lift (`lift_factor`), for example 0.15 to run a channel 15% hot. The default is no lift.
+4. The value is computed once from the window ending the day before the forecast starts and carried forward to every forecast date.
+
+**Parameters:** `short_window_days` (default 7), `long_window_days` (default 30), `short_weight` (0.7), `long_weight` (0.3), `lift_factor` (0).
+
+**Use it for:** intermittent or lumpy demand where an average is pulled around by single big days.
+
+---
+
+## Driver Regression
+
+On screen: **Driver Regression**. Type ID: `driver_regression`.
+
+How does a driver-based forecast model work? It fits a straight-line relationship between one or more **driver** series (ad spend, an event calendar, …) and your sales over a training window, then projects demand forward from the drivers' planned (projected) values.
+
+**How it works:**
+1. When you create the model, pick the driver series it consumes. Drivers are set up under [Marketing & Promotions → Drivers](/marketing-promotions/drivers); each driver's **Configure model** link opens the models that use it.
+2. Tether fits the drivers to demand over up to the last 365 days of aligned data. The model shows the fit (**R²**, **Intercept**, days trained).
+3. Forecasts come from the drivers' forward projections.
+
+**Two fallbacks keep it honest:**
+- **Too little history:** with fewer than 60 days where driver actuals and sales line up, the pairing falls back to the organization's default model.
+- **Projection ends early:** where the driver's projection doesn't cover the whole forecast horizon, the uncovered tail falls back to the default model.
+
+**Use it for:** products whose demand follows marketing spend or other planned drivers. Assign it only to the pairings the driver affects ([Model assignment](/demand-forecasting/model-assignment)).
+
+---
+
 ## Static Baseline
 
 Static Baseline directly uses uploaded forecast values without any calculation or algorithmic adjustment. It is not a forecasting algorithm in the traditional sense — it is a mechanism for importing external forecasts into Tether.
@@ -438,20 +477,3 @@ Use this guide to choose the right algorithm based on your data patterns.
 | **Momentum sensitivity** | Start at 0.5 and adjust based on accuracy. Higher values amplify momentum effects. |
 | **Holt-Winters smoothing** | α: 0.1–0.3 for stable series, 0.3–0.5 for volatile. β: 0.05–0.15 for most cases. γ: 0.05–0.2 for seasonal adaptation. |
 | **SARIMA orders** | Start with (1,1,1)(1,1,0)[365] and use Grid Search to find the best combination. |
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Forecast Admin" icon="gear" href="/demand-forecasting/admin">
-    Configure model selection and parameters
-  </Card>
-  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
-    Compare algorithm performance side by side
-  </Card>
-  <Card title="Forecast Editing" icon="pen-to-square" href="/demand-forecasting/editing">
-    Edit forecast values and work with the Consensus Model
-  </Card>
-  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
-    View your forecasts and track accuracy
-  </Card>
-</CardGroup>

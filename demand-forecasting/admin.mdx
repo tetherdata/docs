@@ -1,36 +1,37 @@
 ---
 title: Forecast Admin
-description: Configure forecast generation, models, versioning, uploads, and availability in Tether
+description: "Where: Demand → Admin (admins only). How to regenerate forecasts, create forecast models, submit a forecast version, upload a forecast or baseline CSV, and assign models per SKU and channel. Channel availability moved to Settings → Inventory & Forecast."
 ---
 
 # Forecast Admin
 
-The Forecast Admin surface provides tools for configuring how demand forecasts are generated, managing forecast models, submitting versions, and importing bulk data. These settings significantly impact forecast quality.
+Forecast Admin is where an admin configures how demand forecasts are generated: the forecast date range, forecast models, version submissions, CSV uploads and per-pairing model assignments.
 
-## Accessing Forecast Admin
+## Who can open Forecast Admin?
 
-The same surface is available from two entry points:
+Where: **Demand** → **Admin** in the sidebar (`/demand-forecast/admin`), or **Settings** → **Forecast Admin**.
 
-| Entry point | Page title | Access |
-|-------------|-----------|--------|
-| **Demand** → **Admin** in the sidebar (`/demand-forecast/admin`) | Forecast Admin | Non-admin users see only the **Availability** tab |
-| **Settings** → **Forecast Admin** | Demand Forecast Admin | Admin users only |
+- The **Admin** entry appears under **Demand** only for users with forecast administration access. Other users don't see it.
+- If someone without that access opens the page by link, they see a "requires access" message with links to the Demand dashboard and to channel availability settings.
+- The page has five tabs: **Admin**, **Models**, **Versioning**, **Upload** and **Assignments**.
 
-Both entry points show the same five tabs:
+| Tab | What it's for |
+|-----|---------------|
+| **Admin** | Forecast date range, **Generate Forecasts**, and historical sales calculation |
+| **Models** | Create, edit, optimize and pick forecast models |
+| **Versioning** | Submit a forecast version and download past submissions |
+| **Upload** | Upload a consensus forecast, a baseline dataset or historical sales from CSV |
+| **Assignments** | Turn forecasting on or off per SKU and channel, and assign a model to many pairings at once |
 
-| Tab | Purpose |
-|-----|---------|
-| **Admin** | Forecast date range configuration, forecast generation, and historical sales calculation |
-| **Models** | Create and manage forecast models |
-| **Versioning** | Submit and download forecast versions |
-| **Upload** | Bulk forecast and sales data imports |
-| **Availability** | SKU-channel availability matrix |
+## Where do I set which SKUs are sold on which channel?
 
-<Note>
-  The **Admin**, **Models**, **Versioning**, and **Upload** tabs are restricted to Admin users. **Availability** is visible to all users with demand access.
-</Note>
+Where: **Settings** → **Inventory & Forecast** → **Channel Availability** tab.
 
-## Admin tab
+Forecast Admin used to have an **Availability** tab. It is gone. SKU-channel availability now lives in **Settings** → **Inventory & Forecast** → **Channel Availability**. On organizations that use Locations for channels, the **Channel Availability** tab is gone too: open the channel under **Locations** and set availability on its **Forecast** tab. Admins can also switch forecasting on or off per pairing on the **Assignments** tab below.
+
+## How do I regenerate forecasts? (Admin tab)
+
+Where: **Demand** → **Admin** → **Admin** tab → **Forecast Generation Status** card → **Generate Forecasts**.
 
 ### Forecast date range configuration
 
@@ -51,7 +52,7 @@ The **Forecast Generation Status** card shows the current state of demand foreca
 - If the last run failed, a Generation Error alert shows the error message.
 
 <Note>
-  **Generate Forecasts** regenerates the *demand forecast* (model outputs for SKU-channel combinations). It is a separate system from the supply-planning solve, which is triggered with **Run now** on the Connected Planning page. Generating forecasts does not create a new supply plan — see the [Supply Planning overview](/supply-planning/overview) for how planning consumes forecasts.
+  **Generate Forecasts** regenerates the *demand forecast* (model outputs for SKU-channel combinations). It does not start an engine run or produce a new Supply Plan; planning picks up the new forecast on its next run. See the [Supply Planning overview](/supply-planning/overview).
 </Note>
 
 ### Calculation coverage summary
@@ -78,6 +79,8 @@ Use the **Calculate Historical Sales** card to aggregate sales orders into daily
 
 ## Models tab
 
+Where: **Demand** → **Admin** → **Models** tab.
+
 The Models tab (**Model Management**) is where you create and manage forecast models. A **model** is a method for generating a possible forecast. Each model uses an **algorithm** that defines how forecast values are calculated. Your organization can define multiple models with different algorithms and compare their outputs.
 
 <Tip>
@@ -86,21 +89,23 @@ The Models tab (**Model Management**) is where you create and manage forecast mo
 
 ### Available algorithms
 
-Tether provides 11 forecast algorithms you can assign to models:
+When you create a model, the **Algorithm** list offers 13 algorithms (names as they appear in the app; older names in brackets):
 
-| Algorithm | Description | Best for | Supports auto-tune |
-|-----------|-------------|----------|:------------------:|
-| **90-Day Rolling Average** | Simple arithmetic mean of the last 90 days of sales | Stable, predictable demand | No |
-| **120-Day Rolling Average (Recursive)** | Sliding window average that incorporates prior forecast values as it projects forward | Volatile products, strategic planning | No |
-| **Exponentially Weighted Moving Average (EWMA)** | Applies exponential decay weighting to emphasize recent sales | Trending products, fashion items | Yes |
-| **Linear Trend** | Least-squares linear regression projected forward | Products with consistent growth or decline | No |
-| **Simplified Seasonal** | Weighted combination of weekly (80%) and monthly (20%) seasonal patterns | Seasonal and holiday-driven products | Yes |
-| **Simple Seasonal with Trend Adjustment** | Seasonal patterns blended with a year-over-year growth factor | Seasonal products with growth trends | Yes |
-| **Seasonal Year-over-Year Growth** | Seasonal baseline multiplied by observed year-over-year growth rate | Seasonal products with strong annual growth | Yes |
-| **Rolling Momentum** | Detects acceleration or deceleration by comparing short-term vs long-term moving averages | Viral, accelerating, or declining products | Yes |
-| **Holt-Winters (Triple Exponential Smoothing)** | Captures level, trend, and seasonality with separate smoothing factors | Complex seasonal patterns with trends | Yes |
-| **SARIMA** | Seasonal AutoRegressive Integrated Moving Average for complex time series | Complex time series with seasonal and trend components | Yes |
-| **Static Baseline** | Directly uses uploaded baseline forecast values with no algorithmic processing | External forecasts, manual imports, hybrid workflows | No |
+| Algorithm | Description | Best for |
+|-----------|-------------|----------|
+| **90-Day Rolling Average** | Simple average of the last 90 days of sales | Stable, predictable demand |
+| **120-Day Rolling Average** | Sliding-window average that feeds its own forecast forward (recursive) | Volatile products, strategic planning |
+| **Weighted Recent Average** (EWMA) | Weights recent sales more heavily | Trending products |
+| **Linear Trend Forecast** | Straight-line trend projected forward | Steady growth or decline |
+| **Seasonal Moving Average** (Simplified Seasonal) | Weekly and monthly seasonal pattern | Seasonal and holiday-driven products |
+| **Simple Seasonal with Trend Adjustment** | Seasonal pattern blended with a year-over-year growth factor | Seasonal products that are growing |
+| **Seasonal YoY Growth** | Seasonal baseline times observed year-over-year growth | Seasonal products with strong annual growth |
+| **Rolling Momentum Forecast** | Compares short- and long-term averages to catch acceleration | Viral, accelerating or declining products |
+| **Holt-Winters Triple Smoothing** | Level, trend and seasonality with separate smoothing | Complex seasonal patterns with trends |
+| **SARIMA** | Seasonal ARIMA time-series model | Complex series with seasonal and trend parts |
+| **Blended Median** | 70% of the 7-day median plus 30% of the 30-day median, counting zero-sale days | Intermittent demand (items that don't sell every day) |
+| **Driver Regression** | Fits driver series such as ad spend to demand and projects from their forward values | Demand that follows marketing or other [drivers](/marketing-promotions/drivers) |
+| **Static Baseline** | Uses an uploaded baseline as-is | External forecasts and imports |
 
 ### Creating a model
 
@@ -114,7 +119,7 @@ Tether provides 11 forecast algorithms you can assign to models:
   </Step>
 
   <Step title="Configure the model">
-    Provide a name and description, then select an algorithm from the list above.
+    Provide a name and description, then select an algorithm from the list above. A **Driver Regression** model also asks which driver series it consumes.
   </Step>
 
   <Step title="Save">
@@ -138,7 +143,7 @@ If your organization has no Consensus Model yet, the Models tab offers **Create 
 
 ### Parameter optimization (auto-tune)
 
-Seven of the 11 algorithms support **automatic parameter optimization**. When enabled, the system finds the best parameter values by minimizing forecast error on historical data.
+Seven algorithms support **automatic parameter optimization**. When enabled, the system finds the best parameter values by minimizing forecast error on historical data.
 
 **Optimization methods:**
 - **Nelder-Mead Simplex** — used for algorithms with continuous parameters (e.g., smoothing factors, weights). Iteratively adjusts parameters to minimize error.
@@ -158,23 +163,21 @@ Seven of the 11 algorithms support **automatic parameter optimization**. When en
   For the full list of parameters, defaults, and optimization ranges, see [Forecast Algorithms](/demand-forecasting/algorithms). To assign different models to different SKU-channel pairings, see [Model assignment](/demand-forecasting/model-assignment).
 </Info>
 
-## Versioning tab
+## How do I submit a forecast version? (Versioning tab)
 
-The Versioning tab manages forecast version submissions:
+Where: **Demand** → **Admin** → **Versioning** tab.
 
-- **Versioning Status** — shows whether versioning is enabled and the current period. Admin users can enable versioning and open **Versioning Settings**.
-- **Submit Version** — snapshots the current forecast as a named version for the current period.
-- **Submission History** — lists past submissions with name, submitted timestamp and user, and version label. Each submission can be downloaded.
+- **Versioning Status** shows whether versioning is enabled and the current period.
+- Submit a version to snapshot the current forecast for the current period. Submitting needs the forecast submission permission; without it the tab says "Forecast submission permission is required."
+- **Submission History** lists past submissions. Each one can be downloaded.
 
-<Note>
-  Sales representatives cannot submit forecast versions — contact an admin user if the **Submit Version** button is disabled.
-</Note>
+## How do I upload a forecast file? (Upload tab)
 
-## Upload tab
+Where: **Demand** → **Admin** → **Upload** tab.
 
-The Upload tab imports forecast or sales data in bulk from CSV.
+The Upload tab imports one CSV in the Tether template. To load your own forecast workbook (several tabs, retailer columns, a scenario such as a downside case), ask the agent instead: see [Forecast import templates](/demand-forecasting/forecast-import-templates).
 
-### Data types
+### Data type
 
 Choose what the upload targets:
 
@@ -251,9 +254,23 @@ The system validates all uploads:
   Invalid rows are rejected. You can fix errors and re-upload, or proceed with valid rows only.
 </Warning>
 
-## Availability tab
+## How do I turn forecasting on or off for many SKUs at once? (Assignments tab)
 
-The Availability tab shows the SKU availability matrix — which SKUs are available on which channels. Unlike the other tabs, it is visible to all users with demand access, and it is the only tab non-admin users see at **Demand** → **Admin**.
+Where: **Demand** → **Admin** → **Assignments** tab.
+
+The Assignments tab lists every SKU × channel pairing with its forecast state and model. If it shows "Per-pairing model assignments require Demand Planning v2…", ask Tether to turn it on.
+
+- **Columns:** SKU, SKU type, SKU group, channel, the forecast state, and **Model**.
+- **Forecast state:** the forecast (models produce a forecast), **Excluded** (switched off on purpose) or **Not set** (never enabled, so no forecast is produced).
+- **Filters** include channel, forecast state, **Model**, **Rule**, SKU type, SKU group, and **No forecast coverage**.
+
+To change many pairings:
+
+1. Filter the list, then tick the rows. To act on every row the filters match, click **Select all … matching**.
+2. In the selection bar, choose the forecast button (turn on), **Exclude**, **Set … to automatic** (let sales activity decide), or **Set model for selection**.
+3. Your choices are staged on the rows. Click **Save All** to apply them, or **Cancel** to drop them.
+
+Changing the forecast state writes a forecast rule, so it needs permission to edit Policies. See [Model assignment](/demand-forecasting/model-assignment) for assigning a model to one row from the dashboard.
 
 ## Data quality
 
@@ -270,35 +287,6 @@ Different algorithms have different minimum data requirements:
 <Warning>
   Seasonal algorithms (Simplified Seasonal, Holt-Winters, SARIMA, Seasonal YoY Growth) automatically fall back to a 90-day rolling average if fewer than 365 days of history are available.
 </Warning>
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Model selection">
-    - Start with simpler algorithms (e.g., 90-Day Rolling Average) and compare against more complex ones (e.g., Holt-Winters, SARIMA).
-    - Use the [Forecast Comparison](/demand-forecasting/comparison) view to evaluate accuracy before switching.
-    - Consider different models for different product segments — stable products may perform best with Rolling Average, while seasonal products benefit from Simplified Seasonal or Holt-Winters. See [Model assignment](/demand-forecasting/model-assignment) for per-pairing assignment.
-    - Enable parameter optimization (auto-tune) for algorithms that support it.
-  </Accordion>
-
-  <Accordion title="Regenerate after configuration changes">
-    - After saving date range configuration, click **Generate Forecasts** so the change takes effect in forecast values.
-    - Monitor data freshness — stale sales history leads to outdated forecasts. Recalculate historical sales after large data corrections.
-    - User edits made through the [Consensus Model editing workflow](/demand-forecasting/editing) are preserved — forecast generation does not overwrite them.
-  </Accordion>
-
-  <Accordion title="Version discipline">
-    - Submit a version before making major changes to models or configuration.
-    - Name versions descriptively (e.g., "Before SARIMA switch Q1 2026").
-    - Download past submissions to compare forecast evolution across planning cycles.
-  </Accordion>
-
-  <Accordion title="Upload carefully">
-    - Validate data before upload — ensure SKU codes and channel names match existing records.
-    - Always review the preview before applying.
-    - Pick the right data type: Consensus Forecast uploads overwrite current consensus values.
-  </Accordion>
-</AccordionGroup>
 
 ## Troubleshooting
 
@@ -337,20 +325,3 @@ Different algorithms have different minimum data requirements:
 1. Download the template again — it matches your organization's period configuration.
 2. Verify all SKU codes and channel names exist in the system before uploading.
 3. Check for non-numeric or negative quantity values.
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Forecast Algorithms" icon="function" href="/demand-forecasting/algorithms">
-    Learn how each algorithm works, its parameters, and when to use it
-  </Card>
-  <Card title="Model assignment" icon="wand-magic-sparkles" href="/demand-forecasting/model-assignment">
-    Assign forecast models per SKU-channel pairing
-  </Card>
-  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
-    Compare model outputs and accuracy side by side
-  </Card>
-  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
-    View and edit forecasts
-  </Card>
-</CardGroup>
