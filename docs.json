@@ -104,7 +104,12 @@
               "supply-planning/mrp",
               "supply-planning/execution-plan",
               "supply-planning/data-issues",
-              "supply-planning/coverage"
+              "supply-planning/coverage",
+              "supply-planning/why-no-recommendation",
+              "supply-planning/policies",
+              "supply-planning/engine-runs",
+              "supply-planning/settings",
+              "supply-planning/series-explorer"
             ]
           },
           {

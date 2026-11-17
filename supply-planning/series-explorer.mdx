@@ -1,0 +1,32 @@
+---
+title: Series Explorer
+description: "Where: Supply Chain → Series Explorer. Chart inventory, production, purchases or transfers over time for a SKU group, location group or location, with history and plan on one timeline split at today. Not yet for demand. Behind a feature flag: ask Tether to turn it on."
+---
+
+**Where:** Supply Chain → **Series Explorer**.
+
+Series Explorer draws one measure as a single timeline: what actually happened (history) up to today, and what the plan expects after it.
+
+<Note>
+Series Explorer is turned on per organization. If you don't see it under Supply Chain, ask Tether to turn it on. A link someone shares with you still opens it.
+</Note>
+
+## Chart inventory or supply over time
+
+**Where:** Supply Chain → Series Explorer → toolbar filters.
+
+<Steps>
+  <Step title="Choose what to chart">
+    Pick a measure: **Inventory** (on-hand at the end of each period), **Production**, **Purchases** or **Transfers** (shipped from the location).
+  </Step>
+  <Step title="Choose the selection">
+    Filter by one or more SKU groups (required), and optionally by location group or location. Nothing is drawn until you choose a SKU group.
+  </Step>
+  <Step title="Choose the two sides">
+    **Observed** sets which history to draw and **Planned** sets which plan to draw after today. Add a comparison line to draw a second plan beside it.
+  </Step>
+</Steps>
+
+The line under the pickers says where each half of the chart comes from. Click a point to see the rows behind it. The view is saved in the page address, so you can share or bookmark it, and save it as a view from the toolbar.
+
+Series Explorer doesn't chart demand or sales yet. To see one SKU's inventory beside its demand week by week, use **Connected Planning** (Supply Chain → Connected Planning) or the [inventory history](/inventory/history).

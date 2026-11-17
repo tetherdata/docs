@@ -1,0 +1,100 @@
+---
+title: "Why didn't Tether recommend a purchase, transfer or production run?"
+sidebarTitle: Why no recommendation?
+description: "Checklist for a missing or disappeared recommendation: why Tether didn't recommend a PO for a SKU, why there's no transfer to a warehouse, why no production is scheduled, why a recommendation disappeared. Covers rejected and Never-listed recommendations, Engine run vs Tether's plan, coverage policy Not set, missing supplier, lane or storage policies, lead time and horizon, Data issues, and recommendations that predate your edits."
+---
+
+Tether recommends a purchase, transfer or production run only when the plan needs one, the network allows one, and nobody has hidden it. When you expect a recommendation and don't see one, work down this checklist. Each section says where to look.
+
+You can also ask the [agent](/agent/chat): "Why isn't there a recommendation to buy SKU ABC-123?" It can check whether the latest solve plans anything for the SKU, which policies govern it, and what a policy change would do.
+
+## 1. Was it rejected, or put on the Never list?
+
+**Where:** Settings → Supply planning → **Never list**, and the rejected rows on [Purchases](/supply-planning/purchases), [Transfers](/supply-planning/transfers) or [Production](/supply-planning/production).
+
+A rejected recommendation stays hidden for a while, depending on the reason chosen:
+
+| Reject reason | What happens to the recommendation |
+|---|---|
+| **Not this time** | Hidden until its Ask again date, together with the same SKU at the same receiving site from any supplier or week. It comes back early if the shortfall gets worse. |
+| **Done another way** | Hidden until its Ask again date, the same as Not this time. |
+| **Never** | Hidden for good, wherever it comes from, until someone lifts it from the Never list. |
+| **Wrong number**, **Wrong cost**, **Wrong date** | Not hidden. It stays on the list, marked under review. |
+
+The default Ask again period is set in [Supply planning settings](/supply-planning/settings#change-how-long-rejected-recommendations-stay-hidden). To bring back a Never recommendation, open the **Never list** and click **Lift** (you need approval rights). It can come back on the next read.
+
+## 2. Are you looking at the right plan: Engine run or Tether's plan?
+
+**Where:** a planning page → **Table settings** → **Recommendations** (Purchases) or **Scenario** (other planning pages).
+
+Some organizations take purchase or transfer recommendations from a recommendation engine instead of from Tether's solve. On those, the planning pages can show either **Engine run** or **Tether's plan**, and the two can differ. An engine also acts only on the orders for its decision week; later weeks are projection. See [Engine runs](/supply-planning/engine-runs).
+
+Also check the **Plan status** button (the info icon at the top of each planning page). It tells you how old the plan is, whether edits have landed since, and whether an engine's recommendations are out of date ("Purchase recs not updated since …").
+
+## 3. Is a coverage policy set for this SKU and location?
+
+**Where:** Supply Chain → **Policies** → filter by the SKU and location → look for a **Coverage Target**. Or the SKU's coverage on the planning page.
+
+A SKU-location with no coverage target shows **Not set**: no coverage policy is authored there, so its stock is deliberately not judged and nothing is recommended to keep it at a target. Add a Coverage Target (target, safety and max days of supply) with [Policies → Quick Add](/supply-planning/policies#quick-add-for-common-rules).
+
+**No demand** and **No forecast** are different: there is nothing to cover, or no forward forecast to measure cover against. Check the forecast for that SKU and location.
+
+## 4. Can the SKU be bought, made or moved there?
+
+**Where:** Supply Chain → Policies → **Coverage map** tab → select the SKU.
+
+A recommendation needs a route. Check that the SKU has:
+
+- **A supplier it can be bought from**: an **Allow Purchase** policy on the supplier, and no deny that wins over it.
+- **A lane to the location**: an **Allow Flow** policy from the supplier or warehouse to the location that needs stock. "Supplied elsewhere, but no lane reaches this site" means this is missing.
+- **Storage at the location**: an **Allow Storage** policy.
+- **For production**: an **Assign Production** policy putting it on a line or co-man, an active BOM, and inputs that can reach that site.
+
+The Coverage map shows each step and links to the policy behind it. See [Policies](/supply-planning/policies#common-rules-and-the-policy-type-that-sets-each).
+
+## 5. Does the lead time push it past the planning horizon?
+
+**Where:** Supply Chain → Policies → filter by the SKU → **Purchase Lead**, **Production Lead Time** and **Staging Lead**.
+
+The plan covers a fixed number of weeks. If the supplier's lead time plus transit means an order placed today can't arrive inside the horizon, or the need falls after the horizon, there's nothing to recommend yet. A **Production Fence** also blocks new production within its number of days.
+
+## 6. Is it already covered by an open or committed order?
+
+**Where:** the SKU's row on the planning page, with the scenario on **Follow my plan** (committed) or **Do nothing** (in progress); or the [Supply Plan](/supply-planning/execution-plan).
+
+An open PO, an in-transit transfer or a production run you've already committed counts as supply. If it covers the need, no new recommendation appears. Minimum order and order-increment policies can also mean one larger order covers several weeks.
+
+## 7. Does Data issues flag the SKU?
+
+**Where:** Settings → Supply planning → **Data issues**.
+
+The data audit flags things that stop the planner from recommending supply, such as a missing supplier, a SKU with no way to reach a site, or demand left unmet beside idle stock. Filter by the SKU or location. See [Data issues](/supply-planning/data-issues).
+
+## Why isn't production scheduled for this item?
+
+**Where:** Supply Chain → **Production** → **Schedule** tab → the indicator on an empty week's cell; or the **List** tab → **Not producing** section.
+
+Production has its own explanation drawer. It says why the plan scheduled no production at that site that week:
+
+- **An input was short**: a component the build needs was short upstream, or had no way to reach the site. The drawer names the component, when its next supply arrives, and whether there's a supplier or lane at all ("No supplier anywhere in the network", "Supplied elsewhere, but no lane reaches this site").
+- **The line is saturated**: the assigned line has no spare capacity.
+
+The **Not producing** section on the List tab lists products the plan makes nowhere, with the blocking cause and a link to the Data issues behind it. To schedule a run anyway, click **Create run anyway** in the drawer.
+
+## Why did a recommendation disappear?
+
+**Where:** Settings → Supply planning → **Never list**, **Solve history** and **Current plan**; Supply Chain → **Supply Plan**.
+
+A recommendation you saw yesterday can be gone today because:
+
+- **Someone rejected it** or put it on the Never list (step 1).
+- **A new solve ran** and no longer needs it: demand, inventory, an open order or a policy changed. See when the planner last ran in [Solve history](/supply-planning/settings#see-when-the-planner-last-ran).
+- **A newer engine run replaced it**, on organizations that use recommendation engines. See [Engine runs](/supply-planning/engine-runs).
+- **Someone chose an earlier plan** under Settings → Supply planning → **Current plan**.
+- **It was accepted** and is now a committed row on the [Supply Plan](/supply-planning/execution-plan).
+
+## Recommendations that predate your edits
+
+**Where:** a planning page → **Plan status** (info icon).
+
+If you edited or committed orders after the last solve, the Plan status panel says "N edits since" and "recs for N rows predate your edits". Those recommendations stay visible but de-emphasized until the next solve refreshes them. On organizations that require approval, the solve keeps passing over unapproved edits until they're approved.
