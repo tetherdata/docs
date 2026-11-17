@@ -1,336 +1,60 @@
 ---
 title: Sales History
-description: View historical sales data in Tether
+description: "Where: Sales → Sales History (it moved out of the Demand / Demand Forecast group). See last month's sales by channel in units or revenue, by day, week, month or custom period; find a specific sales order on the Orders tab; and export sales history to CSV."
 ---
 
 # Sales History
 
-The Sales History view shows your actual historical sales data. It's essential for understanding past performance, validating forecasts, and identifying trends.
+Sales History shows what actually sold: totals by SKU, channel and period on the **Summary** tab, and the individual sales orders behind them on the **Orders** tab.
 
-## Accessing Sales History
+## Where is Sales History?
 
-Navigate to **Demand Forecast** → **Sales History** (or **Sales History** in the sidebar for Sales Rep users).
+Where: **Sales** → **Sales History** in the sidebar (`/sales-history`).
 
-<Note>
-  Sales History is available to both Admin and Sales Rep users, making it accessible for the entire team.
-</Note>
+Sales History used to sit under **Demand Forecast**. It is now in the **Sales** group, next to **Orders**. You need sales history read access to see it.
 
-## What is Sales History?
+## Where can I see last month's sales by channel?
 
-Sales History displays actual sales transactions that have occurred:
+Where: **Sales** → **Sales History** → **Summary** tab.
 
-| Data Point | Description |
-|------------|-------------|
-| **Units Sold** | Quantity sold |
-| **Revenue** | Sales value (if tracked) |
-| **By SKU** | Broken down by product |
-| **By Channel** | Broken down by sales channel |
-| **By Period** | Daily, weekly, or monthly |
+1. Set the **Date Range** filter to last month.
+2. Open the view type menu (**View Type**) and pick **Monthly** (or **Daily**, **Weekly**, or **Custom Periods** if your organization uses its own fiscal periods).
+3. Click **Grouping** and put the channel first in **Selected Grouping Order**, then **Save Grouping**.
+4. Use the units / revenue toggle (box icon for quantity, dollar icon for revenue) to switch between units sold and revenue.
 
-## Sales History View
+Filters available: **Date Range**, channel, channel hierarchy levels, SKU group, product hierarchy levels, **SKU**, attributes, and **Fulfillment Status**. Turn on hide-zeros once a filter is set to drop empty rows.
 
-### Layout
+## How do I find a specific sales order in sales history?
 
-The Sales History view uses a similar layout to the Forecast Dashboard:
+Where: **Sales** → **Sales History** → **Orders** tab.
 
-- **Filter Panel** (left) - Filter by channel, product, etc.
-- **Data Table** (center) - Historical sales by period
-- **Time Controls** (top) - Date range and aggregation
+1. Open the **Orders** tab and set a filter (the tab asks you to "select filters above to view sales orders" until you do).
+2. Narrow by **Date Range**, channel, SKU or **Fulfillment Status**.
+3. Click the **Order #** to open the order.
 
-### Table Columns
+Columns on the Orders tab:
 
-| Column Type | Content |
-|-------------|---------|
-| **Row Identifiers** | SKU, Channel, Collection |
-| **Period Columns** | Sales for each time period |
-| **Totals** | Row and column sums |
+| Column | What it shows |
+|--------|---------------|
+| **Order #** | The order number; links to the order |
+| **Order Date** | When the order was placed |
+| Channel | The sales channel |
+| Location | The location that fulfills it |
+| **Fulfillment Status** | Where the order is in fulfillment |
+| **Ship Date** | When it shipped |
+| **Fulfillment Locations** | Every location that shipped part of it |
+| **External ID** | The order's ID in the source system |
+| **Created**, **Submitted**, **Updated** | Record timestamps |
+| **Manual** | **Yes** if the order was entered by hand rather than synced |
 
-## Viewing Historical Data
+## Can I export sales history?
 
-### Date Range Selection
+Where: **Sales** → **Sales History** → export button in the toolbar (either tab).
 
-<Steps>
-  <Step title="Click Date Range">
-    Open the date range picker
-  </Step>
+Yes. The export on the **Summary** tab downloads the table as shown (grouping, period columns, units or revenue). The export on the **Orders** tab downloads every order that matches the current filters, not just the page on screen.
 
-  <Step title="Select History Period">
-    Choose how far back to look:
-    - Last 30 days
-    - Last 90 days
-    - Last 12 months
-    - Custom range
-  </Step>
+## How do I compare sales to the forecast?
 
-  <Step title="Apply">
-    Data refreshes to show selected period
-  </Step>
-</Steps>
+Where: **Demand** → **Comparison** → **Dataset** → **Actuals (Historical Sales)** and **Prior Year Sales**.
 
-### Aggregation Levels
-
-| Level | Best For |
-|-------|----------|
-| **Daily** | Recent detailed analysis |
-| **Weekly** | Short-term trends |
-| **Monthly** | Long-term patterns |
-| **Quarterly** | Strategic overview |
-
-### Grouping Options
-
-Group historical data by:
-- Channel
-- Collection
-- Product hierarchy
-- SKU
-
-## Filtering Sales History
-
-### By Channel
-
-View sales for specific channels:
-
-1. Open Channel filter
-2. Select channels
-3. See only sales from those channels
-
-### By Product
-
-Focus on specific products:
-
-1. Use Collection or SKU filters
-2. Select products to view
-3. Data shows only selected items
-
-### By Time Period
-
-Beyond date range, filter by:
-- Day of week
-- Specific months
-- Comparable periods (same month last year)
-
-## Comparing to Forecasts
-
-### Side-by-Side View
-
-To compare sales history with forecasts:
-
-1. Go to the Forecast Dashboard
-2. Enable both "Sales History" and "Forecast" metrics
-3. View actual vs. predicted in the same table
-
-### Variance Analysis
-
-| Column | Description |
-|--------|-------------|
-| **Forecast** | What was predicted |
-| **Actual** | What actually sold |
-| **Variance** | Difference (Actual - Forecast) |
-| **Variance %** | Percentage difference |
-
-### Reading Variances
-
-| Variance | Meaning | Action |
-|----------|---------|--------|
-| **Positive** | Sold more than forecast | Good news, may need supply |
-| **Negative** | Sold less than forecast | Review why, check inventory |
-| **Zero/Small** | Forecast was accurate | Forecasting is working well |
-
-## Sales Trends
-
-### Identifying Patterns
-
-Look for:
-
-**Seasonal Patterns:**
-- Higher sales in certain months
-- Holiday peaks
-- Weather-related changes
-
-**Growth/Decline:**
-- Consistent month-over-month changes
-- Year-over-year comparisons
-- Product lifecycle stages
-
-**Channel Patterns:**
-- Channel-specific seasonality
-- Promotional impacts by channel
-- Channel growth rates
-
-### Trend Indicators
-
-| Pattern | What It Looks Like |
-|---------|-------------------|
-| **Growth** | Values increasing over time |
-| **Decline** | Values decreasing over time |
-| **Seasonal** | Regular peaks and valleys |
-| **Steady** | Consistent values period to period |
-
-## Year-over-Year Comparison
-
-Compare current period to same period last year:
-
-### Setting Up YoY View
-
-<Steps>
-  <Step title="Select This Year's Period">
-    Choose the current period you're analyzing
-  </Step>
-
-  <Step title="Add Comparison">
-    Enable "Compare to Prior Year" option
-  </Step>
-
-  <Step title="View Results">
-    See both years' data side by side
-  </Step>
-</Steps>
-
-### YoY Metrics
-
-| Metric | Description |
-|--------|-------------|
-| **This Year** | Current period sales |
-| **Last Year** | Same period prior year |
-| **Change** | Difference in units |
-| **% Change** | Percentage growth/decline |
-
-## Exporting Sales Data
-
-### Export Options
-
-<Steps>
-  <Step title="Set Filters">
-    Configure view with desired filters and date range
-  </Step>
-
-  <Step title="Click Export">
-    Click the **Export** button
-  </Step>
-
-  <Step title="Choose Format">
-    Select:
-    - **CSV** - For data analysis
-    - **Excel** - For formatted reports
-  </Step>
-
-  <Step title="Download">
-    File includes all visible data
-  </Step>
-</Steps>
-
-### Export Uses
-
-- Detailed analysis in Excel
-- Input to other planning tools
-- Sharing with stakeholders
-- Archive for records
-
-## Period Completion Status
-
-Some views show period completion:
-
-| Status | Meaning |
-|--------|---------|
-| **Complete** | Full period, all data in |
-| **In Progress** | Current period, data still coming |
-| **Estimated** | Some data may be delayed |
-
-<Info>
-  Recent periods may show incomplete data if sales are still being processed or synced.
-</Info>
-
-## Integration with Forecasts
-
-Sales history feeds into forecasting:
-
-### How Forecasts Use History
-
-1. **Baseline** - Historical patterns establish baseline
-2. **Trends** - Growth/decline rates inform projections
-3. **Seasonality** - Past seasonal patterns project forward
-4. **Model Training** - Algorithms learn from history
-
-### Data Quality Impact
-
-Better history data = better forecasts:
-
-- Complete data improves accuracy
-- Consistent tracking helps patterns
-- Flagged anomalies prevent distortion
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Regular Review">
-    Check sales history regularly:
-    - Weekly: Recent performance
-    - Monthly: Trend analysis
-    - Quarterly: Strategic review
-  </Accordion>
-
-  <Accordion title="Investigate Anomalies">
-    When you see unusual patterns:
-    - Was there a promotion?
-    - Were there supply issues?
-    - Market event?
-    - Document for future reference
-  </Accordion>
-
-  <Accordion title="Compare Year-over-Year">
-    Use YoY comparisons to:
-    - Understand seasonal patterns
-    - Measure growth
-    - Validate forecasts
-  </Accordion>
-
-  <Accordion title="Export for Analysis">
-    Export data for deeper analysis:
-    - Create charts and visualizations
-    - Perform statistical analysis
-    - Share with leadership
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-### Missing Sales Data
-
-**Possible causes:**
-- Integration sync delay
-- Date range doesn't include data
-- Data wasn't imported
-
-**Solutions:**
-1. Check integration status
-2. Expand date range
-3. Verify data import completed
-
-### Data Doesn't Match Source
-
-**Possible causes:**
-- Returns not processed
-- Timing differences
-- Aggregation method differs
-
-**Solutions:**
-1. Check if returns are included
-2. Verify period definitions match
-3. Confirm aggregation logic
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Forecast Dashboard" icon="chart-line" href="/demand-forecasting/dashboard">
-    Compare history to forecasts
-  </Card>
-  <Card title="Forecast Comparison" icon="code-compare" href="/demand-forecasting/comparison">
-    Compare forecast models
-  </Card>
-  <Card title="Filtering" icon="filter" href="/demand-forecasting/filtering">
-    Learn to filter data effectively
-  </Card>
-  <Card title="Integrations" icon="plug" href="/integrations/setup">
-    Set up sales data sync
-  </Card>
-</CardGroup>
+Sales History shows actuals only. To see actuals next to a forecast, or this year against last year, add **Actuals** and **Prior Year** as datasets on [Forecast Comparison](/demand-forecasting/comparison).

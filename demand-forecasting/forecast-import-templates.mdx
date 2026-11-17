@@ -1,0 +1,58 @@
+---
+title: Forecast import templates
+description: "Where: the agent (Agent → Chat Sessions, or the in-app chat). Upload your own forecast workbook (a downside or upside scenario, a budget, a monthly reforecast) and the agent loads it through a saved import template. Tether remembers the workbook's layout; each run asks which baseline the numbers go into."
+---
+
+# Forecast import templates
+
+A forecast import template tells Tether how to read *your* forecast workbook: which tabs and columns hold which numbers, which retailer column is which channel, and whether each part goes into the consensus forecast or a baseline. Once saved, the agent loads that workbook the same way every time.
+
+This is different from **Demand** → **Admin** → **Upload**, which takes one CSV in Tether's own template (see [Forecast Admin](/demand-forecasting/admin#how-do-i-upload-a-forecast-file-upload-tab)). Use an import template when your file is your own spreadsheet layout and you'll send it again.
+
+## How do I upload my downside forecast scenario?
+
+Where: the agent chat → attach the workbook → ask it to load the forecast.
+
+1. Attach the workbook in the agent chat and say what it is, for example "load our downside scenario".
+2. The agent looks for a saved template that matches the file's tabs and headers (never its file name).
+   - **Matches:** the agent previews the load (see below).
+   - **Close match:** the agent shows you each difference from the saved layout. It won't work around them; confirm whether the layout changed.
+   - **No match:** the agent drafts a new template with you (next section).
+3. The agent asks which baseline the scenario goes into (see [Which baseline will my imported forecast go into?](#which-baseline-will-my-imported-forecast-go-into)).
+4. It shows a preview: where each write goes, how much changed since the last run into the same place, SKUs it will drop because they're gone from a retailer's rows, and every warning. Nothing is written yet.
+5. Approve once. The agent writes the whole file, reads it back, and reports totals per source and per SKU, with every warning.
+
+The preview stops if a tab, header or cell isn't recognized, a channel has changed, or two writes would land on the same channel and destination.
+
+## Can Tether remember my forecast spreadsheet layout?
+
+Where: the agent chat → "save this as a template".
+
+Yes. When no template matches a file you'll send again, ask the agent to save one. It checks the template against your sample file and shows per-source totals, any problems, and the mapping (retailers to channels, and whether each part goes to consensus or a baseline) for you to verify.
+
+- Saving adds a new template version. It becomes active right away only if the person approving has permission to manage the agent's memory; otherwise it's saved as a draft for an admin to approve.
+- Don't save a template for a one-off file.
+- If your layout changes, the agent proposes a revised version instead of patching the file by hand.
+
+## Which baseline will my imported forecast go into?
+
+Where: the agent chat → the baseline question during a run.
+
+You choose on every run. A template fixes whether each part of the file goes to consensus or to a baseline, but not *which* baseline, so one layout can load a downside, an upside and a budget.
+
+- The agent lists your existing baselines and suggests a default.
+- Pick one, or name a new baseline. A new name is created only after you confirm it, so a typo can't silently create a baseline nothing reads.
+
+A baseline is a stored, labelled forecast dataset. Forecast models (such as **Static Baseline**) and [Forecast Comparison](/demand-forecasting/comparison) can read it; baselines are also listed on **Demand** → **Admin** → **Upload**.
+
+## Can I load our forecast workbook the same way every month?
+
+Where: the agent chat → attach this month's file → "load it like last month".
+
+Yes. That's what a saved template is for. Attach the new file each month; the agent matches it to the template, asks for the baseline, previews, and loads it with one approval. The preview flags drift since the last run into the same baseline.
+
+## How do overlays work (one tab replacing part of another)?
+
+Where: set in the template; applied on every run.
+
+A template can layer several tabs onto one channel, for example a monthly tab with a weekly overlay for the next few weeks. Each tab's period totals are spread evenly over the period's days; a later tab replaces the earlier ones on the days it covers, for the SKUs it carries. The channel is written and reconciled once, and no day is written that the file says nothing about.

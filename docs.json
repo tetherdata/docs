@@ -76,6 +76,7 @@
             "group": "Demand Forecasting",
             "pages": [
               "demand-forecasting/dashboard",
+              "demand-forecasting/demand-plan",
               "demand-forecasting/filtering",
               "demand-forecasting/editing",
               "demand-forecasting/model-assignment",
@@ -83,6 +84,8 @@
               "demand-forecasting/sales-history",
               "demand-forecasting/comparison",
               "demand-forecasting/admin",
+              "demand-forecasting/forecast-import-templates",
+              "demand-forecasting/season-plan",
               "demand-forecasting/algorithms"
             ]
           },
@@ -90,7 +93,8 @@
             "group": "Marketing & Promotions",
             "pages": [
               "marketing-promotions/drivers",
-              "marketing-promotions/promotions"
+              "marketing-promotions/promotions",
+              "marketing-promotions/price-calendar"
             ]
           },
           {
@@ -200,6 +204,10 @@
     {
       "source": "/inventory/forecasts-flow",
       "destination": "/supply-planning/overview"
+    },
+    {
+      "source": "/demand-forecasting/import-templates",
+      "destination": "/demand-forecasting/forecast-import-templates"
     },
     {
       "source": "/demand-forecasting/promotions",
