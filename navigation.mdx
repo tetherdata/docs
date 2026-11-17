@@ -1,243 +1,101 @@
 ---
 title: Navigation & interface
-description: Learn how to navigate the Tether interface effectively
+description: "Map of Tether's sidebar and Settings menu. Answers: Where is Settings? Why don't I see a page (Shipments, Finance, Season Plan) in my sidebar? Where did Data issues go? Can we rename, hide or reorder sidebar sections? Where: the left sidebar, its Tether workspace menu, and Settings."
 ---
 
 # Navigation & interface
 
-Tether's interface is designed for efficiency, with intuitive navigation and powerful data management capabilities. This guide helps you understand the layout and key interface patterns.
+Everything in Tether is reached from the left sidebar. There is no top navigation bar. Which sections and pages you see depends on your role, your organization's enabled features, and how Tether has set up your organization's sidebar.
 
-## Main layout
+## What's at the top of the sidebar?
 
-The Tether interface consists of these primary areas:
+**Where:** the top of the left sidebar.
 
-- **Top navigation bar** - Logo, search, and user menu
-- **Sidebar navigation** - Main feature navigation (collapsible)
-- **Main content area** - Where you'll do most of your work
+- **Tether** (workspace menu): click it to see your name and role, switch **Sidebar** between **Full**, **Compact** and **Hidden**, switch **Mode** between **Light** and **Dark**, and open **Profile**, **Theme**, **Settings** or log out.
+- **New chat**: starts a new conversation with the agent.
+- **Search** (`⌘ + K`, or `Ctrl + K` on Windows): opens the [command palette](/tips/command-palette).
 
-## Sidebar navigation
+## Where is Settings?
 
-The sidebar is your primary navigation tool. It can be expanded or collapsed to maximize screen space.
+**Where:** the **Settings** link at the bottom of the sidebar, or **Tether** (workspace menu) → **Settings**.
 
-The sidebar is organized into groups. Which groups you see depends on your role, your permissions, and which features are enabled for your organization — so your sidebar may show a subset of the groups below.
+Settings appears when your role can open at least one settings page beyond **Profile** and **Theme**. It is not limited to Admins: for example, on older organizations Sales Reps can open **Inventory & Forecast** to edit channel availability, so they see Settings too. If you see only Profile and Theme in the workspace menu, your role has no settings pages. See [Settings reference](/administration/settings-reference) for every entry.
 
-| Group | Pages |
-|-------|-------|
-| **Command Center** | A configurable landing dashboard (shown only for organizations with a Command Center preset) |
-| **Agent** | Chat Sessions, Memory |
-| **Demand** | Dashboard, Comparison, Edit Log, Admin |
-| **Marketing & Promotions** | Drivers, Promotions |
-| **Inventory** | Dashboard, Warehouses, Suppliers, Lots |
-| **Transactions** | Transactions |
-| **Supply Chain** | Locations, Policies, Connected Planning, Transfer, Production, Purchase, MRP, Execution plan, Data issues |
-| **Principal Catalog** | Attribute, SKU, SKU Group, BOM |
-| **Catalog** | Collections, SKUs (legacy organizations only) |
-| **Sales** | Sales Channels, Sales History |
+## Sidebar sections and pages
+
+**Where:** the left sidebar. This is the full list; you'll see a subset.
+
+| Section | Pages | Who sees it |
+|---------|-------|-------------|
+| **Overview** | Overview | Only when Tether has set up an Overview for your organization. See [Overview](/analytics/overview). |
+| **Agent** | Chat Sessions, Standing reports | Anyone who can use the agent. |
+| **Demand** | Dashboard, Comparison, Season Plan, Hybrid Demand Plan, Edit Log, Admin | Season Plan and Hybrid Demand Plan only when turned on for your organization. Admin only for forecast admins. |
+| **Marketing & Promotions** | Drivers, Promotions, Price Calendar | Only when Marketing & Promotions is turned on for your organization. |
+| **Finance** | Dashboard, Accounts Payable, Accounts Receivable, General Ledger, Reports, Profitability, Budget & Forecast | Only when turned on for your organization (a preview with sample data). See [Supplier invoices and payments](/finance/overview). |
+| **Inventory** | Dashboard, Locations (or Warehouses), Suppliers, Lots, Custom views, plus any custom views placed here | Locations/Warehouses and Suppliers only on organizations not yet on Locations (see below). Lots only with lot tracking. Custom views for anyone allowed to read them. |
+| **Transactions** | Transactions, Review lists, Shipments | Review lists and Shipments only when turned on for your organization. |
+| **Supply Chain** | Locations, Policies, Connected Planning, Series Explorer, Transfer, Production, Purchase, MRP, Supply Plan | Organizations on the supply network. Planning pages need planning access. Series Explorer only when turned on. |
+| **Products** | SKUs, SKU Groups, BOMs, Attributes | Organizations on the Products catalog (most live customers). Formerly called "Principal Catalog". |
+| **Catalog** | Collections, SKUs | Older organizations not on Products. |
+| **Sales** | Sales Channels, Orders, Sales History | Sales Channels disappears once channels move to Locations. Orders needs sales-order access. |
 
 <Note>
-  Several sidebar labels (such as Locations, Policies, Attribute, SKU, SKU Group, and BOM) can be renamed per organization in **Settings** → **Terminology**, so your labels may differ from the defaults shown here.
+  Labels such as Locations, Policies, SKUs, SKU Groups, BOMs and Attributes follow your organization's names in **Settings** → **Terminology**, so your sidebar may use different words.
 </Note>
 
-<Info>
-  **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not from the sidebar. Only Admins can see the Settings option.
-</Info>
+### What changed from older versions of these docs
 
-### Collapsing the sidebar
+**Where:** the left sidebar and **Settings**.
 
-Click the collapse button at the bottom of the sidebar to minimize it. This gives you more screen space for data-heavy views like the SKU dashboard or forecast tables.
+- **Command Center** is now **Overview**.
+- **Principal Catalog** (Attribute, SKU, SKU Group, BOM) is now **Products** (SKUs, SKU Groups, BOMs, Attributes).
+- **Execution plan** is now **Supply Plan**.
+- **Memory** is no longer in the Agent section; it has **Standing reports** instead.
+- **Data issues** moved out of Supply Chain to **Settings** → **Supply planning** → **Data issues**.
+- **Sales Orders** is now **Sales** → **Orders**.
 
-## Settings navigation
+## Why don't I see a page in my sidebar?
 
-Settings pages open in their own layout with a dedicated sidebar, organized into these groups:
+**Where:** the left sidebar.
 
-| Group | Pages |
-|-------|-------|
-| **General** | Profile, Theme, Terminology, Documents |
-| **Catalog** | Collection Hierarchy, SKU Group Hierarchy, Channel Hierarchy, Working-days Calendars, Lot Tracking |
-| **Forecasting** | Forecast Admin, Inventory & Forecast, Period Management, Forecast Edit Log, Automatic Re-planning |
+A page is missing for one of three reasons:
+
+1. **It isn't turned on for your organization.** Shipments, Review lists, Season Plan, Hybrid Demand Plan, Series Explorer, Lots, Marketing & Promotions and Finance are only shown to organizations that have them. Ask Tether to turn it on.
+2. **Your role can't open it.** For example, Demand → Admin needs forecast-admin access, and Orders needs sales-order access. Ask an Admin to change your role in [Members](/administration/user-access).
+3. **Your organization's sidebar hides or moves it.** See the next section.
+
+Older pages also disappear when your organization moves to Locations: **Inventory → Warehouses** and **Inventory → Suppliers** give way to **Supply Chain → Locations**, and **Sales → Sales Channels** gives way to channel locations.
+
+## Can we rename, hide or reorder sidebar sections?
+
+**Where:** **Settings** → **Navigation** (Tether staff only).
+
+Yes. Tether can set, for your whole organization, which sections, pages and Settings entries are shown, move a page to another section, change their order, and add sections of your own (for example, a section that holds your custom views). Ask Tether to change it. To rename what things are called (for example, "SKU Groups" to "Styles"), an Admin uses **Settings** → **Terminology**.
+
+Each person can also collapse a section by clicking its heading, or switch the whole sidebar to **Compact** or **Hidden** from the **Tether** workspace menu.
+
+## Settings menu
+
+**Where:** **Settings**. Settings has its own sidebar, grouped like this. You see only the entries your role allows.
+
+| Group | Entries |
+|-------|---------|
+| **General** | Profile, Theme, Terminology, Documents, Default Columns |
+| **Catalog** | Collection Hierarchy, SKU Group Hierarchy, Channel Hierarchy, Channel Bindings, Working-days Calendars, Units, Transaction types, Shipments, Sales orders, Production, Lot Tracking |
+| **Forecasting** | Forecast Admin, Inventory & Forecast, Period Management, Forecast Edit Log, Order Grouping, Automatic Re-planning |
 | **Integrations** | Data Ingestion, BigQuery, API Keys, MCP |
-| **Agent** | Agent Templates, Agent Files |
+| **Agent** | Agent Settings, Agent Files |
 | **Access** | Channel Access, Members |
-| **Administration** | Setup & Health, Principal Setup & Health, ERP SKU ID Sync, Mapper Config, Data Management, Feature Flags, Organizations |
+| **Administration** | Setup & Health, Principal Setup & Health, ERP SKU ID Sync, Mapper Config, Data Management, Supply planning, Reconciliation, Navigation, Feature Flags, Inventory Sources, Organizations |
 
-Like the main sidebar, settings pages are gated by role and permissions — most users see only a subset of these pages.
+What each entry does is in [Settings reference](/administration/settings-reference).
 
-## Top navigation bar
+## Tabs on a page
 
-The top bar provides:
+Many pages split into tabs, and the selected tab is kept in the URL, so you can bookmark or share a link to it. For example, **Inventory** → **Dashboard** has **Inventory**, **History**, **Counts**, **Approvals** and **My requests**. Counts, Approvals and My requests only show when your role can count stock, approve adjustments or propose them.
 
-- **Logo/Home**: Click to return to the main dashboard
-- **Search**: Quick access to the command palette (also `Cmd+K` / `Ctrl+K`)
-- **User Menu**: Access settings (Admin only), view your role, and log out
+## Tables
 
-## Page layouts
+**Where:** the **Table Settings** button (or sliders icon) above most tables.
 
-### Tab-based pages
-
-Many pages use tabs to organize related content. For example, the Inventory page has:
-
-- **Inventory** - Current stock levels across warehouses
-- **History** - Inventory changes and adjustments over time
-- **Approvals** - Adjustment requests awaiting review
-- **My requests** - Adjustment requests you've submitted
-
-<Tip>
-  Tab selection is preserved in the URL, so you can bookmark or share links to specific tabs.
-</Tip>
-
-### Detail pages
-
-When you click into a specific item (SKU, warehouse, transaction, etc.), you'll see a detail page with:
-
-- **Header**: Name, status, and quick actions
-- **Tabs**: Different aspects of the item
-- **Content Area**: Forms, tables, or visualizations
-
-## Data tables
-
-Tether uses powerful data tables throughout the application. Here's how to use them effectively:
-
-### Column features
-
-| Feature | How to Use |
-|---------|------------|
-| **Sort** | Click column header to sort ascending/descending |
-| **Resize** | Drag column borders to adjust width |
-| **Reorder** | Drag column headers to rearrange |
-| **Pin** | Right-click header to pin columns left or right |
-| **Hide** | Use column visibility controls to show/hide columns |
-
-### Inline editing
-
-Many tables support inline editing:
-
-1. Click on an editable cell (indicated by subtle highlighting on hover)
-2. Make your changes
-3. Press `Enter` to save or `Escape` to cancel
-4. Changes are saved automatically
-
-<Warning>
-  Some fields may require specific formats (dates, numbers, etc.). Invalid entries will show an error.
-</Warning>
-
-### Filtering
-
-Tables typically include a filter panel on the left side:
-
-- **Text Search**: Type to search across visible columns
-- **Multi-Select Filters**: Check/uncheck values to filter
-- **Tri-State Selection**: Some filters support Include/Exclude/Indifferent states
-- **Date Ranges**: Select start and end dates for time-based filtering
-
-### Row selection
-
-- **Single Select**: Click a row to select it
-- **Multi-Select**: Hold `Cmd` (Mac) or `Ctrl` (Windows) and click multiple rows
-- **Range Select**: Click first row, hold `Shift`, click last row
-
-## Modal dialogs
-
-Modals appear for:
-
-- Creating new items
-- Editing details
-- Confirming actions
-- Viewing additional information
-
-### Modal controls
-
-- **Close**: Click the X button or press `Escape`
-- **Save**: Click the primary action button (usually blue)
-- **Cancel**: Click Cancel or close the modal
-
-<Info>
-  Some modals have multiple steps. Look for "Next" and "Back" buttons to navigate.
-</Info>
-
-## Filters & saved views
-
-### Using filters
-
-1. Open the filter panel (usually on the left side of data tables)
-2. Expand filter sections by clicking the headers
-3. Select values to include or exclude
-4. Results update automatically
-
-### Tri-state filtering
-
-Some filters support three states:
-
-| State | Icon | Meaning |
-|-------|------|---------|
-| **Include** | ✓ | Show only items matching this value |
-| **Exclude** | ✗ | Hide items matching this value |
-| **Indifferent** | - | Don't filter by this value |
-
-### Saving views
-
-If you frequently use the same filter combination:
-
-1. Set up your desired filters
-2. Click **Save View**
-3. Enter a name for the view
-4. Access saved views from the dropdown
-
-## Command palette
-
-The command palette provides quick access to navigation and search. It lists every page you can see in the main sidebar and the settings sidebar (respecting your permissions and your organization's terminology), plus a few pages that live outside both navs, such as Location Groups and Sales Orders.
-
-<Steps>
-  <Step title="Open Command Palette">
-    Press `Cmd+K` (Mac) or `Ctrl+K` (Windows)
-  </Step>
-  <Step title="Search">
-    Type to search for:
-    - Pages and navigation items
-    - SKUs by name or code
-    - Warehouses
-    - Suppliers
-    - Transactions
-  </Step>
-  <Step title="Navigate">
-    Use arrow keys to select, `Enter` to navigate
-  </Step>
-</Steps>
-
-## Responsive design
-
-Tether works on various screen sizes:
-
-- **Desktop**: Full sidebar and expanded data tables
-- **Tablet**: Collapsible sidebar, scrollable tables
-- **Mobile**: Simplified navigation, stacked layouts
-
-<Tip>
-  For the best experience with data-heavy features like forecasting, use a desktop or large tablet display.
-</Tip>
-
-## Keyboard shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Cmd/Ctrl + K` | Open command palette |
-| `Escape` | Close modal or cancel editing |
-| `Enter` | Confirm/save in forms |
-| `Tab` | Move to next field |
-| `Shift + Tab` | Move to previous field |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="User Roles" icon="users" href="/roles-permissions">
-    Understand what you can access based on your role
-  </Card>
-  <Card title="Command Palette" icon="keyboard" href="/tips/command-palette">
-    Master quick navigation with keyboard shortcuts
-  </Card>
-  <Card title="Supply Planning Overview" icon="clipboard-list" href="/supply-planning/overview">
-    See how plans are generated and reviewed
-  </Card>
-  <Card title="Agent Chat" icon="message" href="/agent/chat">
-    Work with Tether's AI agent from anywhere in the app
-  </Card>
-</CardGroup>
+**Table Settings** holds the table's options: which columns show, grouping, row density, **Show all filters**, **Hide 0s**, and **Export CSV**, depending on the table. See [Exports](/tips/exports) and [Keyboard shortcuts](/tips/shortcuts).

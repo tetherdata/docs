@@ -1,286 +1,89 @@
 ---
-title: User Roles & Permissions
-description: Understanding access levels and permissions in Tether
+title: User roles & permissions
+description: "The roles in Tether (Admin, Sales Rep, Receiving, Tether Admin) and what each can do. Answers: What can the Receiving role do? Why can't I see the Approvals tab? Why don't I see Settings? How do I restrict a sales rep to certain channels? Where: Settings → Access → Members (roles) and Settings → Access → Channel Access."
 ---
 
-# User Roles & Permissions
+# User roles & permissions
 
-Tether uses role-based access control (RBAC) to ensure users have appropriate access to features and data. This guide explains the different roles and their capabilities.
+Each person in your organization has one or more roles. A role is a bundle of permissions, and permissions decide which sidebar pages, tabs and buttons you see. When you lack a permission, Tether hides the control instead of showing a button that would fail.
 
-## Available Roles
+## What roles are there?
 
-Tether has three user roles:
+**Where:** **Settings** → **Access** → **Members**, in the **Role** column.
 
-<CardGroup cols={3}>
-  <Card title="Admin" icon="user-shield">
-    Full access to all features, settings, and data management capabilities.
-  </Card>
-  <Card title="Sales Rep" icon="user">
-    Focused access to sales-related features with read-only access to most areas.
-  </Card>
-  <Card title="Tether Admin" icon="shield">
-    System-level access with all Admin capabilities plus internal configuration tools. Typically reserved for Tether support staff.
-  </Card>
-</CardGroup>
+| Role | Who it's for | What it can do |
+|------|--------------|----------------|
+| **Admin** | Planners, operations and inventory managers, whoever runs Tether for your team | Works across the app: products, inventory, demand, supply planning, orders, integrations, and most of Settings, including inviting people and changing roles. |
+| **Sales Rep** | Sales and account teams | Sales-focused access: sales history, demand forecasts and channel information. Can be limited to certain channels with [channel access rules](#how-do-i-restrict-a-sales-rep-to-certain-channels). |
+| **Receiving** | Warehouse staff who check in deliveries | Receives inbound orders and little else. See [What can the Receiving role do?](#what-can-the-receiving-role-do) |
+| **Tether Admin** | Tether's own support staff | Everything an Admin can do, plus internal setup pages. You can't invite someone as Tether Admin. |
 
-## Permission Matrix
+You can invite people as **Admin**, **Sales Rep** or **Receiving**. A person can hold more than one role. The exact permissions in each role are managed by Tether; if a role needs to see something it can't, ask Tether.
 
-### Feature Access by Role
+## What can the Receiving role do?
 
-| Feature | Admin | Sales Rep | Tether Admin |
-|---------|:-----:|:---------:|:------------:|
-| **Product Catalog** | | | |
-| View SKUs | ✓ | ✓ | ✓ |
-| Create/Edit SKUs | ✓ | - | ✓ |
-| Manage Collections | ✓ | - | ✓ |
-| Configure Dimensions | ✓ | - | ✓ |
-| **Inventory** | | | |
-| View Inventory Dashboard | ✓ | - | ✓ |
-| View Inventory Alerts | ✓ | - | ✓ |
-| View Inventory History | ✓ | - | ✓ |
-| Create/Edit Warehouses | ✓ | - | ✓ |
-| Manage Suppliers | ✓ | - | ✓ |
-| **Demand Forecasting** | | | |
-| View Forecasts | ✓ | ✓ | ✓ |
-| Edit Forecasts | ✓ | Limited | ✓ |
-| View Sales History | ✓ | ✓ | ✓ |
-| Forecast Administration | ✓ | - | ✓ |
-| Manage Promotions | ✓ | - | ✓ |
-| **Transactions** | | | |
-| View Transactions | ✓ | - | ✓ |
-| Create/Edit Transactions | ✓ | - | ✓ |
-| **Channels** | | | |
-| View Channels | ✓ | ✓ | ✓ |
-| Create/Edit Channels | ✓ | - | ✓ |
-| **Integrations** | | | |
-| View Integrations | ✓ | - | ✓ |
-| Configure Integrations | ✓ | - | ✓ |
-| **Supply Planning** | | | |
-| View Planning Pages | ✓ | - | ✓ |
-| Run Plans & Manage Recommendations | ✓ | - | ✓ |
-| **Analytics** | | | |
-| View Metrics | ✓ | ✓ | ✓ |
-| **Administration** | | | |
-| Manage Users | ✓ | - | ✓ |
-| Configure Settings | ✓ | - | ✓ |
-| Mapper Configuration | - | - | ✓ |
-| Data Management | - | - | ✓ |
+**Where:** **Transactions** → **Transactions**.
 
-## Admin Role
+The Receiving role is a locked-down role for people who record what physically arrives. It can:
 
-Admins have complete access to Tether's functionality.
+- Open an inbound order (such as a purchase order) and set its line items.
+- Enter the quantities received and complete the receipt.
 
-### Admin Capabilities
+It can't delete or archive orders, change costs or add cost items, adjust inventory directly, or act on the supply plan.
 
-<AccordionGroup>
-  <Accordion title="Product Management">
-    - Create, edit, and archive SKUs
-    - Manage collections and their settings
-    - Configure dimensions and values
-    - Set up product hierarchies
-    - Use the SKU generator for bulk creation
-  </Accordion>
+On organizations that record stock movements in Tether's movement ledger, the **Transactions** page has a **Receiving** tab. Someone who can receive but can't create orders opens straight onto **Receiving** and sees only that tab, without the order list, **Import orders** or **New order**.
 
-  <Accordion title="Inventory Control">
-    - View and manage inventory across all warehouses
-    - Monitor and respond to inventory alerts
-    - Review and accept supply planning recommendations
-    - Create and configure warehouses
-    - Add and manage suppliers
-    - Configure lead times and fulfillment rules
-  </Accordion>
+## Why can't I see the Approvals tab?
 
-  <Accordion title="Demand Planning">
-    - View and edit demand forecasts
-    - Configure forecast models
-    - Upload bulk forecast data
-    - Manage forecast versions
-    - Create and manage promotions
-    - Access the edit log for audit trails
-  </Accordion>
+**Where:** **Inventory** → **Dashboard** → **Approvals** tab.
 
-  <Accordion title="Transaction Management">
-    - Create purchase orders, production orders, and transfers
-    - Submit and track transactions
-    - Manage transaction workflows
-    - View transaction analytics
-  </Accordion>
+Tabs on the inventory page depend on what your role can do:
 
-  <Accordion title="System Administration">
-    - Add and remove users
-    - Assign roles to users
-    - Configure channel access rules
-    - Customize terminology
-    - Set up and manage integrations
-    - Configure inventory forecast settings
-  </Accordion>
-</AccordionGroup>
+| Tab | Shown when you can… |
+|-----|---------------------|
+| **Inventory**, **History** | read inventory |
+| **Counts** | count stock, and your organization uses the movement ledger |
+| **Approvals** | approve inventory adjustments. Approvers' own changes apply immediately. |
+| **My requests** | propose inventory adjustments that wait for an approver |
 
-### When to Use Admin Role
+If you need to approve adjustments, ask an Admin to give you a role that includes approval, or ask Tether.
 
-Assign Admin access to:
+### The stock-counting view
 
-- Operations managers
-- Supply chain planners
-- Inventory managers
-- System administrators
-- Team leads who need full data access
+Some organizations give warehouse counters a stripped-down inventory view. With it, the inventory table shows only what's needed to count, and **Upload Inventory** is hidden, so counts go through review instead of overwriting on-hand directly. Ask Tether if you want it for a role.
 
-## Sales Rep Role
+## Why don't I see Settings?
 
-Sales Reps have focused access to sales-related features.
+**Where:** the **Settings** link at the bottom of the sidebar, or the **Tether** workspace menu.
 
-### Sales Rep Capabilities
+Settings appears when your role can open at least one settings page besides **Profile** and **Theme**. It isn't only for Admins: each Settings entry has its own permission, so different roles see different entries. If you see no Settings link, your role has no settings pages; you can still change **Profile** and **Theme** from the **Tether** workspace menu.
 
-<AccordionGroup>
-  <Accordion title="Product Viewing">
-    - View SKUs and product information
-    - Browse collections
-    - Search the product catalog
+## Why can't I see a sidebar page?
 
-    **Cannot**: Create, edit, or archive products
-  </Accordion>
+Your role, your organization's enabled features, and your organization's sidebar setup all decide what shows. See [Why don't I see a page in my sidebar?](/navigation#why-dont-i-see-a-page-in-my-sidebar) for the full list of sections and who sees each.
 
-  <Accordion title="Sales Data Access">
-    - View sales history
-    - Access demand forecasts (view and limited editing)
-    - See channel information
-    - View relevant metrics
+## How do I change someone's role?
 
-    **Cannot**: Configure forecasts, manage promotions, or access admin settings
-  </Accordion>
+**Where:** **Settings** → **Access** → **Members** → **Members** tab → the person's **Role** cell.
 
-  <Accordion title="Channel Access">
-    Sales Reps may have access restricted to specific channels based on access rules configured by an Admin.
-  </Accordion>
-</AccordionGroup>
+Admins click the role to open **Edit roles**, tick or untick roles under **Assignable roles**, and click **Save**. Changing your own roles asks you to confirm first, and Tether won't let you remove the last Admin. See [Members and invitations](/administration/user-access) for inviting and removing people.
 
-### When to Use Sales Rep Role
+## How do I restrict a sales rep to certain channels?
 
-Assign Sales Rep access to:
-
-- Sales team members
-- Account managers
-- Business development representatives
-- External partners who need limited access
-
-## Channel Access Rules
-
-Beyond roles, Admins can configure granular channel access to control which data users can see.
-
-### How Channel Access Works
-
-1. **Admin creates access rules** in Settings (via user menu) → User Access
-2. **Rules define** which channels and/or collections a user can access
-3. **Sales Reps** see only data for their assigned channels
-4. **Admins** always have access to all channels
-
-### Example Access Configuration
-
-| User | Role | Channel Access |
-|------|------|----------------|
-| Sarah | Admin | All channels |
-| Mike | Sales Rep | Shopify US, Shopify CA |
-| Lisa | Sales Rep | Amazon US |
-| Tom | Sales Rep | Wholesale |
-
-### Configuring Channel Access
+**Where:** **Settings** → **Access** → **Channel Access** → click the person → **Access Rules** → **Add Rule**.
 
 <Steps>
-  <Step title="Navigate to Settings">
-    Click your **profile avatar** in the top-right corner, select **Settings**, then click the **User Access** card
+  <Step title="Check channel access is on">
+    Open **Settings** → **Access** → **Channel Access**. If it says "All users can see all channels (no restrictions)", channel access isn't turned on for your organization. Ask Tether to turn it on.
   </Step>
-  <Step title="Select User">
-    Find the user in the list and click to edit
+  <Step title="Open the person">
+    Click the person in the list. Their **User Access** page shows their role and email.
   </Step>
-  <Step title="Configure Access Rules">
-    - Select which channels the user can access
-    - Optionally restrict to specific collections
-    - Preview effective permissions
-  </Step>
-  <Step title="Save Changes">
-    Click **Save** to apply the access rules
+  <Step title="Add a rule">
+    Under **Access Rules**, click **Add Rule**. For **Criteria Type**, pick **Specific Channels** (choose channels one by one) or **Hierarchy Level** (grant every channel under a level of your channel hierarchy, such as a region). Click **Create Rule**.
   </Step>
 </Steps>
 
-## Navigation Differences
-
-### Admin Sidebar
-
-Admins with all features enabled see the full navigation menu:
-
-```
-├── Agent (Chat Sessions, Memory)
-├── Demand (Dashboard, Comparison, Edit Log, Admin)
-├── Marketing & Promotions (Drivers, Promotions)
-├── Inventory (Dashboard, Warehouses, Suppliers, Lots)
-├── Transactions
-├── Supply Chain (Locations, Policies, Connected Planning, Transfer, Production,
-│                 Purchase, MRP, Execution plan, Data issues)
-├── Principal Catalog (Attribute, SKU, SKU Group, BOM)
-└── Sales (Sales Channels, Sales History)
-```
-
-<Info>
-  **Settings** is accessed from the user menu (profile avatar) in the top-right corner, not the sidebar. Only Admins see the Settings option in their user menu. Sidebar groups appear only when the corresponding feature is enabled for your organization, and several labels can be renamed in **Settings** → **Terminology**.
-</Info>
-
-### Sales Rep Sidebar
-
-Sales Reps see a simplified menu limited to sales-related pages, such as the Demand dashboard, forecast comparison, sales history, and catalog viewing.
-
-<Info>
-  The navigation automatically adjusts based on the user's role and permissions. You'll only see menu items you have access to.
-</Info>
-
-## Best Practices
-
-### Role Assignment
-
-<CardGroup cols={2}>
-  <Card title="Principle of Least Privilege" icon="shield-check">
-    Assign the minimum role needed for each user's job function. Start with Sales Rep and upgrade to Admin only if needed.
-  </Card>
-  <Card title="Regular Review" icon="clock">
-    Periodically review user roles and access to ensure they're still appropriate as team members change positions.
-  </Card>
-</CardGroup>
-
-### Access Control Tips
-
-1. **Document your access rules** - Keep a record of who has access to what and why
-2. **Use channel access** - Even for Admins, consider using channel access to prevent accidental changes to unrelated data
-3. **Onboard carefully** - When adding new users, start with restricted access and expand as needed
-
-## Checking Your Access
-
-To see your current role and permissions:
-
-1. Click your **user avatar** in the top-right corner
-2. Your role badge is displayed next to your name
-3. The navigation menu shows only features you can access
-
-## Need More Access?
-
-If you need access to features you can't see:
-
-1. Contact your Tether administrator
-2. Explain what you need access to and why
-3. They can adjust your role or channel access as appropriate
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="User Access Management" icon="users-gear" href="/administration/user-access">
-    Learn how to manage users and configure access (Admin only)
-  </Card>
-  <Card title="Quick Start Guide" icon="rocket" href="/quickstart">
-    Get started with Tether's core features
-  </Card>
-  <Card title="Navigation guide" icon="compass" href="/navigation">
-    See which sections your role can reach
-  </Card>
-  <Card title="Inventory adjustments" icon="clipboard-check" href="/inventory/adjustments">
-    See how adjust and approve permissions differ
-  </Card>
-</CardGroup>
+<Warning>
+  Once channel access is on, sales reps see only the channels they've been granted. A sales rep with no rules sees no channels.
+</Warning>
