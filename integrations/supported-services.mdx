@@ -1,0 +1,307 @@
+---
+title: "Supported services"
+description: "Which systems can Tether connect to? Where: Settings → Integrations → Data Ingestion → New Integration. Every service Tether connects to directly (Shopify, NetSuite, Snowflake, BigQuery, Redshift, TrackStar, ShipBob, SAP Business One and more), what each one syncs, and the credential fields you fill in for it — plus the systems Tether does not connect to directly (Cin7, Amazon Seller Central, TikTok Shop, QuickBooks, Xero)."
+---
+
+# Supported services
+
+Tether connects directly to the 19 services on this page. Each section lists what the service syncs into Tether (its **capabilities**, or data types) and the credential fields you fill in when you create the integration, using the labels you see on screen.
+
+To connect one, go to **Settings → Integrations → Data Ingestion** and click **New Integration**. See [Integration setup](/integrations/setup) for the steps.
+
+<Note>
+A service's capabilities are what it *can* sync. Each integration turns on only the capabilities you choose, and Tether decides which ones fit your setup. Fields marked *optional* can be left blank.
+</Note>
+
+## Which systems does Tether connect to?
+
+| Service | Kind of system | What it syncs |
+|---------|----------------|---------------|
+| [Shopify](#shopify) | E-commerce store | Sales Orders, Products, Warehouse Inventory, Fulfillment |
+| [NetSuite](#netsuite) | ERP | Products, Sales History, Warehouse Inventory, Purchase Orders, Transfer Orders |
+| [SAP Business One](#sap-business-one) | ERP | Products, Sales Orders, Purchase Orders, Transfer Orders, Inbound Shipments |
+| [Acumatica](#acumatica) | ERP | Products, Sales Orders, Sales History, Warehouse Inventory |
+| [Fishbowl](#fishbowl) | Inventory / ERP | Sales History, Warehouse Inventory |
+| [Apparel Magic](#apparel-magic) | Apparel ERP | Products, Sales Orders, Purchase Orders, Warehouse Inventory |
+| [Brewman](#brewman) | Brewery WMS | Sales Orders |
+| [Snowflake](#snowflake) | Data warehouse | Products, Sales History, Warehouse Inventory, Purchase Orders, Transfer Orders, Bills of Materials, Item Sources, Baselines, History Series |
+| [Snowflake (Fullwell)](#snowflake-fullwell) | Data warehouse (Amazon shared view) | Sales History |
+| [Google BigQuery](#google-bigquery) | Data warehouse | Sales History, Products, Channels, Pricing, Pending Sales, Sales Forecast, Forecast Versions, History Series |
+| [Amazon Redshift](#amazon-redshift) | Data warehouse | Sales Orders, History Series |
+| [TrackStar](#trackstar) | Hub for many 3PLs and WMSs | Warehouse Inventory, Sales Orders, Purchase Orders, Transfer Orders, Inbound Shipments |
+| [ShipBob](#shipbob) | 3PL / fulfillment network | Warehouse Inventory, Inbound Shipments |
+| [UNIS](#unis) | 3PL (WISE WMS) | Warehouse Inventory, Inbound Shipments |
+| [Floship](#floship) | 3PL | Warehouse Inventory |
+| [Snapfulfil](#snapfulfil) | WMS run by 3PLs | Warehouse Inventory |
+| [Skladon](#skladon) | 3PL (MySCLAD) | Products, Warehouse Inventory, Inbound Shipments |
+| [Flexport](#flexport) | Freight forwarder | Inbound Shipments |
+| [SPS Commerce](#sps-commerce) | EDI network | Sales Orders (retailer purchase orders) |
+
+## Systems Tether does not connect to directly
+
+Tether has **no direct connection** to these systems today:
+
+- **Cin7**
+- **Amazon Seller Central / Amazon SP-API** — Amazon data can reach Tether through [Snowflake (Fullwell)](#snowflake-fullwell) or a [TrackStar](#trackstar) connector such as Fulfillment by Amazon (`fba`).
+- **TikTok Shop**
+- **QuickBooks**
+- **Xero**
+
+If your data lives in one of these, it can still reach Tether through another connection — a data warehouse you already sync (Snowflake, BigQuery, Redshift), a TrackStar connector, or a file you upload. Ask Tether support which route fits.
+
+## Shopify
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Shopify**.
+
+**Syncs:** Sales Orders, Products, Warehouse Inventory, and Fulfillment. Fulfillment is delivered by Shopify webhooks as orders are created, fulfilled, cancelled or refunded, so it needs no schedule; Sales Orders and Fulfillment can't both be on for one integration. A Shopify Fulfillment integration can also use **Inventory write-back** to publish a Tether warehouse's sellable stock as the store's Shopify availability.
+
+| Field | Notes |
+|-------|-------|
+| **Shop Domain** | Your `mystore.myshopify.com` domain |
+| **Access Token** | The Admin API access token (starts `shpat_`) |
+| **API Version** | *Optional.* For example `2024-01` |
+| **Shipping Confirmation Email** | *Optional.* `store_sends` (your store sends its own shipping email) or `shopify_sends` (Shopify emails the customer for each fulfillment) |
+| **Client Secret** | Shown only when **Fulfillment** is selected. The app's client secret (starts `shpss_`) |
+
+## NetSuite
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → NetSuite**.
+
+**Syncs:** Products, Sales History, Warehouse Inventory, Purchase Orders, Transfer Orders.
+
+| Field | Notes |
+|-------|-------|
+| **Account ID** | Your NetSuite account number |
+| **Consumer Key** / **Consumer Secret** | From the integration record in NetSuite |
+| **Token ID** / **Token Secret** | The access token for the integration user (token-based authentication) |
+| **RESTlet Script ID** / **RESTlet Deploy ID** | *Optional.* Only if Tether reads through a RESTlet |
+| **Query Config (JSON)** | *Optional.* Filters Tether applies when reading, set up with Tether |
+
+When a NetSuite token expires or is rotated, update it in the integration's **Credentials** card — you don't need a new integration. See [Integration setup](/integrations/setup#how-do-i-update-an-expired-token-or-password).
+
+## SAP Business One
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → SAP Business One**.
+
+**Syncs:** Products, Sales Orders, Purchase Orders, Transfer Orders, Inbound Shipments. Tether reads SAP Business One through its Service Layer.
+
+| Field | Notes |
+|-------|-------|
+| **Service Layer URL** | The Service Layer address |
+| **Company Database** | The company database name |
+| **Username** / **Password** | A Service Layer user |
+| **Host Auth Key** | *Optional* |
+| **Tether Reference Field** | *Optional.* A user-defined field, for example `U_TetherRef` |
+| **First Read: Changed Since (YYYY-MM-DD)** | *Optional.* How far back the first sync reads |
+| **Sales: First Read Changed Since (YYYY-MM-DD)** | *Optional* |
+| **Sales: Invoices Dated From (YYYY-MM-DD)** | *Optional* |
+| **Sales: Customers Read Elsewhere (BP codes, comma-separated)** | *Optional.* Business partner codes, for example `C1003, C1034` |
+
+## Acumatica
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Acumatica**.
+
+**Syncs:** Products, Sales Orders, Sales History, Warehouse Inventory.
+
+| Field | Notes |
+|-------|-------|
+| **Base URL** | For example `https://company.acumatica.com` |
+| **Entity Version** | For example `24.200.001` |
+| **Client ID** / **Client Secret** | From the connected application in Acumatica |
+| **Username** / **Password** | An Acumatica user |
+| **Minimum Invoice Date** | *Optional.* For example `2025-01-01` |
+
+## Fishbowl
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Fishbowl**.
+
+**Syncs:** Sales History, Warehouse Inventory. Fishbowl is self-hosted, so the server must be reachable from the internet.
+
+| Field | Notes |
+|-------|-------|
+| **Base URL** | Your Fishbowl server address |
+| **Username** / **Password** | A Fishbowl user |
+| **Integrated App ID** | The integrated app registered in Fishbowl |
+| **Integrated App Name** / **Integrated App Description** | *Optional* |
+| **Sales History Start Date** | *Optional* |
+
+## Apparel Magic
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Apparel Magic**.
+
+**Syncs:** Products, Sales Orders, Purchase Orders, Warehouse Inventory.
+
+| Field | Notes |
+|-------|-------|
+| **Company URL** | Your Apparel Magic company address |
+| **API Token** | From Apparel Magic |
+| **Days of invoices each run reads** | *Optional.* For example `45` |
+
+## Brewman
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Brewman**.
+
+**Syncs:** Sales Orders. Brewman is Premier Systems' brewery WMS.
+
+| Field | Notes |
+|-------|-------|
+| **API Token** | From Brewman |
+| **Tenant ID** | Your Brewman tenant |
+| **Base URL** | *Optional* |
+
+## Snowflake
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Snowflake**.
+
+**Syncs:** Products, Sales History, Warehouse Inventory, Purchase Orders, Transfer Orders, Bills of Materials, Item Sources, Baselines, and History Series (dated figures). Tether reads tables you prepare in your Snowflake account.
+
+| Field | Notes |
+|-------|-------|
+| **Account Identifier** | For example `XXXXXXX-XXXXXXX` |
+| **Username** / **Password** | A Snowflake user |
+| **Database** | For example `MY_DATABASE` |
+| **Schema** | For example `PUBLIC` |
+| **Role** | A role that can read the tables |
+| **Warehouse** | The Snowflake compute warehouse, for example `COMPUTE_WH` |
+| **Table Prefix** | *Optional.* Prefix of the tables Tether reads, for example `TETHER__` |
+| **Sales Start Date** | *Optional.* For example `2025-01-01` |
+| **Units Per Pallet Column** / **Pallet Unit Column** | *Optional.* Columns holding pallet pack figures |
+
+## Snowflake (Fullwell)
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Snowflake (Fullwell)**.
+
+**Syncs:** Sales History, from a Pattern-managed Amazon shared view in Snowflake.
+
+| Field | Notes |
+|-------|-------|
+| **Account** | Snowflake account |
+| **Username** / **Password** | A Snowflake user |
+| **Database** / **Schema** / **Role** / **Warehouse** | Where the shared view lives |
+| **Sales View Name** | *Optional* |
+| **Sales Start Date** | *Optional* |
+
+## Google BigQuery
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Google BigQuery**.
+
+**Syncs:** Sales History, Products, Channels, Pricing, Pending Sales, Sales Forecast, Forecast Versions, History Series.
+
+| Field | Notes |
+|-------|-------|
+| **GCP Project ID** | For example `my-gcp-project` |
+| **Dataset** | For example `sales_data` |
+| **Table** | For example `actuals` |
+| **Service Account Key (JSON)** | Paste the service account's JSON key |
+| **Sales Forecast Version** | *Optional.* Leave empty to use the latest version |
+
+## Amazon Redshift
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Amazon Redshift**.
+
+**Syncs:** Sales Orders, History Series.
+
+| Field | Notes |
+|-------|-------|
+| **Cluster Endpoint** | For example `my-cluster.xxx.us-east-1.redshift.amazonaws.com` |
+| **Port** | *Optional.* Default `5439` |
+| **Database** | For example `analytics` |
+| **Username** / **Password** | A Redshift user |
+| **Orders Table** / **Line Items Table** | The tables holding orders and their lines |
+
+## TrackStar
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → TrackStar**.
+
+**Syncs:** Warehouse Inventory, Sales Orders, Purchase Orders, Transfer Orders, Inbound Shipments. TrackStar is a hub that connects to many 3PLs, warehouse management systems and carts, so it is how Tether reads most 3PLs that aren't on this page.
+
+| Field | Notes |
+|-------|-------|
+| **Access Token** | The TrackStar access token for your connection |
+| **Trackstar Connector** | *Optional.* Which TrackStar connector the connection uses, for example `fba` |
+| **API Mode** | *Optional.* `wms` (a warehouse) or `cart` (a store) |
+| **Channel Name** | *Optional.* The sales channel to file orders under, for example `Faire` |
+
+## ShipBob
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → ShipBob**.
+
+**Syncs:** Warehouse Inventory and Inbound Shipments. Tether also tells ShipBob about inbound orders as warehouse receiving orders, then reads their counts back.
+
+| Field | Notes |
+|-------|-------|
+| **Access Token** | From ShipBob |
+| **Channel ID** | *Optional* |
+| **API Base URL** | *Optional* |
+| **History Start Date** | *Optional* |
+
+## UNIS
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → UNIS**.
+
+**Syncs:** Warehouse Inventory and Inbound Shipments, read directly from UNIS's WISE WMS.
+
+| Field | Notes |
+|-------|-------|
+| **Username** / **Password** | Your UNIS API user |
+| **Company ID** / **Customer ID** | Your UNIS account identifiers |
+| **Facility IDs** | The UNIS facilities holding your stock, comma-separated |
+| **Case Pack Unit** | The UNIS unit that holds a case, for example `Master Carton` |
+| **API Base URL** | *Optional* |
+
+## Floship
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Floship**.
+
+**Syncs:** Warehouse Inventory (stock per product per warehouse, in eaches).
+
+| Field | Notes |
+|-------|-------|
+| **API Token** | From Floship |
+| **Warehouse IDs** | The Floship warehouses to read |
+| **API Base URL** | *Optional* |
+
+## Snapfulfil
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Snapfulfil**.
+
+**Syncs:** Warehouse Inventory, read from your 3PL's Snapfulfil WebAPI.
+
+| Field | Notes |
+|-------|-------|
+| **WebAPI Base URL** | Your tenant's WebAPI address |
+| **Username** / **Password** | A WebAPI user |
+
+## Skladon
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Skladon**.
+
+**Syncs:** Products, Warehouse Inventory, Inbound Shipments (receivings, with delivery note and container number). One integration per Skladon e-shop.
+
+| Field | Notes |
+|-------|-------|
+| **E-shop API Key** | The API key for your e-shop |
+| **Username (email)** / **Password** | Your Skladon login |
+| **Location Code** | *Optional* |
+| **API Base URL** | *Optional* |
+
+## Flexport
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → Flexport**.
+
+**Syncs:** Inbound Shipments — how each ocean container Flexport books for you is travelling.
+
+| Field | Notes |
+|-------|-------|
+| **API Key** | From Flexport |
+| **API Base URL** | *Optional* |
+
+## SPS Commerce
+
+Where: **Settings → Integrations → Data Ingestion → New Integration → SPS Commerce**.
+
+**Syncs:** Sales Orders — the purchase orders retailers send you over EDI, picked up from your SPS Commerce mailbox.
+
+| Field | Notes |
+|-------|-------|
+| **Client ID** / **Client Secret** | Your SPS Commerce Transaction API credentials |

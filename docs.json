@@ -128,15 +128,29 @@
           {
             "group": "AI Agent",
             "pages": [
-              "agent/chat"
+              "agent/chat",
+              "agent/what-the-agent-can-do",
+              "agent/standing-reports",
+              "agent/memory",
+              "agent/settings",
+              "agent/slack",
+              "agent/connect-claude-or-grok"
             ]
           },
           {
             "group": "Integrations",
             "pages": [
               "integrations/setup",
+              "integrations/supported-services",
               "integrations/sync-sessions",
-              "integrations/troubleshooting"
+              "integrations/troubleshooting",
+              "integrations/data-mapping"
+            ]
+          },
+          {
+            "group": "Custom Views",
+            "pages": [
+              "custom-views/overview"
             ]
           },
           {
@@ -177,6 +191,10 @@
     }
   },
   "redirects": [
+    {
+      "source": "/integrations",
+      "destination": "/integrations/supported-services"
+    },
     {
       "source": "/supply-simulation/running",
       "destination": "/supply-planning/overview"

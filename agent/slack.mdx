@@ -1,0 +1,51 @@
+---
+title: "Use the agent in Slack"
+description: "Can I ask Tether questions from Slack? Where: Settings → Agent → Agent Settings → Slack → Connect Slack. How to connect a Slack workspace, how to ask the agent (@-mention or direct message), that the Slack agent is read-only and can't change data, limits, and disconnecting."
+---
+
+# Use the agent in Slack
+
+Once your Slack workspace is connected, anyone in it can ask the agent questions — inventory, open POs, recommendations, forecasts, sales — without opening Tether.
+
+## How do I connect our Slack workspace?
+
+Where: **Settings → Agent → Agent Settings → Slack → Connect Slack**.
+
+You need Slack-install permission (`slack:install`) in Tether, and a **Slack workspace admin** must approve the install.
+
+<Steps>
+  <Step title="Create the install link">
+    Click **Connect Slack**. Tether makes an install link.
+  </Step>
+  <Step title="Send it to your Slack admin">
+    Click **Copy install link** and send it to a Slack workspace admin. The link works once and expires on the date shown.
+  </Step>
+  <Step title="Admin installs it">
+    The admin opens the link and installs the app. The section then shows **Connected**.
+  </Step>
+</Steps>
+
+If it shows **Disconnected in Slack on** a date, the app was removed in Slack; click **Reconnect**.
+
+## How do I ask the agent in Slack?
+
+- **@-mention** it in a channel it has been added to, or send it a **direct message**.
+- Each Slack thread is one conversation — reply in the thread to follow up. A new top-level message starts a new one.
+- It doesn't read other channel messages.
+- Answers link back to the session in Tether.
+
+## Can the Slack bot change data?
+
+No. In Slack the agent is read-only: it reads products, locations, inventory, open POs and orders, recommendations, forecasts, sales history and plans. It doesn't make changes, create files or save memories. Asked to change something, it tells you to do it in the Tether web app.
+
+People don't need a Tether login to ask in Slack — the bot uses its own read-only access, not each person's permissions.
+
+## Limits
+
+Each person can ask 10 questions per 5 minutes, and each workspace 60 per hour.
+
+## Disconnect Slack
+
+Where: **Settings → Agent → Agent Settings → Slack → Disconnect**.
+
+The bot stops answering in that workspace. Reconnecting needs a new install by a Slack admin.

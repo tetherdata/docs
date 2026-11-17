@@ -1,278 +1,82 @@
 ---
-title: Sync Sessions
-description: Monitor and manage data synchronization
+title: "Sync history (executions)"
+description: "Where can I see why last night's sync failed, or which SKUs didn't map? Where: Settings → Integrations → Data Ingestion → an integration → Executions → a run (Sync Execution). Every sync run (also called a sync session) with its status, records, failed and skipped items, unmapped SKUs and channels with a Download CSV, and pack figures held for review."
 ---
 
-# Sync Sessions
+# Sync history (executions)
 
-Sync sessions (also called sync executions) represent individual data synchronization runs between Tether and your connected platforms. Monitor sync activity to ensure data stays current and identify issues.
+Every time an integration syncs, Tether records a run — the app calls it an **execution** (you may also hear "sync session"). Each run shows what was fetched, what saved, and what failed and why.
 
-## What is a Sync Session?
+## Where can I see why last night's sync failed?
 
-A sync session is a single execution of an integration's data synchronization:
-
-- Tether connects to the external platform
-- Data is fetched based on the integration's capabilities
-- Individual records (sync items) are processed
-- The session completes with a status and statistics
-
-## Viewing Sync Sessions
-
-### Accessing Sync History
+Where: **Settings → Integrations → Data Ingestion → an integration → Executions**.
 
 <Steps>
-  <Step title="Go to Integrations">
-    Navigate to **Integrations** in the sidebar
+  <Step title="Open the integration">
+    Go to **Settings → Integrations → Data Ingestion** and click the integration.
   </Step>
-
-  <Step title="Select Integration">
-    Click on the integration you want to inspect
+  <Step title="Find the run">
+    Scroll to **Executions** — the latest 50 runs. Each has **Status**, **Domain Type**, **Started**, **Duration**, **Records** and **Stats** (✓ succeeded, ✗ failed, ⊘ skipped). Runs made in Dry Run carry a **Dry Run** badge.
   </Step>
-
-  <Step title="View Execution History">
-    The integration detail page shows a table of past sync executions
+  <Step title="Open it">
+    Click the run. The **Sync Execution** page opens. If the run itself errored, an **Execution Error** card shows the message. Otherwise the **Sync Items** list shows each record and its error.
   </Step>
 </Steps>
 
-### Sync Execution List
+A run's status is completed, failed, running or cancelled. A completed run whose failed items are at least as many as its successful items is shown as **failed**.
 
-Each sync execution in the list displays:
+<Note>
+Only scheduled capabilities create runs here. Shopify **Fulfillment** arrives by webhook, so its events are in the integration's **Event Log**, not in Executions. See [Integration setup](/integrations/setup#fulfillment-warehouse-settings-and-event-log).
+</Note>
 
-| Column | Description |
-|--------|-------------|
-| **Status** | Visual badge showing the execution result |
-| **Domain Type** | What type of data was synced (e.g., sales_orders, warehouse_inventory) |
-| **Started At** | When the sync execution began |
-| **Duration** | How long the sync took (in seconds) |
-| **Records Fetched** | Number of records retrieved from the external system |
-| **Statistics** | Breakdown of success, failed, and skipped record counts |
+## What's on a run (Sync Execution)
 
-## Sync Types
+Where: **Settings → Integrations → Data Ingestion → an integration → Executions → a run**.
 
-### Scheduled Sync
+The header shows status, **Duration**, **Fetched** time, the data type, **Total**, and the success / failed / skipped counts.
 
-Syncs that run automatically based on the integration's cron schedule:
+**Sync Items** lists each record with **Status**, **Error**, **Fetched At**, **Domain Type**, **External ID** and **Records**. A layered icon marks an aggregate (batch) item; click its **N errors** to see which records in the batch failed.
 
-| Aspect | Description |
-|--------|-------------|
-| **When** | Based on the configured cron expression and timezone |
-| **What** | Incremental data since last sync (new and modified records) |
-| **Duration** | Varies based on data volume |
-| **Use** | Regular ongoing synchronization |
+Item statuses:
 
-### Manual Sync
+| Status | Meaning |
+|--------|---------|
+| **Processing** | Still being handled |
+| **Success** | Saved in Tether |
+| **Mapped** | Translated into Tether's records |
+| **Partial** | Some of the item's records mapped and some didn't |
+| **Failed** | Not saved — see the **Error** column |
+| **Skipped** | Passed over on purpose — the **Error** column says why |
 
-User-triggered synchronization for immediate data fetch:
+Filter with **All**, **Failed**, **Partial** and **Skipped**, search by external ID or error, filter by data type, or click **Export CSV** to download the items.
 
-<Steps>
-  <Step title="Go to Integration Detail">
-    Navigate to the integration's detail page
-  </Step>
+## Which SKUs didn't map in the last sync?
 
-  <Step title="Click Trigger Sync">
-    Click the **Trigger Sync** button to start an immediate sync
-  </Step>
+Where: **Settings → Integrations → Data Ingestion → an integration → Executions → a run**.
 
-  <Step title="Monitor Progress">
-    The new execution will appear in the execution history
-  </Step>
-</Steps>
+When records name SKUs or channels Tether doesn't recognize, a red banner at the top of **Sync Items** reads, for example, "3 Unmapped SKUs Found". It shows the most common ones with how many orders each affects.
 
-### Full Re-Sync
+- Click a SKU or channel chip to filter the items to it.
+- Click **Show SKU Errors** or **Show Channel Errors** to open **All Unmapped SKUs** / **All Unmapped Channels**, with an **Affected Orders** count per code.
 
-After resetting sync state (admin only), the next sync performs a full data fetch:
+To fix them, see [Troubleshooting → Unmapped SKUs](/integrations/troubleshooting#unmapped-skus).
 
-| Aspect | Description |
-|--------|-------------|
-| **When** | After an admin resets sync state |
-| **What** | All available data from the external system |
-| **Duration** | Longer (full data volume) |
-| **Use** | Recovery, re-import after fixing mapping issues |
+## How do I download the unmapped SKUs?
 
-## Sync Execution Details
+Where: **Sync Execution → Show SKU Errors → All Unmapped SKUs → Download CSV**.
 
-Click on a sync execution to see its detail page.
+The CSV has two columns, `SKU` and `Affected Orders`. **Copy All SKUs** copies the list instead. Channels work the same way from **Show Channel Errors**.
 
-### Execution Summary
+## Pack figures on product runs
 
-| Field | Description |
-|-------|-------------|
-| **Status** | Overall execution result |
-| **Dry Run** | Whether this was a dry run (mapping validation only, no data saved) |
-| **Duration** | Total execution time in seconds |
-| **Records Fetched** | Total records retrieved from the external system |
-| **Domain Type** | The data type that was synced |
+Where: **Sync Execution** of a Products run → top of **Sync Items**.
 
-### Statistics
+When a products run reads pack sizes (for example units per pallet), it reports per pack unit: "Pallet figures: N added, N changed, N unchanged, N held for review". Figures **Held for review** are listed with the SKU, pack unit, units per pack and the reason Tether held them back instead of saving. Send the list to Tether support if a held figure is correct.
 
-Each execution tracks aggregate statistics:
+## How often does a sync run?
 
-| Statistic | Description |
-|-----------|-------------|
-| **Success** | Records processed successfully |
-| **Failed** | Records that encountered errors |
-| **Skipped** | Records that were skipped (e.g., already up to date) |
+Where: **Settings → Integrations → Data Ingestion → an integration** → the schedule bar under the header.
 
-### Sync Items
+Scheduled capabilities run on the integration's cron schedule; the bar shows the **Last** and **Next** sync times. Each run reads what's new or changed since the last one. Click **Sync Now** to run one immediately.
 
-The execution detail page shows a table of individual sync items — the records that were processed during the sync. Each item shows:
-
-| Column | Description |
-|--------|-------------|
-| **Sync Status** | Status badge for the individual record |
-| **Error Message** | Error details if the record failed |
-| **Fetched At** | When the record was retrieved |
-| **Domain Type** | Data type of the record |
-| **External ID** | Identifier from the external system |
-| **Records** | Record count (for aggregate items) |
-
-### Sync Item Statuses
-
-Individual sync items can have the following statuses:
-
-| Status | Description |
-|--------|-------------|
-| **Processing** | Record is currently being processed |
-| **Success** | Record was processed successfully |
-| **Failed** | Record encountered an error during processing |
-| **Skipped** | Record was skipped (e.g., no changes detected) |
-| **Mapped** | Record was successfully mapped to Tether entities |
-| **PartialMapped** | Record was partially mapped (some fields could not be resolved) |
-
-### Filtering Sync Items
-
-The sync items table supports filtering to help you investigate specific issues:
-
-| Filter | Description |
-|--------|-------------|
-| **Status** | Filter by sync item status (e.g., show only Failed items) |
-| **Search** | Text search across sync item fields |
-| **Domain Type** | Filter by data type |
-
-## Error Analysis
-
-### Unmapped SKU and Channel Errors
-
-A common source of sync failures is unmapped SKUs or channels. The execution detail page provides aggregate error analysis:
-
-- **Unique unmapped SKUs**: List of SKU identifiers from the external system that don't match any Tether SKU
-- **Unique unmapped channels**: Channel identifiers that couldn't be resolved
-- **Top errors**: Most frequently occurring error messages
-
-This helps you quickly identify which mappings need to be configured before the data can sync successfully.
-
-### Viewing Error Details
-
-For aggregate sync items (items that represent batches of records), you can click to view the detailed error breakdown showing individual record errors within the batch.
-
-## Monitoring Sync Health
-
-### Key Indicators
-
-| Indicator | Healthy | Needs Attention |
-|-----------|---------|-----------------|
-| **Execution Status** | Consistently successful | Repeated failures |
-| **Failed Count** | 0 or very low | Increasing over time |
-| **Records Fetched** | Consistent with expected volume | Sudden drop or zero |
-| **Duration** | Within expected range | Significantly longer than usual |
-
-### Checking Sync Schedule
-
-From the integration detail page, verify:
-
-| Field | Description |
-|-------|-------------|
-| **Last Sync** | When the integration last executed |
-| **Next Sync** | When the next scheduled execution will occur |
-| **Schedule** | The cron expression and timezone |
-
-If the last sync is older than expected based on the schedule, the integration may be disabled or experiencing issues.
-
-## Managing Sync Issues
-
-### Retrying After Failures
-
-<Steps>
-  <Step title="Review Failed Execution">
-    Click on the failed execution to see error details
-  </Step>
-
-  <Step title="Check Sync Items">
-    Filter sync items by "Failed" status to identify specific issues
-  </Step>
-
-  <Step title="Fix Root Cause">
-    Address the underlying problem (e.g., add missing SKU mappings, fix credentials)
-  </Step>
-
-  <Step title="Trigger Manual Sync">
-    Go back to the integration detail page and click **Trigger Sync**
-  </Step>
-</Steps>
-
-### Common Sync Issues
-
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| **Unmapped SKUs** | External SKU IDs don't match Tether SKUs | Configure SKU external ID mappings |
-| **Unmapped Channels** | Channel identifiers not recognized | Verify channel configuration |
-| **Authentication Failed** | Expired or invalid credentials | Update integration credentials |
-| **No Records Fetched** | Date range issue or empty data source | Check integration configuration and source data |
-
-## Dry Run Mode
-
-When an integration runs in dry run mode, sync executions are marked with a **Dry Run** indicator. In dry run mode:
-
-- Data is fetched and mapping is validated
-- No data is actually saved to Tether
-- You can review sync items to see what would be processed
-- Useful for testing new integrations or debugging mapping issues
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Monitor Regularly">
-    Check sync status routinely:
-    - Review execution history after schedule changes
-    - Investigate any increase in failed records
-    - Verify records fetched counts are reasonable
-  </Accordion>
-
-  <Accordion title="Investigate Errors Promptly">
-    Don't let errors accumulate:
-    - Check error details on failed executions
-    - Resolve unmapped SKU/channel issues quickly
-    - Use dry run mode to test fixes before enabling
-  </Accordion>
-
-  <Accordion title="Use Filtering">
-    When investigating issues:
-    - Filter sync items by "Failed" status to focus on errors
-    - Search for specific external IDs
-    - Filter by domain type to isolate data categories
-  </Accordion>
-
-  <Accordion title="Reset When Needed">
-    If sync state becomes corrupted:
-    - Ask an admin to reset sync state
-    - This forces a full re-sync on the next execution
-    - Monitor the full sync carefully for errors
-  </Accordion>
-</AccordionGroup>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
-    Configure integrations
-  </Card>
-  <Card title="Troubleshooting" icon="wrench" href="/integrations/troubleshooting">
-    Resolve sync issues
-  </Card>
-  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
-    Manage channels
-  </Card>
-  <Card title="Data Exports" icon="download" href="/tips/exports">
-    Export data manually
-  </Card>
-</CardGroup>
+A full re-read from the beginning (**Reset Sync**) is a Tether staff action — ask Tether support.
