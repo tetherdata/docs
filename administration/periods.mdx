@@ -1,318 +1,62 @@
 ---
-title: Periods
-description: Configure fiscal periods and time boundaries
+title: Period management (fiscal calendars)
+sidebarTitle: Period management
+description: "Use your own fiscal periods, such as a 4-4-5 calendar, by uploading a period mapping CSV. Answers: How do I set up a 4-4-5 fiscal calendar? How do I upload our fiscal periods? Where do I change period settings? Where: Settings → Forecasting → Period Management (tabs Overview, Configuration, Mappings)."
 ---
 
-# Periods
+# Period management (fiscal calendars)
 
-Configure how Tether handles time periods for forecasting, reporting, and planning.
+By default Tether groups dates into calendar weeks and months. If your business reports in its own fiscal periods, such as a 4-4-5 calendar, upload a period mapping and turn on custom time periods. Tether then labels and groups dates by your periods.
 
-<Note>
-  Period configuration requires Admin access.
-</Note>
+## Where do I change period settings?
 
-## What Are Periods?
+**Where:** **Settings** → **Forecasting** → **Period Management**.
 
-Periods define time boundaries used throughout Tether:
+The page has three tabs:
 
-| Use | Description |
-|-----|-------------|
-| **Forecasting** | Time buckets for predictions |
-| **Reporting** | Aggregation boundaries |
-| **Planning** | Planning horizons |
-| **Comparison** | Period-over-period analysis |
+| Tab | What it shows |
+|-----|---------------|
+| **Overview** | **System Status**: whether **Custom Time Aggregation** is on, the **Active Mapping**, its **Total Days**, **Date Range** and number of **Periods**. **Quick Actions**: **Upload New Period Mapping**, **Refresh Data**. |
+| **Configuration** | The **Enable Custom Time Periods** switch, the current mapping and its periods, and **Display Preferences** (how period and fiscal-year labels look) |
+| **Mappings** | Your uploaded **Period Mappings**, and **Upload New Mapping** |
 
-## Accessing Period Settings
+Uploading and switching need an Admin-level role; others can view the page.
+
+## How do I set up a 4-4-5 fiscal calendar?
+
+**Where:** **Settings** → **Forecasting** → **Period Management** → **Mappings** → **Upload New Mapping**.
+
+There is no fiscal-year-start or week-start setting. Instead you give Tether a file that says which fiscal period every date belongs to, so any calendar works: 4-4-5, 4-5-4, 13 periods, or a fiscal year starting in any month.
 
 <Steps>
-  <Step title="Go to Settings">
-    Click your **profile avatar** in the top-right corner and select **Settings**
-  </Step>
+  <Step title="Build the CSV">
+    One row per calendar day, with these three columns:
 
-  <Step title="Select Period Management">
-    Click **Configure Periods** on the **Period Management** card
-  </Step>
+    | Column | Example | Meaning |
+    |--------|---------|---------|
+    | `calendar_date` | `2026-02-01` | The date, as YYYY-MM-DD |
+    | `period_label` | `P01` | The fiscal period that date falls in |
+    | `fiscal_year` | `FY2026` | The fiscal year it falls in |
 
-  <Step title="View Configuration">
-    See current period settings
+    For a 4-4-5 calendar, the first 28 days get `P01`, the next 28 `P02`, the next 35 `P03`, and so on. Cover every date you plan and report on, past and future.
+  </Step>
+  <Step title="Upload it">
+    On the **Mappings** tab, click **Upload New Mapping**. In **Upload Period Mapping**, choose the file. Tether checks it and lists any errors by row, such as a missing column or a date not in YYYY-MM-DD form.
+  </Step>
+  <Step title="Turn it on">
+    On the **Configuration** tab, turn on **Enable Custom Time Periods**. The switch only works once a mapping has been uploaded.
+  </Step>
+  <Step title="Check it">
+    On **Overview**, **System Status** should show the mapping as active with the date range and number of periods you expect.
   </Step>
 </Steps>
 
-## Period Types
+## How do I upload our fiscal periods?
 
-### Fiscal Year
+**Where:** **Settings** → **Forecasting** → **Period Management** → **Mappings** → **Upload New Mapping** (or **Overview** → **Upload New Period Mapping**).
 
-Configure your fiscal year:
+Follow the steps above. To change your calendar later, upload a new mapping the same way.
 
-| Setting | Description |
-|---------|-------------|
-| **Start Month** | When fiscal year begins |
-| **Year Naming** | How to label fiscal years |
+## Why can't I see Period Management?
 
-### Fiscal Periods
-
-Define periods within the year:
-
-| Type | Description |
-|------|-------------|
-| **Monthly** | 12 periods per year |
-| **Quarterly** | 4 periods per year |
-| **Weekly** | 52 periods per year |
-| **4-4-5** | Retail calendar (13 weeks per quarter) |
-
-### Planning Horizons
-
-Define how far ahead to plan:
-
-| Horizon | Typical Use |
-|---------|-------------|
-| **Short-term** | 1-3 months, tactical |
-| **Medium-term** | 3-12 months, operational |
-| **Long-term** | 1-3 years, strategic |
-
-## Configuring Fiscal Year
-
-### Setting Fiscal Year Start
-
-<Steps>
-  <Step title="Go to Period Settings">
-    Navigate to periods configuration
-  </Step>
-
-  <Step title="Find Fiscal Year">
-    Locate fiscal year settings
-  </Step>
-
-  <Step title="Select Start Month">
-    Choose when your fiscal year begins
-  </Step>
-
-  <Step title="Save">
-    Apply configuration
-  </Step>
-</Steps>
-
-### Example Fiscal Years
-
-| Company Type | Common Start |
-|--------------|--------------|
-| **Calendar** | January |
-| **Retail** | February |
-| **Education** | July |
-| **Government** | October |
-
-## Configuring Period Granularity
-
-### Forecast Periods
-
-Choose time granularity for forecasts:
-
-| Granularity | When to Use |
-|-------------|-------------|
-| **Daily** | Short-term, high-volume |
-| **Weekly** | Most businesses |
-| **Monthly** | Longer planning horizons |
-
-### Configuring Granularity
-
-<Steps>
-  <Step title="Go to Period Settings">
-    Navigate to periods configuration
-  </Step>
-
-  <Step title="Find Forecast Settings">
-    Locate forecast period settings
-  </Step>
-
-  <Step title="Select Granularity">
-    Choose daily, weekly, or monthly
-  </Step>
-
-  <Step title="Save">
-    Apply settings
-  </Step>
-</Steps>
-
-## Period Labels
-
-### Naming Conventions
-
-Configure how periods are labeled:
-
-| Example | Format |
-|---------|--------|
-| **Jan 2024** | Month Year |
-| **2024-01** | Year-Month |
-| **Week 1, 2024** | Week Number |
-| **Q1 2024** | Quarter Year |
-
-### Customizing Labels
-
-<Steps>
-  <Step title="Go to Period Settings">
-    Navigate to configuration
-  </Step>
-
-  <Step title="Find Label Settings">
-    Locate period label configuration
-  </Step>
-
-  <Step title="Choose Format">
-    Select preferred naming convention
-  </Step>
-
-  <Step title="Save">
-    Apply settings
-  </Step>
-</Steps>
-
-## Period-Based Features
-
-### Forecasting
-
-Periods affect forecasting:
-
-| Setting | Impact |
-|---------|--------|
-| **Granularity** | Daily vs weekly vs monthly forecasts |
-| **Horizon** | How far ahead to forecast |
-| **Aggregation** | How to roll up periods |
-
-### Reporting
-
-Periods affect reporting:
-
-| Feature | Period Use |
-|---------|------------|
-| **Date filters** | Period boundaries |
-| **Comparisons** | Period-over-period |
-| **Aggregation** | Grouping by period |
-
-### Planning
-
-Periods affect planning:
-
-| Feature | Period Use |
-|---------|------------|
-| **Supply planning** | Planning horizon |
-| **Order recommendations** | Timing |
-| **Lead time calculations** | Period alignment |
-
-## Week Configuration
-
-### Week Start Day
-
-Configure when weeks begin:
-
-| Day | Common Use |
-|-----|------------|
-| **Sunday** | US retail |
-| **Monday** | Most businesses |
-| **Saturday** | Some retail |
-
-### Week Numbering
-
-Choose week numbering system:
-
-| System | Description |
-|--------|-------------|
-| **ISO** | International standard |
-| **US** | Week containing Jan 1 is week 1 |
-| **Custom** | Based on fiscal year |
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Match Business Calendar">
-    Align Tether periods with:
-    - Fiscal calendar
-    - ERP system
-    - Reporting requirements
-  </Accordion>
-
-  <Accordion title="Consider Data Volume">
-    Choose appropriate granularity:
-    - Daily for high-volume
-    - Weekly for most cases
-    - Monthly for long-horizon planning
-  </Accordion>
-
-  <Accordion title="Plan Ahead">
-    Set up future periods:
-    - At least 1 year ahead
-    - Before year-end close
-    - Consider planning horizon
-  </Accordion>
-
-  <Accordion title="Consistent Boundaries">
-    Keep period boundaries consistent:
-    - Same across systems
-    - Don't change mid-year
-    - Document decisions
-  </Accordion>
-</AccordionGroup>
-
-## Period Impact on Analysis
-
-### Year-over-Year Comparisons
-
-Period alignment affects comparisons:
-
-| Issue | Solution |
-|-------|----------|
-| **Leap years** | Adjust for extra day |
-| **Week alignment** | Compare same week number |
-| **Holiday shifts** | Account for timing differences |
-
-### Seasonality
-
-Periods affect seasonality detection:
-
-| Granularity | Seasonality Detection |
-|-------------|----------------------|
-| **Daily** | Day-of-week patterns |
-| **Weekly** | Week-of-year patterns |
-| **Monthly** | Month-of-year patterns |
-
-## Troubleshooting
-
-### Periods Not Aligning
-
-**Possible causes:**
-- Different fiscal year settings
-- Week start mismatch
-- Period boundaries differ from source
-
-**Solutions:**
-1. Review fiscal year configuration
-2. Check week start day
-3. Align with source systems
-
-### Missing Periods
-
-**Possible causes:**
-- Future periods not generated
-- Period range not extended
-- Configuration incomplete
-
-**Solutions:**
-1. Generate future periods
-2. Extend date range
-3. Complete configuration
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Inventory Settings" icon="gear" href="/administration/inventory-settings">
-    Configure inventory
-  </Card>
-  <Card title="Terminology" icon="book" href="/administration/terminology">
-    Customize terms
-  </Card>
-  <Card title="Forecasting" icon="chart-line" href="/demand-forecasting/admin">
-    Forecast administration
-  </Card>
-  <Card title="User Access" icon="users" href="/administration/user-access">
-    Manage permissions
-  </Card>
-</CardGroup>
+Your role doesn't include it. Ask an Admin.
