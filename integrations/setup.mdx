@@ -1,343 +1,171 @@
 ---
-title: Integration Setup
-description: Connect Tether to your e-commerce and data systems
+title: "Integration setup"
+description: "Where do I set up an integration (Shopify, NetSuite, a 3PL)? Where: Settings → Integrations → Data Ingestion. Create an integration with New Integration, pick its capabilities and schedule, update expired credentials in the Credentials card, run a sync now with Sync Now, turn on Dry Run, and read capability health (Healthy / Degraded / Failed), backfills, webhook subscriptions, inventory write-back and fulfillment warehouse settings."
 ---
 
-# Integration Setup
+# Integration setup
 
-Integrations connect Tether to your external systems, automatically syncing sales orders, inventory, products, and other data.
+Integrations connect Tether to the systems you already run — your store, ERP, 3PL, data warehouse — and sync orders, inventory, products and more on a schedule.
 
-<Note>
-  Integration setup requires Admin access. Contact your administrator if you need to set up integrations.
-</Note>
-
-## Why Integrate?
-
-| Benefit | Description |
-|---------|-------------|
-| **Automated Data Flow** | No manual data entry |
-| **Scheduled Sync** | Data stays current with cron-based scheduling |
-| **Reduced Errors** | Eliminate manual mistakes |
-| **Time Savings** | Focus on analysis, not data entry |
-
-## Supported External Services
-
-Tether connects to external systems through the ingestion service. The following external services are currently supported:
-
-| External Service | Description |
-|-----------------|-------------|
-| **Shopify** | E-commerce platform for sales orders and products |
-| **BigQuery** | Google Cloud data warehouse for sales history and other data |
-| **Redshift** | AWS data warehouse for sales history and other data |
-| **TrackStar** | Warehouse management system for inventory data |
-| **Brewman** | Brewery management system |
+Where: **Settings → Integrations → Data Ingestion** (`/settings/integrations/ingestion`). There is no **Integrations** item in the main sidebar; old `/integrations` links open this page.
 
 <Note>
-  The available external services and their supported capabilities are loaded dynamically from the system metadata. New services may be added without requiring a documentation update.
+You need the **Data Ingestion** settings permission (`settings:ingestion:access`) to see the page. If it isn't in your Settings, ask your administrator.
 </Note>
 
-### Data Types (Capabilities)
+For the list of services Tether connects to, what each syncs and its credential fields, see [Supported services](/integrations/supported-services).
 
-Each external service supports a subset of the following data types that can be synced:
+## Where do I set up our Shopify (or NetSuite, ShipBob…) integration?
 
-| Data Type | Description |
-|-----------|-------------|
-| **Sales Orders** | Individual sales order records |
-| **Sales History** | Aggregated historical sales data |
-| **Pending Sales** | Orders not yet completed |
-| **Warehouse Inventory** | Stock levels from warehouse systems |
-| **Products** | Product and SKU information |
-| **Channels** | Channel configuration data |
-| **Pricing** | Pricing information |
-| **Forecast Versions** | Forecast data |
-| **Sales Forecast** | Sales forecast data |
-
-When creating an integration, you select which data types (capabilities) to enable based on what the chosen external service supports.
-
-## Setting Up an Integration
-
-### General Setup Flow
+Where: **Settings → Integrations → Data Ingestion → New Integration**.
 
 <Steps>
-  <Step title="Navigate to Integrations">
-    Go to **Integrations** in the sidebar
+  <Step title="Open Data Ingestion">
+    Go to **Settings → Integrations → Data Ingestion** and click **New Integration**. The **Create New Integration** dialog opens.
   </Step>
-
-  <Step title="Click Create Integration">
-    Click the **Create Integration** button to open the setup dialog
+  <Step title="Name it and pick the service">
+    Enter an **Integration Name** (for example "Shopify Production") and choose the **External Service**.
   </Step>
-
-  <Step title="Enter Basic Information">
-    | Field | Required | Description |
-    |-------|----------|-------------|
-    | **Integration Name** | Yes | A descriptive name (e.g., "Shopify Production") |
-    | **External Service** | Yes | Select from the dropdown of available services |
+  <Step title="Choose capabilities">
+    Under **Capabilities**, tick the data types to sync. Only the types the service supports are listed. Some pairs can't be on together — **Sales Orders** and **Fulfillment**, and (for most services) **Purchase Orders** and **Inbound Shipments**; a locked box explains why.
   </Step>
-
-  <Step title="Configure Schedule">
-    Set the sync schedule:
-
-    | Field | Default | Description |
-    |-------|---------|-------------|
-    | **Cron Expression** | `0 0 0 * * *` | When the sync runs (daily at midnight by default) |
-    | **Timezone** | UTC | Timezone for the cron schedule |
+  <Step title="Set the schedule (scheduled capabilities only)">
+    If any capability is pulled on a schedule, the **Schedule** section appears. Enter a **Cron Expression** (default `0 0 0 * * *`, daily at midnight) and a **Timezone** (default `UTC`). Webhook-only integrations, such as Shopify Fulfillment, need no schedule.
   </Step>
-
-  <Step title="Select Capabilities">
-    Check the data types you want to sync. The available options depend on the selected external service. Each capability shows a display name and description.
+  <Step title="Enter credentials">
+    Fill in the **Credentials** fields for that service. Required fields are marked with `*`. The fields for each service are listed on [Supported services](/integrations/supported-services).
   </Step>
-
-  <Step title="Enter Credentials">
-    Provide the required credentials for the selected service. The credential fields are dynamic — each service defines its own required fields (e.g., API keys, store URLs, access tokens).
-  </Step>
-
   <Step title="Create">
-    Click **Create Integration** to save. You will be navigated to the integration detail page.
+    Click **Create Integration**. Tether opens the new integration's page.
   </Step>
 </Steps>
 
-### Shopify Integration
+<Tip>
+Turn on **Dry Run** on the new integration's page before its first sync if you want to check what it brings in without saving anything.
+</Tip>
 
-To connect a Shopify store:
+## Does Tether integrate with ShipBob, SAP Business One, Cin7…?
+
+Tether connects directly to 19 services, including ShipBob, SAP Business One, NetSuite, Shopify, Snowflake and TrackStar (which reaches many other 3PLs). It does not connect directly to Cin7, Amazon Seller Central, TikTok Shop, QuickBooks or Xero. See [Supported services](/integrations/supported-services).
+
+## Data types (capabilities)
+
+Each integration syncs one or more data types. How each arrives:
+
+| Data type | What it brings in | How it arrives |
+|-----------|-------------------|----------------|
+| **Sales Orders** | Individual orders with their lines | Schedule |
+| **Sales History** | Sales totals by period, channel and SKU | Schedule |
+| **Pending Sales** | Pending or projected sales | Schedule |
+| **Warehouse Inventory** | Stock levels by warehouse and SKU | Schedule |
+| **Products** | Products, dimensions and SKUs | Schedule |
+| **Bills of Materials** | BOMs with assembly and component SKUs | Schedule |
+| **Purchase Orders** | Purchase orders placed with vendors, with lines | Schedule |
+| **Transfer Orders** | Transfers between your locations, with lines | Schedule |
+| **Inbound Shipments** | Inbound shipments and receipts a warehouse reports | Schedule |
+| **Item Sources** | The vendors each item lists, with costs and lead times | Schedule |
+| **Channels** | Sales channels for pricing and orders | Schedule |
+| **Pricing** | Channel-specific SKU prices | Schedule |
+| **Sales Forecast** | The active sales forecast | Schedule |
+| **Forecast Versions** | Forecast data and versions | Schedule |
+| **Baselines** | Baseline forecasts for demand models | Schedule |
+| **History Series** | Dated figures (for example prices or counts) | Schedule; set up by Tether |
+| **Fulfillment** | Order created, fulfilled, cancelled and refunded events | Webhook (Shopify) |
+| **Shipment Fulfillment** | Shipments Tether sends back to the source as fulfillments | Outbound; turned on by Tether |
+| **Store Stock** | How much of each SKU the store may sell | Outbound; turned on by Tether |
+
+On the dashboard and capability cards, data types and delivery can show as raw codes, for example `sales_orders (cron_pull)` or `fulfillment (webhook_push_direct)`.
+
+## The Data Ingestion dashboard
+
+Where: **Settings → Integrations → Data Ingestion**.
+
+Each row is one integration, with columns **Name**, **Service**, **Enabled** (a switch), **Capabilities** (each with a health dot), **Recent activity** (fulfillment events and errors in the last 24 hours), **Next Sync** and **Last Sync**. Click a row to open the integration.
+
+## What do Healthy, Degraded and Failed mean?
+
+Where: **Settings → Integrations → Data Ingestion** → the dot beside each capability (and on its card on the integration's page).
+
+| Health | Scheduled capability | Webhook capability (Fulfillment) |
+|--------|----------------------|----------------------------------|
+| **Healthy** | The latest run succeeded and started in the last 24 hours | Subscriptions are registered and a webhook arrived in the last 24 hours |
+| **Degraded** | The latest run failed or is more than 24 hours old, but not three bad runs in a row | No webhook arrived in the last 24 hours |
+| **Failed** | The last three runs were all bad — failed, or refused at least as many records as they accepted | A webhook subscription is missing or not registered |
+
+Outbound capabilities always show Healthy. For what to do, see [Troubleshooting](/integrations/troubleshooting#my-integration-says-degraded-or-failed).
+
+## How do I run a sync right now?
+
+Where: **Settings → Integrations → Data Ingestion → an integration → Sync Now**.
+
+Click **Sync Now** at the top of the integration's page. It is disabled while the integration is turned off — switch **Enabled** on first. The run appears under **Executions** on the same page; see [Sync history](/integrations/sync-sessions).
+
+You can also ask the agent: "Run the Shopify sync now."
+
+## The integration page
+
+Where: **Settings → Integrations → Data Ingestion → an integration**.
+
+The header holds:
+
+- **Edit** (pencil) — change the name, cron schedule and timezone.
+- **Enabled** — turns all syncing for the integration on or off.
+- **Dry Run** — every sync fetches and maps data but saves nothing. Runs show a **Dry Run** badge.
+- **Sync Now** — runs a sync immediately.
+- **Reset Sync** — Tether staff only. Deletes the integration's run history so the next sync reads everything from the beginning. Ask Tether support if you need a full re-sync.
+- **Reset Fulfillment** — shown for integrations with Fulfillment. Deletes fulfillment events and backfill state so a fresh backfill can run; inventory isn't adjusted. Turn the Fulfillment capability off first.
+- **Delete** — permanently deletes the integration with its capabilities, credentials and sync history.
+
+Under the header, a bar shows the schedule and the **Last** and **Next** sync times. Below it, in order: a card per capability, **Credentials**, **Warehouse Configuration** and **Event Log** (Fulfillment only), and **Executions**.
+
+## Capability cards
+
+Where: **Settings → Integrations → Data Ingestion → an integration** → a capability card.
+
+Each card has its own **Enabled** switch, a delivery badge, its health, and **Events (24h)**, **Errors (24h)** and **Unresolved errors**. Fulfillment cards add:
+
+- **Inventory Backfill** — reads past events from a **Since** date. Turn the capability off first ("Disable this capability to run a backfill."), then click **Start Backfill**. Afterwards the button reads **Re-run Backfill**, or **Retry Backfill** if it failed.
+- **Webhook subscriptions** — the topics Shopify sends, each registered (green), missing (amber) or failed (red), and the **Last signal** time. Click **Re-verify subscriptions** to check and repair them.
+- **Inventory write-back** (Shopify) — when **Enabled**, publishes a Tether **Source warehouse**'s sellable stock as the store's Shopify availability. **Push now** republishes it immediately.
+
+## How do I update an expired token or password?
+
+Where: **Settings → Integrations → Data Ingestion → an integration → Credentials**.
 
 <Steps>
-  <Step title="Create Integration">
-    Click **Create Integration** and select **Shopify** as the external service
+  <Step title="Open the Credentials card">
+    Click **Credentials** to expand it. Stored values are never shown, so every field starts empty.
   </Step>
-
-  <Step title="Enter Credentials">
-    Provide the required Shopify credentials:
-
-    | Credential | Description |
-    |-----------|-------------|
-    | **Store URL** | Your Shopify store URL (e.g., `your-store.myshopify.com`) |
-    | **Admin API Access Token** | Generated from Shopify Admin → Settings → Apps and sales channels |
+  <Step title="Fill only what changed">
+    Enter the new value — for example a new NetSuite **Token ID** and **Token Secret**. Empty fields are left unchanged.
   </Step>
-
-  <Step title="Select Capabilities">
-    Choose which data types to sync (e.g., sales orders, products)
-  </Step>
-
-  <Step title="Set Schedule">
-    Configure the cron expression for sync frequency. A daily sync is recommended for most use cases.
-  </Step>
-
-  <Step title="Create and Enable">
-    Create the integration. It will be enabled by default and begin syncing on the configured schedule.
+  <Step title="Save">
+    Click **Save**. You'll see **Credentials updated**. The next sync uses the new values; click **Sync Now** to check straight away.
   </Step>
 </Steps>
 
-**Shopify sync details:**
-- Uses the Shopify GraphQL Admin API to fetch orders
-- Syncs new and updated orders since the last sync
-- Filters orders by financial status (paid, partially refunded)
-- Maps Shopify SKUs to Tether SKUs via external ID matching
+You don't need to delete and recreate the integration.
 
-### Data Warehouse Integrations (BigQuery / Redshift)
+## Fulfillment warehouse settings and event log
 
-For importing data from data warehouses:
+Where: **Settings → Integrations → Data Ingestion → a Fulfillment integration → Warehouse Configuration** and **Event Log**.
 
-<Steps>
-  <Step title="Create Integration">
-    Select **BigQuery** or **Redshift** as the external service
-  </Step>
+**Warehouse Configuration** sets, per warehouse, how fulfillment events are handled:
 
-  <Step title="Enter Connection Credentials">
-    Provide the required database connection details as prompted by the credential fields
-  </Step>
+| Fulfillment Mode | What happens |
+|------------------|--------------|
+| **Internal** | Tether moves its own inventory when orders are created and fulfilled |
+| **External WMS** | Tether holds no inventory for the order — the warehouse's own system owns it and reports stock its own way |
+| **None** | Nothing is posted (the default when a warehouse isn't set) |
 
-  <Step title="Select Data Types">
-    Choose which data types to import (e.g., sales history, products, pricing)
-  </Step>
+**Processing Delay (s)** waits before an event is processed. Click a row's edit button to change it.
 
-  <Step title="Configure Schedule">
-    Set the cron expression for how often to pull data
-  </Step>
-</Steps>
+The **Event Log** lists every fulfillment event (Order Created, Fulfilled, Cancelled, Refund, Updated, Draft Reservation) with its status: Success, Failed, Pending, Skipped, Replayed, Resolved or Superseded. Filter by date range, event type, status or warehouse, or search by order number. Click **Details** on a failed or skipped event to **Replay Event** or **Resolve** it — see [Troubleshooting](/integrations/troubleshooting#can-i-replay-a-failed-shopify-fulfillment-event).
 
-### Warehouse Integration (TrackStar)
+## Sending orders to a warehouse
 
-For syncing inventory data from warehouse management systems:
+Sending orders out to a 3PL or WMS, and orders held before they're sent, are covered in [Order sending](/integrations/order-sending).
 
-<Steps>
-  <Step title="Create Integration">
-    Select **TrackStar** as the external service
-  </Step>
+## How Tether interprets the data
 
-  <Step title="Enter Credentials">
-    Provide the required TrackStar API credentials
-  </Step>
-
-  <Step title="Select Capabilities">
-    Enable **Warehouse Inventory** and any other supported data types
-  </Step>
-
-  <Step title="Configure Schedule">
-    Set the sync frequency using a cron expression
-  </Step>
-</Steps>
-
-## Integration Configuration
-
-### Schedule Settings
-
-Integrations use cron expressions for scheduling with timezone support:
-
-| Setting | Description | Example |
-|---------|-------------|---------|
-| **Cron Expression** | Standard 6-field cron format | `0 0 0 * * *` (daily at midnight) |
-| **Timezone** | IANA timezone for the schedule | `America/New_York`, `Europe/London`, `UTC` |
-
-Common cron patterns:
-
-| Schedule | Cron Expression |
-|----------|----------------|
-| Daily at midnight | `0 0 0 * * *` |
-| Every 6 hours | `0 0 */6 * * *` |
-| Every hour | `0 0 * * * *` |
-
-### Capabilities
-
-Capabilities define which data types the integration syncs. You can enable or disable individual capabilities from the integration detail page after creation.
-
-### Dry Run Mode
-
-Integrations can operate in **dry run mode**, which validates data mapping without saving any data to Tether. This is useful for:
-
-- Verifying field mappings before going live
-- Testing new integration configurations
-- Debugging data quality issues
-
-## Managing Integrations
-
-### Integration Dashboard
-
-The integrations dashboard shows all configured integrations with:
-
-| Column | Description |
-|--------|-------------|
-| **Name** | Integration display name |
-| **External Service** | The connected platform (e.g., Shopify, BigQuery) |
-| **Status** | Enabled or disabled |
-| **Last Sync** | When the integration last ran |
-| **Next Sync** | When the next scheduled sync will occur |
-| **Capabilities** | Which data types are configured |
-
-### Integration Detail Page
-
-Click on an integration to view its detail page, which includes:
-
-- **Integration info**: Name, external service, enabled status, dry run mode
-- **Schedule settings**: Cron expression and timezone (editable)
-- **Capabilities**: List of enabled data types (editable)
-- **Sync execution history**: Table of past sync runs with status, domain type, duration, and record counts
-
-### Enabling / Disabling an Integration
-
-Toggle the integration's enabled status from the integration detail page or the dashboard. Disabling an integration stops all scheduled syncs but preserves the configuration.
-
-### Triggering a Manual Sync
-
-From the integration detail page, click **Trigger Sync** to run an immediate sync outside the regular schedule.
-
-### Resetting Sync State
-
-<Warning>
-  This action is only available to administrators. Resetting sync state deletes all execution history for the integration and forces the next sync to perform a full data fetch.
-</Warning>
-
-Use **Reset Sync State** when you need to re-import all data from scratch, such as after fixing a mapping issue.
-
-### Deleting an Integration
-
-To permanently remove an integration:
-
-1. Navigate to the integration detail page
-2. Click **Delete Integration**
-3. Confirm the deletion
-
-<Warning>
-  Deleting an integration removes all its configuration and sync history. Historical data already synced to Tether is preserved.
-</Warning>
-
-## Credential Management
-
-Each external service defines its own credential fields. Credentials are entered during integration creation and stored securely.
-
-| Aspect | Details |
-|--------|---------|
-| **Dynamic Fields** | Credential fields vary by service — the form adapts automatically |
-| **Field Types** | Text fields, number fields, with labels and placeholders |
-| **Required Fields** | Marked with an asterisk (*) in the form |
-| **Security** | Credentials are stored securely and not displayed after creation |
-
-## Integration Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Dry Run First">
-    Before enabling a new integration for production use:
-    - Run in dry run mode to validate mappings
-    - Review the sync execution results for errors
-    - Check for unmapped SKUs or channels
-  </Accordion>
-
-  <Accordion title="Monitor Initial Syncs">
-    After enabling:
-    - Watch the first few sync executions
-    - Verify data accuracy in Tether
-    - Check for failed or skipped records
-  </Accordion>
-
-  <Accordion title="Choose Appropriate Schedules">
-    Set sync frequency based on your needs:
-    - Daily syncs are sufficient for most sales data
-    - More frequent syncs for real-time inventory needs
-    - Consider API rate limits of the external service
-  </Accordion>
-
-  <Accordion title="Regular Review">
-    Periodically check:
-    - Sync execution history for failures
-    - Credential validity
-    - Data quality and completeness
-  </Accordion>
-</AccordionGroup>
-
-## Multiple Integrations
-
-### Managing Multiple Sources
-
-You can create multiple integrations, even for the same external service:
-
-- Each integration has its own schedule and capabilities
-- Data flows to appropriate channels based on mapping
-- All data is consolidated within Tether
-
-### Integration Architecture Options
-
-Tether supports different integration architectures depending on your needs:
-
-| Pattern | Description |
-|---------|-------------|
-| **Individual Channel Integrations** | One integration per sales channel (e.g., one Shopify integration per store) |
-| **Centralized ERP Integration** | A single ERP or data warehouse integration that provides all sales data |
-| **Hybrid** | Combination of direct channel integrations and centralized data sources |
-
-See [Sync Sessions](/integrations/sync-sessions) for details on monitoring your integrations.
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Sync Sessions" icon="rotate" href="/integrations/sync-sessions">
-    Monitor sync activity
-  </Card>
-  <Card title="Troubleshooting" icon="wrench" href="/integrations/troubleshooting">
-    Resolve integration issues
-  </Card>
-  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
-    Manage sales channels
-  </Card>
-  <Card title="User Access" icon="users" href="/administration/user-access">
-    Control integration access
-  </Card>
-</CardGroup>
+What each record means in Tether — channel, shipping warehouse, which SKU — is decided by a rule set Tether configures per connection. See [Data mapping](/integrations/data-mapping).

@@ -1,0 +1,37 @@
+---
+title: "How Tether reads your data (data mapping)"
+description: "Why did an order land in this channel or warehouse? How Tether interprets what an integration sends — each connection has a rule set Tether configures that decides the channel, the shipping warehouse, which SKU a line matches and how inventory is counted. Changes go through Tether support. Unmapped SKUs and channels show on the sync's Execution Detail."
+---
+
+# How Tether reads your data (data mapping)
+
+An integration brings in what your system reports — orders, products, stock counts. A **rule set** then decides what each record means in Tether. Every connection has its own rule set, and Tether sets it up with you when the integration is created.
+
+## What does the rule set decide?
+
+- **Channel** — which sales channel an order belongs to (for example from the store, the order source, or the customer).
+- **Warehouse** — which location an order line ships from, and which location a stock count belongs to.
+- **SKU** — which Tether SKU a line or product matches, and what kind of SKU is created for a new product.
+- **Inventory** — how counts are read, for example which stock states count as on hand.
+
+The integration itself reports facts as your system holds them. The rule set is where your organization's meaning lives, so two companies on the same service can be read differently.
+
+## Why did this order get assigned to the wrong channel or warehouse?
+
+The rule set for that connection decided it. You can't change a rule set yourself — there is no customer screen for it.
+
+To get it changed:
+
+1. Find an example: the order number, what Tether shows, and what it should show.
+2. Send it to Tether support. Tether updates the rule set for your connection.
+3. Ask Tether whether past orders should be re-read once the rule changes.
+
+## Can I change how Tether maps my NetSuite (or Shopify, Snowflake…) data?
+
+Yes, through Tether support. The rule sets are configured by Tether staff for each connection, so describe the change you want and an example record.
+
+## Where do records that didn't match show up?
+
+Where: **Settings → Integrations → Data Ingestion → an integration → Executions → a run**.
+
+When a record names a SKU or channel Tether doesn't know, the run's **Execution Detail** flags it as an unmapped SKU or unmapped channel, with the orders it affects and a CSV download. See [Sync history](/integrations/sync-sessions) and [Integration troubleshooting](/integrations/troubleshooting#unmapped-skus).

@@ -1,342 +1,128 @@
 ---
-title: Integration Troubleshooting
-description: Resolve common integration issues
+title: "Integration troubleshooting"
+description: "My integration says Degraded or Failed, the sync failed with an authentication error, SKUs didn't map, or a Shopify fulfillment event failed — what do I do? Where: Settings → Integrations → Data Ingestion → an integration. Fix credentials in the Credentials card, add a SKU's external ID, re-verify webhooks, retry a backfill, and Replay Event or Resolve in the Event Log. Covers Shopify, NetSuite, SAP Business One, ShipBob, Snowflake, TrackStar, BigQuery and Redshift."
 ---
 
-# Integration Troubleshooting
+# Integration troubleshooting
 
-This guide helps you identify and resolve common integration issues.
+Start every check on the integration's page: **Settings → Integrations → Data Ingestion → the integration**. Its capability cards show health, and **Executions** shows each run. See [Sync history](/integrations/sync-sessions) for reading a run.
 
-## Common Issues
+## My integration says Degraded or Failed
 
-### Authentication Errors
+Where: **Settings → Integrations → Data Ingestion** → the health dot on a capability.
 
-**Symptoms:**
-- Sync execution fails immediately
-- Error message referencing credentials or authentication
-- No records fetched
+**Scheduled capability (orders, inventory, products…)**
 
-**Causes:**
-- Expired API access token
-- Invalid credentials entered during setup
-- Credentials revoked on the external platform
-- Store URL changed or incorrect
+- **Degraded** — the latest run failed or hasn't run in 24 hours. Check that the integration and capability are **Enabled** and that **Next Sync** shows a time. Open the latest run under **Executions** for its error.
+- **Failed** — the last three runs were all bad: they failed, or refused at least as many records as they accepted. Open the runs. An authentication error means [fix the credentials](#how-do-i-fix-an-authentication-failed-error); many unmapped SKUs means [map the SKUs](#unmapped-skus).
 
-**Solutions:**
+**Webhook capability (Shopify Fulfillment)**
+
+- **Degraded** — no webhook arrived in the last 24 hours. That can be normal on a quiet store. Otherwise open **Webhook subscriptions** on the Fulfillment card and click **Re-verify subscriptions**.
+- **Failed** — a subscription is missing or failed to register (amber or red topic). Click **Re-verify subscriptions**. If a topic stays red, check the store's **Access Token** and **Client Secret** in **Credentials**, then re-verify.
+
+## How do I fix an authentication failed error?
+
+Where: **Settings → Integrations → Data Ingestion → an integration → Credentials**.
+
+The run fails at once with a credentials or authorization error and fetches nothing. Usually a token expired or was rotated, a password changed, or access was revoked in the other system.
 
 <Steps>
-  <Step title="Verify Credentials">
-    Check that the credentials entered in Tether match what's configured in the external service
+  <Step title="Get a new credential">
+    Create a new token or password in the other system (for example a new NetSuite access token, or a new Shopify Admin API token).
   </Step>
-
-  <Step title="Regenerate Credentials">
-    If using API keys or access tokens, generate new ones from the external platform's settings
+  <Step title="Update it in Tether">
+    Expand **Credentials**, fill in only the changed fields (empty fields stay as they are) and click **Save**.
   </Step>
-
-  <Step title="Recreate Integration">
-    If credentials cannot be updated in place, delete the integration and create a new one with valid credentials
-  </Step>
-
-  <Step title="Check External Platform">
-    Ensure the external platform account is active and the API access hasn't been revoked
+  <Step title="Check">
+    Click **Sync Now** and open the new run under **Executions**.
   </Step>
 </Steps>
 
-### Unmapped SKUs
+You don't need to delete and recreate the integration. For each service's fields, see [Supported services](/integrations/supported-services).
 
-**Symptoms:**
-- Sync executions complete but with many "Failed" sync items
-- Error messages referencing unmapped or unrecognized SKU identifiers
-- Aggregate error analysis shows a list of unmapped SKU IDs
+## Unmapped SKUs
 
-**Causes:**
-- SKUs in the external system don't have matching `external_id` values in Tether
-- New products added to the external platform that haven't been set up in Tether
-- Naming mismatches between systems
+Where: **Settings → Integrations → Data Ingestion → an integration → Executions → a run** → "Unmapped SKUs Found".
 
-**Solutions:**
+The source sent product codes Tether doesn't recognize, so those lines didn't save. Common causes: a new product not yet in Tether, or a code that differs between the two systems.
 
 <Steps>
-  <Step title="Review Unmapped SKUs">
-    Open the failed sync execution and check the error analysis section for the list of unmapped SKUs
+  <Step title="Get the list">
+    On the run, click **Show SKU Errors**, then **Download CSV** for every unmapped code and how many orders it affects.
   </Step>
-
-  <Step title="Configure SKU Mappings">
-    For each unmapped SKU, ensure the corresponding Tether SKU has the correct `external_id` set to match the external system's identifier
+  <Step title="Add the SKU, or link the code">
+    If the product is new, create the SKU. If it exists under another code, open the SKU (**Products → SKUs → the SKU**), go to the **External IDs** tab, enter the system in **Type** (for example `shopify`) and the code in **Value**, and click **Add**. You need catalog write permission.
   </Step>
-
-  <Step title="Re-Sync">
-    Trigger a manual sync to reprocess the previously failed records
+  <Step title="Re-run">
+    Click **Sync Now** and check the new run. If orders from earlier runs are still missing their lines, ask Tether support to re-read them.
   </Step>
 </Steps>
 
-### Unmapped Channels
+<Note>
+If your organization uses the older SKU pages, a SKU's **External IDs** card is read-only — send the list to Tether support to map. Unmapped SKUs on Shopify **Fulfillment** events are mapped under **Settings → Inventory & Forecast → Fulfillment Mappings**.
+</Note>
 
-**Symptoms:**
-- Sync items fail with channel-related error messages
-- Error analysis shows unmapped channel identifiers
+## Unmapped channels
 
-**Causes:**
-- The external system references channels that don't exist in Tether
-- Channel names or IDs don't match between systems
+Where: **Sync Execution → Show Channel Errors**.
 
-**Solutions:**
+The source named a sales channel Tether has no match for. Download the list with **Download CSV**. Either create the channel (see [Managing channels](/channels/managing)) or ask Tether support to map the source's channel to an existing one — channel assignment is part of the connection's [rule set](/integrations/data-mapping).
 
-1. Review the unmapped channel identifiers in the execution error analysis
-2. Create the missing channels in Tether or map existing channels correctly
-3. Trigger a manual sync to reprocess
+## Why didn't anything sync?
 
-### Data Not Syncing
+Where: **Settings → Integrations → Data Ingestion → an integration**.
 
-**Symptoms:**
-- No new sync executions appearing
-- Records fetched count is zero
-- Expected data not showing up in Tether
+| Check | Fix |
+|-------|-----|
+| **Enabled** is off on the integration or the capability | Turn it on |
+| **Dry Run** is on | Runs fetch but save nothing — turn **Dry Run** off |
+| **Next Sync** shows "—" | The schedule is missing; click **Edit** (pencil) and set the cron expression |
+| The run shows **Skipped** items | Open an item — the **Error** column says why it was passed over |
+| Fulfillment isn't moving inventory | The warehouse's **Fulfillment Mode** is **None** or **External WMS**; set **Internal** if Tether should move stock |
 
-**Causes:**
-- Integration is disabled
-- Cron schedule not configured correctly
-- No new data in the external system since last sync
-- Credentials expired
+## Can I replay a failed Shopify fulfillment event?
 
-**Solutions:**
+Where: **Settings → Integrations → Data Ingestion → the Shopify Fulfillment integration → Event Log → Details**.
 
-<Steps>
-  <Step title="Check Integration Status">
-    Verify the integration is enabled on the integration detail page
-  </Step>
+Yes. Filter **Status** to Failed (or click a red error badge), click **Details**, read the **Error** and its hint, fix the cause, then:
 
-  <Step title="Review Schedule">
-    Check the cron expression and timezone are correct. Verify the "Next Sync" time is reasonable.
-  </Step>
+- **Replay Event** — processes the event again.
+- **Resolve** — marks it handled without processing it, when you fixed it another way.
 
-  <Step title="Check Last Sync">
-    Review the most recent execution — did it complete successfully?
-  </Step>
+Both appear only on failed or skipped events. A SKU error hint points to **Settings → Inventory & Forecast → Fulfillment Mappings**; a WMS or connection error points to the warehouse settings above the log.
 
-  <Step title="Verify Source Data">
-    Confirm that new data exists in the external system within the expected date range
-  </Step>
+## A backfill failed
 
-  <Step title="Trigger Manual Sync">
-    Click **Trigger Sync** to force an immediate sync and check the results
-  </Step>
-</Steps>
+Where: **an integration → Fulfillment card → Inventory Backfill**.
 
-### Partial Sync Failures
+"Backfill failed" shows the error (use **Copy error** to send it to support). Turn the capability off, pick a **Since** date and click **Retry Backfill**. To start completely fresh, use **Reset Fulfillment** (with the capability off) and run the backfill again — inventory isn't adjusted by the reset.
 
-**Symptoms:**
-- Execution completes but statistics show a mix of success and failed records
-- Some sync items have "PartialMapped" status
+## Orders held before they're sent
 
-**Causes:**
-- Some records have mapping issues while others are fine
-- External data contains inconsistencies
-- Mixed valid and invalid records in the same batch
+Orders waiting to be sent to a warehouse — **Held by Tether** — are covered in [Order sending](/integrations/order-sending).
 
-**Solutions:**
+## Service-specific notes
 
-| Action | Description |
-|--------|-------------|
-| **Filter by Failed** | Use the sync items filter to show only failed records |
-| **Review Errors** | Check individual error messages for patterns |
-| **Fix Mappings** | Resolve the most common mapping issues first |
-| **Re-Sync** | Trigger a manual sync after fixes |
+| Service | Common problem | What to do |
+|---------|----------------|------------|
+| **Shopify** | Fulfillment webhooks stop | **Re-verify subscriptions**; check **Access Token** and **Client Secret** |
+| **NetSuite** | Token-based authentication fails after a token is revoked or a role changes | Create a new access token and update **Token ID** / **Token Secret** |
+| **SAP Business One** | Login to the Service Layer fails | Check **Service Layer URL**, **Company Database**, **Username** and **Password** |
+| **ShipBob** | Inbound counts don't appear | Check the **Access Token**; counts come back after ShipBob receives the order |
+| **Snowflake** | Run fails on a missing table or permission | The **Role** must read the tables, and **Warehouse** must be a running compute warehouse; check **Table Prefix** |
+| **TrackStar** | No data from the 3PL | Check the **Access Token** and **Trackstar Connector**; the 3PL connection lives in TrackStar |
+| **BigQuery / Redshift** | Query fails | Check the dataset/table (BigQuery) or **Orders Table** / **Line Items Table** (Redshift), and that the user can read them |
 
-## Platform-Specific Issues
+## Need a full re-sync?
 
-### Shopify
+**Reset Sync** deletes an integration's run history so the next sync reads everything from the beginning. Only Tether staff can run it — ask Tether support.
 
-| Issue | Solution |
-|-------|----------|
-| **Rate limit exceeded** | Shopify GraphQL API has rate limits. Wait for the next scheduled sync, which will resume from where it left off |
-| **Orders not syncing** | Verify the Admin API access token has the required read permissions for orders |
-| **SKU mismatches** | Shopify SKUs are matched via external ID. Ensure Tether SKUs have the correct `external_id` set |
-| **Only paid orders syncing** | By design, the Shopify integration filters orders by financial status (paid, partially refunded) |
+## When to contact support
 
-### TrackStar (Warehouse Management)
+Send Tether support:
 
-| Issue | Solution |
-|-------|----------|
-| **Inventory not updating** | Verify the integration has the "Warehouse Inventory" capability enabled |
-| **Connection failed** | Check TrackStar API credentials are valid |
-| **Missing warehouses** | Ensure warehouses are configured in both TrackStar and Tether |
-
-### BigQuery / Redshift (Data Warehouses)
-
-| Issue | Solution |
-|-------|----------|
-| **Query errors** | Verify database connection credentials and permissions |
-| **No data returned** | Check that the configured queries or tables contain data |
-| **Schema changes** | If the source schema changed, review and update the integration configuration |
-
-## Diagnostic Steps
-
-### Step 1: Check Integration Status
-
-1. Go to **Integrations** in the sidebar
-2. Verify the integration is **Enabled**
-3. Check the **Last Sync** and **Next Sync** times
-
-### Step 2: Review Recent Executions
-
-1. Click on the integration to open its detail page
-2. Review the sync execution history
-3. Look for failed executions or executions with high failure counts
-
-### Step 3: Inspect Failed Execution
-
-1. Click on a failed execution
-2. Review the **Statistics** (success/failed/skipped counts)
-3. Check if it was a **Dry Run** (dry runs don't save data)
-4. Filter sync items by "Failed" status
-5. Review error messages for patterns
-
-### Step 4: Check Error Analysis
-
-1. In the execution detail page, look at the aggregate error analysis
-2. Note any unmapped SKUs or channels
-3. Review the top error messages
-
-### Step 5: Trigger Manual Sync
-
-1. Go back to the integration detail page
-2. Click **Trigger Sync**
-3. Monitor the new execution for results
-
-## Error Message Reference
-
-| Error Pattern | Meaning | Action |
-|--------------|---------|--------|
-| **Unmapped SKU** | SKU from external system not found in Tether | Add `external_id` to the matching Tether SKU |
-| **Unmapped Channel** | Channel identifier not recognized | Create or map the channel in Tether |
-| **Authentication failed** | Invalid or expired credentials | Update credentials or recreate integration |
-| **Rate limited** | Too many API requests | Wait for next scheduled sync |
-| **Connection timeout** | Network or platform issue | Retry with manual sync |
-
-## Recovery Procedures
-
-### Reset Sync State
-
-If sync data becomes corrupted or you need to re-import all data:
-
-<Steps>
-  <Step title="Contact Admin">
-    Resetting sync state requires administrator access
-  </Step>
-
-  <Step title="Reset State">
-    On the integration detail page, use the **Reset Sync State** action (admin only)
-  </Step>
-
-  <Step title="Confirm">
-    This will delete all execution history for the integration
-  </Step>
-
-  <Step title="Monitor Full Sync">
-    The next sync will perform a full data fetch. Monitor it closely for any mapping errors.
-  </Step>
-</Steps>
-
-<Warning>
-  Resetting sync state deletes all execution history and forces a full re-import. Use this only when necessary.
-</Warning>
-
-### After Extended Outage
-
-<Steps>
-  <Step title="Check Integration Status">
-    Verify the integration is still enabled and credentials are valid
-  </Step>
-
-  <Step title="Review Missed Period">
-    Check the last successful sync date to understand what was missed
-  </Step>
-
-  <Step title="Trigger Manual Sync">
-    Run a manual sync to catch up on missed data
-  </Step>
-
-  <Step title="Verify Completeness">
-    Check record counts and compare with the source system
-  </Step>
-</Steps>
-
-## Dry Run Troubleshooting
-
-If you're using dry run mode to test an integration:
-
-- Sync executions are marked with a **Dry Run** badge
-- No data is saved to Tether, so you can safely test mappings
-- Review sync items to see which records would succeed or fail
-- Fix any mapping issues before disabling dry run mode
-
-## Preventing Issues
-
-### Best Practices
-
-<AccordionGroup>
-  <Accordion title="Regular Monitoring">
-    Check integrations regularly:
-    - Review execution history for failures
-    - Verify records are being fetched as expected
-    - Check for increasing error counts
-  </Accordion>
-
-  <Accordion title="Keep Credentials Current">
-    Maintain authentication:
-    - Monitor for credential expiration
-    - Use long-lived API tokens where possible
-    - Document credential rotation procedures
-  </Accordion>
-
-  <Accordion title="Test with Dry Run">
-    Before making changes:
-    - Use dry run mode to validate configuration changes
-    - Review results before enabling live sync
-    - Check for new unmapped SKUs or channels
-  </Accordion>
-
-  <Accordion title="Maintain SKU Mappings">
-    Keep external ID mappings up to date:
-    - Add `external_id` values when creating new SKUs
-    - Update mappings when external system IDs change
-    - Periodically review unmapped SKU reports
-  </Accordion>
-</AccordionGroup>
-
-## When to Contact Support
-
-Contact Tether support when:
-
-- Issue persists after following troubleshooting steps
-- Error messages are unclear or unexpected
-- Data corruption is suspected
-- You need help with complex integration configurations
-
-### Information to Provide
-
-| Information | Why Needed |
-|-------------|------------|
-| **Integration name and service** | Identify the integration |
-| **Execution ID** | Locate the specific sync run |
-| **Error messages** | Understand the issue |
-| **When it started** | Timeline context |
-| **Steps already tried** | Avoid duplication |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
-    Configure integrations
-  </Card>
-  <Card title="Sync Sessions" icon="rotate" href="/integrations/sync-sessions">
-    Monitor sync activity
-  </Card>
-  <Card title="Data Exports" icon="download" href="/tips/exports">
-    Manual data handling
-  </Card>
-  <Card title="Channels" icon="shopping-cart" href="/channels/overview">
-    Channel management
-  </Card>
-</CardGroup>
+- The integration name and service
+- The run's time (from **Executions**) and its error
+- For unmapped codes, the CSV from **Download CSV**
+- For a fulfillment event, the order number and the error from **Details**
