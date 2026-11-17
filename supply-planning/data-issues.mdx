@@ -1,13 +1,21 @@
 ---
 title: Data Issues
-description: Structural findings from the solver's data audit, grouped for triage
+description: "See data problems that break your plan, such as unmet demand next to idle stock, and dismiss or fix them. Where: Settings → Supply planning → Data issues (no longer in the Supply Chain sidebar)."
 ---
 
 # Data Issues
 
 The Data issues page surfaces findings from the solver's data audit — both structural mismatches caught before the solve ran and observations only knowable from the returned plan (for example, demand left unmet beside idle inventory). Fixing these removes misleading unmet-demand rows from the plan.
 
-Navigate to **Data issues** under the Supply Chain group in the sidebar. The subtitle counts the findings from the latest solve, and a badge next to the title flags findings that are new since the last plan.
+Where: Settings → **Supply planning** → **Data issues** (`/planning/data-issues`). It used to sit in the Supply Chain sidebar group. The tab shows to people who can see both your network and planning. The subtitle counts the findings from the latest solve, and a badge next to the title flags findings that are new since the last plan.
+
+## Why does the plan show unmet demand when I have stock?
+
+Where: Settings → **Supply planning** → **Data issues**.
+
+Usually the stock can't reach the demand: a location outside the network, a SKU with no supplier or lane, or a coverage policy that doesn't reach the demand's path. The audit flags these as findings. Fix the data, then rerun the plan from [Connected Planning](/supply-planning/connected-planning#rerun-the-plan-after-changing-a-policy).
+
+Coverage findings link **View on the coverage map →**, which opens the policy coverage map at the location the finding is about. See [Policies](/supply-planning/policies).
 
 ## Filtering findings
 
@@ -35,7 +43,9 @@ Each finding card carries:
   Severity is a triage signal: **Errors** are structural problems that distort the plan (fix these first), **Warnings** are likely problems worth confirming, and **Info** findings are observations that may be intentional.
 </Info>
 
-## Dismissing findings
+## Dismiss a data issue
+
+Where: Settings → **Supply planning** → **Data issues** → a finding → **Dismiss**.
 
 Each card has a **Dismiss** button. Dismissing removes the finding from the list and shows a toast:
 
@@ -44,7 +54,7 @@ Each card has a **Dismiss** button. Dismissing removes the finding from the list
 The toast carries an **Undo** action that restores the finding immediately.
 
 <Note>
-  Unlike recommendation dismissals (a 14-day set-aside), a dismissed finding stays gone unless the next solve's audit flags it again. If the underlying condition persists, it will keep coming back — which is the point: a recurring finding is one you should fix rather than dismiss.
+  Unlike [rejecting a recommendation](/supply-planning/recommendations#reject-a-recommendation-with-a-reason), dismissing a finding takes no reason. A dismissed finding stays gone unless the next solve's audit flags it again. If the underlying condition persists, it will keep coming back — which is the point: a recurring finding is one you should fix rather than dismiss.
 </Note>
 
 ## Best practices
@@ -75,21 +85,4 @@ The toast carries an **Undo** action that restores the finding immediately.
 | A dismissed finding came back | The next solve re-flagged the same condition | The underlying data problem persists — fix it rather than re-dismissing |
 | The page is slow with very large audits | Thousands of findings render lazily per section | Keep sections collapsed and filter by severity or category before expanding |
 | A SKU/location filter disappeared | Its last finding was dismissed or filtered out | The filter clears itself automatically; re-add it if findings return |
-| An entity shows as a raw ID | The audit couldn't resolve a display name for it | Check the entity still exists in the [Principal Catalog](/principal-catalog/overview) |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Overview" icon="compass" href="/supply-planning/overview">
-    How the audit relates to solves and plan freshness
-  </Card>
-  <Card title="Principal Catalog" icon="layer-group" href="/principal-catalog/overview">
-    Fix catalog structure the audit flags
-  </Card>
-  <Card title="SKU groups" icon="object-group" href="/principal-catalog/sku-groups">
-    Group membership fixes for scope findings
-  </Card>
-  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
-    Resolve missing-supplier findings
-  </Card>
-</CardGroup>
+| An entity shows as a raw ID | The audit couldn't resolve a display name for it | Check the entity still exists in [Products](/principal-catalog/overview) |

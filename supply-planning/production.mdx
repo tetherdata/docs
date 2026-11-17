@@ -1,22 +1,24 @@
 ---
 title: Production
-description: Plan production runs with the Schedule, Worksheet, and List views
+description: "Plan production runs and find runs short on materials. Where: Supply Chain → Production → Schedule, Worksheet, List or Runs at risk. Covers creating a run manually, why Tether did not schedule production, and which open POs cover a run's short components."
 ---
 
 # Production
 
 The Production page plans manufacturing: which SKUs to produce, on which lines, at which locations, and when. It combines runs already underway, your committed run schedule, and the solver's suggested runs in one surface.
 
-Navigate to **Production** under the Supply Chain group in the sidebar. The page header shows the plan freshness indicator ("Plan as of…").
+Where: Supply Chain → **Production**. The page header shows the plan freshness indicator ("Plan as of…").
 
 ## The production lens
 
-Production carries its own two-axis lens strip instead of the shared four-position scenario strip:
+Where: Supply Chain → **Production** → **Table settings** → **Advanced settings**.
 
-- **Base** — the standing position the schedule is read against: **In progress** (real supply only) or **Committed** (in progress plus your accepted commitments).
-- **Compare** — the recommendation world overlaid on the base: **With recs** (the solver's plan) or **No input limits** (the counterfactual where no production stage is constrained by its inputs).
+Production has its own two-axis lens instead of the shared **Scenario** choice:
 
-**No input limits** is served from its own paired solve; when it isn't selectable, the position stays visible and states the specific reason (not enabled, never solved, no comparison produced, or unreadable). When it's active, a stamp shows when the counterfactual was solved. If you arrive from another planning page, a notice explains what carried over — other pages set Base only, and the comparison choice stays on Production.
+- **Base position** — the standing position the schedule is read against: **In progress** (real supply only) or **Committed** (in progress plus your accepted commitments).
+- **Compare** — the recommendation world overlaid on the base: **With recs** (Tether's plan), **Engine run** (where your organization takes orders from a recommendation engine; see [Engine runs](/supply-planning/engine-runs)), or **No input limits** (the counterfactual where no production stage is constrained by its inputs).
+
+**No input limits** is served from its own paired solve; when it isn't selectable, the position stays visible and states the specific reason (not enabled, never solved, no comparison produced, or unreadable). When it's active, a stamp shows when the counterfactual was solved. If you arrive from another planning page, a notice explains what carried over — other pages set Base position only, and the comparison choice stays on Production.
 
 ## Tabs
 
@@ -25,17 +27,36 @@ Production carries its own two-axis lens strip instead of the shared four-positi
 | **Schedule** | The run workbench — production by line, SKU, and period |
 | **Worksheet** | The per-SKU inventory flow across the horizon |
 | **List** | A flat, sortable list of every run row — in progress, committed, and recommended |
+| **Runs at risk** | Committed runs short on a component, with the open POs that could cover each |
 
 ## Shared controls
 
-One toolbar drives all three tabs:
+One toolbar drives the tabs:
 
-- **Search** — by SKU name or code, location, or line.
+- **Search** — by SKU name or code, location, or line (and component on **Runs at risk**).
 - **Filter chips** — add filters via the **Add filter** popover; **Clear all** resets them.
 - **Date range picker** — with Weekly/Monthly granularity; shown on Schedule and Worksheet (the flat List has no time axis).
 - **Saved views** — round-trip filters, grouping, sort, and granularity.
 - **Create run** — on the Schedule tab, for users with planning write access. Opens the create drawer, prefilled with the cell's node, line, SKU, and period when opened from a schedule cell.
-- **Table settings** — grouping, sort, Qty/$ display, an **In-progress** toggle ("Open orders / runs already underway"), a **Recommendations** toggle ("The solver's suggested runs"), and **Export CSV** (`production-runs.csv`). On the Worksheet, a **Rec timing** control buckets recommendations by **Landing date** (arrival bucket) or **Order date** (order bucket).
+- **Table settings** — grouping, sort, Qty/$ display, an **In-progress** toggle, a **Recommendations** toggle, and **Export CSV** (`production-runs.csv`). On the Worksheet, **Run dates** places a run by when its output is **Available**, by its **Run date**, or **Both**.
+
+## Which production runs are short on materials?
+
+Where: Supply Chain → **Production** → **Runs at risk**.
+
+**Runs at risk** lists committed runs that are short of a component in the dates shown, read from the latest solved plan. For each run it lists every short component, marked **Short**, and the open POs that could cover it, with where each lands. Where the plan has an order that brings the component in time, a link such as "Suggested: buy 1,200 by Nov 20 · lands at West DC" opens it; a transfer reads "Suggested: transfer …".
+
+- Tick **Include below target** to also list runs whose components are covered but below their coverage target (**Below target**).
+- Filter by co-man with the location select.
+- Search by SKU, component, location or line, for example to find every run short on one cap.
+
+If nothing is short, the tab says no committed runs are short of a component, and how many are covered but below target.
+
+### Is there an open PO that covers the component my run is short on?
+
+Where: Supply Chain → **Production** → **Runs at risk** → the run → the component's open POs.
+
+The **Open purchase orders** column lists the open PO lines on your ERP's books that could cover each short component, with quantity and landing site. You need permission to read orders to see this column. To order more, use [MRP](/supply-planning/mrp).
 
 ## The run drawer
 
@@ -44,17 +65,19 @@ Clicking a run from the Schedule or List opens the run drawer. A schedule cell c
 - Per-run detail and daily breakdown.
 - An inline **edit** affordance on committed runs — the route to the editable run form from multi-run cells.
 - Raw-material coverage tinting on committed rows.
-- **Accept**, **Dismiss** ("Removed from queue for 14 days."), and **Restore** on suggested runs — the standard [recommendation lifecycle](/supply-planning/recommendations).
+- **Accept** and **Reject** (with a reason) on suggested runs — see [Recommendations](/supply-planning/recommendations). Rejected runs are under **List** → **Dismissed**, with **Restore**.
 
 <Info>
-  Under the **No input limits** comparison, the suggested runs shown are the counterfactual plan's own program, served as of its solve. They are read-only — accept and dismiss are suppressed — while committed rows stay editable.
+  Under the **No input limits** comparison, the suggested runs shown are the counterfactual plan's own program, served as of its solve. They are read-only — accept and reject are suppressed — while committed rows stay editable.
 </Info>
 
 ### Raw-material coverage
 
 The drawer's raw-material coverage section shows the projected inventory status of every SKU in the run's [BOM](/principal-catalog/boms) at the run's period, with required quantities. Short components get an inbound-supply sub-line — for example "1,200 arriving by Aug 12 · 300 in transit", or "Nothing inbound" — so a shortfall covered by incoming POs is distinguished from a real one. Coverage is identical for committed and suggested runs; it's read from the solver projections either way.
 
-### Why-no-production attribution
+### Why isn't Tether scheduling production for this SKU?
+
+Where: Supply Chain → **Production** → **Schedule** → click the empty cell.
 
 A demand-bearing cell the plan schedules **no** production for can be opened too: the attribution drawer explains why — the run is material-bound (an input is short) or capacity-bound (the line is saturated). From there, **Create run anyway** opens the create drawer prefilled with the cell's node, line, SKU, and period, so you can overrule the solver deliberately.
 
@@ -66,10 +89,12 @@ Among the BOMs that are on at a site, the site's BOM ranking picks the one new r
 
 To change which BOMs run where, [switch a BOM or the whole SKU on or off](/principal-catalog/boms#switching-a-bom-or-sku-on-or-off) at a site or everywhere. Each switch previews the BOM every site will run afterwards before anything changes.
 
-## Creating and editing runs
+## Create a production run manually
+
+Where: Supply Chain → **Production** → **Schedule** → **Create run**.
 
 - **Create run** (toolbar) or **Create run anyway** (attribution drawer) opens the production create drawer. Creating requires planning write permission; a dirty form guards against accidental close.
-- Committed runs are edited through the shared movement drawer, and **Order** converts a committed run into a real production transaction at the run's node — reserving its BOM components — via a confirmation dialog. See [Execution plan](/supply-planning/execution-plan).
+- Accepted runs go to the [Supply Plan](/supply-planning/execution-plan), where they are approved and placed. For why a SKU gets no recommendation at all, see [Why no recommendation](/supply-planning/why-no-recommendation).
 
 ## Best practices
 
@@ -82,9 +107,6 @@ To change which BOMs run where, [switch a BOM or the whole SKU on or off](/princ
     A suggested run with short components and nothing inbound will slip. Accept the upstream buy (or transfer) alongside it, or use MRP's gap fills.
   </Accordion>
 
-  <Accordion title="Use Rec timing to match your planning question">
-    On the Worksheet, **Landing date** answers "when does this supply arrive?" while **Order date** answers "when must I act?". Switch depending on whether you're reviewing coverage or building a work queue.
-  </Accordion>
 
   <Accordion title="Author runs from the cell, not from scratch">
     Opening create from a schedule cell (or the attribution drawer) prefills node, line, SKU, and period — less re-keying and fewer wrong-line mistakes than the blank header form.
@@ -95,7 +117,7 @@ To change which BOMs run where, [switch a BOM or the whole SKU on or off](/princ
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| No scenario strip on this page | Production uses its own two-axis lens instead | Use the **Base** and **Compare** controls at the top of the page |
+| No **Scenario** choice on this page | Production uses its own two-axis lens instead | Use **Base position** and **Compare** in Table settings |
 | **No input limits** disabled | The reason is stated below the control | Enable the feature, run a solve, or retry — as the message directs |
 | Can't accept a suggested run | The **No input limits** comparison is active (read-only), or the recommendation no longer exists | Switch Compare to **With recs**; if it persists, the rec was superseded by a newer solve |
 | **Create run** button missing | You lack planning write permission, or you're not on the Schedule tab | Switch to Schedule; ask an admin about [permissions](/roles-permissions) |
@@ -103,19 +125,8 @@ To change which BOMs run where, [switch a BOM or the whole SKU on or off](/princ
 | A site never plans a SKU on a BOM you expect | No enabled production rule switches that BOM on at the site, or the BOM is Draft | Switch the BOM on at the site (or the whole SKU), and make the BOM Active |
 | A switch is refused with "switches production on for every product" | The rule that switches the SKU on names no SKU | Edit that rule directly; a switch never rewrites a rule for every SKU |
 
-## Next Steps
+## Related pages
 
-<CardGroup cols={2}>
-  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
-    Material requirements for your committed runs
-  </Card>
-  <Card title="BOMs" icon="diagram-project" href="/principal-catalog/boms">
-    The bills of materials behind raw-material coverage
-  </Card>
-  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
-    Accept, dismiss, and restore suggested runs
-  </Card>
-  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
-    Edit and order committed production runs
-  </Card>
-</CardGroup>
+- [MRP](/supply-planning/mrp): order the materials your committed runs need.
+- [BOMs](/principal-catalog/boms): the bills behind raw-material coverage.
+- [Supply Plan](/supply-planning/execution-plan): approve and place runs.

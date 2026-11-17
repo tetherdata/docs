@@ -1,34 +1,43 @@
 ---
 title: Transfers
-description: Plan stock movements between your locations with the Schedule, Worksheet, and List views
+description: "Plan stock moves between your locations and build truckloads. Where: Supply Chain → Transfer → Schedule or List (there is no Transfers worksheet). Covers By load, Build over, Accept load, Reject load, Make trucks, splitting a line across trucks, and Show supplier receipts."
 ---
 
 # Transfers
 
-The Transfers page plans stock movements between your locations: which SKUs to move, from where, to where, and when. It shows in-flight transfers, your committed transfer plan, and the solver's suggested moves in one place, under the shared [scenario strip](/supply-planning/overview).
+The Transfers page plans stock movements between your locations: which SKUs to move, from where, to where, and when. It shows in-flight transfers, your committed transfer plan, and the solver's suggested moves in one place.
 
-Navigate to **Transfer** under the Supply Chain group in the sidebar. The page header shows the plan freshness indicator ("Plan as of…").
+Where: Supply Chain → **Transfer**. The page header shows the plan freshness indicator ("Plan as of…").
 
 ## Tabs
 
 | Tab | Purpose |
 |-----|---------|
 | **Schedule** | The transfer workbench — a grid of moves across locations over the planning horizon |
-| **Worksheet** | The per-SKU inventory flow, bucketed by week or month |
-| **List** | A flat, sortable list of every transfer row — in progress, committed, and recommended — for triage |
+| **List** | Every transfer row, **Detailed** or **By load** (truckloads) |
 
 The active tab is URL-driven, so deep links land on the right view.
 
+Organizations that require approval for transfers also see a **Review staged (N)** button. It opens the [Supply Plan](/supply-planning/execution-plan), where accepted transfers are approved.
+
+## Where is the transfers worksheet?
+
+Where: Supply Chain → **Transfer** has only **Schedule** and **List**.
+
+Transfers has no Worksheet tab; it was retired. For a SKU's week-by-week flow at a location, use the Worksheet on [Purchases](/supply-planning/purchases) or [Production](/supply-planning/production), or the network grid on [Connected Planning](/supply-planning/connected-planning).
+
 ## Shared controls
 
-The Worksheet and List tabs share one header:
+The Schedule and List tabs share one header:
 
 - **Filter bar** — filter by Location group (pinned), SKU, primary SKU group, SKU group, and Location. Group labels follow your organization's [terminology](/administration/terminology).
-- **Date range picker** — from/to dates with quick presets, defaulting to the next 90 days (matching the Schedule's horizon). The same popover sets **Weekly** or **Monthly** bucketing for the Worksheet.
+- **Date range picker** — from/to dates with quick presets, defaulting to the next 90 days (matching the Schedule's horizon).
 - **Saved views** — save the current filters, grouping, sort, and granularity as a named view and reload it in one click.
-- **Table settings** — grouping, sort, display mode (Qty/$), the show/hide toggles below, and **Export CSV**.
+- **Table settings** — grouping, sort, display mode (Qty/$), the show/hide toggles below, the **Scenario** choice, and **Export CSV**.
 
 ### Show/hide toggles
+
+Where: Supply Chain → **Transfer** → **Table settings**. **Show supplier receipts** is off by default, so supplier receipts don't show on the transfers list until you turn it on.
 
 The **Table settings** popover carries four dataset toggles:
 
@@ -36,12 +45,43 @@ The **Table settings** popover carries four dataset toggles:
 |--------|---------|------------------|
 | **Show in progress** | On | Open POs and in-flight transfers |
 | **Show recommendations** | On | Uncommitted solver suggestions |
-| **Show supplier receipts** | On | Goods arriving from suppliers — inbound receipts, not moves you ship |
+| **Show supplier receipts** | Off | Goods arriving from suppliers — inbound receipts, not moves you ship |
 | **Hide 0s** | Off | Drop SKUs with no activity in range |
 
 <Info>
-  The solver plans a purchase as a move out of the supplier node, so inbound receipts ride the same feed as real transfers. Receipt rows carry a muted **receipt** badge so you can tell shipments you perform from goods that simply arrive; turn **Show supplier receipts** off when you want the list to be only what you actually ship.
+  The solver plans a purchase as a move out of the supplier node, so inbound receipts ride the same feed as real transfers. They are hidden by default so the page shows only what you ship. Turn **Show supplier receipts** on to see them; receipt rows carry a muted **receipt** badge.
 </Info>
+
+## Build truckloads from transfer recommendations
+
+Where: Supply Chain → **Transfer** → **List** → **By load**.
+
+**By load** groups transfer lines into loads: the lines going down the same lane in the same window. **Build over** (7d, 14d, 30d, 60d, 90d) sets how many days of lines one load gathers.
+
+Each load header has:
+
+- **Accept load (N)** — accept every recommended line on the load.
+- **Reject load (N)** — reject them, with a reason ([what each reason does](/supply-planning/recommendations#reject-a-recommendation-with-a-reason)).
+- **Make trucks** — build trucks (or containers) from the load's accepted lines.
+
+Next week's loads sit under this week's as **Next week · forward look**, collapsed. You can accept them early.
+
+### Make trucks
+
+1. Accept the lines you want to ship.
+2. Click **Make trucks** on the load. Tether fills trucks up to the lane's truck capacity and pallet size.
+3. Move a line to another truck, or change the quantity on each truck.
+4. Confirm. The toast reads "Built N trucks".
+
+**Make trucks** builds the trucks only. Each truck goes out as one transfer order when you approve it on the [Supply Plan](/supply-planning/execution-plan), which sends it to your ERP if one is connected.
+
+If **Make trucks** is unavailable, hover it for the reason: **Shipments off**, no truck capacity for this lane, no pallet size, **Needs an accepted line**, or **No permission**.
+
+### Can I split a transfer line across two trucks?
+
+Where: Supply Chain → **Transfer** → **List** → **By load** → **Make trucks** → the line's split button.
+
+Yes. In **Make trucks**, click the split button on a line ("Split this line, so part of it can ride another truck") and put the rest on another truck. Split lines are marked **(split)**.
 
 ## Drawers
 
@@ -53,7 +93,7 @@ Clicking a (SKU, node) cell opens the node transfers drawer: all incoming lanes 
 
 Clicking an origin → destination lane opens the lane drawer: the per-SKU transfer line items on that lane. A single-period lane opens straight into its recommendation body; a multi-period lane lists the periods first, each drilling into that period's recommendation.
 
-From either drawer you can **Accept** a line (committing it to the execution plan), **Dismiss** it (removed from the queue for 14 days), or **Restore** a dismissed line — the same gestures as the [recommendation lifecycle](/supply-planning/recommendations).
+From either drawer you can **Accept** a line or **Reject** it with a reason. Rejected lines are listed under **List** → **Dismissed** until they ask again, with **Restore**. See [Recommendations](/supply-planning/recommendations).
 
 ### In-transit drawer
 
@@ -65,11 +105,11 @@ Clicking a node's in-transit figure opens the in-transit drawer: the inbound tra
 
 ## Editing and ordering
 
-Committed transfer rows open in the shared movement drawer for editing (quantity, dates), and the **Order** action converts a committed transfer into a real ship transaction between the lane's warehouses via a confirmation dialog. See [Execution plan](/supply-planning/execution-plan) for the full editing surface.
+Accepted transfers go to the [Supply Plan](/supply-planning/execution-plan), where they are approved (**Approve transfer (N lines)**), placed, and sent to your ERP.
 
 ## Exporting
 
-**Export CSV** in Table settings downloads the active tab's rows — exactly what the current filters, lens, and toggles show, no more.
+**Export CSV** in Table settings downloads the active tab's rows — exactly what the current filters, scenario, and toggles show. Under **By load**, the export lists every SKU line with its load.
 
 ## Best practices
 
@@ -82,38 +122,21 @@ Committed transfer rows open in the shared movement drawer for editing (quantity
     The Incoming/Outgoing/Net header tells you at a glance whether a location is a net receiver or net shipper for a SKU. Large outgoing totals alongside a low coverage position are worth a second look before accepting.
   </Accordion>
 
-  <Accordion title="Filter receipts out when planning your shipping week">
-    Supplier receipts inflate the transfer list on supplier-heavy networks. Turning **Show supplier receipts** off leaves only moves your team actually performs.
-  </Accordion>
 
-  <Accordion title="Save views per workflow">
-    A "West coast weekly" view (location group + weekly + 90 days) and a "Monthly planning" view (all locations + monthly + full horizon) round-trip filters, grouping, sort, and granularity in one click each.
-  </Accordion>
 </AccordionGroup>
 
 ## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| No recommendations in the List | The lens or toggles exclude them | Check the scenario strip is on **Tether's plan** and **Show recommendations** is on |
-| Rows labeled "receipt" you can't ship | These are inbound supplier arrivals, not transfers you perform | Turn off **Show supplier receipts** or simply leave them — they're informational |
+| No recommendations in the List | The scenario or toggles exclude them | In **Table settings**, set **Scenario** to **Tether's plan** and turn **Show recommendations** on |
+| I don't see supplier receipts | **Show supplier receipts** is off by default | Turn it on in **Table settings** |
 | In-transit drawer shows less than the in-transit metric | The drawer lists transfer transactions only; the metric also counts destination-attributed POs | Check open POs on [Transactions](/transactions/overview) for the remainder |
-| A dismissed transfer can't be found | Dismissals move to the Dismissed view | Flip the **Queue ⇄ Dismissed** switch in the List and use **Restore** |
-| Worksheet buckets look wrong | Granularity is set in the date range popover | Open the date range picker and switch Weekly/Monthly |
+| A rejected transfer can't be found | Rejected lines move to the Dismissed view | Flip the **Queue / Dismissed** switch in the List (Detailed) and use **Restore** |
+| There's no Worksheet tab | The Transfers worksheet was retired | Use the Purchases or Production Worksheet, or [Connected Planning](/supply-planning/connected-planning) |
 
-## Next Steps
+## Related pages
 
-<CardGroup cols={2}>
-  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
-    The accept / dismiss / restore lifecycle used in every drawer
-  </Card>
-  <Card title="Coverage" icon="chart-bar" href="/supply-planning/coverage">
-    How transfer drawers show source and destination impact
-  </Card>
-  <Card title="Warehouses" icon="warehouse" href="/inventory/warehouses/overview">
-    Configure the locations transfers move between
-  </Card>
-  <Card title="Lead times" icon="clock" href="/inventory/warehouses/lead-times">
-    The lane lead times behind transfer timing
-  </Card>
-</CardGroup>
+- [Recommendations](/supply-planning/recommendations): accept and reject with a reason.
+- [Supply Plan](/supply-planning/execution-plan): approve and send transfer orders.
+- [Coverage](/supply-planning/coverage): source and destination impact.

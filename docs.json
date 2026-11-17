@@ -97,6 +97,7 @@
             "group": "Supply Planning",
             "pages": [
               "supply-planning/overview",
+              "supply-planning/connected-planning",
               "supply-planning/recommendations",
               "supply-planning/transfers",
               "supply-planning/production",
