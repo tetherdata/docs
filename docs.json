@@ -62,6 +62,9 @@
               "inventory/coverage-and-runout",
               "inventory/history",
               "inventory/adjustments",
+              "inventory/counts",
+              "inventory/lots",
+              "supply-chain/locations",
               {
                 "group": "Warehouses",
                 "pages": [
@@ -151,6 +154,7 @@
               "administration/user-access",
               "administration/terminology",
               "administration/inventory-settings",
+              "administration/lot-tracking",
               "administration/periods"
             ]
           },
