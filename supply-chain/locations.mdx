@@ -1,0 +1,69 @@
+---
+title: Locations (warehouses, suppliers and sales channels)
+description: "Where do I edit a warehouse, supplier or sales channel now? How do I see a supplier's purchasing terms (MOQ, lead time, order cadence)? What are location groups? Where: Supply Chain → Locations → a location → its tabs. Locations replace the older Warehouses, Suppliers and Sales Channels pages."
+sidebarTitle: Locations
+---
+
+# Locations
+
+A **location** is any place in your supply network: a warehouse or 3PL you store stock in, a supplier or co-manufacturer you buy from, a plant that produces, or a sales channel you sell through. What a location does is set by its **capabilities**: **Storage**, **Purchase**, **Production** and **Sales**. One location can have several.
+
+<Note>
+  **Locations replace Warehouses, Suppliers and Sales Channels.** If your sidebar has **Supply Chain** → **Locations**, your organization manages warehouses, suppliers and channels here. Old links to a warehouse, supplier or channel page open the matching location. If you still see **Inventory** → **Suppliers** or **Sales** → **Sales Channels**, your org is on the older pages: see [Warehouses](/inventory/warehouses/overview), [Suppliers](/inventory/suppliers) and [Sales channels](/channels/overview). Your org may have renamed "Location"; the pages work the same.
+</Note>
+
+## Where do I edit a warehouse now?
+
+Where: **Supply Chain** → **Locations** → click the location's name → **Overview**.
+
+1. Open **Supply Chain** → **Locations**. Use the capability filter (**Storage**, **Production**, **Purchase**, **Sales**) to narrow the list; **Storage** shows your warehouses, **Purchase** and **Production** your suppliers, **Sales** your channels.
+2. Click a location to open its detail page.
+3. On **Overview**, edit its **Details** (name, description, capabilities, address, contact).
+
+The list also has a **Diagram** view that draws the network. To add a location, click **+ Location** (needs write access), enter a **Name**, tick its **Capabilities**, and choose **Network membership** (**In network** or **Out of network**).
+
+## Location tabs
+
+Where: **Supply Chain** → **Locations** → a location.
+
+A location shows only the tabs its capabilities allow:
+
+| Tab | Shown for | What it holds |
+|-----|-----------|---------------|
+| **Overview** | All | Details, **Connections** (which locations it receives from and ships to, with lead days), and for sales locations the **Channel configuration** |
+| **Policies** | All | Every policy in effect at this location |
+| **Location Groups** | All | Groups this location belongs to |
+| **Inventory** | Storage | Stock on hand here |
+| **Storage** | Storage | What this location can hold, per SKU |
+| **Transactions** | Storage | Orders in and out of this location |
+| **History** | Storage | Inventory changes at this location |
+| **Production** / **Production Lines** | Production | What it makes and on which lines |
+| **Purchasing** | Purchase | What you can buy here and on what terms |
+| **Forecast** | Sales | Demand for this sales location |
+| **Stores** / **Orders** | Sales (orgs on location-based channels) | The trading partners and orders behind this channel |
+
+## How do I see a supplier's purchasing terms?
+
+Where: **Supply Chain** → **Locations** → filter **Purchase** → the supplier → **Purchasing**.
+
+- **Purchasing Defaults** at the top apply to everything bought here: **Order Cadence**, **Order Increment**, **Min. Order Qty** (MOQ), **Lead** (days) and **Spend Cap**. Each is saved as a policy.
+- Below, one row per SKU you can buy here, with its **Vendor code** and any SKU-level purchasing policies (for example a different MOQ or lead time for one SKU) that override the defaults.
+
+## Where do I change lead times?
+
+Where: **Supply Chain** → **Locations** → a location → **Overview** → **Connections**.
+
+- **Supplier lead time:** on the supplier's **Purchasing** tab, set **Lead** under **Purchasing Defaults**, or a SKU-level lead time on that SKU's row.
+- **Transit days between two locations:** on **Connections**, edit the lane's lead days, or click **Add Connection**, choose **Receives from** or **Ships to**, pick the other location and enter the days. Tether saves the days as a policy named **Lead time: [other location]**.
+
+For the older warehouse and supplier screens, see [Lead time configuration](/inventory/warehouses/lead-times).
+
+## What are location groups?
+
+Where: **Supply Chain** → **Locations** → **Location Groups** tab (also in the command palette as **Location Groups**).
+
+A location group is a named set of locations, for example "East Coast DCs" or "Co-mans". Write one policy scoped to the group and it applies at every member, instead of repeating it per location. Groups also filter the Inventory page. Click **New location group** to make one; a location's **Location Groups** tab shows the groups it belongs to.
+
+## How are sales channels added?
+
+There is no "Add Channel" button. A sales channel is a location with the **Sales** capability, so you add one with **+ Location** and tick **Sales**. When an integration syncs sales, Tether matches each store or marketplace code to an existing channel, by binding first and then by name. Codes that match no channel are counted under **Unresolved values** in **Settings** → **CATALOG** → **Channel Bindings**, where you bind them to the right channel. A sales location's **Overview** → **Channel configuration** holds its **Channel type**, **Currency** and **Hierarchy assignments**. See [Sales channels](/channels/overview).

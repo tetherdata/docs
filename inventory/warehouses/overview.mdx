@@ -1,11 +1,21 @@
 ---
 title: Warehouses Overview
-description: Managing warehouse locations in Tether
+description: "How do I add a new warehouse? Where did the Warehouses page go? How do I see transactions for one warehouse? Where: Inventory → Warehouses (older setup) or Supply Chain → Locations (newer setup)."
 ---
 
 # Warehouses Overview
 
 Warehouses are the physical locations where your inventory is stored. In Tether, warehouses are essential for tracking stock levels, planning replenishment, and managing transfers.
+
+## Where did the Warehouses page go?
+
+Where: **Supply Chain** → **Locations** (newer setup) or **Inventory** → **Warehouses** (older setup).
+
+<Note>
+  **If your sidebar shows Supply Chain → Locations, manage warehouses there.** On that setup a warehouse is a location with the **Storage** capability, the Warehouses entry is gone from the sidebar, and old warehouse links open the matching location. See [Locations](/supply-chain/locations).
+</Note>
+
+The rest of this page covers the older Warehouses pages. There the sidebar entry under **Inventory** uses your org's word for a warehouse; by default it reads **Locations**, so it may say **Inventory** → **Locations** rather than **Inventory** → **Warehouses**.
 
 ## What is a Warehouse?
 
@@ -19,7 +29,7 @@ A warehouse represents any location that holds inventory:
 
 ## The Warehouses Dashboard
 
-Navigate to **Inventory** → **Warehouses** to access the warehouse dashboard.
+Where: **Inventory** → **Warehouses** (or your org's word for it).
 
 ### Dashboard Features
 
@@ -27,17 +37,19 @@ Navigate to **Inventory** → **Warehouses** to access the warehouse dashboard.
 |---------|-------------|
 | **Warehouse List** | All warehouses displayed in a data table |
 | **Search** | Find warehouses by name or code |
-| **Create Button** | Add new warehouses |
+| **New Warehouse** | Add new warehouses |
 
-## Creating a Warehouse
+## How do I add a new warehouse?
+
+Where: **Inventory** → **Warehouses** → **New Warehouse**. On the Locations setup, use **Supply Chain** → **Locations** → **+ Location** and tick **Storage** instead.
 
 <Steps>
   <Step title="Navigate to Warehouses">
     Go to **Inventory** → **Warehouses**
   </Step>
 
-  <Step title="Click Create Warehouse">
-    Click the **Create Warehouse** button
+  <Step title="Click New Warehouse">
+    Click the **New Warehouse** button
   </Step>
 
   <Step title="Enter Warehouse Information">
@@ -61,7 +73,7 @@ Navigate to **Inventory** → **Warehouses** to access the warehouse dashboard.
 
 ## Warehouse Detail View
 
-Click on a warehouse to open its detail page with multiple tabs:
+Click on a warehouse to open its detail page. The tabs are **Overview**, **Inventory**, **Transactions**, **History**, **SKU Assignments** and **Settings**.
 
 ### Overview Tab
 
@@ -91,7 +103,9 @@ View inventory at this warehouse:
 - Health status indicators
 - Quick filters
 
-### Transactions Tab
+### How do I see transactions for one warehouse?
+
+Where: **Inventory** → **Warehouses** → a warehouse → **Transactions** tab (on the Locations setup: **Supply Chain** → **Locations** → the location → **Transactions**).
 
 Transaction history for this warehouse:
 
@@ -100,11 +114,15 @@ Transaction history for this warehouse:
 - Recent activity
 - Pending transactions
 
-### Inventory Settings Tab
+### History Tab
+
+Inventory changes at this warehouse, from the same change feed as [Inventory history](/inventory/history).
+
+### SKU Assignments Tab
 
 Configure SKU-warehouse assignments for this warehouse. This determines which SKUs are tracked and managed at this location.
 
-### Replenishment Settings Tab
+### Settings Tab
 
 Configure inventory and forecast settings specific to this warehouse, including safety stock levels, reorder points, and the **Max days** coverage cap.
 

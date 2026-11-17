@@ -1,277 +1,80 @@
 ---
 title: Lead Time Configuration
-description: Setting up transit times between warehouses and from suppliers
+description: "Where do I change a supplier's lead time? How do I set transit days between two warehouses? Why is the lead time on my PO wrong? Where: Supply Chain → Locations → a location → Purchasing or Overview → Connections (newer setup); Warehouse → Overview → Transit Lead Times, Supplier → Overview or Lead Times (older setup)."
 ---
 
 # Lead Time Configuration
 
-Lead times determine how long it takes to move inventory between locations. Accurate lead times are essential for Tether to recommend orders at the right time and project when inventory will be available.
+Lead time is the number of days from placing an order until the stock is available at the destination. Tether uses it to decide when to order or transfer so stock arrives before you run out, and to date incoming stock in projections.
 
-## What Are Lead Times?
+There are two kinds:
 
-Lead time is the total time from when an order is placed until inventory is available at the destination. In Tether, lead times are configured as **transit days** — the number of days for a shipment to travel from one location to another.
+- **Supplier lead time**: from placing a purchase order to receiving it.
+- **Transit lead time**: days to move stock between two of your locations.
 
-## Types of Lead Times
+Where you set them depends on your setup. If your sidebar has **Supply Chain** → **Locations**, use the first two sections. If it has **Inventory** → **Warehouses** and **Inventory** → **Suppliers**, use the older-setup sections.
 
-### Supplier Lead Times
+## Where do I change a supplier's lead time? (Locations)
 
-Time for orders from suppliers to reach your warehouse. These are configured per SKU in supplier capabilities.
+Where: **Supply Chain** → **Locations** → the supplier → **Purchasing**.
 
-Configured in: **Supplier** → **Overview** → **Capabilities table** → **Lead Time** column
+- For everything bought from this supplier: under **Purchasing Defaults**, set **Lead** (days).
+- For one SKU: set the lead time on that SKU's row in the same tab. A SKU-level lead time applies to that SKU instead of the default.
 
-### Transfer Lead Times
+Both are saved as policies, so they also appear on the location's **Policies** tab. See [Locations](/supply-chain/locations#how-do-i-see-a-suppliers-purchasing-terms).
 
-Time to move inventory between your warehouses.
+## How do I set transit days between two warehouses? (Locations)
 
-Configured in: **Warehouse** → **Overview** → **Transit Lead Times** section
-
-## Configuring Transfer Lead Times
-
-Transfer lead times are configured from within each warehouse's detail page.
-
-### Accessing Lead Time Settings
+Where: **Supply Chain** → **Locations** → a location → **Overview** → **Connections**.
 
 <Steps>
-  <Step title="Navigate to Warehouse">
-    Go to **Inventory** → **Warehouses**
+  <Step title="Open the connection">
+    On **Connections**, find the lane to the other location and edit its lead days. If there is no lane yet, click **Add Connection**.
   </Step>
-
-  <Step title="Open Warehouse Detail">
-    Click on a warehouse to open its settings
+  <Step title="Set direction and days">
+    For a new connection choose **Receives from** or **Ships to**, pick the other location, and enter the days.
   </Step>
-
-  <Step title="View Lead Times in Overview Tab">
-    The **Overview** tab includes a "Transit Lead Times to Other Warehouses" section at the bottom
-  </Step>
-</Steps>
-
-### The Lead Time Table
-
-The lead time settings display a table showing all other warehouses with the following columns:
-
-| Column | Description |
-|--------|-------------|
-| **Destination Warehouse** | The warehouse name and code (links to that warehouse's detail page) |
-| **Lead Time (Days)** | The number of transit days to ship from the current warehouse to the destination |
-
-### Setting Lead Times
-
-<Steps>
-  <Step title="Find the Destination Warehouse">
-    Locate the destination warehouse in the table
-  </Step>
-
-  <Step title="Enter Transit Days">
-    Click on the lead time input field and enter the number of transit days
-  </Step>
-
   <Step title="Save">
-    Click **Update** to save, or press **Enter**. The lead time is automatically saved for both directions (e.g., setting NYC → LA also sets LA → NYC).
+    Save the row. Tether stores the days as a policy named **Lead time: [other location]** for that one direction. Set the reverse direction separately if it differs.
   </Step>
 </Steps>
 
-<Tip>
-  Lead times are saved bidirectionally. When you set the lead time from Warehouse A to Warehouse B, the same value is applied in both directions.
-</Tip>
+## Why is the lead time on my PO wrong?
 
-### Example Configuration
+Where: the supplier's **Purchasing** tab and the location's **Policies** tab (Locations setup), or the supplier's **Overview** capabilities table (older setup).
 
-For a warehouse in New York, the lead time table might show:
+A purchase order's expected arrival comes from the lead time in effect for that supplier, SKU and destination when the order was planned. If it looks wrong:
 
-| Destination Warehouse | Lead Time (Days) |
-|-----------------------|------------------|
-| LA Warehouse (LA-01)  | 5                |
-| Chicago DC (CHI-01)   | 3                |
-| Atlanta (ATL-01)      | 4                |
+1. Check the supplier's **Purchasing** tab (Locations setup) or **Overview** capabilities table (older setup): is there a SKU-level lead time that differs from the default?
+2. Check the location's **Policies** tab for another lead-time policy that applies to this SKU or lane.
+3. After you correct the lead time, new recommendations use it. Orders already placed keep the date they were given; change that on the order itself.
 
-### Editing and Canceling
+## Transit lead times between warehouses (older setup)
 
-When you modify a lead time value:
+Where: **Inventory** → **Warehouses** → a warehouse → **Overview** → **Transit Lead Times to Other Warehouses**.
 
-- The **previous value** is displayed alongside the new value with an arrow indicator
-- Click **Update** to save the change
-- Click **Cancel** to revert to the previous value
-- Changes also auto-save when you click away from the input field (if the value changed)
+The table lists every other warehouse with **Destination Warehouse** and **Lead Time (Days)**.
 
-## Supplier Lead Times
+<Steps>
+  <Step title="Find the destination">
+    Locate the destination warehouse in the table.
+  </Step>
+  <Step title="Enter transit days">
+    Type the number of days in **Lead Time (Days)**.
+  </Step>
+  <Step title="Save">
+    Click **Update**, press **Enter**, or click away (**Cancel** reverts). The value is saved for both directions: setting NYC → LA also sets LA → NYC.
+  </Step>
+</Steps>
 
-Supplier lead times are configured per SKU in the supplier's capabilities table, not in the warehouse lead time settings.
+## Supplier lead times (older setup)
 
-### Where to Configure
+Where: **Inventory** → **Suppliers** → a supplier → **Overview** → capabilities table → **Lead Time (days)**.
 
-1. Navigate to a **Supplier** detail page
-2. The **Overview** tab contains the capabilities table
-3. The **Lead Time (days)** column shows the production/delivery lead time for each SKU
+Each SKU a supplier provides has its own lead time. Click the value, enter the days, and save. See [Suppliers](/inventory/suppliers#where-do-i-set-moq-or-lead-time-for-a-supplier).
 
-### Per-SKU Lead Times
+If the supplier holds stock for you in a linked warehouse, its **Lead Times** tab sets transit days from that warehouse to your others, using the same table as a warehouse's Overview.
 
-Each SKU-supplier combination can have its own lead time, reflecting:
+## What to include in a lead time
 
-- Manufacturing time for that specific product
-- Shipping time from the supplier
-- Any processing or customs time
-
-See [Suppliers](/inventory/suppliers) for details on configuring supplier capabilities.
-
-### Linked Warehouse Lead Times
-
-If a supplier has a **linked warehouse** (Supplier Held Inventory), the supplier's **Lead Times** tab shows the same transit lead time configuration as a warehouse Overview tab, allowing you to configure transit times from the supplier's linked warehouse to your other warehouses.
-
-## Lead Times and Supply Planning
-
-Lead times directly impact [supply planning](/supply-planning/overview) recommendations:
-
-### How Tether Uses Lead Times
-
-1. **Calculates order timing** — When to place orders so they arrive before a stockout or safety stock breach
-2. **Projects inventory** — When incoming stock will be available at the destination
-3. **Times recommendations** — Recommended [transfers](/supply-planning/transfers) and [purchases](/supply-planning/purchases) are scheduled around lead times
-
-### Example Calculation
-
-```
-Stockout projected: March 15
-Transfer lead time: 5 days
-Order should be placed by: March 10
-```
-
-If coverage drops below the lead time, the shortfall surfaces in [inventory coverage](/supply-planning/coverage).
-
-## Factors Affecting Lead Times
-
-Consider these factors when setting lead times:
-
-| Factor | Impact |
-|--------|--------|
-| **Distance** | Longer distance = longer transit |
-| **Shipping Method** | Ground vs. air vs. expedited |
-| **Carrier Reliability** | Add buffer for unreliable routes |
-| **Processing Capacity** | Larger orders take longer to process |
-| **Receiving Capacity** | Busy warehouses take longer to receive |
-| **Seasonality** | Holiday periods may have delays |
-
-## Buffer Time
-
-Consider adding buffer to lead times:
-
-### Why Add Buffer
-
-- Account for unexpected delays
-- Provide safety margin
-- Handle variability in transit times
-
-### How Much Buffer
-
-| Situation | Suggested Buffer |
-|-----------|------------------|
-| Reliable routes | 0-1 days |
-| Standard routes | 1-2 days |
-| Unreliable routes | 2-3 days |
-| International | 3-5 days |
-
-### Example with Buffer
-
-```
-Actual transit time: 3 days
-+ Buffer for variability: 1 day
-= Configured lead time: 4 days
-```
-
-## Monitoring Lead Time Accuracy
-
-Track actual vs. configured lead times:
-
-### Review Process
-
-1. Check transaction history for actual delivery times
-2. Compare to configured lead times
-3. Adjust if consistently off
-
-### Signs of Incorrect Lead Times
-
-- Frequent stockouts despite orders in transit
-- Inventory arriving earlier/later than projected
-- Alerts don't align with actual urgency
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Start Conservative">
-    When uncertain, use longer lead times:
-    - Orders arrive early = extra safety stock
-    - Orders arrive late = potential stockout
-    - Better to have buffer than shortfall
-  </Accordion>
-
-  <Accordion title="Review Regularly">
-    Update lead times periodically:
-    - Seasonal changes (holiday delays)
-    - New shipping contracts
-    - Route changes
-    - Performance trends
-  </Accordion>
-
-  <Accordion title="Document Assumptions">
-    Keep notes on lead time configurations:
-    - What components are included
-    - What buffer is added
-    - Why certain routes are longer
-  </Accordion>
-
-  <Accordion title="Consider Variability">
-    For routes with high variability:
-    - Use the longer end of the range
-    - Consider expedited shipping for urgent orders
-    - Monitor closely during peak periods
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-### Orders Always Late
-
-**Possible causes:**
-- Lead time configured too short
-- Not accounting for all components (processing, customs, receiving)
-- Carrier performance degraded
-
-**Solutions:**
-1. Review actual transit times from transaction history
-2. Add appropriate buffer
-3. Consider faster shipping methods
-
-### Orders Always Early
-
-**Possible causes:**
-- Lead time configured too long
-- Carrier improved performance
-
-**Solutions:**
-1. If consistently early, reduce lead time slightly
-2. Early arrivals are usually acceptable
-3. Don't over-correct — keep some buffer
-
-### No Other Warehouses Showing
-
-**Possible cause:**
-- Only one warehouse exists in the system
-
-**Solution:**
-Create additional warehouses to configure lead times between them.
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Warehouses Overview" icon="warehouse" href="/inventory/warehouses/overview">
-    Manage warehouse settings
-  </Card>
-  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
-    Configure supplier lead times
-  </Card>
-  <Card title="Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
-    See lead times in action
-  </Card>
-  <Card title="Inventory Coverage" icon="chart-line" href="/supply-planning/coverage">
-    View lead time impact on projections
-  </Card>
-</CardGroup>
+Count the whole time from order to usable stock: order processing, manufacturing (if made to order), shipping, customs, and receiving. If a route is unreliable, use the longer end of what you see. Tether also raises a [data issue](/supply-planning/data-issues) when a location's replenishment lead time is as long as or longer than the cover it is meant to hold.
