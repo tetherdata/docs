@@ -1,0 +1,134 @@
+---
+title: Lots and lot tracking
+description: "Where do I see lot balances and expiry dates? How do I put a lot on hold, change its expiry, assign stock to a lot, or find which customers got a lot (recall)? Where: Inventory → Lots (On-hand, Allocations, Attributes) and a lot's Lot Details page. Lots appear only when lot tracking is turned on for your org."
+sidebarTitle: Lots
+---
+
+# Lots and lot tracking
+
+A **lot** (also called a batch) is a quantity of one SKU that shares a code, an expiry date and a history. Tether keeps on-hand per lot, suggests which lot to ship first (FEFO, first expiry first out), and traces a lot forward to the customers who received it and back to what it was made from.
+
+## Why don't I see Lots in my menu?
+
+Where: sidebar → **Inventory** → **Lots**.
+
+Lot tracking is off by default. **Lots** appears in the sidebar only when:
+
+- lot tracking is turned on for your organization. If it isn't, ask Tether to turn it on; direct links to lot pages show "not found" until it is.
+- you have the `inventory:lots:read` permission. Creating lots, changing status or expiry, and the bulk actions also need `inventory:lots:write`.
+
+Once it's on, each lot-tracked SKU also gets a **Lots** tab on its SKU page (**Products** → **SKUs** → a SKU → **Lots**). To choose which SKUs are tracked, see [Lot tracking settings](/administration/lot-tracking).
+
+## Where do I see lot balances and expiry dates?
+
+Where: **Inventory** → **Lots** → **On-hand**.
+
+The Lots page has three views, switched at the top right: **On-hand**, **Allocations** and **Attributes**. **On-hand** lists every lot with stock:
+
+| Column | What it shows |
+|--------|---------------|
+| **Lot** | The lot code. Click it to open the lot's details |
+| **Supplier lot** | The supplier's own lot reference, if one was recorded (the label follows your org's word for supplier) |
+| **SKU** | The product |
+| **Warehouse** | Where the stock sits |
+| **Expiry** | Expiry date, colored when it is expired or within 30 days |
+| **Status** | **Available**, **On Hold** or **QA Flagged** |
+| **On hand** | Units of this lot at this warehouse |
+| **Available** | On hand less what open orders have reserved |
+
+Each [lot attribute](#what-are-lot-attributes) your org defines adds its own column.
+
+## How do I put a lot on hold?
+
+Where: **Inventory** → **Lots** → **On-hand** → the **⋯** menu at the end of the lot's row → **Hold**.
+
+| Menu item | Effect |
+|-----------|--------|
+| **Hold** | Status **On Hold**: skipped by FEFO and not offered as a production input |
+| **Flag QA** | Status **QA Flagged**: failed or pending QA, also skipped by FEFO |
+| **Release** | Back to **Available** |
+
+You can add a note when you change the status; it shows when you hover the status badge.
+
+## How do I change a lot's expiry date?
+
+Where: **Inventory** → **Lots** → **On-hand** → **⋯** on the lot's row → **Edit expiry**.
+
+Enter the new **Expiry date** and click **Save**.
+
+## How do I create a lot?
+
+Where: **Inventory** → **Lots** → **Create lot**.
+
+Enter the **SKU**, **Lot code**, **Expiry date**, **Production date** and an optional **Supplier lot reference**. Under **Opening on-hand (optional)** you can give a **Quantity** and **Warehouse** for stock already on the shelf. Click **Create lot**.
+
+<Note>
+  **Create lot** and **Assign lots** are hidden when your org keeps lots to production runs and receipts (Settings → Production → **Where lots come from**). Then lots can only be made by a production run or recorded at receipt.
+</Note>
+
+## How do I assign stock to a lot?
+
+Where: **Inventory** → **Lots** → **Assign lots (N)**, or **Inventory** → **Dashboard** → right-click a cell → **Assign unassigned stock to a lot…**.
+
+On-hand that arrived without a lot (for example before tracking was turned on) sits as **unassigned** stock. To give it a lot:
+
+- **All at once:** **Inventory** → **Lots** → **Assign lots (N)**, where N is the number of positions with unassigned stock. Pick or create a lot for each position and click **Assign position**.
+- **One position:** on **Inventory** → **Dashboard**, right-click the SKU's warehouse cell → **Assign unassigned stock to a lot…**. Split the quantity across one or more lots and click **Assign to lot**.
+
+To undo, use **⋯** → **Return to unassigned** on the lot's row.
+
+## Moving stock between lots and orders
+
+Where: **Inventory** → **Lots** → **⋯** on a lot's row, or **Inventory** → **Lots** → **Allocations**.
+
+- **Reallocate** (row menu) moves this lot's open order allocations to other lots.
+- **Allocations** lists every lot reservation on an order, filterable by status (**Open**, **Shipped**, **Released**), SKU and warehouse, and searchable by lot, order or SKU. Select rows and choose **Release**, **Reassign FEFO**, **Correct to lot...** or **Return to unassigned**.
+- **Adjust quantity** on a lot's details page adds or removes units with a reason such as **Discard**, **Retention sample** or **Count correction**.
+
+## Where do lots get entered?
+
+Where: receiving a PO, transfer lines, production runs, and fulfilling a sales order.
+
+You record lots as stock moves:
+
+- **Receiving** a purchase order: each received line takes one or more lot codes, expiry, and any lot attributes.
+- **Transfers**: lines are filled from lots by your org's transfer rule (**Oldest received first** or **Earliest expiry first**).
+- **Production runs**: inputs are drawn from lots; the output gets a new lot code by your [lot code format](/administration/lot-tracking#lot-code-format), or inherits the input's code.
+- **Sales orders**: when you fulfill an order you choose its lots (FEFO lots are suggested). Lots chosen for an order are held for it and print on the pick list.
+
+## Why was this order held for lots?
+
+Where: the sales order's lines and pick list; release in **Inventory** → **Lots** → **Allocations**.
+
+When lots are chosen for a sales order at fulfillment, Tether holds those lots for that order so nothing else takes them before it ships. The held lots show on the order's lines and on its pick list. To free them, release the allocation in **Inventory** → **Lots** → **Allocations** (select the row → **Release**).
+
+## How do I find which customers got lot 24-117? (recall)
+
+Where: **Inventory** → **Lots** → search or click the lot code → **Lot Details**.
+
+The **Lot Details** page traces one lot:
+
+- **Associated Lots**: the lots this one was made from and the lots made from it, with the transaction and quantity.
+- **Lineage**: the same chain as a chart.
+- **Customer shipments**: every order that reserved or shipped this lot, with customer and status.
+- **Receiving** and **Transfers**: where the lot came in and moved.
+- **History**: every movement of the lot.
+
+Click **Print report** for a printable recall report (status, expiry, on hand, associated lots, receiving, transfers and customer shipments), or **Export** for a CSV.
+
+## How do I find which lots a customer received?
+
+Where: **Inventory** → **Lots** → **Allocations**.
+
+Search by the order number, set status to **Shipped**, and read the lot on each line. Each lot's **Lot Details** → **Customer shipments** answers the reverse question.
+
+## What are lot attributes?
+
+Where: **Inventory** → **Lots** → **Attributes** → **New lot attribute**.
+
+A lot attribute is something each lot records, like a floor color or a drain date. Give it a **Name**, choose what it **Holds** (**List**, **Text**, **Number** or **Date**; fixed once defined), add the **Values** for a list, and pick the SKU groups whose lots carry it. Those SKUs ask for it at receipt and show it on the lot and as a column on the On-hand view.
+
+## Related
+
+- [Lot tracking settings](/administration/lot-tracking): which SKUs are tracked, shelf life, lot code formats.
+- [Inventory counts](/inventory/counts): counts can record a lot per line.

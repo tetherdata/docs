@@ -1,11 +1,21 @@
 ---
 title: Suppliers
-description: Managing supplier relationships in Tether
+description: "How do I add a supplier? Where is the Suppliers page? Where do I set MOQ or lead time for a supplier? Where: Inventory → Suppliers (older setup) or Supply Chain → Locations → the supplier → Purchasing (newer setup)."
 ---
 
 # Suppliers
 
 Suppliers are the vendors who provide your products and materials. Tether helps you manage supplier information, capabilities, and costs for effective supply planning.
+
+## Where is the Suppliers page?
+
+Where: **Supply Chain** → **Locations** (newer setup) or **Inventory** → **Suppliers** (older setup).
+
+<Note>
+  **If your sidebar shows Supply Chain → Locations, manage suppliers there.** On that setup a supplier is a location with the **Purchase** (or **Production**) capability, the Suppliers entry is gone from the sidebar, and old supplier links open the matching location. Add a supplier with **+ Location**; set MOQ and lead time on its **Purchasing** tab. See [Locations](/supply-chain/locations#how-do-i-see-a-suppliers-purchasing-terms).
+</Note>
+
+The rest of this page covers the older Suppliers pages.
 
 ## What is a Supplier?
 
@@ -19,7 +29,7 @@ A supplier is any external party that provides goods to your business:
 
 ## The Suppliers Dashboard
 
-Navigate to **Suppliers** from the sidebar.
+Where: **Inventory** → **Suppliers**.
 
 ### Dashboard Columns
 
@@ -35,11 +45,13 @@ The supplier list displays the following information:
 | **Contact Email** | Contact email address |
 | **Contact Phone** | Contact phone number |
 
-## Creating a Supplier
+## How do I add a supplier?
+
+Where: **Inventory** → **Suppliers** → **New Supplier** (on the Locations setup: **Supply Chain** → **Locations** → **+ Location**, tick **Purchase**).
 
 <Steps>
   <Step title="Navigate to Suppliers">
-    Go to **Suppliers** from the sidebar
+    Go to **Inventory** → **Suppliers**
   </Step>
 
   <Step title="Click New Supplier">
@@ -83,18 +95,18 @@ The supplier list displays the following information:
 
 ## Supplier Detail View
 
-Click on a supplier to see full details. The detail page has the following tabs:
+Click on a supplier to see full details. The detail page has the tabs **Overview**, **Inventory**, **Transactions**, **Settings** and **Lead Times**:
 
 | Tab | Description |
 |-----|-------------|
 | **Overview** | Supplier details and SKU capabilities table |
 | **Transactions** | Transaction history with this supplier |
 | **Inventory** | Inventory held by this supplier (if linked warehouse exists) |
-| **Inventory Settings** | SKU-warehouse assignments for the supplier's linked warehouse |
+| **Settings** | SKU-warehouse assignments for the supplier's linked warehouse |
 | **Lead Times** | Transit lead times from supplier's linked warehouse to other warehouses |
 
 <Note>
-  The **Inventory**, **Inventory Settings**, and **Lead Times** tabs are fully functional only when a supplier has a linked warehouse. Otherwise, they display a message indicating no warehouse is linked.
+  The **Inventory**, **Settings**, and **Lead Times** tabs are fully functional only when a supplier has a linked warehouse. Otherwise, they display a message indicating no warehouse is linked.
 </Note>
 
 ### Overview Tab
@@ -177,7 +189,9 @@ Click on the **Cost** column for any SKU to open the cost breakdown popover:
   Cost is always expressed per the SKU's default unit of measurement.
 </Info>
 
-## Supplier Lead Times
+## Where do I set MOQ or lead time for a supplier?
+
+Where: **Inventory** → **Suppliers** → a supplier → **Overview** → capabilities table (**Lead Time (days)**, **MOQ**). On the Locations setup: **Supply Chain** → **Locations** → the supplier → **Purchasing** → **Purchasing Defaults** (**Min. Order Qty**, **Lead**) or a SKU's row.
 
 Lead times for each SKU are configured directly in the capabilities table.
 
@@ -212,7 +226,7 @@ Some suppliers hold inventory on your behalf in a linked warehouse. This is the 
 A supplier can be linked to a specific warehouse (the `linked_warehouse_id`). When linked:
 
 - The **Inventory** tab shows inventory at the supplier's linked warehouse
-- The **Inventory Settings** tab allows configuring SKU-warehouse assignments for the linked warehouse
+- The **Settings** tab allows configuring SKU-warehouse assignments for the linked warehouse
 - The **Lead Times** tab shows transit lead times from the supplier's linked warehouse to your other warehouses (using the same interface as warehouse lead time configuration)
 
 ### When to Use
@@ -315,7 +329,7 @@ Suppliers can be Active or Inactive:
 - Supplier doesn't have a linked warehouse configured
 
 **Solution:**
-The Inventory, Inventory Settings, and Lead Times tabs require a linked warehouse. These tabs are used for the Supplier Held Inventory feature. If the supplier doesn't hold inventory for you, this is expected behavior.
+The Inventory, Settings, and Lead Times tabs require a linked warehouse. These tabs are used for the Supplier Held Inventory feature. If the supplier doesn't hold inventory for you, this is expected behavior.
 
 ### Cost Not Showing
 

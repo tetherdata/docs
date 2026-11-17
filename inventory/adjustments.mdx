@@ -1,6 +1,6 @@
 ---
 title: Inventory Adjustments
-description: Propose corrections to on-hand counts and approve or reject adjustment requests
+description: "How do I fix an on-hand count? Who approves my inventory adjustment, and why was it rejected? Where: Inventory → Dashboard → right-click a position → Adjust on-hand…; Approvals and My requests tabs."
 ---
 
 # Inventory Adjustments
@@ -21,6 +21,8 @@ Who can do what:
 See [Roles & Permissions](/roles-permissions) for how permissions are assigned.
 
 ## Proposing an adjustment
+
+Where: **Inventory** → **Dashboard** → **Inventory** tab → right-click a position → **Adjust on-hand…**.
 
 <Steps>
   <Step title="Open the adjustment dialog">
@@ -52,6 +54,8 @@ See [Roles & Permissions](/roles-permissions) for how permissions are assigned.
 
 ## My requests tab
 
+Where: **Inventory** → **Dashboard** → **My requests** (needs `inventory:adjust`).
+
 Users who can propose adjustments see a **My requests** tab on the Inventory Management page listing their own submissions, with:
 
 | Column | Description |
@@ -69,6 +73,8 @@ Statuses you may see: **Waiting for approval**, **Approved, applying**, **Applie
 
 ## Approvals tab
 
+Where: **Inventory** → **Dashboard** → **Approvals** (needs `inventory:approve`).
+
 Users with `inventory:approve` see an **Approvals** tab: the queue of adjustment requests waiting for a decision, newest first. Each row shows the SKU, the proposed change, **On hand now** and **After apply**, who requested it and when, the reason, any note, and when the count was taken.
 
 <Info>
@@ -82,6 +88,11 @@ Click **Approve** to apply the request's delta to current on-hand. If current on
 ### Rejecting
 
 Click **Reject** to turn a request down. A dialog asks for a note explaining the decision; on-hand is left untouched, and your note is the only feedback the requester sees, on their My requests tab. Rejecting stays available even when the on-hand preview fails, since it applies nothing.
+
+## Other ways to correct on-hand
+
+- **Several positions at once:** turn on **Edit quantities** in the Inventory grid's **Table Settings**, type the figures into **On Hand**, and click **Save Changes**. They go through the same approval flow. See [Inventory dashboard](/inventory/dashboard#how-do-i-edit-several-on-hand-quantities-at-once).
+- **A shelf count at one warehouse:** use the [Counts](/inventory/counts) tab. It compares what you counted to what the ledger held at the count time and posts the differences as adjustments dated to the count.
 
 ## Best practices
 

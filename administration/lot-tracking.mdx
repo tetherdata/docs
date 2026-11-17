@@ -1,0 +1,74 @@
+---
+title: Lot tracking settings
+description: "How do I turn lot tracking on, choose which SKUs are lot-tracked, set shelf life, or change the lot code format for one product? Can new production lots inherit the input lot code? Where: Settings → Catalog → Lot Tracking; Settings → Production; a SKU's Lots tab."
+sidebarTitle: Lot tracking
+---
+
+# Lot tracking settings
+
+These settings decide which SKUs carry lots and how new lot codes are made. For using lots day to day, see [Lots and lot tracking](/inventory/lots).
+
+## How do I turn lot tracking on?
+
+Where: ask Tether to turn lot tracking on for your org; then **Settings** → **CATALOG** → **Lot Tracking**.
+
+Lot tracking is a feature that Tether turns on for your organization. Until it is on, you won't see **Lots** in the sidebar, the **Lot Tracking** settings page or a SKU's **Lots** tab. Ask Tether to turn it on.
+
+Once it's on, choose which SKUs are tracked (below). SKUs you don't turn on keep working without lots.
+
+## How do I choose which SKUs are lot-tracked?
+
+Where: **Settings** → **CATALOG** → **Lot Tracking**. Needs the `inventory:lots:write` permission.
+
+The page lists your SKUs with **Lot tracked**, **Guaranteed (d)**, **Theoretical (d)** and **Produced lot code**. Select SKUs and click **Enable tracking** or **Disable tracking** to change them in bulk, and set shelf life per row:
+
+- **Guaranteed shelf life (days)** drives each lot's computed expiry and FEFO.
+- **Theoretical shelf life (days)** is for display only.
+
+The same page also holds:
+
+- **Inventory adjustments take lots**: when someone adjusts a lot-tracked SKU, either **Ask which lot** (soonest best-by preselected) or **Soonest best-by automatically**.
+- **Transfers take lots**: fill transfer lines **Oldest received first** or **Earliest expiry first**.
+- **Reconciliation**: checks such as **Inventory drift** (SKU on hand vs lot on hand), **Negative lots**, **Negative unallocated stock**, **Expired with stock**, **Provisional awaiting review** and **Orphaned lot balances**. "Everything reconciles" means none were found.
+
+## How do I change the lot code format for one product?
+
+Where: **Products** → **SKUs** → a SKU → **Lots** tab → lot settings card.
+
+| Setting | What it does |
+|---------|--------------|
+| **Track lots for this SKU** | Turns lot tracking on for this SKU |
+| **Guaranteed shelf life (days)** / **Theoretical shelf life (days)** | As above |
+| **Produced lot code default** | **New code per run** or **Inherit from primary input** |
+| **Lot code prefix** | Used at the start of a new code. Without one, the SKU code is used |
+| **Lot code format** | **Org default**, or one of the formats below for this SKU only |
+| **Hold produced lots** | New lots from a run start **On Hold** until someone releases them (for products still fermenting, curing and so on) |
+
+Click **Save lot settings**.
+
+## Can new production lots inherit the input lot code?
+
+Where: **Products** → **SKUs** → a SKU → **Lots** tab → **Produced lot code default**.
+
+Yes. On the SKU's **Lots** tab set **Produced lot code default** to **Inherit from primary input**. A run of that SKU then gives its output the code of its primary input lot instead of a new one. **New code per run** makes a fresh code using the lot code format.
+
+## Lot code format
+
+Where: **Settings** → **Production** → **New lot codes** (org default). Needs organization admin rights.
+
+| Format | Example (prefix ABC, run 6 Nov 2026, best-by 6 May 2027) |
+|--------|---------|
+| **Typed at the run** | Whatever the person types |
+| **Prefix + run date (MMDDYY)** | ABC110626 |
+| **Prefix + best-by date (MMDDYY)** | ABC050627 |
+| **Prefix + Julian date (YY + day)** | ABC26310 |
+| **Date + run number** | 261106-01 |
+| **Prefix + week + year + lot number (01, 02…)** | ABC452601 |
+
+A code already in use gets -2, -3 and so on. **Weeks in lot codes** chooses **ISO weeks** or **Week 1 holds 1 January** for week-numbered formats.
+
+## Keep lots to production runs and receipts
+
+Where: **Settings** → **Production** → **Where lots come from** → **Lots only from production runs and receipts**.
+
+When on, a lot can only be made by a production run or recorded from a supplier at receipt. Nobody can create, assign or import a lot by hand, whatever their role, so **Create lot** and **Assign lots** disappear from the Lots page. Lots already made stay as they are. To correct a lot, turn this off, fix it, and turn it back on.

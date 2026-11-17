@@ -1,6 +1,6 @@
 ---
 title: Inventory History
-description: Trace every change to your stock levels, view point-in-time snapshots, and export the full audit trail
+description: "Trace every change to stock, see inventory as of a date (month end), read source badges such as Ledger and 3PL count change, and choose which committed figure to show. Where: Inventory → Dashboard → History tab."
 ---
 
 # Inventory History
@@ -12,6 +12,8 @@ The **History** tab on the [Inventory Management](/inventory/dashboard) page is 
 By default the tab shows the change feed: a server-paginated list of inventory changes, newest first, 50 per page. Each entry records the position (warehouse and SKU), what changed, when, from which source, and who did it.
 
 ### Change sources
+
+Where: **Inventory** → **Dashboard** → **History** → the **Source** column and filter.
 
 Every change carries a source badge:
 
@@ -25,6 +27,10 @@ Every change carries a source badge:
 | **Reconcile** | A reconciliation pass |
 | **Manual SQL** | A direct database change made by support |
 | **User Action** | Another in-app user action |
+| **Ledger** | Posted natively by Tether's movement ledger, on orgs that run their stock through it |
+| **3PL count change** | A 3PL or warehouse feed reported a new count for a lot-tracked SKU; because Tether's ledger owns that SKU's on-hand, the feed's change is recorded as an adjustment |
+
+Filter by source with the **Source** dropdown (**All sources** by default).
 
 <Note>
   Rejected adjustment proposals never appear in History — a rejected request never becomes an inventory change. Proposers can see rejection outcomes and the approver's note on the [My requests tab](/inventory/adjustments#my-requests-tab).
@@ -46,7 +52,10 @@ Changing any filter returns you to the first page of results.
 - **Views** — save the current filter and column setup as a named view and reload it later. Views are available on the change feed only, not the as-of snapshot.
 - **Table Settings** — show or hide columns, and set the **As of** control described below.
 
-## Point-in-time snapshots
+## How do I see what inventory was at month end?
+
+Where: **Inventory** → **Dashboard** → **History** → **Table Settings** → **As of**.
+
 
 Open **Table Settings** and set **As of** to a date and time to swap the feed for a snapshot grid: every position's inventory state exactly as it stood at that moment.
 
@@ -55,6 +64,20 @@ While a snapshot is showing, the same search and Source, SKU, and Location filte
 <Tip>
   Use a snapshot to answer questions like "what did we have on the shelf at month end?" without reconstructing it from individual changes.
 </Tip>
+
+## Why does committed differ from the warehouse's number?
+
+Where: **Inventory** → **Dashboard** → **History** → **Table Settings** → committed source (**Auto** / **Upstream** / **Tether-derived**).
+
+Once your org has switched to Tether deriving committed stock from its own orders, there are two committed figures: the upstream system's order book and Tether's own. The control picks which one the feed shows for committed and sellable:
+
+| Choice | Shows |
+|--------|-------|
+| **Auto** | The upstream order book before the switch, Tether's figure from then on |
+| **Upstream** | The upstream order book only; rows after the switch show a dash |
+| **Tether-derived** | Tether's figure only; rows before the switch show a dash |
+
+Pick **Upstream** to see what your warehouse or ERP reports, **Tether-derived** to see Tether's own view, and compare. The control appears only after the switch; before it there is one committed figure.
 
 ## Position detail
 

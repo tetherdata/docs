@@ -1,6 +1,6 @@
 ---
 title: Channel Hierarchy
-description: Organizing channels with hierarchy fields
+description: "How do I group channels into Wholesale and DTC? Where do I set up channel hierarchy? How do I map a feed's store codes to channels? Where: Settings → Catalog → Channel Hierarchy (or Sales → Sales Channels → Manage Hierarchy); Settings → Catalog → Channel Bindings."
 ---
 
 # Channel Hierarchy
@@ -39,9 +39,17 @@ With this configuration, a channel like "Shopify US" might be assigned:
 
 ## Configuring Channel Hierarchy
 
-### Accessing Configuration
+### Where do I set up channel hierarchy?
 
-Navigate to **Channels** → **Hierarchy** to open the hierarchy configuration dashboard.
+Where: **Settings** → **CATALOG** → **Channel Hierarchy**.
+
+On the older setup you can also reach it from **Sales** → **Sales Channels** → **Manage Hierarchy**. On the Locations setup, old links to the channel hierarchy page open this Settings page. You need the channel-hierarchy settings permission.
+
+### How do I group channels into Wholesale and DTC?
+
+Where: **Settings** → **CATALOG** → **Channel Hierarchy**, then each channel's hierarchy value.
+
+Label a field "Business Model", add the values **Wholesale** and **DTC** (or **Direct to Consumer**), activate the field, and assign each channel its value as described below.
 
 ### Setting Up Hierarchy Fields
 
@@ -84,11 +92,13 @@ Navigate to **Channels** → **Hierarchy** to open the hierarchy configuration d
 
 ### Assigning Channels to Hierarchy Values
 
-Hierarchy values are assigned to channels directly from the **Channels** dashboard table:
+On the Locations setup, open **Supply Chain** → **Locations** → the sales location → **Overview** → **Channel configuration** → **Hierarchy assignments**. If no field is active it says "No channel-hierarchy fields are active. Configure them in Settings."
+
+On the older setup, hierarchy values are assigned directly from the **Sales Channels** table:
 
 <Steps>
   <Step title="Go to Channels Dashboard">
-    Navigate to **Channels** in the sidebar
+    Navigate to **Sales** → **Sales Channels**
   </Step>
 
   <Step title="Find Hierarchy Columns">
@@ -103,6 +113,14 @@ Hierarchy values are assigned to channels directly from the **Channels** dashboa
 <Note>
   Hierarchy assignments are saved automatically when you select a value from the dropdown.
 </Note>
+
+## Channel Bindings: mapping feed codes to channels
+
+Where: **Settings** → **CATALOG** → **Channel Bindings**.
+
+Sales feeds name channels by their own codes, and different systems spell the same marketplace differently. A binding ties a feed's **Source** and **External code** to one channel. Tether resolves a binding first and the channel name second, so a bound channel can be renamed without breaking its feed. Several codes can point at the same channel.
+
+**Unresolved values** lists codes a feed sent that matched no channel (and customer names that matched no trading partner), with how many times each occurred. Bind them to stop the misses.
 
 ## Using Channel Hierarchy
 
@@ -189,7 +207,7 @@ This lets you answer questions like "How are DTC channels performing in North Am
 - No fields have been configured yet
 
 **Solutions:**
-1. Go to **Channels** → **Hierarchy**
+1. Go to **Settings** → **CATALOG** → **Channel Hierarchy**
 2. Ensure at least one field is toggled to active
 3. Verify the field has a custom label set
 
@@ -200,10 +218,8 @@ This lets you answer questions like "How are DTC channels performing in North Am
 - The desired value hasn't been added to the field's available values
 
 **Solutions:**
-1. Go to the **Channels** dashboard
-2. Find the channel in the table
-3. Use the dropdown in the appropriate hierarchy column
-4. If the value you need isn't listed, add it in the hierarchy configuration
+1. Older setup: go to **Sales** → **Sales Channels** and use the dropdown in the hierarchy column. Locations setup: open the sales location's **Overview** → **Hierarchy assignments**
+2. If the value you need isn't listed, add it in the hierarchy configuration
 
 ## Next Steps
 
