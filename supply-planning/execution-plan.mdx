@@ -1,102 +1,105 @@
 ---
-title: Execution Plan
-description: Every committed movement the solver respects, in one place
+title: Supply Plan
+description: "Approve, reject, remove and place the purchases, production runs and transfers your team accepted, and send approved POs to your ERP (for example NetSuite). Where: Supply Chain → Supply Plan (formerly Execution plan). Tabs: Purchases, Production, Transfers."
 ---
 
-# Execution Plan
+# Supply Plan
 
-The Execution plan is the roll-up of everything you've committed: every purchase, production run, and transfer the solver must respect, grouped by kind and lifecycle status. It's the counterpart to the recommendation queue — the queue is what the solver suggests, this is what you've committed.
+The Supply Plan (formerly the **Execution plan**) is where accepted orders are reviewed, approved and placed. Every purchase, production run and transfer someone accepted shows here until it is ordered. The solver plans around everything on it.
 
-Navigate to **Execution plan** under the Supply Chain group in the sidebar.
+Where: Supply Chain → **Supply Plan** (`/planning/execution-plan`).
 
 ## Page layout
 
-The header shows total counts as badges — **N committed** and **N ordered** — plus a **New movement** button that creates a movement directly (a dropdown of **Purchase**, **Transfer**, and **Production**).
+Where: Supply Chain → **Supply Plan**.
 
-Below it, three collapsible sections:
+The page has three tabs: **Purchases**, **Production** and **Transfers**. Each tab's number counts the orders awaiting a decision. A warning triangle beside it counts orders that are approved but not yet ordered.
 
-| Section | Contents |
-|---------|----------|
-| **Purchases** | Committed and ordered POs, grouped by supplier and period; for orgs with the approval flow, this is also the review surface for staged buys |
-| **Production** | Committed and ordered runs — node, line, SKU, order-by date, land date, units, cost |
-| **Transfers** | Committed and ordered transfers — from → to, SKU, ship date, land date, units, cost |
+Each row shows its status:
 
-Each section repeats its own **N committed** / **N ordered** badges, and rows carry a status badge:
+| Status | Meaning |
+|--------|---------|
+| **Pending review** | Accepted, waiting for an approver |
+| **Removal requested** | Someone asked to take it off the plan; an approver confirms |
+| **Approved, not ordered** | Approved, but no order exists yet |
+| **Ordered** | The order exists |
 
-- **Committed** — accepted but still editable.
-- **Ordered** — transaction-backed; a real ERP order exists. Ordered rows sort first and are no longer editable here.
+A row waiting longer than your organization's review threshold shows **Stale · waiting N days**.
 
-If nothing is committed yet, the page says so: "Execution plan is empty — Stage a recommendation to commit it here; the solver will then respect it."
+Click a row to open the order: its lines, what it covers, what it is for, its rules, and any past rejections. If a tab has nothing to review, it says so, for example "No purchase orders to review".
 
-## Row actions
+## Approve the orders your team accepted
 
-Committed (not yet ordered) rows offer three actions:
+Where: Supply Chain → **Supply Plan** → **Purchases**, **Production** or **Transfers** → the row's **Approve**.
 
-### Edit
+1. Open the tab and find the rows marked **Pending review**.
+2. Click **Approve** on a row, or tick several rows and click **Approve** in the selection bar. A transfer is approved as a whole with **Approve transfer (N lines)**.
+3. Confirm.
 
-Opens the movement drawer — the shared editing surface for purchase, transfer, and production movements. Change quantities and dates; the edit is version-guarded so concurrent changes can't silently clobber each other. Edits show on the planning grids immediately, and count toward the freshness strip's "N edits since" until the next solve.
+Where approving also creates the order, the button reads **Approve & create PO** (purchases) or **Approve & create order**, and the bulk confirm reads **Approve & create orders**.
 
-### Order
+What approval does is set per order type in Settings → **Supply planning** → **Plan approval**. It shows whether approval is required for each type and has an **Approval creates the order** switch. Leave the switch off if you enter orders in your ERP yourself, or every order would exist twice. Creating a production run from an approval is not available yet.
 
-Opens the order confirmation dialog, which flips the accepted movement to ordered and mints the real transaction:
+<Note>
+  Approving needs approval rights. Without them you can see the plan but not the **Approve** buttons.
+</Note>
 
-- **Order this purchase** — mints the supplier transaction.
-- **Order this transfer** — mints the ship transaction between the lane's warehouses.
-- **Order this production run** — mints the production transaction at the run's node, reserving its BOM components.
+## Place an approved order
 
-In every case the committed row stays the source of truth; ordering records the real order. The resulting transaction appears on [Transactions](/transactions/overview).
+Where: Supply Chain → **Supply Plan** → a tab → rows marked **Approved, not ordered** → **Place order**.
 
-### Remove
+**Place order** creates the order in Tether. Open a row and use **Place order** in its details, or use **Place order** on an order-by group to place its rows together. Ordered rows are no longer editable here.
 
-Removes the row from the execution plan via a two-step inline confirm (**Remove** → **Confirm** / **Cancel**). When the row backs a live recommendation, removal is reversible — the recommendation reappears in the queue. For a directly-entered movement it's a real delete, which is why the confirm step exists.
+On Supply Chain → **Purchase** → **List** → **Approved**, the same approved buys are listed with **Place order**. See [Purchases](/supply-planning/purchases#list-views).
 
-## Creating movements directly
+## Send approved POs to NetSuite (or your ERP)
 
-**New movement** authors a movement that never passed through a recommendation — a purchase, transfer, or production run you know you need. It lands as a committed row like any accepted recommendation, and the solver respects it from the next solve.
+Where: Supply Chain → **Supply Plan** → **Purchases** or **Transfers** → tick rows → **Send to NetSuite** (the button names your connected system).
 
-## Best practices
+1. Tick the orders to send.
+2. Click **Send to &lt;your system&gt;** in the selection bar. Without a connected system, the button reads **Create & submit**.
+3. Confirm **Send N orders to &lt;your system&gt;?**
 
-<AccordionGroup>
-  <Accordion title="Treat committed as a promise to the solver">
-    Everything here constrains the next solve — the solver plans around your commitments rather than second-guessing them. Keep the plan honest: remove commitments you no longer intend to execute.
-  </Accordion>
+A **Sending to &lt;your system&gt;** window lists each order as it goes, with **Submitted** and the reference number once it is written. If some fail, retry the failed ones from the same window.
 
-  <Accordion title="Order from here, not from scratch">
-    Ordering a committed row carries its full context (quantities, dates, routing) into the minted transaction. Creating the transaction by hand on the Transactions page severs that link.
-  </Accordion>
+Sending works for purchases and transfers. It needs an ERP connection for that order type; ask Tether to set one up if you don't see the button.
 
-  <Accordion title="Edit before ordering, not after">
-    Ordered rows are transaction-backed and no longer editable from this page. Make quantity and date changes while the row is still Committed.
-  </Accordion>
+## Remove an order from the plan
 
-  <Accordion title="Use Remove deliberately">
-    Removal of a recommendation-backed row is safe (the rec returns to the queue), but a directly-entered movement is gone for good. The two-step confirm is there for a reason — read the row before confirming.
-  </Accordion>
-</AccordionGroup>
+Where: Supply Chain → **Supply Plan** → the row's **Reject**, **Remove** or **Request removal**.
+
+- An order still **Pending review** offers **Reject**. It asks for a reason, the same reasons as [rejecting a recommendation](/supply-planning/recommendations#reject-a-recommendation-with-a-reason).
+- An **Approved, not ordered** order offers **Remove**, or **Request removal** where removals need an approver. Until the approver clicks **Approve removal**, the order stays in the plan.
+- **Just remove it** records no reason, so the plan may suggest it again.
+
+To remove several, tick them and use **Remove** or **Request removal** in the selection bar.
+
+## Orders approved but not yet placed
+
+Where: Supply Chain → **Supply Plan** → the warning count on each tab; Supply Chain → **Purchase** → **List** → **Approved**.
+
+The warning triangle beside each tab counts orders approved but never placed. They are on the plan but supply nothing until they are ordered. A past-due order that was never placed is flagged "Past due, not in the plan: send it or re-date it".
+
+If placing an order stopped before your ERP returned it, a notice at the top reads "N orders are ordered but not linked to an order in your ERP". Click **Un-order** on each to take it back, then place it again.
+
+## Create an order directly
+
+Where: Supply Chain → **Supply Plan** → **New movement** → **Purchase**, **Transfer** or **Production**.
+
+Use this for an order you know you need that Tether did not suggest. It joins the plan like an accepted recommendation.
 
 ## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| No Edit/Order/Remove buttons on a row | The row is already Ordered | Manage the real order on [Transactions](/transactions/overview) |
-| A removed row's recommendation didn't return | The movement was directly entered, not recommendation-backed | Recreate it via **New movement**, or wait for the next solve to re-suggest it |
-| The planning grids don't reflect an edit | Grids show committed edits immediately, but recommendations refresh only at the next solve | Check the freshness strip; run a solve if needed |
-| Purchases section shows lines pending review | Your organization runs the approval flow | Review and approve staged lines here; the **Review staged (N)** button on other pages counts them |
-| Empty page despite accepted recommendations | You may be looking at a different organization or plan | Confirm acceptance succeeded on the source page's List (rows show the **committed** badge) |
+| No **Approve** buttons | You don't have approval rights, or the row is already approved | Ask someone who approves plans |
+| **Send to …** missing | No ERP connection for that order type, or no rows ticked | Tick rows; ask Tether to connect the order type |
+| Approved order still not in my ERP | **Approval creates the order** is off for that type | Use **Place order**, or turn the switch on in Settings → Supply planning → Plan approval |
+| An order shows **Ordered** but isn't in my ERP | Placing it stopped before the ERP returned it | Use **Un-order** in the notice at the top, then place it again |
+| Removed order came back as a recommendation | It was removed with **Just remove it**, which records no reason | Reject it with a reason instead |
 
-## Next Steps
+## Related pages
 
-<CardGroup cols={2}>
-  <Card title="Recommendations" icon="list-check" href="/supply-planning/recommendations">
-    How movements get committed in the first place
-  </Card>
-  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
-    The real orders minted when you order a committed row
-  </Card>
-  <Card title="Overview" icon="compass" href="/supply-planning/overview">
-    How committed edits interact with solves and freshness
-  </Card>
-  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
-    Material needs driven by your committed production
-  </Card>
-</CardGroup>
+- [Recommendations](/supply-planning/recommendations): accepting and rejecting with a reason.
+- [Purchases](/supply-planning/purchases): the Suggested / Pending review / Approved / Ordered / Rejected views.
+- [Transactions](/transactions/overview): the orders once placed.

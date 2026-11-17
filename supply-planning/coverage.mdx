@@ -9,6 +9,8 @@ Coverage — days of supply (DOS) — is how the planning surfaces express inven
 
 ## Coverage status
 
+Where: the coverage chips on Connected Planning, Transfer, Production and Purchase grids, and the coverage bars in each recommendation's details. **Constrained** means stock sits above its cap because a downstream storage limit forces it there.
+
 Coverage status is computed server-side from your position versus the policies you author, and rendered directly — the client never re-derives it:
 
 | Status | Meaning | Grain |
@@ -57,9 +59,15 @@ Two outcomes deliberately render without a number:
 - **Beyond the horizon** — the position outlives the planning horizon at its (very slow) depletion rate. Rendered as a fully-covered bar, not "0d".
 - **N/A — no demand signal** — nothing consumes this SKU from this point forward in this scenario, so coverage is *unmeasurable* — not zero, and not the same as overstocked.
 
-## Coverage per lens
+## Where do I set safety and target days of supply?
 
-Coverage is lens-scoped. Each [scenario lens](/supply-planning/overview) is walked end to end — supply *and* demand: "Do nothing" and "Follow my plan" drop the supply their decision set excludes and re-derive the consumption that supply would have driven. They are true counterfactuals, not the full-plan demand shape with supply removed.
+Where: Supply Chain → **Policies**.
+
+The **S** (Safety days), **T** (Target days) and **M** (Max days) thresholds come from coverage policies. A location with no coverage policy shows **Not set**. See [Policies](/supply-planning/policies).
+
+## Coverage per scenario
+
+Coverage is lens-scoped. Each scenario (**Table settings** → **Scenario**, see [Scenario](/supply-planning/overview#scenario-in-table-settings)) is walked end to end — supply *and* demand: "Do nothing" and "Follow my plan" drop the supply their decision set excludes and re-derive the consumption that supply would have driven. They are true counterfactuals, not the full-plan demand shape with supply removed.
 
 Consequently the same cell can legitimately show different DOS values — and different chip tints — under different lenses, and a chip never falls back to another lens's numbers. If a value can't be measured under the active lens, it says so rather than borrowing one.
 

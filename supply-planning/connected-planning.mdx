@@ -1,0 +1,91 @@
+---
+title: Connected Planning
+description: "See inventory, inbound supply and the plan across all your locations in one grid, rerun the plan (Run now), and change the solver settings (penalties, horizon, scheduled solves). Where: Supply Chain → Connected Planning; Run now is at the top of Table settings. Also covers Series Explorer."
+---
+
+# Connected Planning
+
+Connected Planning shows your whole network in one place: every SKU at every location, period by period, with a chart above the grid. It is also where you rerun the plan and change how the solver plans.
+
+Where: Supply Chain → **Connected Planning** (`/planning/connected`). The page appears for organizations with supply planning turned on. If you don't see it, ask Tether to turn it on.
+
+## See inventory across all your locations in one view
+
+Where: Supply Chain → **Connected Planning**.
+
+The grid lists your SKUs by location and period, with the chart above it. Use the toolbar to search, filter by SKU or location, set the date range and weekly or monthly periods, and save views.
+
+What the inventory figure counts:
+
+- With all locations: on hand plus stock moving between your own sites. Open purchase orders are not inventory until they land; they show as **Inbound**.
+- With some locations selected: on hand at those sites only. Anything on its way to them, from suppliers or your other sites, is **Inbound** until it lands.
+
+On the toolbar:
+
+- **History** — **None**, **3 mo** or **6 mo** of observed history before today, to check the plan against what actually happened. History needs a date range that starts today.
+- **Hide chart** / **Show chart** gives the grid the whole page.
+
+Useful **Table settings**:
+
+- **Show coverage badges** — tint each cell by days of supply. See [Coverage](/supply-planning/coverage).
+- **Bucket by landing date** — on: a quantity counts in the period the goods land. Off: it counts in the period the order is placed or scheduled.
+- **Scenario** — which plan the numbers show: **Do nothing**, **Follow my plan**, **Tether's plan** (the default here) or **No input limits**. See [Scenarios](/supply-planning/overview#scenario-in-table-settings).
+
+
+## Rerun the plan after changing a policy
+
+Where: Supply Chain → **Connected Planning** → **Table settings** → **Run now** (at the top of the panel).
+
+1. Open **Table settings**.
+2. Click **Run now**. It reads **Running…** until the solve finishes.
+3. When it finishes, the grid picks up the new plan and the freshness readout ("Plan as of …") resets.
+
+After a run, a clock icon on the toolbar opens **Last solve timing breakdown**: Snapshot capture, Solve, Plan assembly, Plan persist and Total.
+
+Running the solver needs the planning trigger permission. Every planning page reads the new plan once it finishes. Solves also run on a schedule (see **Scheduled solves** below) and, if an admin turned it on, after upstream changes in Settings → **Automatic Re-planning**.
+
+<Note>
+  **Run now** used to be a button on the page toolbar. It now heads the **Table settings** panel.
+</Note>
+
+## What do the solver penalty settings do?
+
+Where: Supply Chain → **Connected Planning** → **Table settings** → **Solver settings**.
+
+The **Solver settings** dialog "Applies to every solve for this organization." Saving needs permission to configure planning.
+
+| Setting | What it does |
+|---------|--------------|
+| **Planning horizon (weeks)** | How many weekly periods the solver plans across |
+| **Solve time limit (seconds)** | How long one solve may run |
+| **Accept solutions within (%)** | Larger is faster at the cost of slightly less optimal plans; 5% is the recommended default |
+| **Stockout penalty (per unit)** | Cost of each unit of unmet demand. The top priority: the solver fights to meet demand whenever the network can |
+| **Coverage-target penalty (per unit)** | Cost of each unit below a coverage target's safety floor. Coverage is a goal, not a contractual minimum, so keep it below the stockout penalty |
+| **Overstock penalty (per unit-period)** | Cost of each unit above a coverage target's max-days cap. Lets the solver exceed the cap when MOQ or cadence forces it |
+| **Holding cost (per unit-period)** | Tie-breaker so the solver prefers just-in-time over building stock early. Keep it small relative to coverage |
+| **Soft-slack penalty weight** | Catch-all cost for other soft limits |
+| **Scheduled solves** | Re-run the solver **Every day**, **Every week** or on a **Custom (cron)** schedule, at a **Time of day** and **Timezone**. Off by default |
+
+The penalties weigh competing goals against each other, so their ratio matters more than any single value. Coverage targets themselves are set in [Policies](/supply-planning/policies).
+
+## Export
+
+Where: Supply Chain → **Connected Planning** → **Table settings** → **Export CSV**.
+
+The export holds the full plan for the current filters, not just the rows on screen.
+
+## What is Series Explorer?
+
+Where: Supply Chain → **Series Explorer** (`/planning/explorer`), for organizations that have it turned on.
+
+Series Explorer draws any measure as one timeline, with history and plan split at today. Pick the measure, scope, period and window; the view is kept in the URL and in saved views, so you can share a link to it. If you don't see it, ask Tether to turn it on.
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| I can't find **Run now** | It moved into **Table settings** | Open **Table settings**; **Run now** is at the top |
+| **Run now** fails | You don't have permission to trigger a solve | Ask an admin |
+| Solver settings won't save | You don't have permission to configure planning | Ask an admin |
+| The plan didn't change after editing a policy | The solver hasn't run since | Click **Run now**, or wait for the next scheduled solve |
+| History doesn't show | The date range doesn't start today | Move the date range back to today |

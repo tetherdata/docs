@@ -1,125 +1,101 @@
 ---
 title: Recommendations
-description: The lifecycle of a solver recommendation — from suggestion to committed supply
+description: "Accept or reject a recommended purchase, production run or transfer, and what each reject reason does. Where: Supply Chain → Purchase, Production or Transfer → List, or any recommendation's details. Covers Not this time, Done another way, Wrong number, Wrong cost, Wrong date, Never, the Ask again date, the Never list, and getting a rejected recommendation back."
 ---
 
 # Recommendations
 
-Every solve produces recommendations — suggested purchases, production runs, and transfers. Recommendations aren't a separate destination: they appear as rows in each planning page's **List** tab, overlaid alongside your committed plan and in-progress supply, and as detail drawers you can act on directly.
+A recommendation is an order Tether suggests: a purchase, a production run or a transfer. You accept the ones you agree with, change the quantity first if needed, or reject them with a reason. The reason decides whether you see the recommendation again, and when.
 
-## Where recommendations appear
+Recommendations come from Tether's plan (each solve) or, for some organizations, from a recommendation engine's run. See [Where recommendations come from](/supply-planning/overview#where-recommendations-come-from).
 
-### List rows
+<Note>
+  Older versions of Tether had **Dismiss**, which hid a recommendation for 14 days. Dismiss is gone. You now **reject** a recommendation and pick a reason.
+</Note>
 
-In the **List** tab on [Transfers](/supply-planning/transfers), [Production](/supply-planning/production), and [Purchases](/supply-planning/purchases), each row carries a provenance badge:
+## Accept a recommendation
 
-| Badge | Meaning |
-|-------|---------|
-| **rec** (bot icon) | An uncommitted solver suggestion |
-| **committed** (lock icon) | A movement you've accepted into the execution plan |
-| **in progress** (lock icon, muted) | Real supply already in motion — an open PO, in-flight transfer, or running production |
-| **receipt** (package icon) | A lane move whose origin is a supplier — goods arriving inbound against a purchase, not stock you ship |
+Where: Supply Chain → **Purchase**, **Production** or **Transfer** → **List** (or the Schedule / Worksheet cell) → click the recommendation.
 
-Rows show urgency, type, SKU, location, period, quantity, and dollar value, and the list can be sorted by any of these. In-progress rows also show their backing transaction reference (the open PO or transfer-order number) when known.
+The recommendation opens in its details, with what it covers, why it was suggested and its rules.
 
-### Row actions
+1. Change the units if the suggestion is close but not right.
+2. Click **Accept**.
 
-Actions depend on the row's badge:
+An accepted order joins your plan. If your organization requires approval for that order type, it waits under **Pending review** until someone approves it on the [Supply Plan](/supply-planning/execution-plan). Without approval, it is approved straight away.
 
-- **rec** rows: **Accept** and **Dismiss**
-- **committed** rows: **Edit** and **Order**
-- **in progress** rows: **Inspect**
+## Reject a recommendation with a reason
 
-Clicking a row opens its drawer for full detail.
+Where: any recommendation's details → **Reject**. On the Supply Plan, an order awaiting review also has **Reject** in its row.
 
-## The recommendation drawer
+The **Reject** dialog asks "Why? The reason decides what happens next." Pick one reason, add an optional **Note**, and confirm.
 
-Opening a recommendation shows a right-side drawer with a fact grid, the solver's rationale, related policy chips, domain detail (coverage impact, materials, supplier context), and a footer with three actions:
+| Reason | What happens |
+|--------|--------------|
+| **Not this time** | Stays on the list as rejected, with your name and note. Tether stops suggesting it until the **Ask again on** date, including the same SKU at the same site from any supplier (or sending site, or line) and any week. |
+| **Done another way** | The need was met some other way. Same as **Not this time**: rejected, hidden until the **Ask again on** date. |
+| **Wrong number** | Stays on the list, marked under review, so the quantity can be looked at. Nothing is hidden. |
+| **Wrong cost** | Stays on the list, marked under review, so the cost can be looked at. Nothing is hidden. |
+| **Wrong date** | Stays on the list, marked under review, so the date can be looked at. Nothing is hidden. |
+| **Never** | Hidden from now on, wherever it comes from, until someone with approval rights lifts it from the [Never list](#stop-tether-from-recommending-something-ever-again). |
 
-- **Accept** — commit the recommendation to the execution plan. The solver respects it on the next solve.
-- **Modify** — open the movement editor to change quantity or dates before committing.
-- **Reject** — decline the recommendation.
+After you confirm, a toast says what happened: **Rejected** ("Hidden until Nov 23."), **Rejected for good** ("Listed on the Never list.") or **Flagged** ("Marked under review; it stays on the list."). Every toast but **Never**'s has **Undo**. A **Never** comes back only through the Never list.
 
-A **Open full page** link deep-links to the recommendation on its full domain page.
+## How long until a rejected recommendation comes back?
 
-## Dismissing recommendations
+Where: the **Reject** dialog → **Ask again on**; the default is in Settings → **Supply planning** → **Plan approval** → **Rejected recommendations**.
 
-Dismissing is a set-aside, not a deletion. When you dismiss a recommendation, a toast confirms:
+**Not this time** and **Done another way** hide a recommendation until the **Ask again on** date. The date opens on your organization's default, **Ask again after (days)**, which is 7 days unless an admin changed it. You can pick any later day when you reject.
 
-> **Dismissed** — Removed from queue for 14 days.
+On that day the recommendation can come back if the plan still needs it. It can also come back early if the shortfall got worse since you rejected it. It is then marked "was rejected 11/12; shortfall worse since", so you know it is not new.
 
-The recommendation is hidden from the queue for 14 days, after which it returns if the solver still suggests it.
+**Wrong number**, **Wrong cost** and **Wrong date** never hide anything, so there is nothing to come back.
 
-### Finding and restoring dismissals
+## Get back a recommendation you rejected by mistake
 
-On List tabs that support dismissal, a **Queue ⇄ Dismissed** switch sits next to the search box. The **Dismissed** position shows a count of set-aside recommendations, and each dismissed row offers a **Restore** button that returns it to the queue immediately (confirmed with a "Restored — Returned to queue." toast).
+Where: the toast's **Undo** right after rejecting; later, Supply Chain → **Purchase** → **List** → **Rejected**, or **Production** / **Transfer** → **List** → **Dismissed**.
 
-<Tip>
-  The Dismissed view is the only place to find a dismissal when you've forgotten which SKU it was for. If it's empty, the view says so: "Nothing dismissed. Recommendations you dismiss appear here for 14 days."
-</Tip>
+- Right after rejecting, click **Undo** on the toast (not offered for **Never**).
+- On Purchases, open the **List** tab and switch to **Rejected**. It shows who rejected each buy, when, why, and when it asks again. **Restore** puts it back under **Suggested**.
+- On Production and Transfers, the **List** tab has a **Queue / Dismissed** switch. **Dismissed** lists recommendations you rejected until they ask again, each with **Restore**. If it is empty, it reads "Nothing dismissed. Recommendations you reject appear here until they ask again."
+- A **Never** is not here. Lift it from the Never list (below).
 
-## Accepted recommendations: committed supply
+## Stop Tether from recommending something ever again
 
-Accepting a recommendation turns it into committed supply on the [Execution plan](/supply-planning/execution-plan). The drawer for a committed movement shows a **Committed** badge in its header, and the footer changes:
+Where: reject with **Never**; to undo, Settings → **Supply planning** → **Never list**.
 
-- **Place order** — flip an accepted purchase into a real ERP order. Once ordered, the header badge becomes a **PO** mark showing the PO number when known.
-- **Un-accept** — remove the acceptance. The recommendation returns to the queue.
+1. Open the recommendation and click **Reject**.
+2. Choose **Never**.
+3. Under **Never, for:** choose where it holds:
+   - Purchases: **From this supplier** or **Into this receiving site**.
+   - Transfers: **Out of the sending site** or **Into the receiving site**.
+   - Production: **At this co-man**.
+4. Confirm. The toast reads "Rejected for good".
 
-Committed rows in the List offer **Order** as a row action too — converting the commitment to a real transaction via a confirmation dialog.
+The **Never list** shows every recommendation rejected for good, with its kind, where it holds, the note, who set it and when, plus a **History** of sets and lifts. Its **Lift** button needs approval rights. Anyone else sees "Lifting needs approval rights". A lifted recommendation can come back on the next read, unless a policy still stops it.
 
-## Stale recommendations
+## Remove an order you already accepted
 
-When you edit a committed movement after the last solve, the solver's old recommendation for that same movement predates your edit. Those resurfaced rows are hidden from the List until the next solve — the committed layer and recomputed projections already reflect your edit, so showing the outdated suggestion would only mislead.
+Where: [Supply Plan](/supply-planning/execution-plan) → the order's row → **Reject**, **Remove** or **Request removal**.
 
-## The approval flow: Review staged
+Removing an accepted order uses the same dialog and reasons. Where approval is required, **Request removal** keeps the order in the plan until an approver confirms. Some dialogs also offer **Just remove it**, which records no reason, so the plan may suggest it again.
 
-Organizations with the approval flow enabled see a **Review staged (N)** button on the Purchases and MRP pages, where N counts purchase lines still pending review. Clicking it routes to the [Execution plan](/supply-planning/execution-plan) review surface where a reviewer signs off staged buys.
+## Recommendations from engine runs
 
-Without the approval flow, staged movements convert directly and the button doesn't appear.
+Some organizations take their purchase, production or transfer orders from a recommendation engine instead of Tether's plan. On those pages:
 
-## Best practices
+- Table settings → **Recommendations** chooses whose suggestions show: **Tether's plan** or **Engine run**. Only one source shows, so no order counts twice.
+- Chips such as "Purchase recs not updated since Nov 12" or "Purchase recs built on an older … run" warn that the engine has not re-run since the latest solve.
 
-<AccordionGroup>
-  <Accordion title="Read the rationale before accepting">
-    Each drawer carries the solver's rationale and the policies that shaped the recommendation. Understanding *why* the solver suggests a buy or transfer catches data problems (a wrong lead time, an outdated policy) before they become real orders.
-  </Accordion>
-
-  <Accordion title="Modify instead of reject-and-recreate">
-    If a recommendation is directionally right but the quantity or timing is off, use **Modify**. You keep the solver's context and coverage analysis instead of authoring a movement from scratch.
-  </Accordion>
-
-  <Accordion title="Dismiss, don't ignore">
-    A recommendation you don't plan to act on should be dismissed so your queue stays actionable. It's reversible — restore it any time from the Dismissed view, and it returns on its own in 14 days if the solver still sees the need.
-  </Accordion>
-
-  <Accordion title="Un-accept rather than deleting when plans change">
-    If you accepted something you no longer want, **Un-accept** returns the recommendation to the queue cleanly. The solver stops respecting the commitment on its next run.
-  </Accordion>
-</AccordionGroup>
+You accept and reject engine recommendations the same way. See [Engine runs](/supply-planning/engine-runs) for where each run comes from.
 
 ## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| A recommendation disappeared from the List | It was dismissed, or an edit after the last solve made it stale | Check the **Dismissed** view; stale rows return refreshed at the next solve |
-| Accept seems to do nothing | The row moved from the rec band to the committed band | Switch the lens or check the [Execution plan](/supply-planning/execution-plan) — it now shows as committed |
-| No Accept/Dismiss buttons on a row | The row is committed or in-progress, not a recommendation | Only **rec**-badged rows carry Accept/Dismiss; committed rows offer Edit/Order |
-| No **Review staged** button | Your organization doesn't run the approval flow | Staged movements convert directly without a review step |
-| **Place order** missing from a committed drawer | Ordering from the drawer applies to purchases | Use the **Order** action on the row or the Execution plan for transfers and production |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
-    Review and edit everything you've committed
-  </Card>
-  <Card title="Coverage" icon="chart-bar" href="/supply-planning/coverage">
-    Read the before/after coverage impact in each drawer
-  </Card>
-  <Card title="Transfers" icon="right-left" href="/supply-planning/transfers">
-    Work transfer recommendations by node and lane
-  </Card>
-  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
-    Where placed orders become real ERP transactions
-  </Card>
-</CardGroup>
+| A recommendation disappeared | Someone rejected it with **Not this time**, **Done another way** or **Never** | Check **Rejected** (Purchases) or **Dismissed** (Production, Transfers), then the **Never list** |
+| A rejected recommendation came back early | Its shortfall got worse since the rejection | The row says "was rejected …; shortfall worse since". Reject it again if it still isn't needed |
+| I rejected with **Wrong number** but it's still there | Wrong number, cost and date only flag the line for review | That's expected. Change the units and accept, or reject with another reason |
+| No **Lift** button on the Never list | Lifting needs approval rights | Ask someone who approves plans |
+| Lifted a Never and it still doesn't come back | A policy also stops it | Ask Tether to remove the policy |
+| Accepted order isn't on the plan yet | Your organization requires approval | It waits under **Pending review** until approved on the [Supply Plan](/supply-planning/execution-plan) |

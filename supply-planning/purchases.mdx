@@ -1,13 +1,13 @@
 ---
 title: Purchases
-description: Plan supplier buys with the Schedule, Worksheet, and List views
+description: "Plan supplier buys and see every purchase by status. Where: Supply Chain → Purchase → Schedule, Worksheet or List. The List switches between Suggested, Pending review (POs waiting for approval), Approved, Ordered and Rejected (buys someone rejected)."
 ---
 
 # Purchases
 
-The Purchases page is the buying workbench: open POs already placed, the purchases you've committed, and the solver's suggested POs, organized by supplier and period. It sits under the shared [scenario strip](/supply-planning/overview), and the page header shows the plan freshness indicator.
+The Purchases page is the buying workbench: open POs already placed, the purchases you've committed, and the solver's suggested POs, organized by supplier and period. The page header shows the plan freshness indicator.
 
-Navigate to **Purchase** under the Supply Chain group in the sidebar.
+Where: Supply Chain → **Purchase**.
 
 ## Tabs
 
@@ -15,11 +15,39 @@ Navigate to **Purchase** under the Supply Chain group in the sidebar.
 |-----|---------|
 | **Schedule** | The default buying workbench — purchases by supplier and period |
 | **Worksheet** | The per-SKU inventory flow across the horizon |
-| **List** | A flat, sortable list of every purchase row — in progress, committed, and recommended |
+| **List** | Every purchase by status: **Suggested**, **Pending review**, **Approved**, **Ordered**, **Rejected**. See [List views](#list-views) |
 
 The active tab is URL-driven (`?tab=`), so deep links land on the right view. Each tab keeps its state (scroll, expansion, selection) when you switch away and back.
 
-Organizations with the approval flow also see the **Review staged (N)** button beside the tabs — see [Recommendations](/supply-planning/recommendations).
+Organizations that require approval for purchases also see a **Review staged (N)** button. It opens the [Supply Plan](/supply-planning/execution-plan), where accepted buys are approved.
+
+## List views
+
+Where: Supply Chain → **Purchase** → **List** → the status switch at the top.
+
+The List shows one status at a time. Each view has a help icon saying what it holds.
+
+| View | What it holds | What you do there |
+|------|---------------|-------------------|
+| **Suggested** | Suggested buys not yet decided | Accept, change the units first, or reject with a reason. Saved lines move to **Pending review**. The **Order by** filter (7d, 14d, 30d, 90d, All) limits it to buys you must order soon. |
+| **Pending review** | Accepted buys waiting for approval | Click an order to see what it covers, what it is for, and its rules. Approve on the [Supply Plan](/supply-planning/execution-plan). |
+| **Approved** | Approved and not yet ordered | **Place order** creates the purchase order. |
+| **Ordered** | Open PO lines not yet fully received, by the date each states | Grouped **Past due**, **Due in the next 2 weeks** and **Later**. |
+| **Rejected** | Suggested buys someone rejected: who, when, why, and when each asks again | **Restore** puts one back under **Suggested**. |
+
+A buy moves Suggested → Pending review (accepted) → Approved (approved on the Supply Plan) → Ordered (order placed). Without an approval requirement it skips Pending review. The List can be shown **Detailed** (one row per SKU line) or **By order** (lines rolled up into orders).
+
+### Where do I see POs waiting for approval?
+
+Where: Supply Chain → **Purchase** → **List** → **Pending review**, or Supply Chain → **Supply Plan** → **Purchases**.
+
+### How do I see the buys someone rejected?
+
+Where: Supply Chain → **Purchase** → **List** → **Rejected**. Rejected recommendations stay here until they ask again. Buys rejected with **Never** are on the Never list instead (Settings → Supply planning → Never list). See [Recommendations](/supply-planning/recommendations#stop-tether-from-recommending-something-ever-again).
+
+### How do I turn an approved purchase into a real PO?
+
+Where: Supply Chain → **Purchase** → **List** → **Approved** → **Place order**, or Supply Chain → **Supply Plan** → **Purchases** → **Place order**. To send POs to NetSuite or another ERP, see [Supply Plan](/supply-planning/execution-plan#send-approved-pos-to-netsuite-or-your-erp).
 
 ## Shared controls
 
@@ -29,6 +57,12 @@ The Worksheet and List share one view: filters (SKU, groups, type, supplier, BOM
 - An **Anchor** control on the Schedule that re-buckets purchase dates by order date or arrival date.
 - **Group by** on the Schedule: by supplier, by SKU group, by buy group, or by **SKU** alone. SKU lists every SKU as its own row with nothing collapsed, the way the Worksheet reads.
 - **Export CSV** for the current rows.
+
+## Why does the worksheet show the engine's buy instead of Tether's?
+
+Where: Supply Chain → **Purchase** → **Worksheet** or **List** → **Table settings** → **Recommendations**.
+
+If your organization takes purchase orders from a recommendation engine, the **Recommendations** setting chooses whose suggested buys show: **Tether's plan** or **Engine run**. Only one shows, so no buy counts twice. A chip such as "Purchase recs not updated since Nov 12" means the scheduled engine run didn't produce new recs for the latest solve. See [Engine runs](/supply-planning/engine-runs).
 
 ## Worksheet settings
 
@@ -49,15 +83,20 @@ Open **Table settings** on the Worksheet to change how its numbers read. Each se
 Recommendations only appear under **From the runs already committed**. **Estimated from demand** shows no recommendations, so **Recs only** isn't offered there. Organizations that take orders from an engine open on **From the runs already committed**; others open on **Estimated from demand**.
 </Note>
 
-## The suggested PO drawer
+## The suggested PO details
 
-Clicking a suggested PO opens its recommendation drawer — the same drawer shape used across planning, scoped to the SKU you clicked. From it you can:
+Where: Supply Chain → **Purchase** → click a suggested PO (Schedule, Worksheet or List).
 
-- **Accept** the PO, or accept a single line ("Line accepted — Committed to the execution plan.").
-- **Modify** — routes through the shared movement-editing flow. Editing operates on the committed/accepted PO, never the live suggestion.
-- **Dismiss** a SKU's line ("Dismissed — Removed from queue for 14 days.") and **Restore** it ("Restored — Returned to queue.").
+A suggested PO opens in the order editor, scoped to the SKU you clicked. From it you can:
 
-The body shows the PO's line items, coverage impact ("Coverage on PO Land Date" — see [Coverage](/supply-planning/coverage)), and supplier context.
+- Change the units, then **Accept** the PO.
+- **Reject** it with a reason. See [Rejecting a recommendation](/supply-planning/recommendations#reject-a-recommendation-with-a-reason).
+
+The body shows the PO's line items, coverage impact ("Coverage on PO Land Date", see [Coverage](/supply-planning/coverage)), and supplier context.
+
+### Round to MOQ or order multiple
+
+When a suggested quantity is off the supplier's MOQ or order multiple, the editor shows **Off MOQ / multiple — round:** with two buttons: round down and round up to the nearest quantity the supplier accepts. Nothing changes until you pick one, and the quantity stays editable.
 
 ### Aggregate minimums (MOQ)
 
@@ -67,13 +106,9 @@ When a PO's items share an aggregate-minimum group, the drawer's **Aggregate min
 
 Clicking a committed open PO (or a locked suggestion) opens a read-only summary drawer in the same visual language, with no action buttons. Its fact grid shows Supplier, PO number(s), Period, Order date, Arrival date, Lines, Total cost, and Total units, plus the per-line breakdown.
 
-<Note>
-  If a suggested PO's recommendation can no longer be found (it was dismissed, or filtered by the latest solve), the click falls back to this locked summary so it still shows something useful.
-</Note>
-
 ## From plan to order
 
-Accepted purchases live on the [Execution plan](/supply-planning/execution-plan) as committed rows. From the committed drawer or List row, **Place order** / **Order** flips the accepted PO to ordered and mints the supplier transaction — the committed row stays the source of truth, and the header badge becomes a **PO** mark with the PO number once known. Ordered POs then appear on [Transactions](/transactions/overview).
+Accepted purchases go to the [Supply Plan](/supply-planning/execution-plan). Where approval is required they wait under **Pending review** until approved. **Place order** then creates the purchase order, and placed POs appear under **Ordered** and on [Transactions](/transactions/overview).
 
 ## Best practices
 
@@ -86,9 +121,6 @@ Accepted purchases live on the [Execution plan](/supply-planning/execution-plan)
     Removing or shrinking one line can drop the group's summed order below its aggregate minimum, invalidating the whole PO. The rollup's met/not-met state tells you how much slack you have.
   </Accordion>
 
-  <Accordion title="Accept lines, not just whole POs, when confidence varies">
-    Per-line accept lets you commit the lines you're sure of and leave the rest in the queue for the next solve to reconsider.
-  </Accordion>
 
   <Accordion title="Use the anchor to match your calendar">
     Bucketing the Schedule by order date builds this week's work queue; bucketing by arrival date shows the receiving calendar. Same data, different question.
@@ -99,25 +131,16 @@ Accepted purchases live on the [Execution plan](/supply-planning/execution-plan)
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| A suggested PO opens as a read-only summary | Its recommendation was dismissed or filtered by the latest solve | Check the Dismissed view in the List; the locked summary still shows the PO's contents |
+| A suggested PO opens as a read-only summary | Its recommendation was rejected or dropped by the latest solve | Check **List** → **Rejected**; the summary still shows the PO's contents |
 | Modify doesn't change the suggestion | Editing always operates on the committed PO, not the live suggestion | Accept first (or accept the line), then edit the committed movement |
 | MOQ section missing from a drawer | None of the PO's items carry an aggregate-minimum group | Nothing to roll up — per-line minimums still apply through the order form's rounding |
-| **Review staged** missing | Your organization doesn't run the approval flow | Staged movements convert directly without review |
+| **Review staged** missing | Your organization doesn't require approval for purchases | Accepted buys are approved straight away |
+| A buy I rejected is gone from **Rejected** | It reached its ask-again date, or was rejected with **Never** | Check the Never list in Settings → Supply planning |
 | Grouping control missing on the List | Urgency grouping applies to the Worksheet only | The List stays flat by design; use column sort instead |
 
-## Next Steps
+## Related pages
 
-<CardGroup cols={2}>
-  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
-    Manage the suppliers behind your POs
-  </Card>
-  <Card title="MRP" icon="boxes-stacked" href="/supply-planning/mrp">
-    Component buys driven by committed production
-  </Card>
-  <Card title="Execution plan" icon="list-check" href="/supply-planning/execution-plan">
-    Review, edit, and order committed purchases
-  </Card>
-  <Card title="Transactions" icon="file-invoice" href="/transactions/overview">
-    Track placed POs as ERP transactions
-  </Card>
-</CardGroup>
+- [Recommendations](/supply-planning/recommendations): accept and reject with a reason.
+- [Supply Plan](/supply-planning/execution-plan): approve, place and send orders.
+- [MRP](/supply-planning/mrp): component buys driven by committed production.
+- [Transactions](/transactions/overview): placed POs.
