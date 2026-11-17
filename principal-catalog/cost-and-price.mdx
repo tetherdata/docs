@@ -1,0 +1,142 @@
+---
+title: "Cost & price"
+description: "Where: Products → SKUs → a SKU → Cost & price. What's the difference between Default cost and Standard cost? Where do I change what a SKU costs us, set our selling price on a channel, or see what we paid? Why is inventory value labelled an estimate?"
+---
+
+# Cost & price
+
+Every SKU has a **Cost & price** tab that shows each number a SKU's cost or price can mean, by one fixed name, with the policy each comes from. This page explains the names, where each one is set, and how to read the tab.
+
+## The six cost and price names
+
+Where: Products → SKUs → open a SKU → **Cost & price** tab.
+
+Tether uses six names, and every screen and the in-app agent use the same ones. "Supplier" and "Inventory" follow your organization's [terminology](/administration/terminology); the rest never change.
+
+| Name | What it is | Where you set it |
+|------|-----------|------------------|
+| **Supplier price** | A supplier's price for the SKU: the base price in force, its price breaks, and the charges on it (freight, duty, a percentage of base). | The **Supplier price** column on the SKU's **Purchasing** tab, or a purchase-cost policy |
+| **Default cost** | The SKU's own cost per unit. A supplier with no price of its own is bought from at this cost. | The **Default cost** field on the SKU's **Overview** tab |
+| **Lot cost** | What one unit of a lot was valued at when it was received: what was paid or made for it, plus freight and duty that landed on it. | Set by receipts and production, not by hand |
+| **Inventory cost** | What the stock on hand is worth, read from its lots. | Calculated, not set |
+| **Standard cost** | The cost the SKU is planned and margined at. | Calculated from supplier prices or the recipe, not set by hand |
+| **Sales price** | The SKU's selling price on a channel. | The **Sales price** column on the SKU's **Sales** tab, or a SKU group's **Sales** tab |
+
+For a made SKU, the cost of making it on a line is the **Make cost / unit** column on the SKU's **Production** tab.
+
+<Info>
+The **Cost & price** tab is on the SKU detail page under **Products**. If your sidebar shows **Catalog → Collections** instead of **Products**, your organization is on the [legacy catalog](/product-catalog/legacy-catalog) and doesn't have this tab yet. Ask Tether to move you to Products.
+</Info>
+
+## What's the difference between Default cost and Standard cost?
+
+- **Default cost** is a number you type: the SKU's own cost per unit. It's used as the purchase price wherever a supplier has no price of its own. A supplier's own **Supplier price** always wins at that supplier.
+- **Standard cost** is a number Tether works out, live, from your setup. Plans and margins use it.
+  - **Bought SKU:** the Supplier price at the supplier's minimum order quantity, plus that supplier's charges.
+  - **Made SKU:** the recipe (BOM), with each component at its own Standard cost, plus the maker's cost to make it.
+- When several suppliers or makers are allowed, Standard cost uses the one a ranking policy puts first. With no ranking, it uses the cheapest, and the tab says so ("the cheapest of several, none ranked").
+
+So changing the Default cost can change the Standard cost of a bought SKU, but only when the supplier it's read at has no price of its own.
+
+## Where do I change what a SKU costs us?
+
+Where: Products → SKUs → open a SKU → **Overview** tab → **Default cost**.
+
+<Steps>
+  <Step title="Open the SKU">
+    In the sidebar, go to **Products → SKUs** and click the SKU.
+  </Step>
+  <Step title="Edit Default cost">
+    On the **Overview** tab, click the pencil next to **Default cost**, type the cost per unit, and press Enter or click the check mark. Press Escape to cancel.
+  </Step>
+</Steps>
+
+- The cost is saved in your organization's base currency, per the SKU's unit.
+- It's stored as a cost policy on the SKU itself, so editing it needs the **network:write** permission as well as catalog write access. Without both, the field is read-only.
+- To change what one supplier charges, edit the **Supplier price** on the SKU's **Purchasing** tab instead. Supplier price beats Default cost for that supplier.
+
+## How do I set our selling price for a SKU on a channel?
+
+Where: Products → SKUs → open a SKU → **Sales** tab → **Sales price** column.
+
+<Steps>
+  <Step title="Open the Sales tab">
+    Open the SKU and click **Sales**. Each row is a channel (for example Amazon, Wayfair or your Shopify store).
+  </Step>
+  <Step title="Enter the price">
+    In the channel's row, click **Add price** (or the current price) in the **Sales price** column and type the price.
+  </Step>
+</Steps>
+
+- To set one price for every SKU in a product (for example every size), use the **Sales** tab on the SKU group instead. See [SKU groups](/principal-catalog/sku-groups#sales-tab).
+- A sales price is a `set_price` policy. Channel prices used to be rows in a price table; they are now policies, so the price you set shows on the **Policies** tab too.
+- Only the number can be edited in the table cell. A price's currency, price type (retail, wholesale), and dates or seasons are kept as they are.
+- A SKU sold on a channel with no price is flagged "Sold with no price — won't populate orders".
+
+### Which sales price wins?
+
+When more than one `set_price` policy reaches the same SKU on the same channel, Tether picks one. Prices replace each other; they don't add up.
+
+1. **The most specific scope wins.** A price set on the SKU beats one set on its SKU group, which beats one set for all SKUs.
+2. **At the same scope, a dated price wins inside its date window.** Outside the window, the undated price applies again.
+3. **Then the higher priority wins.**
+4. A full tie is broken the same way every time, so the result never changes between runs.
+
+## Reading the Cost & price tab
+
+Where: Products → SKUs → open a SKU → **Cost & price** tab.
+
+The tab has seven cards, top to bottom. Each value links to the policy it comes from, so you can open it and see or change the rule.
+
+### Supplier price card
+
+One row per supplier allowed to supply the SKU, showing that supplier's base price in force, its price breaks, and its charges. If a supplier has no price of its own, the row shows the **Default cost** it is bought at instead, marked "(no Supplier price)". If the card says no supplier is set up, allow one on the SKU's **Purchasing** tab.
+
+### Default cost card
+
+The SKU's own cost per unit, marked **To buy** or **To make**, plus any charges, and the policy that holds it. Edit it on the **Overview** tab (see above).
+
+### Lot cost card
+
+Filled in only for organizations that value stock from lots. A table of each lot still holding stock, newest first, with **Received**, the location, **Lot** (for lot-tracked stock), **Units left**, **Lot cost**, and **Basis**. **Basis** says how the lot was valued: **Lot cost** (from its receipt), or a fallback such as **Fallback: Standard cost** or **Fallback: last price paid** for a lot that came in without a price.
+
+### Inventory cost card
+
+What the SKU's stock on hand is worth, across every location you can see.
+
+- **Valued from its lots:** the sum of each lot's cost. If some stock isn't covered by any lot, that part is shown as **Stock no lot covers**, labelled **estimate, not booked**.
+- **Organizations that don't value stock from lots:** on-hand units × the SKU's **Default cost**.
+- Stock with no cost at all is left out and counted separately. If nothing on hand has a cost, the card shows no value rather than $0.
+
+### Standard cost card
+
+The Standard cost with how it was reached (for example "Bought from Acme at 500 (its minimum order), ranked first"), the parts it sums (Supplier price and charges, or each recipe line and the production cost), and the policy that ranked the supplier or maker. If there is no Standard cost, the card says why, for example:
+
+- No supplier may supply it and no site may make it.
+- It is both bought and made, and no rule yet says which one sets its cost.
+- The supplier or maker it is read at has no base price for it.
+- Its recipe uses a component that has no Standard cost.
+
+Underneath, **History** lists each recorded change to the Standard cost: the date, the old and new cost, the change, and what caused it.
+
+### Sales price card
+
+The price the SKU sells at on each channel, with a mark showing whether it was set on the SKU or inherited from a SKU group, and a link to the policy. Change it on the **Sales** tab.
+
+### Price paid card
+
+What each posted purchase order paid per unit for the SKU, by supplier, over the last three years, with **Date** and **Price paid**. To export it, open the table settings menu on the card.
+
+## Why is my inventory value labelled an estimate?
+
+Where: Products → SKUs → open a SKU → **Cost & price** → **Inventory cost**.
+
+Inventory value comes from the cost of each lot in stock. Some stock on hand may not be covered by any lot, for example stock counted before lots were tracked. Tether still values that part, at the price last paid or your organization's fallback cost, so the total isn't understated. No receipt records that cost, so it's shown as **Stock no lot covers** and labelled **estimate, not booked**. The same split appears in the inventory value the in-app agent reports.
+
+## Who can change costs and prices?
+
+- **Default cost** and **vendor codes** need the **network:write** permission, because they are stored as policies and supplier records.
+- Supplier prices, make costs and sales prices are edited on the SKU's **Purchasing**, **Production** and **Sales** tabs, which need catalog write access.
+- Anyone who can open the SKU can read the **Cost & price** tab.
+
+See [Roles and permissions](/roles-permissions).

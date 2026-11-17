@@ -1,90 +1,185 @@
 ---
 title: "SKUs"
-description: "Create, import, edit, and archive SKUs in the principal catalog, and manage their units, external IDs, BOMs, and policies"
+description: "Where: Products → SKUs. Find, create, import, edit and archive SKUs; what tabs a SKU page has; enter a SKU's cost, a supplier's item number (vendor code), case packs and sales prices; generate size/color variants."
 ---
 
 # SKUs
 
-SKUs are the individual items in your principal catalog — everything you make, buy, or sell. Manage them at `/principal/skus` in the **Principal Catalog** section: browse and filter the full list, create SKUs one at a time or import them from CSV, and open a detail page for units, external IDs, BOM components, and policies.
+SKUs are every item you make, buy or sell. Manage them under **Products → SKUs** (`/principal/skus`): find and filter the list, create SKUs one at a time or import them from a spreadsheet, and open a SKU to edit its details, costs, prices and planning rules.
 
 <Note>
-Your organization may use a different name for SKUs. Administrators can rename catalog terms in **Settings** → **Terminology**. See [Terminology](/administration/terminology).
+Your sidebar may use a different word for SKUs. Administrators can rename catalog terms in **Settings → Terminology**. See [Terminology](/administration/terminology). If your sidebar shows **Catalog → SKUs** instead of **Products → SKUs**, see [Legacy catalog](/product-catalog/legacy-catalog).
 </Note>
 
-## SKU list
+## SKU types
 
-The list page shows every SKU with its **SKU code**, **Name**, **Type**, **Status**, unit of measurement, and **Primary SKU Group**. Additional columns — description, UPC, archive reason, dimensions and weights, created/updated details, and one column per attribute — are hidden by default and can be enabled from the table settings menu.
+| Type | Use it for |
+|------|-----------|
+| **Finished Good** | A product you sell |
+| **Variant** | One size/color/etc. of a product, usually generated from attribute values |
+| **Bundle** | Several SKUs physically assembled and sold together |
+| **Kit** | A product assembled from components at fulfillment time |
+| **Virtual Bundle** | A grouping sold together but not physically assembled |
+| **Component** | Anything bought or made to go into another SKU: raw materials, packaging, parts |
+
+Change a SKU's type on its **Overview** tab or inline in the list.
+
+## Finding SKUs
+
+Where: Products → SKUs.
+
+The list shows each SKU's **SKU code**, **Name**, **Type**, **Status**, unit of measurement and **Primary SKU Group**.
 
 - **Search** by code or name.
-- **Filter** with chips for **Primary Group**, **Secondary Group**, **Type**, **Status** (Active or Archived), and one chip per attribute. Add chips with **+ Filter** and reset with **Clear all**. Filter views can be saved.
-- **Group** rows by **Type**, **Status**, **Primary SKU Group**, or any attribute.
-- **Edit inline** — fields like type, description, UPC, and attribute values are editable directly in the grid, with a banner to save or discard batched edits.
-- **Export** the filtered list to CSV from the table settings menu.
+- **Filter** with chips: **Primary Group**, **Secondary Group**, **Type**, **Status** (**Active** or **Archived**), and one chip per attribute (for example Color or Size). Add a chip with **+ Filter** and reset with **Clear all**.
+  - To see only archived SKUs, add the **Status** chip and pick **Archived**.
+  - To filter by color, add the **Color** chip and pick the values.
+- **Group** rows by **Type**, **Status**, **Primary SKU Group** or any attribute.
+- **Show more columns** from the table settings menu: Description, UPC, Archive reason, dimensions and weights, created/updated by and when, and one column per attribute.
+- **Save a view** of your filters to come back to.
 
-Each row has a quick **Archive** (or **Restore**) button plus a menu with **Edit**, **Archive**/**Restore**, and **Delete**. Deleting asks for confirmation and cannot be undone.
+### Exporting your SKU list
+
+Where: Products → SKUs → table settings menu → export.
+
+Filter the list first if you want only some SKUs, then export it to CSV from the table settings menu. The export follows your filters.
 
 ## Creating a SKU
 
+Where: Products → SKUs → **Create SKU**.
+
 <Steps>
   <Step title="Open the form">
-    Click **Create SKU** on the SKU list page.
+    Click **Create SKU** on the SKU list. You need catalog write access to see it.
   </Step>
   <Step title="Pick the primary group">
-    Select a **Primary SKU Group** — every SKU belongs to exactly one, and only primary groups appear in the picker.
+    Select a **Primary SKU Group**. Every SKU belongs to exactly one, and only primary groups appear in the picker.
   </Step>
   <Step title="Enter core details">
-    Fill in **Name** and **SKU code** (the code auto-generates from the name; override it if needed), and set **Type** and **Unit of measurement**.
+    Fill in **Name** and **SKU code** (the code fills in from the name; override it if you need to), then set **Type** and **Unit of measurement**.
   </Step>
   <Step title="Optionally add dimensions and weight">
-    Expand **Dimensions & Weight (optional)** to enter length, width, and height (all three together or none) and gross/net weight. You can pre-fill these by copying from another SKU in the same primary group.
+    Expand **Dimensions & Weight (optional)** to enter length, width and height (all three or none) and gross/net weight. You can copy these from another SKU in the same primary group.
   </Step>
   <Step title="Create">
-    Click **Create SKU**. Attributes, units, and policies can be set afterward on the detail page.
+    Click **Create SKU**. Set attributes, units, costs and policies afterward on the SKU's page.
   </Step>
 </Steps>
 
-<Tip>
-To generate many variant SKUs at once from attribute combinations (for example, every Size × Color), use **Bulk Create SKUs** on a primary SKU group's detail page instead. See [SKU groups](/principal-catalog/sku-groups).
-</Tip>
+### Generating all size/color variants at once
 
-## Importing SKUs from CSV
+Where: Products → SKU Groups → a primary SKU group → **Bulk Create SKUs**.
 
-Click **Import CSV** on the SKU list page to open the import dialog:
+To create a SKU for every combination of attribute values (for example every Size × Color), use **Bulk Create SKUs** on the product's primary SKU group. This was called the "SKU generator" in the legacy catalog. See [Bulk Create SKUs wizard](/principal-catalog/sku-groups#bulk-create-skus-wizard).
+
+## Importing SKUs from a spreadsheet
+
+Where: Products → SKUs → **Import CSV**.
 
 <Steps>
   <Step title="Upload">
-    Click **Download template** to get a CSV with the right columns (including one column per attribute), fill it in with one row per SKU, then drop the file on the dialog or click to browse. Only `.csv` files are accepted.
+    Click **Download template** to get a CSV with the right columns (including one column per attribute). Fill in one row per SKU, then drop the file on the dialog or click to browse. Only `.csv` files are accepted, so save Excel files as CSV first.
   </Step>
   <Step title="Review">
-    The **Review import** step validates every row and shows results inline. You can edit rows and revalidate before applying.
+    The **Review import** step checks every row and shows problems inline. Fix rows and check again before you apply.
   </Step>
   <Step title="Import">
-    Click **Import N skus** to apply. The import both creates new SKUs and updates existing ones.
+    Click **Import N skus**. The import creates new SKUs and updates existing ones.
   </Step>
   <Step title="Done">
-    The completion screen summarizes how many SKUs were created, updated, and skipped, and lists any groups or attribute values the import created along the way. Click **Done** to close.
+    The summary shows how many SKUs were created, updated and skipped, and any groups or attribute values the import created. Click **Done**.
   </Step>
 </Steps>
 
-## SKU detail page
+## Editing a SKU
 
-Open any SKU to see its detail page, titled with the SKU code. Tabs cover:
+Where: Products → SKUs → a SKU → **Overview** tab, or inline in the SKU list.
 
-| Tab | Contents |
-|-----|----------|
-| **Overview** | SKU information (name, code, UPC, description, unit, type — all editable inline), dimensions and weight, attribute values, and SKU group memberships |
-| **External IDs** | Identifiers from other systems, as type/value pairs you can add and remove |
-| **Units** | Alternate units of measurement with conversion ratios (for example, 1 case = 12 each) via **Add Conversion** |
-| **BOM** | Every BOM that makes this SKU (**Made by**), and a **Used in** table of the BOMs that consume it |
-| **Inventory** | Inventory details for the SKU |
-| **Purchasing / Production / Storage** | Supplier, production, and warehouse relationships |
-| **Policies** | Planning policies scoped to this SKU |
+- **On the SKU's page:** the **Overview** tab shows name, code, UPC, description, unit and type, each editable in place.
+- **In the list:** type, description, UPC and attribute values are editable directly in the grid. A banner collects your edits so you can save or discard them together.
+- **From the row menu:** **Edit** opens the SKU in a dialog.
 
-On the **Purchasing**, **Production** and **Storage** tabs, each value carries one mark: **●** set here, **⟳** inherited from a SKU group or a wider rule (hover the value to see which), **○** not granted here. A switch marked **◐** is on through a narrower rule, for one line or one BOM; switching it off adds a rule withholding the row rather than editing that one. Where some BOMs have a rule of their own, for example a throughput rate for one BOM on a line, the value shows an **N bills** chip: the value is the rule for every BOM without one, and clicking the chip lists each BOM's own value.
+To change a SKU's name or UPC, click the field on the **Overview** tab (or the cell in the list), type the new value and save.
 
-On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU Group** (with a link and a **Primary** badge) and any other group memberships, which you can add to or remove. The **Attribute Values** card lists assigned values and lets you **Add Attribute** or remove one.
+## What tabs are on a SKU page?
 
-**Made by**, on the **BOM** tab, lists every BOM whose main output or co-product is this SKU, oldest first, with each BOM's status (**Draft**, **Active** or **Archived**), where it's on (for example **On at True Spice**), the sites the plan runs it at, and its component count. Click a BOM's **On** cell to switch it on or off at each site or everywhere, rank it at a site, or add a site; every switch and reorder previews what the plan will do and asks you to confirm. See [Picking a BOM's sites](/principal-catalog/boms#picking-a-boms-sites). To switch the whole SKU on or off at a site, use the **Assigned** switch on the **Production** tab. A SKU can have several BOMs, for example one per co-packer.
+Where: Products → SKUs → click a SKU.
+
+The page is titled with the SKU code. Its tabs, in order:
+
+| Tab | What it holds |
+|-----|---------------|
+| **Overview** | Name, code, UPC, description, unit, type, **Default cost**, dimensions and weight, attribute values, and SKU group memberships |
+| **External IDs** | The SKU's IDs in other systems, and **Vendor codes** (each supplier's item number) |
+| **Units** | Alternate units such as cases, added with **Add conversion** |
+| **BOM** | The BOMs that make this SKU (**Made by**) and those that use it (**Used in**) |
+| **Inventory** | Stock for the SKU by location |
+| **Lots** | Lot settings and the SKU's lots. Only for organizations with lot tracking turned on. |
+| **Supply & demand** | The SKU's supply and demand over time. Only for organizations with this feature turned on. |
+| **Purchasing** | Which suppliers may supply it, with **Supplier price**, lead time, MOQ and other purchase terms |
+| **Production** | Which sites and lines may make it, with **Make cost / unit**, capacity and rates |
+| **Storage** | Which locations may store it, with target, safety and maximum stock |
+| **Sales** | Which channels it's sold on (**Allowed**, **Excluded**, **Denied**) and its **Sales price** on each |
+| **Cost & price** | Every cost and price for the SKU in one place. See [Cost & price](/principal-catalog/cost-and-price). |
+| **Policies** | All planning policies scoped to this SKU |
+
+The **BOM** and **Policies** tab names follow your terminology.
+
+### Why doesn't my SKU have a Lots tab?
+
+The **Lots** tab appears only when your organization has lot tracking turned on. If you need lot tracking, ask Tether to turn it on. The same goes for **Supply & demand**, which is behind its own feature setting.
+
+## Where do I enter a SKU's cost?
+
+Where: Products → SKUs → a SKU → **Overview** tab → **Default cost**.
+
+Click the pencil next to **Default cost**, type the cost per unit, and press Enter. This is the SKU's own cost, used wherever a supplier has no price of its own. Editing it needs the **network:write** permission as well as catalog write access.
+
+A supplier's own price goes in the **Supplier price** column on the **Purchasing** tab. The cost to make the SKU goes in **Make cost / unit** on the **Production** tab. For what each cost means and how Standard cost is worked out, see [Cost & price](/principal-catalog/cost-and-price).
+
+## How do I record a supplier's item number for a SKU?
+
+Where: Products → SKUs → a SKU → **External IDs** tab → **Vendor codes**.
+
+The **Vendor codes** section lists each supplier's code for this SKU, with **Supplier** and **Vendor code** columns.
+
+- To add one, click **Add** beside **Vendor codes**, pick the **Supplier**, type the **Vendor code** and save.
+- To change one, edit it in place and press Enter.
+- Remove one with the remove button on its row.
+- Editing vendor codes needs the **network:write** permission.
+
+The **External IDs** table above it holds the SKU's IDs in other systems as **Type** / **Value** pairs (for example `shopify` / `12345`). Add one by typing a type and value and clicking **Add**.
+
+### ERP SKU ID Sync
+
+Where: Settings → **ERP SKU ID Sync**.
+
+Tether matches its SKUs to the item IDs it receives from your connected ERP by SKU code. **ERP SKU ID Sync** re-runs that match: click **Sync ERP SKU ids**, and SKUs whose code doesn't match, or whose ERP ID is already taken by another SKU, are listed for you to fix. It is safe to run more than once. These ERP IDs aren't shown on the **External IDs** tab. The page needs its own settings permission; if you don't see it, ask Tether.
+
+## How do I set up case packs?
+
+Where: Products → SKUs → a SKU → **Units** tab → **Add conversion**.
+
+Click **Add conversion**, choose the unit (or type a custom one), and enter the conversion ratio: how many base units make one of it. For example, to say 1 case = 12 each, choose case and enter 12. Set conversions before you buy or sell in cases.
+
+## Where do I set the price we sell this SKU at?
+
+Where: Products → SKUs → a SKU → **Sales** tab → **Sales price**.
+
+Each row on the **Sales** tab is a channel (for example Amazon). In that row:
+
+- Set whether the SKU is sold there: **Allowed** (sold and forecast), **Excluded** (sold, kept out of the forecast) or **Denied** (not sold).
+- Click **Add price**, or the current price, in the **Sales price** column and type the price.
+
+To price every size of a product at once, use the **Sales** tab on its SKU group. For which price wins when several apply, see [Which sales price wins?](/principal-catalog/cost-and-price#which-sales-price-wins)
+
+## Purchasing, Production, Storage and Sales tabs
+
+On these tabs each value carries one mark: **●** set here, **⟳** inherited from a SKU group or a wider rule (hover the value to see which), **○** not granted here. A switch marked **◐** is on through a narrower rule, for one line or one BOM; switching it off adds a rule withholding the row rather than editing that one. Where some BOMs have a rule of their own, for example a throughput rate for one BOM on a line, the value shows an **N bills** chip: the value is the rule for every BOM without one, and clicking the chip lists each BOM's own value.
+
+## BOM tab
+
+**Made by** lists every BOM whose main output or co-product is this SKU, oldest first, with each BOM's status (**Draft**, **Active** or **Archived**), where it's on (for example **On at True Spice**), the sites the plan runs it at, and its component count. Click a BOM's **On** cell to switch it on or off at each site or everywhere, rank it at a site, or add a site; every switch and reorder previews what the plan will do and asks you to confirm. See [Picking a BOM's sites](/principal-catalog/boms#picking-a-boms-sites). To switch the whole SKU on or off at a site, use the **Assigned** switch on the **Production** tab. A SKU can have several BOMs, for example one per co-packer.
 
 - Click a BOM's name to open its page.
 - Click the arrow at the start of a row to open its components underneath. There you can add and remove components and change each one's quantity, unit and optional flag. Each change saves as you make it.
@@ -93,54 +188,27 @@ On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU G
 
 **Used in** lists every BOM that takes this SKU as a component, with that BOM's status, the quantity and unit it uses, and what it produces. Circular BOMs are blocked.
 
+## Overview tab: groups and attributes
+
+On the **Overview** tab, the **SKU Groups** card shows the SKU's **Primary SKU Group** (with a **Primary** badge) and its other group memberships, which you can add to or remove. The **Attribute Values** card lists the SKU's attribute values; click **Add Attribute** to add one, or remove one.
+
 ## Archiving a SKU
 
-Click **Archive** in the list or on the detail page. Archiving is more than a confirmation — you select a **Reason** (such as Product Discontinued, Supplier Change, Quality Issues, Seasonal End, or Other) and can add optional notes. Archived SKUs get an **Archived** status badge and can be brought back with **Restore**.
+Where: Products → SKUs → **Archive** on the row or the SKU's page.
+
+Pick a **Reason** (such as Product Discontinued, Supplier Change, Quality Issues, Seasonal End or Other) and add optional notes. Archived SKUs get an **Archived** badge and can be brought back with **Restore**. **Delete** (from the row menu) asks for confirmation and can't be undone; use it only for SKUs created by mistake.
 
 ## Policies tab
 
-The **Policies** tab lists planning policies scoped to this SKU, grouped by domain, and lets you create new ones pre-scoped to the SKU. Editing policies requires network write permission, which is separate from catalog write permission. Policies drive planning behavior — see [Supply planning](/supply-planning/overview).
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Let SKU codes auto-generate, then standardize">
-    The create form generates a code from the name; override it only to match an established convention. Consistent codes make search, imports, and integrations far more reliable.
-  </Accordion>
-  <Accordion title="Use the template for imports">
-    Always start from **Download template** — it includes a column for each of your current attributes, so rows map cleanly and validation passes on the first try.
-  </Accordion>
-  <Accordion title="Archive with an accurate reason">
-    The archive reason (discontinued, supplier change, quality issues, and so on) becomes part of the SKU's record and is exportable as a list column — future you will want to know why an item was retired.
-  </Accordion>
-  <Accordion title="Set unit conversions before transacting in cases">
-    If you buy in cases but sell in eaches, add the conversion on the **Units** tab early. Conversion ratios express how many base units make up the alternate unit.
-  </Accordion>
-</AccordionGroup>
+The **Policies** tab lists the planning policies scoped to this SKU, grouped by domain, and lets you create new ones already scoped to it. Editing policies needs the **network:write** permission, which is separate from catalog write access. See [Supply planning](/supply-planning/overview).
 
 ## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| A secondary group filter returns no SKUs | The group was selected under **Primary Group** instead of **Secondary Group** | Primary and secondary memberships are different — use the matching filter chip |
-| Dimensions won't save | Length, width, and height must be set all together or left all blank | Fill in all three, or clear all three |
+| **Create SKU** and **Import CSV** are missing | You don't have catalog write access | Ask an administrator for `catalog:write` |
+| **Default cost** or **Vendor codes** can't be edited | They need `network:write` as well as catalog write | Ask an administrator for `network:write` |
+| A secondary group filter returns no SKUs | The group was picked under **Primary Group** instead of **Secondary Group** | Use the matching filter chip |
+| Dimensions won't save | Length, width and height must all be set or all be blank | Fill in all three, or clear all three |
 | CSV file won't upload | The import accepts only `.csv` files | Save your spreadsheet as CSV and try again |
-| Adding a component is blocked with a circular BOM message | The component (directly or indirectly) consumes a SKU this BOM produces | Restructure the BOM so no SKU depends on itself |
-| Can't create or edit policies on the Policies tab | Policy editing requires network write permission, separate from catalog write | Ask an administrator to review your permissions |
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="SKU groups" icon="layer-group" href="/principal-catalog/sku-groups">
-    Organize SKUs into groups and bulk-create variants from attributes
-  </Card>
-  <Card title="BOMs" icon="file-lines" href="/principal-catalog/boms">
-    Define how SKUs are produced from components
-  </Card>
-  <Card title="Attributes" icon="ruler" href="/principal-catalog/attributes">
-    Manage the attributes and values assigned to SKUs
-  </Card>
-  <Card title="Supply planning" icon="chart-gantt" href="/supply-planning/overview">
-    See how SKU policies drive planning recommendations
-  </Card>
-</CardGroup>
+| Adding a component is blocked with a circular BOM message | The component, directly or indirectly, uses a SKU this BOM makes | Restructure the BOM so no SKU depends on itself |
