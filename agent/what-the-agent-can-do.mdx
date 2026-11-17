@@ -1,0 +1,56 @@
+---
+title: "What the agent can do"
+description: "What can the Tether agent do? Every area the agent can read and change — forecasts, sales history, inventory, the Supply Plan, policies, orders, products, locations, lots, standing reports and integrations — with an example request for each, which jobs have no screen in the app and can only be done by asking the agent, and which ones need your approval."
+---
+
+# What the agent can do
+
+The agent can read nearly everything in Tether and make many of the same changes you make on screens. Some jobs exist **only** through the agent — they have no screen. This page lists what it can do by area, with a request you can type.
+
+Ask in chat (**New chat** in the sidebar, or press **Cmd+K**, type your request and choose **Ask Tether Agent**). Over [Slack](/agent/slack) the agent only reads; over the [Claude or Grok connector](/agent/connect-claude-or-grok) it can't save memories or standing reports. The agent may go by another name in your organization — see [Agent settings](/agent/settings).
+
+## Does the agent change data without asking?
+
+No. Anything that changes data is shown to you first as an **Approval Required** card with a preview of what will change. Nothing is written until you click **Approve** (or **Approve with edits**). Reading and answering questions needs no approval. The agent also can only do what your own permissions allow. See [AI agent chat](/agent/chat#does-the-agent-change-data-without-asking).
+
+## Jobs you can only do by asking the agent
+
+These have no screen in the app. Ask the agent.
+
+| Job | Example request |
+|-----|-----------------|
+| Load a factory commercial invoice / packing list (CI/PL) onto containers | "Here's the packing list from the factory — log the containers." (attach the file) |
+| Record supplier invoices (bills) against purchase orders, including freight and duty | "Record this invoice from Acme against PO-1042." |
+| Record supplier payments and the bills they settle | "We paid Acme $12,400 on Friday for invoices 881 and 882." |
+| Find billing mismatches between purchase orders, receipts and bills (three-way match) | "Which POs were billed for more than we received?" |
+| Break a case or kit back into its components | "Break 20 cases of GIFT-BOX back into units at the Reno warehouse." |
+| Reverse a production report filed with the wrong lot or quantity | "Reverse yesterday's production report on run 554." |
+| Write points into a time series (a hand count, a price that never reached your ERP) | "Record that we paid $4.10 per unit for BOTTLE-12 in October." |
+| Test a policy change without touching the live plan, then compare plans | "What happens to the plan if we turn off the 30-day MOQ policy for Acme?" |
+| Compare two plans, or see the plan as it was on a past date | "What changed between last week's plan and today's?" |
+| Check where lot balances and inventory disagree, or trace a lot | "Does inventory reconcile with the lot ledger in Dallas?" / "Where did lot L-2207 go?" |
+| Load a forecast workbook with a saved import template | "Load this forecast file." (attach the file) |
+| Set a SKU up like an existing one | "Set up the new SKUs like TEE-BLK-M." |
+| Run a setup audit before a plan run | "Is anything in our setup going to stop the plan from producing purchases?" |
+| Save a recurring report | "Every Monday at 8am, send me the SKUs that will stock out in the next 30 days." See [Standing reports](/agent/standing-reports). |
+
+<Note>
+Some jobs depend on features your organization has turned on — lot tracking, Shipments, Receiving (the movement ledger), and supplier bills. If the agent says it can't do one, ask Tether to turn the feature on.
+</Note>
+
+## Everything the agent can do, by area
+
+| Area | What it can do | Example request |
+|------|----------------|-----------------|
+| **Forecasts** | Summaries, forecast vs actuals, accuracy, versions, consensus, model assignment; edit, scale, copy, shift, seed seasonally, wind down or delete forecasts | "Raise the June forecast for TEE-BLK by 15%." |
+| **Sales history** | Sales summaries and rows, sales by destination, history series totals, ranges and as-of values; write series points | "What did we sell on Amazon last quarter by SKU?" |
+| **Inventory** | On-hand, value, snapshot, changes, projection, alerts, inventory settings; adjust inventory | "What's our on-hand value by warehouse?" |
+| **Supply Plan and engine** | Plan versions and totals, recommendations (accept, reject with a reason), check a quantity against MOQ and pack size, next committed inbound, start an engine run, compare plans | "Why is there no purchase recommendation for MUG-12?" |
+| **Policies** | Which policies govern a SKU or location, a SKU's full setup, create / update / simulate / delete policies, production assignment, BOM ranking | "Which policies apply to TEE-BLK-M in Dallas?" |
+| **Orders** | Purchase, sales, transfer and production orders; open POs; receive deliveries, report production, ship; attach documents; import purchase orders; supplier bills and payments; CI/PL container loads | "Receive 480 units on PO-1042 line 2." |
+| **Products** | Create, update, import and archive SKUs; SKU groups; attributes; BOMs | "Create these 40 SKUs from the attached sheet." |
+| **Supply network** | Warehouses, suppliers, supplier capabilities, channels and their availability and prices, flow lanes, lead times, production lines | "Set the lead time from Acme to Dallas to 45 days." |
+| **Lots** | Lots, balances, allocations, lot settings, reallocation, reconciliation, tracing | "Which lots of SAUCE-8 expire this month?" |
+| **Standing reports** | Create, run, change and retire recurring reports | "Stop my Monday stockout report." |
+| **Setup and integrations** | Setup audit, register an integration, run a sync | "Run the Shopify sync now." |
+| **Session tools** | Read and build files (CSV, Excel, PDF, images), make a download, remember facts, plan multi-step work, search past sessions and these help docs | "Turn this into an Excel file I can download." |

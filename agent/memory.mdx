@@ -1,0 +1,63 @@
+---
+title: "Agent memory"
+description: "How do I make the agent remember a fact, stop it saving memories on its own, or fix an old fact it keeps using? Where: Agent → Chat Sessions → Manage Memories, and Settings → Agent → Agent Settings → Saving memories (Off / Ask first / Save without asking). Covers organization vs your memories, Add memory, Always on and its budget, and agent-saved memories."
+---
+
+# Agent memory
+
+Memories are facts the agent recalls in every conversation — a default warehouse, a naming rule, who approves POs.
+
+Where: **Agent → Chat Sessions → Manage Memories** (`/agentic/sessions/memory`). Older links to `/agentic/memory` redirect here.
+
+## Organization memories and your memories
+
+| Section | Who sees it | Who can edit |
+|---------|-------------|--------------|
+| **Organization memories** | Everyone in your organization | People with the organization-memory permission (`agent_memory:write`) |
+| **Your memories** | Only you | You |
+
+## How do I make the agent remember something?
+
+Where: **Manage Memories → Add memory**.
+
+<Steps>
+  <Step title="Add it">
+    In **Organization memories** or **Your memories**, click **Add memory**.
+  </Step>
+  <Step title="Fill it in">
+    Enter a **Label** (up to 120 characters, for example "Default warehouse") and a **Value** (up to 1,000 characters, for example "Reno — ship everything from here unless told otherwise").
+  </Step>
+  <Step title="Save">
+    Save it. Every new conversation can use it.
+  </Step>
+</Steps>
+
+You can also just tell the agent "Remember that…". What happens next depends on your organization's **Saving memories** setting (below).
+
+## What does "Always on" mean on a memory?
+
+Pin a memory as **Always on** and it's sent to the agent in full on every request, so it never has to look it up. Other memories are looked up when relevant.
+
+Always-on memories share a budget, shown as **Always-on budget** — used / total characters. If you're over budget, unpin or shorten some. Each section also has a maximum number of memories; delete one to add another.
+
+## How do I stop the agent saving memories on its own?
+
+Where: **Settings → Agent → Agent Settings → Saving memories**.
+
+| Setting | What the agent does |
+|---------|---------------------|
+| **Off** (default) | Reads memories but never saves one |
+| **Ask first** | Proposes a memory as an approval card; nothing is saved until someone approves it |
+| **Save without asking** | Saves memories itself, but still asks if one looks like an existing memory. Organization memories still need the permission |
+
+Changing it needs organization write permission. It can take up to five minutes to reach open conversations.
+
+A memory the agent saved shows an **Agent-saved** badge ("Saved by the agent; not yet edited by a person"). The badge clears once someone edits it.
+
+## Why does the agent keep using an old fact?
+
+A memory still holds the old value. Open **Manage Memories**, find it (check both sections, and **Always on** ones first), then edit or delete it. Deleting asks **Delete this memory?** to confirm.
+
+<Note>
+Saving memories works only in the in-app agent, not over the [Claude or Grok connector](/agent/connect-claude-or-grok) or [Slack](/agent/slack).
+</Note>

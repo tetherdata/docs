@@ -1,0 +1,79 @@
+---
+title: "Connect Claude or Grok"
+description: "How do I connect Tether to Claude or Grok? Does Tether work with ChatGPT? Do I need an API key? Where: Settings → Integrations → MCP (OAuth Connector: copy the MCP server URL, add a custom connector, sign in with your Tether login) and Settings → Integrations → API Keys (Create key) for programmatic access from Claude Code, Cursor or scripts."
+---
+
+# Connect Claude or Grok
+
+You can use Tether from Claude or Grok through Tether's MCP connector. The assistant gets the same tools as the in-app agent, limited to what your own Tether permissions allow.
+
+Where: **Settings → Integrations → MCP** (`/settings/integrations/mcp`).
+
+<Note>
+The **MCP** and **API Keys** entries show in Settings only if you have API-key management permission (`api_keys:manage`). If you don't see them, ask your administrator.
+</Note>
+
+## How do I connect Tether to Claude?
+
+Where: **Settings → Integrations → MCP → OAuth Connector → Claude**.
+
+<Steps>
+  <Step title="Copy the server URL">
+    On the **MCP** page, copy the MCP server URL shown under **OAuth Connector**.
+  </Step>
+  <Step title="Add a custom connector in Claude">
+    In Claude's connector settings, add a custom connector with that URL.
+  </Step>
+  <Step title="Sign in">
+    Sign in with your Tether login.
+  </Step>
+</Steps>
+
+On Claude Team and Enterprise plans, an owner adds the connector first; members then connect to it.
+
+## How do I connect Tether to Grok?
+
+Where: **Settings → Integrations → MCP → OAuth Connector → Grok**.
+
+<Steps>
+  <Step title="Copy the server URL">
+    Copy the MCP server URL from the **MCP** page.
+  </Step>
+  <Step title="Add a custom connector">
+    At grok.com/connectors, add a custom connector with that URL.
+  </Step>
+  <Step title="Sign in">
+    Sign in with your Tether login.
+  </Step>
+</Steps>
+
+On Grok Business and Enterprise, a team admin adds the connector first; members then connect to it.
+
+## Does Tether work with ChatGPT?
+
+The MCP page has setup steps for Claude and Grok only. Tether doesn't provide ChatGPT setup steps.
+
+## Do I need an API key for the Claude connector?
+
+No. The Claude and Grok connectors sign in with your Tether login (OAuth). API keys are for tools and scripts that call Tether directly.
+
+## What works over the connector?
+
+- The same tools as the in-app agent, acting as you — your permissions apply.
+- Changes are previewed first (a dry run) and applied only when you confirm.
+- A few in-app features aren't available: saving [memories](/agent/memory) and creating or changing [standing reports](/agent/standing-reports).
+
+## How do I create an API key?
+
+Where: **Settings → Integrations → API Keys → Create key**.
+
+<Steps>
+  <Step title="Create it">
+    Click **Create key**, enter a **Name** (up to 100 characters) and **Valid for (days)** (1–730, default 365), then click **Generate key**.
+  </Step>
+  <Step title="Copy it now">
+    The key is shown once. Copy it, or copy a quick-start setup for **Claude Code**, **Cursor** or **curl**. **Done** unlocks after you copy.
+  </Step>
+</Steps>
+
+A key carries its owner's permissions in one organization; there are no separate scopes. The **Active** and **Revoked** tabs list your keys with **Rotate** and **Revoke** actions. **Revoke all** asks you to type `revoke` to confirm.

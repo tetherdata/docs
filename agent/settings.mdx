@@ -1,0 +1,54 @@
+---
+title: "Agent settings"
+description: "Can we rename the agent, give every chat our price list, or control whether it saves memories? Where: Settings → Agent → Agent Settings (agent name, Saving memories, Slack) and Settings → Agent → Agent Files (Upload File). Who can change agent settings."
+---
+
+# Agent settings
+
+Settings for the agent live in the **Agent** group of Settings: **Agent Settings** and **Agent Files**.
+
+## Who can change agent settings?
+
+You need the **Agent Settings** page permission (`settings:agent:access`) to open the page and organization write permission (`organization:write`) to change it. **Agent Files** has its own page permission (`settings:agent-files:access`); uploading also needs organization write. Connecting Slack needs Slack-install permission (`slack:install`).
+
+## Can we rename the agent?
+
+Where: **Settings → Agent → Agent Settings → Name**.
+
+Yes. Type a name (up to 40 characters) and save. The new name shows everywhere — in the chat, "…is thinking...", and **Ask …** in the command palette — for your whole organization. Clear the field to go back to **Tether Agent**. You can also ask the agent to rename itself.
+
+## Saving memories
+
+Where: **Settings → Agent → Agent Settings → Saving memories**.
+
+Choose **Off** (default), **Ask first** or **Save without asking**. See [Memory](/agent/memory#how-do-i-stop-the-agent-saving-memories-on-its-own).
+
+## Slack
+
+Where: **Settings → Agent → Agent Settings → Slack**.
+
+Connect a Slack workspace so people can ask the agent questions there. See [Use the agent in Slack](/agent/slack).
+
+## Agent Files
+
+Where: **Settings → Agent → Agent Files**.
+
+Reference files every agent session can read — a product catalog, a price list, a routing guide.
+
+## How do I give the agent our price list so every chat can use it?
+
+Where: **Settings → Agent → Agent Files → Upload File**.
+
+<Steps>
+  <Step title="Open Agent Files">
+    Go to **Settings → Agent → Agent Files**.
+  </Step>
+  <Step title="Upload">
+    Click **Upload File** and pick the file.
+  </Step>
+  <Step title="Use it">
+    In any chat, ask about it ("Use our price list to check PO-1042's costs").
+  </Step>
+</Steps>
+
+Deleting a file (**Delete File?**) removes it from every session. To give a file to one chat only, attach it in that chat instead.

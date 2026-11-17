@@ -1,0 +1,76 @@
+---
+title: "Standing reports"
+description: "How do I get a weekly inventory report every Monday, change when it runs, find out why it stopped, or delete it? Where: Agent → Standing reports. Create a recurring report by asking the agent, then set How often (Only when asked / Every day / Weekdays / Weekly / Monthly), At and Timezone in the report's settings; Run now, pick a past run, download Excel, pin columns, and Remove report."
+---
+
+# Standing reports
+
+A standing report is a report the agent runs again and again — every morning, every Monday, or whenever you ask. Each run is kept, so you can look back and see what changed.
+
+Where: **Agent → Standing reports** (`/agentic/standing-reports`).
+
+## How do I get a weekly inventory report every Monday?
+
+Ask the agent for it. The agent writes the report up, shows it as an approval card, and saves it once you approve.
+
+<Steps>
+  <Step title="Describe it in a chat">
+    For example: "Every Monday at 8am, show me SKUs that will stock out in the next 30 days, by warehouse."
+  </Step>
+  <Step title="Approve it">
+    Review the **Approval Required** card and click **Approve**. You need report-writing permission (`agent_report:write`).
+  </Step>
+  <Step title="Find it">
+    It appears in the **Reports** list on **Agent → Standing reports**, with its schedule (or **On request**).
+  </Step>
+</Steps>
+
+Reports are created only by asking the agent in the app — not over Slack or the Claude/Grok connector.
+
+## Reading a report
+
+Where: **Agent → Standing reports → a report**.
+
+- The header shows **Last run**, the schedule and the next run.
+- **Run now** runs it immediately ("Report started — its result will appear here when it finishes").
+- **Showing run** picks a past run to view.
+- **Excel** downloads the run as a workbook.
+- **Read the agent's write-up** shows the agent's notes; **View the agent session** opens the chat that produced the run.
+- Rows marked **New** weren't in the previous run.
+
+### Pin columns
+
+Click the pin button on a table, then choose columns under **Keep in view while scrolling**. **Reset to default** goes back to the key columns (usually SKU code and name).
+
+## How do I change when my standing report runs?
+
+Where: **Agent → Standing reports → a report → Report settings and instructions** (the gear) → **Schedule**.
+
+| Field | Options |
+|-------|---------|
+| **How often** | Only when asked, Every day, Weekdays, Weekly, Monthly |
+| **Day** | Monday–Sunday (Weekly) |
+| **Day of the month** | 1–28 (Monthly), so it runs every month |
+| **At** | The time of day |
+| **Timezone** | The zone the time is in |
+| **Does each run show the full picture, or only what changed?** | **The full picture, every run** or **Only what changed** |
+
+Click **Save**. **Only what changed** can't run on a schedule yet — use it with **Only when asked**.
+
+## How do I change what the report shows?
+
+Where: the report's settings → **Instructions**.
+
+Instructions can't be typed over directly. Ask for the change in the settings panel's chat ("Ask for a change to …") or in any chat — "Add a column for open POs to my Monday stockout report." The next run follows the new instructions.
+
+## Why did my standing report stop running?
+
+The report shows **This report has stopped running** with the reason (for example "Its schedule was paused."). Open the settings, check the **Schedule**, and click **Resume** (the **Save** button) to start it again.
+
+If it says **This report has an action waiting for approval**, it was started from a chat and must be approved there — click **Open that session**.
+
+## How do I delete a standing report?
+
+Where: the report's settings → **Remove report**.
+
+Click **Remove report** and confirm. It leaves the list and stops running. Past runs are kept, and the name can be reused. You can also ask the agent: "Remove my Monday stockout report."
