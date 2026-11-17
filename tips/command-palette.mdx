@@ -1,234 +1,62 @@
 ---
-title: Command Palette
-description: Quick access to any feature with keyboard commands
+title: Command palette (search)
+sidebarTitle: Command palette
+description: "Search any page, SKU, order, warehouse or supplier, run actions, and ask the agent from one box. Answers: How do I search for a sales order number? How do I export this table? How do I ask the agent from the search bar? Where: ⌘K / Ctrl+K, or Search at the top of the sidebar."
 ---
 
-# Command Palette
+# Command palette (search)
 
-The command palette provides quick access to any feature in Tether. Use it to navigate, search, and execute actions without leaving the keyboard.
+The command palette is Tether's search box. It finds pages, records and actions, and hands anything else to the agent.
 
-## Opening the Command Palette
+## How do I open search?
 
-| Method | Action |
-|--------|--------|
-| **Keyboard** | `Cmd + K` (Mac) or `Ctrl + K` (Windows) |
-| **Click** | Click search icon in header |
+**Where:** press `⌘ + K` (Mac) or `Ctrl + K` (Windows), or click **Search** (magnifying glass) at the top of the sidebar.
 
-## Using the Command Palette
+Type in the **Search or navigate...** box, use the arrow keys to move, and press `Enter` to open. `Escape` closes it.
 
-### Basic Navigation
+## What can I search for?
 
-<Steps>
-  <Step title="Open Palette">
-    Press `Cmd + K` or `Ctrl + K`
-  </Step>
+**Where:** `⌘ + K` → type.
 
-  <Step title="Type Search">
-    Start typing what you want
-  </Step>
+Results are grouped:
 
-  <Step title="Select Result">
-    Use arrow keys or click to select
-  </Step>
-
-  <Step title="Execute">
-    Press Enter to navigate or execute
-  </Step>
-</Steps>
-
-### Search Types
-
-The command palette searches across two categories:
-
-| Type | Examples |
-|------|----------|
-| **Pages** | SKUs, Inventory, Forecasting, Settings, Integrations |
-| **Records** | Specific SKUs, collections, transactions, warehouses, suppliers |
-
-## How It Works
-
-### Page Navigation
-
-Type a page name to filter matching navigation items. The palette matches against page titles and related keywords.
-
-| Example Query | Matches |
-|---------------|---------|
-| `sku` | SKUs page |
-| `collections` | Collections page |
-| `inventory` | Inventory dashboard |
-| `forecast` | Demand Forecast pages |
-| `settings` | Settings page |
-| `integrations` | Integrations page |
-
-### Record Search
-
-As you type, the palette also searches across your data to find matching records:
-
-| Record Type | What's Searched |
-|-------------|----------------|
-| **SKUs** | SKU code and name |
-| **Collections** | Collection name and SKU prefix |
-| **Transactions** | Reference number, name, or ID |
-| **Warehouses** | Warehouse code and name |
-| **Suppliers** | Supplier code and name |
-
-Selecting a record navigates directly to its detail page.
-
-## Tips for Effective Use
-
-### Partial Matching
-
-You don't need to type full names — partial matches work:
-
-| Type | Matches |
-|------|---------|
-| `inv` | Inventory |
-| `sku` | SKUs page and SKU records |
-| `fore` | Demand Forecast pages |
-
-### Keyboard Navigation
-
-| Key | Action |
-|-----|--------|
-| `↑` `↓` | Navigate results |
-| `Enter` | Select highlighted item |
-| `Esc` | Close palette |
-
-## Common Workflows
-
-### Quick SKU Lookup
-
-<Steps>
-  <Step title="Open Palette">
-    `Cmd + K`
-  </Step>
-
-  <Step title="Type SKU">
-    Type SKU code or name
-  </Step>
-
-  <Step title="Select">
-    Choose from results
-  </Step>
-
-  <Step title="View">
-    Jump directly to SKU detail
-  </Step>
-</Steps>
-
-### Fast Page Switching
-
-<Steps>
-  <Step title="Open Palette">
-    `Cmd + K`
-  </Step>
-
-  <Step title="Type Destination">
-    Type page name (e.g., "forecast")
-  </Step>
-
-  <Step title="Navigate">
-    Press Enter to go
-  </Step>
-</Steps>
-
-### Quick Record Lookup
-
-<Steps>
-  <Step title="Open Palette">
-    `Cmd + K`
-  </Step>
-
-  <Step title="Type Record Info">
-    Type a SKU code, warehouse name, supplier name, etc.
-  </Step>
-
-  <Step title="Select Result">
-    Choose from the matching records displayed below the pages
-  </Step>
-</Steps>
-
-## Results Layout
-
-The command palette organizes results into groups:
-
-| Group | What It Shows |
+| Group | What it holds |
 |-------|---------------|
-| **Pages** | Matching navigation items |
-| **SKUs** | Matching SKU records |
-| **Collections** | Matching collection records |
-| **Transactions** | Matching transaction records |
-| **Warehouses** | Matching warehouse records |
-| **Suppliers** | Matching supplier records |
+| **Recent** | Pages and records you opened recently |
+| **Pages** | Every sidebar and Settings page your role can open, under your organization's names, plus **Location Groups**, which isn't in the sidebar |
+| **Actions** | **Export table to CSV**, **Show Keyboard Shortcuts**, **Switch to Dark Mode** / **Switch to Light Mode** |
+| **Color Themes** | Switch the app's color theme (type "theme") |
+| **SKUs** | SKUs by code or name |
+| **Collections** | Collections (older catalog) |
+| **Transactions** | Orders by reference number or name |
+| **Sales Orders** | Sales orders by order number |
+| **Warehouses**, **Suppliers** | Warehouses and suppliers by code |
+| *Your agent's name* | **Ask** *agent*: *what you typed* |
 
-<Tip>
-  Results update as you type. A loading indicator appears while searching for records.
-</Tip>
+Pages match on their title and on common words: typing "po" or "buy" finds **Purchase**, "integration" finds **Data Ingestion** (plus API Keys and MCP), and "command center" still finds **Overview**.
 
-## Best Practices
+## Can I search for a sales order number?
 
-<AccordionGroup>
-  <Accordion title="Learn Key Commands">
-    Memorize frequently used commands:
-    - Your most visited pages
-    - Common actions
-    - Frequent searches
-  </Accordion>
+**Where:** `⌘ + K` → type the order number → **Sales Orders** group.
 
-  <Accordion title="Use Abbreviations">
-    Short inputs work well:
-    - First few letters
-    - Key words only
-    - Common abbreviations
-  </Accordion>
+Type the order number (or part of it). Matching orders appear under **Sales Orders**; press `Enter` to open one. Purchase orders, transfers and other orders appear under **Transactions** by their reference number.
 
-  <Accordion title="Build Muscle Memory">
-    Practice using the palette:
-    - Resist using mouse
-    - Let it become natural
-    - Speed comes with practice
-  </Accordion>
-</AccordionGroup>
+## How do I export this table?
 
-## Troubleshooting
+**Where:** `⌘ + K` → **Export table to CSV**.
 
-### Command Not Found
+On a page with an exportable table, open the palette and choose **Export table to CSV** (it's listed under **Actions**, or type "export" or "csv"). It downloads the table as it's currently filtered, the same as **Table Settings** → **Export CSV**. See [Exporting data](/tips/exports).
 
-**Possible causes:**
-- Misspelling
-- Feature not available
-- Permission restrictions
+## How do I ask the agent from the search bar?
 
-**Solutions:**
-1. Check spelling
-2. Try alternative phrasing
-3. Verify you have access
+**Where:** `⌘ + K` → type a question → **Ask** *agent name*.
 
-### Slow Results
+Type your question, for example "which SKUs stock out next month", and choose the last item, **Ask** *agent name*: *your question*. The agent chat opens with your question already sent as a new conversation. See [Agent chat](/agent/chat).
 
-**Possible causes:**
-- Large dataset
-- Network latency
-- Complex search
+## Change the look
 
-**Solutions:**
-1. Be more specific
-2. Use filters
-3. Wait for results to load
+Type "dark" or "light" to switch mode, or "theme" to list color themes. You can also switch mode from the **Tether** workspace menu, and themes in **Settings** → **Theme**.
 
-## Next Steps
+## Keyboard shortcuts
 
-<CardGroup cols={2}>
-  <Card title="Keyboard Shortcuts" icon="keyboard" href="/tips/shortcuts">
-    More keyboard shortcuts
-  </Card>
-  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
-    Work with multiple items
-  </Card>
-  <Card title="Navigation" icon="compass" href="/navigation">
-    Interface overview
-  </Card>
-  <Card title="Exports" icon="download" href="/tips/exports">
-    Export data
-  </Card>
-</CardGroup>
+Type "shortcuts" and choose **Show Keyboard Shortcuts**, or press `⌘ + /`. See [Keyboard shortcuts](/tips/shortcuts).

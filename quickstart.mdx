@@ -1,184 +1,74 @@
 ---
-title: Quick Start Guide
-description: Get up and running with Tether in minutes
+title: Quickstart
+description: "First steps in Tether: set up SKUs, add a warehouse or location, see sales channels, check inventory and invite your team. Answers: How do I set up my first SKUs? How do I add a new warehouse? Where do I add a sales channel? How do I invite a teammate? Where: Products → SKUs, Supply Chain → Locations, Settings → Members."
 ---
 
-# Quick Start Guide
+# Quickstart
 
-This guide walks you through the essential steps to set up Tether for your organization. By the end, you'll have your first warehouse, collection, SKUs, and sales channel configured.
+This page walks you through your first session in Tether. Most of your data usually arrives from your connected systems (Shopify, NetSuite, your 3PL and others), so setup is mostly checking what came in and filling gaps.
 
 <Note>
-  This guide assumes you have Admin access. If you're a Sales Rep user, some features may not be available to you. See [User Roles & Permissions](/roles-permissions) for details.
+  Tether has two versions of the catalog. **Most organizations** use **Products** (SKUs, SKU Groups, BOMs, Attributes) and **Supply Chain** → **Locations**. **Older organizations** use **Catalog** (Collections, SKUs) and **Inventory** → **Warehouses**. Look at your sidebar: if you see a **Products** section, follow the Products steps.
 </Note>
 
-## Prerequisites
+## Sign in and find your way around
 
-Before you begin, ensure you have:
+Go to [app.tetherdata.io](https://app.tetherdata.io) and sign in with the account you were invited with. Everything is in the left sidebar; press `⌘ + K` (`Ctrl + K` on Windows) to search for any page, SKU or order. See [Navigation & interface](/navigation) for the full sidebar map.
 
-- Admin access to your Tether account
-- Basic information about your products (names, SKU codes)
-- Your warehouse location(s)
-- Sales channel information
+## How do I set up my first SKUs?
 
-## Setup Checklist
+**Where:** **Products** → **SKUs** → **Create SKU** (most organizations). Older organizations: **Catalog** → **SKUs** → **Create SKU**.
 
-<Steps>
-  <Step title="Create Your First Warehouse">
-    Warehouses are where your inventory is stored. You need at least one warehouse to track inventory.
+<Tabs>
+  <Tab title="Products (most organizations)">
+    1. Open **Products** → **Attributes** and check the attributes your products vary by (such as size or color). Click **New attribute** to add one.
+    2. Open **Products** → **SKU Groups** and click **New sku group** for a family of related SKUs (a style, a product line).
+    3. Open **Products** → **SKUs** and click **Create SKU**, or open a SKU group and use **Bulk Create SKUs** to create every variant at once.
+    4. If a SKU is made from components, add its bill of materials in **Products** → **BOMs** → **New BOM**.
 
-    1. Navigate to **Inventory** in the sidebar
-    2. Click the **Warehouses** tab
-    3. Click **Create Warehouse**
-    4. Enter the warehouse details:
-       - **Name**: A descriptive name (e.g., "Main Warehouse")
-       - **Code**: A short identifier (e.g., "MAIN")
-       - **Address**: Physical location (optional but recommended)
-    5. Click **Save**
+    See [Products overview](/principal-catalog/overview) for details.
+  </Tab>
+  <Tab title="Catalog (older organizations)">
+    1. Open **Catalog** → **Collections** and click **New Collection**.
+    2. Open the collection and add SKUs with **Add SKU**, or go to **Catalog** → **SKUs** → **Create SKU**.
 
-    <Tip>
-      Use clear, consistent naming conventions for warehouses. This helps when you have multiple locations.
-    </Tip>
-  </Step>
+    See [SKUs overview](/product-catalog/skus/overview).
+  </Tab>
+</Tabs>
 
-  <Step title="Create a Collection">
-    Collections group related products together and define shared attributes like dimensions.
+If your SKUs come from a connected system, they appear here after the first sync; you don't need to create them by hand.
 
-    1. Navigate to **SKUs** in the sidebar
-    2. Click the **Collections** tab
-    3. Click **Create Collection**
-    4. Enter collection details:
-       - **Name**: Descriptive name (e.g., "T-Shirts", "Electronics")
-       - **Description**: Optional details about the collection
-    5. Click **Save**
-  </Step>
+## How do I add a new warehouse?
 
-  <Step title="Set Up Dimensions (Optional)">
-    Dimensions define product attributes like Size or Color. This is optional but powerful for managing variants.
+**Where:** **Supply Chain** → **Locations** → **+ Location** (most organizations). Older organizations: **Inventory** → **Warehouses** → **New Warehouse**.
 
-    1. Open your newly created collection
-    2. Go to the **Dimensions** tab
-    3. Click **Add Dimension**
-    4. Create dimensions like:
-       - **Size**: S, M, L, XL
-       - **Color**: Red, Blue, Black
-    5. Save each dimension
+- **Organizations on Locations:** warehouses, suppliers, factories and sales channels are all locations. Open **Supply Chain** → **Locations** and click **+ Location**. The old Warehouses page sends you here automatically.
+- **Older organizations:** open **Inventory** → **Warehouses** (your sidebar may say **Locations**, depending on your organization's terminology) and click **New Warehouse**.
 
-    <Info>
-      Dimensions enable the SKU Generator, which can automatically create all variant combinations for you.
-    </Info>
-  </Step>
+## Where do I add a sales channel?
 
-  <Step title="Add Your First SKUs">
-    SKUs are individual products in your catalog. You can create them manually or generate them from dimensions.
+**Where:** **Sales** → **Sales Channels** (older organizations) or **Supply Chain** → **Locations** (organizations on Locations).
 
-    **Option A: Create Manually**
-    1. Navigate to **SKUs** in the sidebar
-    2. Click **Create SKU**
-    3. Enter SKU details:
-       - **Name**: Product name
-       - **SKU Code**: Unique identifier
-       - **Type**: Usually "Finished Good" for sellable products
-       - **Collection**: Select your collection
-    4. Click **Save**
+There is no "Create Channel" button. Sales channels come from your supply network and connected sales systems: when you connect Shopify, Amazon or another sales source, its channels appear. An empty list says "Sales channels arrive from the supply network". If a channel is missing, check the integration in **Settings** → **Integrations** → **Data Ingestion**, or ask Tether.
 
-    **Option B: Generate from Dimensions**
-    1. Open your collection
-    2. Go to the **SKUs** tab
-    3. Click **SKU Generator**
-    4. Select the dimension values to include
-    5. Click **Generate** to create all combinations
-  </Step>
+## Connect your systems
 
-  <Step title="Configure a Sales Channel">
-    Channels represent where you sell products (Shopify, Amazon, wholesale, etc.).
+**Where:** **Settings** → **Integrations** → **Data Ingestion**.
 
-    1. Navigate to **Channels** in the sidebar
-    2. Click **Create Channel**
-    3. Enter channel details:
-       - **Name**: Channel name (e.g., "Shopify US", "Amazon")
-       - **Type**: Select the appropriate type
-    4. Click **Save**
-  </Step>
+Integrations bring in your SKUs, inventory, orders and sales. See [Integration setup](/integrations/setup).
 
-  <Step title="View Your Inventory Dashboard">
-    Now that you have the basics set up, explore your inventory dashboard.
+## Check your inventory
 
-    1. Navigate to **Inventory** in the sidebar
-    2. The **Overview** tab shows:
-       - Inventory health alerts
-       - Stockout risks
-       - Safety stock breaches
-    3. Use filters to focus on specific warehouses or collections
+**Where:** **Inventory** → **Dashboard**.
 
-    <Note>
-      Inventory levels will show as zero until you import data or set up integrations.
-    </Note>
-  </Step>
-</Steps>
+The **Inventory** tab shows stock by SKU and location. Other tabs: **History** (every change), **Counts** (physical counts), **Approvals** (adjustments waiting for you) and **My requests** (adjustments you proposed). Counts, Approvals and My requests show only if your role uses them. Admins can load stock from a spreadsheet with **Upload Inventory**. See [Inventory dashboard](/inventory/dashboard).
 
-## What's Next?
+## How do I invite a teammate?
 
-Now that you have the basics configured, explore these areas:
+**Where:** **Settings** → **Access** → **Members** → **Invitations** tab → **Invite User**.
 
-<CardGroup cols={2}>
-  <Card title="Import Inventory Data" icon="upload" href="/integrations/setup">
-    Connect your systems to automatically sync inventory levels
-  </Card>
-  <Card title="Set Up Suppliers" icon="truck" href="/inventory/suppliers">
-    Add suppliers and configure lead times for replenishment planning
-  </Card>
-  <Card title="Configure Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
-    View and adjust demand forecasts for your products
-  </Card>
-  <Card title="Explore Supply Planning" icon="clipboard-list" href="/supply-planning/overview">
-    Review solver-generated transfer, production, and purchase recommendations
-  </Card>
-</CardGroup>
+Enter their **Email**, choose a **Role** (**Admin**, **Sales Rep** or **Receiving**) and click **Send Invitation**. See [Members and invitations](/administration/user-access) and [User roles & permissions](/roles-permissions).
 
-## Common Setup Tasks
+## Ask the agent
 
-### Adding More Users
-
-If you need to add team members:
-
-1. Click your **profile avatar** in the top-right corner and select **Settings**
-2. Click the **User Access** card
-3. Click **Invite User**
-4. Enter their email and assign a role (Admin or Sales Rep)
-5. Configure channel access as needed
-
-### Customizing Terminology
-
-Tether allows you to customize terminology to match your organization's language:
-
-1. Click your **profile avatar** in the top-right corner and select **Settings**
-2. Click **Configure Terminology** on the **Terminology Settings** card
-3. Rename terms like "SKU", "Channel", or "Warehouse"
-4. Save changes
-
-### Setting Up Integrations
-
-To automatically sync data from external systems:
-
-1. Go to **Integrations** in the sidebar
-2. Click **Create Integration**
-3. Follow the setup wizard for your data source
-4. Configure field mappings
-5. Run your first sync
-
-## Need Help?
-
-<CardGroup cols={2}>
-  <Card title="Navigation Guide" icon="compass" href="/navigation">
-    Learn the Tether interface in detail
-  </Card>
-  <Card title="Command Palette" icon="keyboard" href="/tips/command-palette">
-    Quickly navigate with keyboard shortcuts
-  </Card>
-  <Card title="Ask the agent" icon="sparkles" href="/agent/chat">
-    Get answers and take action from any page
-  </Card>
-  <Card title="Supply planning" icon="diagram-project" href="/supply-planning/overview">
-    Understand how Tether plans your supply
-  </Card>
-</CardGroup>
+Click **New chat** at the top of the sidebar and ask a question in plain words, such as "Which SKUs will stock out in the next 30 days?" See [Agent chat](/agent/chat).

@@ -1,116 +1,83 @@
 ---
 title: Introduction
-description: Welcome to Tether - Your intelligent supply chain planning platform
+description: "What Tether does and how it's organized: products, locations, inventory, demand, supply planning, orders, shipments, the agent, and roles. Answers: What can Tether do? What's the difference between Products and Catalog? What roles are there in Tether?"
 ---
 
 # Welcome to Tether
 
-Tether is an enterprise resource planning (ERP) platform designed for modern brands managing complex inventory, demand forecasting, and supply chain operations. Whether you're tracking thousands of SKUs across multiple warehouses or planning replenishment orders months in advance, Tether provides the tools you need to make data-driven decisions.
+Tether is a supply chain planning platform for brands. It brings your products, stock, demand and orders into one place, plans what to buy, make and move, and turns the plan into orders. You can work in the app or ask Tether's agent in plain words.
 
-## What is Tether?
+## What can Tether do?
 
-Tether brings together all aspects of your supply chain into a single, unified platform:
-
-<CardGroup cols={2}>
-  <Card title="Product Catalog" icon="box">
-    Manage SKUs, collections, and product dimensions with flexible hierarchies and bulk editing capabilities.
-  </Card>
-  <Card title="Inventory Management" icon="warehouse">
-    Track inventory across warehouses, monitor stock health, and receive proactive alerts for stockouts and overstocks.
-  </Card>
-  <Card title="Demand Forecasting" icon="chart-line">
-    View and adjust demand forecasts with AI-powered predictions and manual override capabilities.
-  </Card>
-  <Card title="Supply Planning" icon="truck">
-    Review solver-generated transfer, production, and purchase recommendations, and turn accepted recommendations into orders.
-  </Card>
-  <Card title="Principal Catalog" icon="layer-group">
-    Model your products with attributes, SKUs, SKU groups, and bills of materials that power planning.
-  </Card>
-  <Card title="AI Agent" icon="message">
-    Chat with Tether's AI agent to answer questions about your data and take action across the platform.
-  </Card>
-</CardGroup>
-
-## Key Capabilities
-
-### Intelligent Inventory Alerts
-
-Tether continuously monitors your inventory health and alerts you to potential issues before they impact your business:
-
-- **Stockout Alerts** - SKUs at risk of running out of stock
-- **Safety Stock Breaches** - Inventory falling below safety thresholds
-- **Overstock Warnings** - Excess inventory tying up capital
-
-### Unified Product Management
-
-Organize your products with flexible structures:
-
-- **SKUs** - Individual products with unique identifiers
-- **Collections** - Groups of related products
-- **Dimensions** - Attributes like Size, Color, and Material
-- **Hierarchies** - Multi-level product categorization
-
-### Smart Supply Planning
-
-Tether's [Supply Planning](/supply-planning/overview) solver generates a coordinated plan of transfers, production runs, and purchases based on:
-
-- Current inventory levels
-- Demand forecasts
-- Supplier lead times
-- Safety stock targets
-
-### Multi-Channel Support
-
-Manage sales across all your channels from a single platform:
-
-- Direct-to-consumer (Shopify, etc.)
-- Marketplaces (Amazon, etc.)
-- Wholesale and B2B
-- Custom channels
-
-## Core Concepts
-
-Before diving in, familiarize yourself with these key terms:
-
-| Term | Description |
-|------|-------------|
-| **SKU** | Stock Keeping Unit - a unique identifier for each product variant |
-| **Collection** | A group of related SKUs, often sharing dimensions |
-| **Channel** | A sales channel where products are sold (e.g., Shopify, Amazon) |
-| **Warehouse** | A physical location where inventory is stored |
-| **Supplier** | A vendor who provides products or materials |
-| **Transaction** | An order (purchase, production, or transfer) in your supply chain |
-
-## Who Uses Tether?
-
-Tether supports different user roles with tailored access:
-
-<CardGroup cols={3}>
-  <Card title="Admin" icon="user-shield">
-    Full access to all features including inventory management, supplier configuration, integrations, and settings.
-  </Card>
-  <Card title="Sales Rep" icon="user">
-    Focused access to SKU catalog, demand forecasts, sales history, and channel information.
-  </Card>
-  <Card title="Tether Admin" icon="shield">
-    All Admin capabilities plus internal system configuration tools like mapper settings and data management.
-  </Card>
-</CardGroup>
-
-## Next Steps
+**Where:** each area below is a section of the left sidebar.
 
 <CardGroup cols={2}>
-  <Card title="Quick Start Guide" icon="rocket" href="/quickstart">
-    Get up and running with Tether in minutes
+  <Card title="Products" icon="layer-group" href="/principal-catalog/overview">
+    SKUs, SKU groups, bills of materials (BOMs) and attributes that planning runs on. Formerly called "Principal Catalog".
   </Card>
-  <Card title="Navigation Overview" icon="compass" href="/navigation">
-    Learn how to navigate the Tether interface
+  <Card title="Locations" icon="map-pin" href="/supply-planning/overview">
+    Warehouses, suppliers, factories and sales channels as one network, with policies (safety stock, lead times, MOQs) set on them.
   </Card>
-  <Card title="User Roles" icon="users" href="/roles-permissions">
-    Understand permissions and access levels
+  <Card title="Inventory" icon="warehouse" href="/inventory/dashboard">
+    Stock by SKU and location, history of every change, physical counts, adjustments with approval, and lots.
   </Card>
-  <Card title="SKUs Overview" icon="barcode" href="/product-catalog/skus/overview">
-    Start managing your product catalog
+  <Card title="Demand" icon="chart-line" href="/demand-forecasting/dashboard">
+    Forecasts you can adjust, forecast comparison and accuracy, sales history, and promotions.
+  </Card>
+  <Card title="Supply planning" icon="truck" href="/supply-planning/overview">
+    Transfer, production and purchase recommendations from Tether's planner, and the Supply Plan you commit to.
+  </Card>
+  <Card title="Orders" icon="file-lines" href="/transactions/overview">
+    Purchase, transfer and production orders (under Transactions), sales orders (under Sales → Orders), receiving, and shipments.
+  </Card>
+  <Card title="Agent" icon="message" href="/agent/chat">
+    Ask questions about your data, record changes with your approval, and get standing reports on a schedule.
+  </Card>
+  <Card title="Reports" icon="chart-pie" href="/analytics/metrics">
+    The Overview board, standing reports, custom views, forecast accuracy and exports.
   </Card>
 </CardGroup>
+
+For the full list of pages, see [Navigation & interface](/navigation).
+
+## What's the difference between Products and Catalog?
+
+**Where:** the **Products** or **Catalog** section of the left sidebar.
+
+They are two versions of Tether's product catalog. Your sidebar shows one of them:
+
+- **Products** (SKUs, SKU Groups, BOMs, Attributes) is the current catalog, used by most organizations. It feeds supply planning directly. Docs: [Products](/principal-catalog/overview).
+- **Catalog** (Collections, SKUs) is the older catalog, still used by some older organizations. Its **Collections** and **Dimensions** correspond to SKU groups and attributes in Products. Docs: [SKUs (Catalog)](/product-catalog/skus/overview).
+
+The same split applies to places: organizations on **Locations** manage warehouses, suppliers and channels in **Supply Chain** → **Locations**; older organizations use **Inventory** → **Warehouses** and **Suppliers**, and **Sales** → **Sales Channels**.
+
+## Key terms
+
+| Term | Meaning |
+|------|---------|
+| **SKU** | One sellable or stockable item, such as a T-shirt in one size and color |
+| **SKU group** | A family of related SKUs, such as a style (called a Collection in the older Catalog) |
+| **BOM** | Bill of materials: the components that make a SKU |
+| **Location** | Any place in your network: warehouse, supplier, factory or sales channel |
+| **Policy** | A planning rule on a location or SKU, such as safety stock or MOQ |
+| **Channel** | Where you sell (Shopify, Amazon, wholesale) |
+| **Transaction** | An order that moves stock: purchase, transfer or production |
+| **Sales order** | A customer order, under **Sales** → **Orders** |
+| **Shipment** | Goods in transit for one or more orders |
+| **Lot** | A batch of stock with its own lot code and dates |
+| **Supply Plan** | The plan of orders you've committed to (formerly "Execution plan") |
+
+Your organization may use its own words for some of these; see [Terminology](/administration/terminology).
+
+## What roles are there in Tether?
+
+**Where:** **Settings** → **Access** → **Members**, in the **Role** column.
+
+| Role | For |
+|------|-----|
+| **Admin** | People who run Tether for your team: planning, inventory, orders, settings, inviting people |
+| **Sales Rep** | Sales teams: sales history, forecasts and channels, optionally limited to certain channels |
+| **Receiving** | Warehouse staff who record what arrives |
+| **Tether Admin** | Tether's support staff |
+
+See [User roles & permissions](/roles-permissions). New here? Start with the [Quickstart](/quickstart).

@@ -1,0 +1,141 @@
+---
+title: Settings reference
+description: "Every entry in Tether's Settings menu: what it does and who sees it. Answers: Where do I set default columns for everyone? How do I add a pallet or case unit? Where do I set units per case? Where do I set up working days? Where do I set working days for a supplier? How do I change what's on our PO PDF? Where: Settings (sidebar footer or Tether workspace menu)."
+---
+
+# Settings reference
+
+Settings opens from the **Settings** link at the bottom of the sidebar, or from the **Tether** workspace menu. Each entry has its own permission, so you see only the ones your role can open. Entries marked *staff* are for Tether's team. Entries marked *if turned on* appear only for organizations that have that feature. "Admins" below means roles granted that page, which is usually the Admin role; if you need one you can't see, ask an Admin or Tether.
+
+## Where do I set default columns for everyone?
+
+**Where:** **Settings** → **General** → **Default Columns**.
+
+<Steps>
+  <Step title="Pick the table">
+    Choose the **Table** (for example orders, purchases, sales orders or shipment lines).
+  </Step>
+  <Step title="Choose and order columns">
+    Tick each column to show by default, and use the arrows to set the order.
+  </Step>
+  <Step title="Save">
+    Click **Save organization default**. Everyone starts with these columns. People who already saved their own column view keep it. **Remove default** puts everyone back on Tether's standard columns.
+  </Step>
+</Steps>
+
+Saving needs an Admin-level role.
+
+## How do I add a pallet or case unit?
+
+**Where:** **Settings** → **Catalog** → **Units** → **Add unit**.
+
+**Units** is your organization's catalog of containers, such as truck, pallet, case and carton. The **Unit catalog** lists each unit with what it's **Counted as**, its **Capacity** (how many of another unit fit inside, for example 26 pallets per truck), **Weight (kg)** and where it's **Used by**. Click **Add unit** to add one. **Default shipment units** sets which units shipments are counted in by default.
+
+## Where do I set units per case?
+
+**Where:** **Products** → **SKUs** → a SKU → **Units** tab → **Add conversion**.
+
+Units per case belongs to each SKU, not to Settings. On the SKU's **Units** tab, click **Add conversion**, pick the **Unit** (for example a case from your unit catalog), and enter the **Ratio**: the number of base units in one of that unit. A case of 12 has a ratio of 12. You can also enter the case's volume (CBM) and weight (kg), which shipments use to count cartons, volume and weight.
+
+## Where do I set up working days?
+
+**Where:** **Settings** → **Catalog** → **Working-days Calendars**.
+
+The page has an **Organization calendar** (your workdays and holidays) and per-location overrides for production locations. It feeds production scheduling.
+
+<Warning>
+  This page is a preview: it shows "Preview: changes are local-only", meaning what you enter is not saved yet. Ask Tether before relying on it.
+</Warning>
+
+## Where do I set working days for a supplier?
+
+**Where:** nowhere yet.
+
+Tether has no working-days calendar for suppliers. **Working-days Calendars** covers your organization and production locations only (and is a preview). To account for a supplier's shutdown, adjust its lead time or tell your planner; ask Tether if you need supplier calendars.
+
+## How do I change what's on our PO PDF?
+
+**Where:** **Settings** → **General** → **Documents** → **Templates**.
+
+1. Set **Document type** to purchase orders and pick the **Template** (the default is marked "(default)"), or click **New template** or **Duplicate**.
+2. **Branding** sets your letterhead: legal name, logo (PNG), address, contact details, accent color and font.
+3. **Line-item columns**: tick **Print** for each column to show and set its heading and order. **Header fields**: tick **Print** for each field, or **Add custom field**. **Sections**: totals, charges, line memos, signature lines and footer text.
+4. Check the **Live preview** and click **Save**. **Make default** makes a template the one orders use.
+
+To make one kind of order always print with a particular template, set **Prints as** on it in **Settings** → **Catalog** → **Transaction types**.
+
+## General
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Profile** | Your account, your organization, and sign out | Everyone |
+| **Theme** | **Color Theme** and **Dark Mode** | Everyone |
+| **Terminology** | Rename Tether's words (SKU Group, Location, Policy and more) across the app, with a preview. See [Terminology](/administration/terminology). | Admins |
+| **Documents** | Document templates for order PDFs and CSVs: letterhead, columns, header fields, sections (above). | Admins |
+| **Default Columns** | Your organization's default table columns (above) | Admins |
+
+## Catalog
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Collection Hierarchy** | Hierarchy fields for collections; being retired in favour of Attributes | Older organizations not on Products |
+| **SKU Group Hierarchy** | Up to five levels that classify SKU groups (named for your organization's word for SKU groups) | Admins |
+| **Channel Hierarchy** | Hierarchy fields for channels (such as region), used for reporting and [channel access rules](/roles-permissions#how-do-i-restrict-a-sales-rep-to-certain-channels) | Admins |
+| **Channel Bindings** | Maps the channel codes your systems send to your channels, and lists **Unresolved values** that matched nothing | Admins |
+| **Working-days Calendars** | Organization workdays and holidays (preview, above) | Admins |
+| **Units** | Unit catalog: trucks, pallets, cases (above) | Admins |
+| **Transaction types** | Your order types: name, what kind of order each is, default origin and destination, Incoterms, usual shipping mode, which template it **Prints as**, and whether it ships in full | People who can edit orders; *if turned on* |
+| **Shipments** | Whether orders follow their shipment's status, and whether search matches by SKU only | People who can edit orders; *if turned on* |
+| **Sales orders** | **Build by** (days before the requested delivery), **Automatic lots**, and whether **Printing reserves lots** | People who can edit orders |
+| **Production** | How production runs are recorded: staging and leftovers, how inputs start, loss reasons, lot codes | Admins |
+| **Lot Tracking** | Which SKUs capture lot codes, and shelf-life defaults | *If turned on* |
+
+## Forecasting
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Forecast Admin** | Forecast models, versions, uploads and model assignments | Forecast admins |
+| **Inventory & Forecast** | Safety stock, warehouse assignments, channel availability and pricing, fulfillment mappings, supplier lead times. Hidden once your organization moves to Locations. See [Inventory & Forecast settings](/administration/inventory-settings). | Admins and Sales Reps, older organizations |
+| **Period Management** | Custom fiscal periods (4-4-5 and others) from an uploaded CSV. See [Period management](/administration/periods). | Admins |
+| **Forecast Edit Log** | Who must comment when editing a forecast, which channels log edits, staleness thresholds | Admins |
+| **Order Grouping** | **Group imported orders by reference** into one case file | People who can edit orders, on organizations using the movement ledger |
+| **Automatic Re-planning** | Re-plan automatically when data or policies change | *Staff* |
+
+## Integrations
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Data Ingestion** | Your connected systems and their sync runs; **New Integration** adds one. See [Integration setup](/integrations/setup). | Admins |
+| **BigQuery** | **Push Forecasts** to your BigQuery | Only when BigQuery is set up for you |
+| **API Keys** | **Create key** and revoke API keys | Admins who manage keys |
+| **MCP** | Connect an AI assistant (Claude, Grok) to Tether | Admins who manage keys |
+
+## Agent
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Agent Settings** | The agent's name and whether it may save memories | Admins |
+| **Agent Files** | Reference files every agent chat can read; **Upload File** | Admins |
+
+## Access
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Channel Access** | Limit sales reps to the channels they're granted. See [User roles & permissions](/roles-permissions#how-do-i-restrict-a-sales-rep-to-certain-channels). | Admins; rules apply only if turned on |
+| **Members** | Invite people, change roles, remove people. See [Members and invitations](/administration/user-access). | Admins |
+
+## Administration
+
+| Entry | What it does | Who sees it |
+|-------|--------------|-------------|
+| **Setup & Health** | Onboarding progress and configuration problems, with **Download CSV** per issue | Admins |
+| **Principal Setup & Health** | Catalog, network and policy problems that stop planning from using your data | Admins |
+| **ERP SKU ID Sync** | Copies your ERP's SKU ids onto Products SKUs | Admins |
+| **Mapper Config** | Which data mappers your integrations use | *Staff* |
+| **Data Management** | Bulk deletes (sales orders, model outputs) | *Staff* |
+| **Supply planning** | Tabs: **Plan approval** (what approving a planned order does), **Current plan** (which plan every page reads), **Solve history**, **Engine runs**, **Recommendation comparison**, **Never list** (recommendations rejected for good, and where to lift them), **Data issues**, **Engine tuning** (*staff*) | Planners; each tab has its own access |
+| **Reconciliation** | Stock exceptions from the movement ledger | *If turned on* |
+| **Navigation** | Which sections and pages your organization's sidebar and Settings menu show, and in what order. See [Navigation](/navigation#can-we-rename-hide-or-reorder-sidebar-sections). | *Staff* |
+| **Feature Flags** | Turn features on or off for an organization | *Staff* |
+| **Inventory Sources** | Which system owns each stock quantity | *Staff* |
+| **Organizations** | All organizations | *Staff* |

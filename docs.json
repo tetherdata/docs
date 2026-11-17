@@ -142,13 +142,16 @@
           {
             "group": "Analytics",
             "pages": [
-              "analytics/metrics"
+              "analytics/metrics",
+              "analytics/overview",
+              "finance/overview"
             ]
           },
           {
             "group": "Administration",
             "pages": [
               "administration/user-access",
+              "administration/settings-reference",
               "administration/terminology",
               "administration/inventory-settings",
               "administration/periods"

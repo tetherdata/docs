@@ -1,0 +1,41 @@
+---
+title: Overview page
+sidebarTitle: Overview
+description: "The Overview page (formerly Command Center): live supply-chain status from your current plan. Answers: What's on the Overview page? Why don't I have an Overview page? What does Stock Risk or Service Level mean? Where: sidebar → Overview."
+---
+
+# Overview page
+
+**Overview** is a live status board for your supply chain, built from your current supply plan and open orders. It was called **Command Center** in older versions of Tether; searching "command center" still finds it.
+
+## What's on the Overview page?
+
+**Where:** sidebar → **Overview** → **Overview**.
+
+Tether sets up the board for your organization, so you may not see every part below.
+
+- **Time horizon**: buttons at the top (for example "Next 2 weeks") set the window every number on the board uses.
+- **KPI tiles**: a row of headline numbers. Hover or click a number to see what it counts. Some open a list of the SKUs behind them.
+  - **Service Level**: the share of demanded units your plan fills within the horizon.
+  - **Stock Risk**: finished SKUs whose stock across your whole network falls below safety stock this month, with demand due soon. Click it to list them.
+  - **Cash Exposure**: the value of open purchase-order lines arriving within the horizon (quantity × unit cost).
+  - **Open POs**, **Production Runs**, **Transfers**: open orders of each kind within the horizon.
+  - **Open Actions**: every purchase, production run and transfer the plan recommends within the horizon, added together. The color shows the most urgent one.
+- **Pipeline**: one card each for **Demand**, **Production**, **Purchasing**, **Distribution** and **Fulfillment**, with a health color. Click a card to open its tab.
+- **Tabs**: **Actions**, **Production**, **Purchasing**, **Distribution & Routing** and **Demand Plan vs Actuals**, each listing the detail behind the cards.
+
+If the board says "No system plan for this organization yet", Tether hasn't produced a supply plan for your organization yet; ask Tether to run one.
+
+## Why don't I have an Overview page?
+
+**Where:** sidebar.
+
+The **Overview** section only appears after Tether sets up a board for your organization, and which tiles and tabs it shows depends on that setup. If you don't see it, ask Tether to set one up. Your organization's sidebar setup can also hide it.
+
+## Where do I act on what Overview shows?
+
+- Recommendations: **Supply Chain** → **Transfer**, **Production**, **Purchase**, or **Connected Planning**.
+- The committed plan: **Supply Chain** → **Supply Plan**.
+- Stock by location: **Inventory** → **Dashboard**.
+
+See [Reports and analytics](/analytics/metrics) for other reporting.

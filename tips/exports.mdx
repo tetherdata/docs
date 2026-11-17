@@ -1,339 +1,65 @@
 ---
-title: Data Exports
-description: Export data from Tether for reporting and analysis
+title: Exporting data
+sidebarTitle: Exports
+description: "Download tables and orders as CSV, Excel or PDF. Answers: Where is the export button? How do I export inventory to Excel? Can I download a PO as a PDF? Where: a table's Table Settings → Export CSV; the command palette's 'Export table to CSV'; an order's Export PDF or Documents tab."
 ---
 
-# Data Exports
+# Exporting data
 
-Export data from Tether to use in spreadsheets, reports, and other tools.
+Tether exports what you see. A table export downloads the rows as the table currently shows them, with your filters applied. There are no separate export screens, scope pickers or field pickers.
 
-## Why Export Data?
+## Where is the export button?
 
-| Use Case | Description |
-|----------|-------------|
-| **Reporting** | Create custom reports |
-| **Analysis** | Analyze in Excel or other tools |
-| **Sharing** | Share with stakeholders |
-| **Backup** | Keep local copies |
-| **Integration** | Use in other systems |
-
-## Export Format
-
-Tether exports data in **CSV** format, which is compatible with spreadsheets, databases, and other data tools.
-
-| Format | Best For |
-|--------|----------|
-| **CSV** | Spreadsheets (Excel, Google Sheets), data import, analysis |
-
-## Exporting from Different Areas
-
-### SKU Export
+**Where:** the **Table Settings** button above a table → **Export CSV**.
 
 <Steps>
-  <Step title="Go to SKUs">
-    Navigate to the SKU list
+  <Step title="Filter the table">
+    Set the filters, search and columns you want. The export follows the table as shown.
   </Step>
-
-  <Step title="Filter (Optional)">
-    Apply filters to narrow data
+  <Step title="Open Table Settings">
+    Click **Table Settings** at the top of the table. On some tables it's just a sliders icon; hover it to see "Table settings".
   </Step>
-
-  <Step title="Select Items">
-    Select specific items or all
-  </Step>
-
-  <Step title="Click Export">
-    Open export menu
-  </Step>
-
-  <Step title="Download CSV">
-    The file downloads automatically
-  </Step>
-</Steps>
-
-**Available fields:**
-- SKU code and name
-- Collection
-- Status
-- Dimensions
-
-### Inventory Export
-
-<Steps>
-  <Step title="Go to Inventory">
-    Navigate to inventory dashboard
-  </Step>
-
-  <Step title="Filter View">
-    Set filters for desired data
-  </Step>
-
-  <Step title="Click Export">
-    Click the export button
-  </Step>
-
-  <Step title="Download">
-    CSV file downloads automatically
-  </Step>
-</Steps>
-
-**Available fields:**
-- SKU information
-- Warehouse
-- Quantity by state (on hand, available, etc.)
-- Health status
-- Coverage days
-
-### Forecast Export
-
-<Steps>
-  <Step title="Go to Forecasting">
-    Navigate to demand forecasting
-  </Step>
-
-  <Step title="Configure View">
-    Set filters, date range, grouping
-  </Step>
-
-  <Step title="Click Export">
-    Open export menu
-  </Step>
-
-  <Step title="Download">
-    CSV file downloads automatically
-  </Step>
-</Steps>
-
-**Available fields:**
-- SKU/channel
-- Period dates
-- Forecast quantities
-- Actual quantities (historical)
-- Adjustments
-
-### Transaction Export
-
-<Steps>
-  <Step title="Go to Transactions">
-    Navigate to transaction list
-  </Step>
-
-  <Step title="Filter (Optional)">
-    Filter by status, type, date
-  </Step>
-
-  <Step title="Select Transactions">
-    Choose specific or all
-  </Step>
-
   <Step title="Export">
-    CSV file downloads automatically
+    Click **Export CSV**. The file downloads to your computer.
   </Step>
 </Steps>
 
-**Available fields:**
-- Transaction ID and name
-- Type and status
-- Source and destination
-- Line items
-- Dates and amounts
+You can also press `⌘ + K` (`Ctrl + K` on Windows) on any page with an exportable table and choose **Export table to CSV**. If the action isn't offered, that page's table has no export.
 
-### Sales History Export
+## How do I export inventory to Excel?
 
-<Steps>
-  <Step title="Go to Sales History">
-    Navigate to historical data
-  </Step>
+**Where:** **Inventory** → **Dashboard** → **Inventory** tab → **Table Settings** → **Export to CSV**.
 
-  <Step title="Set Date Range">
-    Select the time period
-  </Step>
+The inventory export is a CSV file, which opens directly in Excel or Google Sheets. It contains the rows and columns currently shown, so set your filters and columns first.
 
-  <Step title="Filter">
-    Narrow by channel, SKU, etc.
-  </Step>
+For a history of inventory changes, use the **History** tab's table export the same way.
 
-  <Step title="Export">
-    Download data
-  </Step>
-</Steps>
+## Can I download a PO as a PDF?
 
-**Available fields:**
-- Date
-- SKU
-- Channel
-- Quantity
-- Revenue (if tracked)
+**Where:** open the order → **Export PDF**, or the order's **Documents** tab → the download button on a document → **PDF**.
 
-## Export Options
+Depending on your organization, an order page offers one of these:
 
-### Scope Options
+- **Export PDF** at the top of the line items, with **By SKU** or **By Collection** layouts. **Export CSV** next to it downloads the line items.
+- A **Documents** tab listing the order's documents (such as the purchase order). Click a document's download button and pick **PDF** or **CSV**, or click **View** to preview it.
 
-| Option | Description |
-|--------|-------------|
-| **Selected** | Only selected rows |
-| **Filtered** | All visible (filtered) rows |
-| **All** | All data (ignore filters) |
+If your organization has more than one template for that kind of document, the menu also lets you pick the **Template**; the default is marked "(default)". What appears on the PDF (fields, columns, your logo and addresses) is set by an Admin in **Settings** → **General** → **Documents**. See [How do I change what's on our PO PDF?](/administration/settings-reference#how-do-i-change-whats-on-our-po-pdf)
 
-### Field Selection
+## Can I export an order's size run to Excel?
 
-Some exports allow choosing fields:
+**Where:** open the order → **Lines** tab → **Export**.
 
-<Steps>
-  <Step title="Click Export">
-    Open export dialog
-  </Step>
+On orders with a **Lines** tab, **Export** offers **CSV** or **Excel (.xlsx)**. It exports saved values only: if you have unsaved line edits, save them first. If you've searched the lines, only matching rows are exported.
 
-  <Step title="Select Fields">
-    Check/uncheck fields to include
-  </Step>
+## Other exports
 
-  <Step title="Reorder (Optional)">
-    Drag to change column order
-  </Step>
+| What | Where |
+|------|-------|
+| Planning tables (Transfer, Production, Purchase, MRP) | **Table Settings** → **Export CSV** |
+| Season Plan | **Table Settings** → **Export CSV** |
+| Setup & Health issues | the **Download CSV** button on an issue in **Settings** → **Setup & Health** |
+| A pick list for a sales order | **Print pick list** on the order (prints rather than downloading a file) |
 
-  <Step title="Export">
-    Generate file with selected fields
-  </Step>
-</Steps>
+## Can I export through the agent or an API?
 
-### Date Format Options
-
-| Format | Example |
-|--------|---------|
-| **ISO** | 2024-01-15 |
-| **US** | 01/15/2024 |
-| **EU** | 15/01/2024 |
-| **Text** | January 15, 2024 |
-
-## Large Exports
-
-### Handling Large Data Sets
-
-For large exports:
-
-| Size | Approach |
-|------|----------|
-| **< 10,000 rows** | Direct download |
-| **10,000 - 100,000** | May take longer |
-| **> 100,000** | Consider filtering |
-
-### Tips for Large Exports
-
-1. **Filter first** - Export only what you need
-2. **Wait for completion** - Don't navigate away during export
-3. **Check file** - Verify all data exported correctly
-
-## Working with Exported Data
-
-### In Excel
-
-| Task | How |
-|------|-----|
-| **Open CSV** | File → Open, select CSV |
-| **Refresh Data** | Re-export and replace |
-| **Create Pivot** | Insert → PivotTable |
-| **Charts** | Select data, Insert → Chart |
-
-### In Google Sheets
-
-| Task | How |
-|------|-----|
-| **Import** | File → Import → Upload |
-| **Query** | Use QUERY function |
-| **Share** | Click Share button |
-
-### In Other Tools
-
-| Tool | Import Method |
-|------|---------------|
-| **Tableau** | Connect to CSV/Excel |
-| **Power BI** | Get Data → File |
-| **Python/Pandas** | pd.read_csv() |
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Export What You Need">
-    Be selective with exports:
-    - Filter before exporting
-    - Choose relevant fields
-    - Smaller files are easier to work with
-  </Accordion>
-
-  <Accordion title="Document Your Exports">
-    Keep track of exports:
-    - Note when exported
-    - Record filters used
-    - Save with meaningful names
-  </Accordion>
-
-  <Accordion title="Regular Backups">
-    Export key data regularly:
-    - Weekly or monthly
-    - Before major changes
-    - Store securely
-  </Accordion>
-
-  <Accordion title="Verify Accuracy">
-    Check exported data:
-    - Row counts match
-    - Sample data correct
-    - No truncation
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-### Export Failed
-
-**Possible causes:**
-- Too much data
-- Network timeout
-- Browser issue
-
-**Solutions:**
-1. Try a smaller export with more filters
-2. Try a different browser
-3. Check your network connection
-
-### Missing Data in Export
-
-**Possible causes:**
-- Filters excluding data
-- Field not selected
-- Permission restrictions
-
-**Solutions:**
-1. Check active filters
-2. Verify field selection
-3. Confirm you have access
-
-### File Won't Open
-
-**Possible causes:**
-- Large file size
-- Corrupted download
-- Wrong application
-
-**Solutions:**
-1. Re-download file
-2. Try different application
-3. Open as text to check format
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Bulk Operations" icon="layer-group" href="/tips/bulk-operations">
-    Work with multiple items
-  </Card>
-  <Card title="Analytics" icon="chart-pie" href="/analytics/metrics">
-    View metrics in Tether
-  </Card>
-  <Card title="Filtering" icon="filter" href="/product-catalog/skus/filtering">
-    Filter data effectively
-  </Card>
-  <Card title="Integrations" icon="plug" href="/integrations/setup">
-    Automate data flow
-  </Card>
-</CardGroup>
+The agent can read and summarize data for you in chat; ask it, for example, "List SKUs with under 2 weeks of cover". For automated exports into your own systems, an Admin can create an API key in **Settings** → **Integrations** → **API Keys**, or connect BigQuery if Tether has set it up for you.
