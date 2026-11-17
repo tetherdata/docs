@@ -1,306 +1,51 @@
 ---
-title: Transaction Types
-description: Understanding purchase orders, transfers, and production orders
+title: Order types
+description: "The four kinds of order (Buy — purchase, Make — production, Move — transfer, Sell — sales order), the difference between a transfer and a purchase order, in-house vs outsourced production, and your own named order types like ITR. Where: Settings → Transaction types."
 ---
 
-# Transaction Types
+# Order types
 
-Tether supports three main transaction types, each serving a different purpose in your supply chain.
+Every order in Tether is one of four kinds. Your organization can also name its own order types on top of them, such as "ITR" or "Sample PO".
 
-## Purchase Orders
+## The four kinds
 
-Purchase orders are orders placed with external suppliers.
+**Where:** Transactions → **New order** → **Kind** (or **Type**).
 
-### When to Use
+| Kind (in the editor) | Filter value | What it does |
+|---|---|---|
+| **Buy — purchase** | Purchase | Buys goods from a supplier into one of your locations. Has a supplier, PO number, unit prices and currency. |
+| **Make — production** | Production | Turns components into a finished SKU using its BOM. Finished goods land at the destination. |
+| **Move — transfer** | Transfer | Moves stock you already own from one location to another. No supplier, no purchase price. |
+| **Sell — sales order** | Sale | Ships to a customer through a sales channel. See [Sales orders](/sales/orders). |
 
-- Buying products from suppliers
-- Replenishing inventory from external sources
-- Ordering raw materials for production
+## What's the difference between a transfer and a purchase order?
 
-### Key Information
+**Where:** Transactions → **New order** → **Kind**: **Buy — purchase** vs **Move — transfer**.
 
-| Field | Description |
-|-------|-------------|
-| **Supplier** | Who you're ordering from |
-| **Destination Warehouse** | Where items will be received |
-| **Line Items** | SKUs and quantities to order |
-| **Unit Cost** | Price per unit |
-| **Lead Time** | Expected delivery time |
+A **purchase order** (Buy) brings new stock into your business from a supplier. It adds to what you own and carries a cost. A **transfer** (Move) only moves stock you already own between your own locations, for example from a 3PL to Amazon FBA. The source location's stock goes down and the destination's goes up when it's received. Use **Move — transfer** when the goods are already yours.
 
-### Purchase Order Workflow
+## How do I make an outsourced production order?
 
-When a purchase order is submitted, Tether creates a **Purchase step** to track the supplier fulfillment, followed by a **Shipment step** when a Shipping Plan is created to move goods to your warehouse.
+**Where:** Supply Chain → **Production** recommendations, and the order dialog's **Execution** field.
 
-```
-Draft → In Progress (Purchase Step: In Process → Completed Purchase)
-                     → Shipment Step: In Transit → Completed Shipment
-     → Completed
-```
+Whether a production run is **In-house** or **Outsourced** (made by a co-packer) comes from the production recommendation or from your connected system, not from a field you pick in **New order**. Planning shows it as **Execution: In-house / Outsourced** on the order. To change it, contact Tether. When an outsourced run is done, record it with [Report production](/transactions/report-production) and use **Reference** for the co-packer's run number.
 
-### Steps in a Purchase Order
+## Can we have our own order types like ITR?
 
-| Step Type | Inventory States | What Happens |
-|-----------|-----------------|--------------|
-| **Purchase** | In Process → Completed Purchase | Tracks supplier order progress. No warehouse inventory changes until shipment. When completed, inventory is added to sellable at the supplier's linked warehouse. |
-| **Shipment** | In Transit → Completed Shipment | Created when a Shipping Plan artifact is submitted. Subtracts inventory from source, adds to "Awaiting In-Transit" at destination. On completion, moves to sellable at destination. |
+**Where:** Settings → **Transaction types**. You need permission to edit orders. Only shown if your organization uses order types. If you don't see it, ask Tether to turn it on.
 
-### Cost Tracking
+Yes. A type is your name for an order, such as "ITR" for an inter-warehouse transfer. Underneath, each type is a purchase, production, transfer or sale, and that kind alone decides how it behaves. The type sets the name, the values a new order starts with, and which fields show.
 
-Purchase orders track costs through artifacts:
+1. Click **Add type**.
+2. Fill in:
+   - **Name** (for example "ITR")
+   - **Is a**: Purchase, Production, Transfer or Sale. You can't change it later.
+   - **Starts from** and **Goes to**: default source and destination
+   - **Incoterms** (for example "DDP")
+   - **Usually ships by**: **Container (FCL)**, **LCL (shared container)**, **Air** or **Truck / LTL**
+   - **Prints as**: the document template its PDF uses. See [Document templates](/administration/document-templates).
+   - **Ships in full** (transfers only)
+   - **Hidden fields**: fields this type doesn't need, such as **Incoterms**, **Buyer** or **Unit price**
+3. Save. The type appears in **Type** when you click **New order**, and as a **Type** filter on Transactions.
 
-- Unit costs per SKU (on line items)
-- Shipping and freight costs (artifact-level cost items)
-- Duties, tariffs, and taxes (artifact-level cost items)
-- Total order value
-
-The **Analysis** tab shows planned vs. reported cost variance once the transaction is in progress.
-
-## Transfer Orders
-
-Transfer orders move inventory between your warehouses.
-
-### When to Use
-
-- Rebalancing inventory across locations
-- Sending stock to fulfill demand elsewhere
-- Consolidating inventory
-- Moving to a different storage location
-
-### Key Information
-
-| Field | Description |
-|-------|-------------|
-| **Source Warehouse** | Where items are coming from |
-| **Destination Warehouse** | Where items are going |
-| **Line Items** | SKUs and quantities to transfer |
-| **Lead Time** | Transit time between locations |
-
-### Transfer Order Workflow
-
-When a transfer order is submitted, Tether automatically creates a **Shipping Plan** artifact and a **Shipment step**. All inventory immediately enters the "In Transit" state—there are no intermediate picking steps.
-
-```
-Draft → Submitted (auto-creates Shipping Plan + Shipment Step)
-     → In Progress (Shipment Step: In Transit → Completed Shipment)
-     → Completed
-```
-
-<Note>
-  Unlike purchase orders, transfer orders create a Shipping Plan automatically on submission. The full quantity immediately enters "In Transit" status.
-</Note>
-
-### Steps in a Transfer Order
-
-| Step Type | Inventory States | What Happens |
-|-----------|-----------------|--------------|
-| **Shipment** | In Transit → Completed Shipment | The only step type for transfers. On creation, subtracts inventory from source warehouse sellable and adds to "Awaiting In-Transit" at destination. On completion, moves to sellable at destination. |
-
-### Inventory Impact
-
-Transfer orders affect inventory at both locations immediately on submission:
-
-**Source Warehouse:**
-- Sellable inventory subtracted when submitted (enters In Transit)
-
-**Destination Warehouse:**
-- Added to "Awaiting In-Transit" when submitted
-- Moved to sellable when shipment is completed
-
-<Warning>
-  If the source warehouse does not have sufficient sellable inventory at submission time, the submission is blocked with an error.
-</Warning>
-
-## Production Orders
-
-Production orders are for internal manufacturing.
-
-### When to Use
-
-- Manufacturing finished goods from components
-- Assembling kits or bundles
-- Converting raw materials
-- Any internal production process
-
-### Key Information
-
-| Field | Description |
-|-------|-------------|
-| **Produced SKU** | What you're making |
-| **Components** | Raw materials/parts needed |
-| **Quantity** | How many to produce |
-| **Warehouse** | Where production occurs |
-| **BOM** | Bill of Materials defining inputs |
-
-### Production Order Workflow
-
-When a production order is submitted, Tether creates a **Production step** that tracks both the finished goods being produced and the components being consumed.
-
-```
-Draft → In Progress (Production Step: In Production → Completed Production)
-     → Completed
-```
-
-### Steps in a Production Order
-
-| Step Type | Inventory States | What Happens |
-|-----------|-----------------|--------------|
-| **Production** | In Production → Completed Production | Tracks manufacturing progress. Components are committed (subtracted from sellable) and consumed during production. Finished goods are added to sellable at the source warehouse on completion. |
-
-**Component inventory states** (tracked within the production step):
-
-| State | Description |
-|-------|-------------|
-| **Committed** | Components reserved—subtracted from sellable at the supplier warehouse |
-| **Consumed** | Components actually used in production |
-| **Backordered** | Components that could not be committed due to insufficient inventory |
-
-### Inventory Impact
-
-Production orders affect multiple SKUs:
-
-**Components (at supplier warehouse):**
-- Subtracted from sellable and moved to Committed when production starts
-- Moved from Committed to Consumed during production
-- Marked as Backordered if insufficient inventory is available
-
-**Finished Goods (produced):**
-- Added to sellable at the source warehouse when production completes
-
-### Bill of Materials (BOM)
-
-Production uses BOM to determine components:
-
-```
-Finished Good: T-Shirt Bundle (3-pack)
-├── Blue T-Shirt M × 1
-├── Blue T-Shirt L × 1
-├── Blue T-Shirt XL × 1
-└── Poly Bag × 1 (Component)
-```
-
-## Comparing Transaction Types
-
-| Aspect | Purchase Order | Transfer Order | Production Order |
-|--------|---------------|----------------|------------------|
-| **External/Internal** | External (supplier) | Internal | Internal |
-| **Cost Tracking** | Yes (supplier cost) | No (internal) | Yes (component cost) |
-| **Source** | Supplier (resolved to warehouse) | Warehouse | Supplier |
-| **Destination** | Warehouse | Warehouse | Warehouse |
-| **Step Types** | Purchase + Shipment | Shipment only | Production |
-| **Lead Time** | Supplier + shipping | Transit time | Production time |
-| **Auto Shipping Plan** | No (created manually) | Yes (on submission) | No (created manually) |
-
-## Choosing the Right Type
-
-### Use Purchase Order When:
-
-- Inventory comes from outside your organization
-- You're paying an external supplier
-- Items don't exist in your inventory yet
-
-### Use Transfer Order When:
-
-- Inventory already exists in your warehouses
-- You need to move stock between locations
-- No external purchase is needed
-
-### Use Production Order When:
-
-- You manufacture or assemble products
-- Finished goods are made from components
-- You need to track production costs
-
-## Transaction Type Details
-
-### Purchase Order Specifics
-
-<AccordionGroup>
-  <Accordion title="Supplier Selection">
-    When creating a PO:
-    - Choose from configured suppliers
-    - System shows supplier's lead time and costs
-    - Can have multiple suppliers for same SKU
-  </Accordion>
-
-  <Accordion title="Cost Information">
-    Purchase orders include:
-    - Unit cost per SKU
-    - Shipping estimates
-    - Currency handling
-    - Volume discounts
-  </Accordion>
-
-  <Accordion title="Receiving">
-    When PO arrives:
-    - Can receive partial quantities
-    - Log discrepancies
-    - Update actual costs if different
-  </Accordion>
-</AccordionGroup>
-
-### Transfer Order Specifics
-
-<AccordionGroup>
-  <Accordion title="Availability Check">
-    When creating a transfer:
-    - System verifies source has sufficient sellable inventory
-    - Shows available quantities at source
-    - Blocks submission if insufficient stock
-  </Accordion>
-
-  <Accordion title="Lead Time">
-    Transit time depends on:
-    - Configured warehouse lead times
-    - Distance between locations
-    - Shipping method
-  </Accordion>
-
-  <Accordion title="Automatic Shipping Plan">
-    Unlike purchase orders:
-    - A Shipping Plan is created automatically on submission
-    - All inventory immediately enters "In Transit"
-    - No additional shipments can be created since everything is already shipped
-  </Accordion>
-</AccordionGroup>
-
-### Production Order Specifics
-
-<AccordionGroup>
-  <Accordion title="BOM Verification">
-    Before production:
-    - Verify BOM is configured
-    - Check component availability
-    - Reserve components
-  </Accordion>
-
-  <Accordion title="Yield Tracking">
-    During production:
-    - Track actual vs. planned output
-    - Log waste or scrap
-    - Calculate yield rates
-  </Accordion>
-
-  <Accordion title="Costing">
-    Production costing includes:
-    - Component costs
-    - Labor (if tracked)
-    - Overhead allocation
-  </Accordion>
-</AccordionGroup>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
-    Step-by-step transaction creation
-  </Card>
-  <Card title="Transaction Details" icon="file-lines" href="/transactions/detail-view">
-    Navigate transaction pages
-  </Card>
-  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
-    Understand the transaction lifecycle
-  </Card>
-  <Card title="Suppliers" icon="truck" href="/inventory/suppliers">
-    Configure supplier information
-  </Card>
-</CardGroup>
+Use **Archive** to retire a type, and **Restore** to bring it back. Approval isn't set on this page. It's under Settings → Supply planning → **Plan approval**.

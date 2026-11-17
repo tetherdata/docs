@@ -1,0 +1,67 @@
+---
+title: Document templates
+description: "Where: Settings → Documents. Change what your PO PDF (and other order documents) look like: columns, size-run layout, SKU sort order, ship-to block with an Attn line, logo, totals, signature lines, PDF vs CSV columns. Pick a template per order type, and print or download from an order's Documents tab."
+---
+
+# Document templates
+
+Document templates control how exported order documents look, such as the purchase order PDF you send a supplier. Each document type has a default template. You can add more, and choose which one each order type prints with.
+
+## How do I change what our PO PDF looks like?
+
+**Where:** Settings → **Documents** (under General). Only shown if your role can manage documents.
+
+1. Go to **Settings** → **Documents**. The **Document templates** page opens with a live preview.
+2. Choose the **Document type** (for example the purchase order) and the **Template** to edit. Use **New template** or **Duplicate** to start a new one.
+3. Change the layout (see the sections below). The preview updates as you go.
+4. Click **Save**.
+
+The first template of a type becomes its default. Use **Make default** to change it. Another template prints only when you make it the default or pick it for an order type.
+
+## Columns and layout
+
+**Where:** Settings → Documents → **Line-item columns**.
+- Layout: **One row per line**, **Grouped, one row per line**, or **Size run — one row per style** (one row per style with a column per size).
+- For each column: **Print** it or not, **Column heading on the PDF**, **Align**, **Show as**, and **Output**: **PDF and CSV**, **PDF only** or **CSV only**.
+- Page: **Portrait** or **Landscape**, **US Letter**, logo **Top right** or **Top left**, **Accent header band**, **Bordered grid**.
+- **Document title**: the order's name, or a fixed title.
+- **Currency**: the org default, or a fixed one.
+
+## How do I sort lines by SKU?
+
+**Where:** Settings → Documents → row order.
+
+Turn on **Order rows by SKU code** (ascending, on the PDF and the CSV). Or have rows follow an attribute's own value order, for example sizes in size order.
+
+## How do I add an Attn line to the ship-to?
+
+**Where:** Settings → Documents → **Show ship to block**. Then the order's **Overview** → **Attention**.
+
+1. In the template, turn on **Show ship to block** (a third, consignee block). Give it a **Ship to block label** and choose its position: **Beside the other blocks** or **Below the totals**.
+2. On the order, open **Overview** and fill the ship-to fields: **Consignee name**, **Ship-to address**, **Ship-to country** and **Attention** (whom the goods are for).
+
+The PDF prints **Attn:** followed by the name. The template also sets the **From** and **To** blocks (**My organization**, **Source warehouse** or **None**), and whether to **Show phone numbers**, **Show contact names**, **Leave out email addresses**, **Leave out the country**, or show the **Legal entity**.
+
+## Totals, notes and signatures
+
+**Where:** Settings → Documents → **Sections**.
+
+Choose **Show total**, **Show subtotal and charges**, **List charges as lines**, **Print line memos**, **Show unit total** and **Show supplier notes**. Add **Instruction block labels**, **Signature lines** (comma-separated) with their layout and alignment, and **Footer text**. **Header fields** can go in the **Header** or a **Terms row**. The order's **Internal notes** are shown to the supplier on exported documents.
+
+## Can a PO print one page per shipment?
+
+**Where:** automatic. No setting needed.
+
+Yes. When a PO's lines are split across shipments, the PDF prints the whole-order page first, then one page per shipment. Lines not yet on a shipment are listed as **Not on a shipment**. See [Shipments](/transactions/shipments).
+
+## How do I use a different template for one order type?
+
+**Where:** Settings → **Transaction types** → the type → **Prints as**.
+
+Set **Prints as** on the order type. Orders of that type then export with that template. On the order's **Documents** tab, Tether explains which template it picked and why. See [Order types](/transactions/types#can-we-have-our-own-order-types-like-itr).
+
+## How do I print or download an order's PDF?
+
+**Where:** the order page → **Documents** → **Export** → **PDF** or **CSV**.
+
+Open the order, go to **Documents**, and click **View** or **Export**. If there's more than one template, pick one under **Template** first. See [The order page](/transactions/detail-view#how-do-i-download-the-po-pdf-to-send-to-my-supplier).

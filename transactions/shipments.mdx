@@ -1,0 +1,106 @@
+---
+title: Shipments
+description: "Where: Transactions → Shipments. Put PO lines on a container or other shipment, split a line across two shipments, move or take lines off, track a container's milestones, add freight and duty costs to landed cost, receive a shipment, and load a factory packing list (CI/PL) with the agent."
+---
+
+# Shipments
+
+A shipment is a container, LCL booking, air shipment or truck that carries lines from one or more orders. Shipments let you plan what goes on which container, track it, spread freight and duty across the goods, and receive everything on it at once.
+
+<Info>
+  **Where:** sidebar **Transactions** → **Shipments**. Only shown if your organization uses shipments. If you don't see it, ask Tether to turn it on.
+</Info>
+
+## The Shipments list
+
+**Where:** Transactions → Shipments.
+
+Switch between **Shipments** (one row per shipment) and **Lines** (one row per order line on a shipment).
+- **Shipments** columns: **Shipment**, **CI number**, **Mode**, **Status**, **Costs**, **Load date**, **Leaves**, **Delivery**, **Orders**, **Lines**, **CBM**, **Notes**.
+- **Lines** columns include **PO**, SKU, **Cartons**, **CBM**, **Shipment**, **Line ETA**, **Destination**, **Final destination** and **Ready date**.
+
+Search with **Search by number or CI**. If Settings → Shipments → **Search by SKU only** is on, the box searches by SKU instead.
+
+## How do I create a shipment?
+
+**Where:** Transactions → Shipments → **New shipment**.
+
+1. Click **New shipment**. Everything is optional. Leave the number blank and it reads SHP-nnn.
+2. Choose **Mode**: **Container (FCL)**, **LCL (shared container)**, **Air** or **Truck / LTL**.
+3. Fill the number (**Container #**, **House B/L #**, **Air waybill #** or **PRO or B/L #**), **Size**, **CI number** and **Status**.
+4. Set dates: **Loads**, **At port** and **Delivery**. The lines' expected arrival follows **Delivery**.
+5. Click **Create**, or **Create and add** to go straight to adding lines.
+
+## How do I put PO lines on a container?
+
+**Where:** the shipment → **Add lines**. Or the order page → **Lines** → **Put on shipment**.
+
+From the shipment:
+1. Open the shipment and click **Add lines**.
+2. Optionally narrow by **Bound for** (destination).
+3. Enter the quantity to load for each open line (columns **Order**, **Destination**, **Final destination**, **Ready**, **Open**, **Cartons**), and add them.
+
+From the order:
+1. On the order's **Lines** tab, click **Put on shipment** on a line.
+2. Pick the **Shipment**, or **A new shipment (fill in its details later)**, then the **Mode** and quantity.
+
+Loading less than the line's open quantity splits the line. The rest stays open for another shipment. Set a container **Size** to see how full it is.
+
+## How do I split a line across two shipments?
+
+**Where:** the shipment → the line → **Split**.
+
+Enter **Quantity to split off**, choose whether it **Comes off this shipment** or **Goes on a new shipment** (and the **Mode of the new shipment**), and confirm. Other line actions:
+- **Move**: pick another shipment for the line.
+- **Take off**: removes the line from the shipment. It stays open on its order.
+- **Final destination**: where the goods go after the first destination. It defaults to **Same as destination**.
+
+## How do I track a container?
+
+**Where:** the shipment → **Edit** → **Status** and dates.
+
+Update the **Status** as the shipment moves:
+- **Container (FCL)**: Planned → Loaded → Sailed → At port
+- **LCL**: Booked → Loaded → Sailed → At port
+- **Air**: Booked → Departed → Landed
+- **Truck**: Booked → Picked up
+
+Then **In transit** and **Received**. Keep **Loads**, **At port** and **Delivery** current, since the lines' expected arrival follows **Delivery**. On the Receiving tab, lines whose own ETA differs from their shipment are flagged.
+
+If Settings → **Shipments** → **Orders follow shipment status** is on, orders read **In transit** or **Part in transit** once their shipment has left.
+
+## How do I add freight or duty to a shipment?
+
+**Where:** the shipment → **Costs** → **Add a cost**.
+
+1. Click **Add a cost**. Choose the type: **Freight**, **Duty**, **Insurance**, **Handling** or **Other**.
+2. Enter **Name**, **Amount** and **Currency**.
+3. Choose how to **Spread** it across the lines: **By units**, **By CBM**, **By value** or **By weight**.
+4. Click **Post to landed cost** to add it to the goods' landed cost. **Re-post** updates a posted cost, and **Undo the posting?** takes it back out.
+
+## How do I receive a shipment?
+
+**Where:** the shipment → **Receive shipment**.
+
+1. Click **Receive shipment**. There's one receipt per order on the shipment.
+2. For each line, check **Received now**. Set a line to 0 to leave it open on the shipment.
+3. Set **Receive at**, any **Lots**, and **Arrived on**, then post.
+
+Single lines can also be received from Transactions → **Receiving**. See [Receiving](/transactions/receiving).
+
+## Can the agent load a factory packing list onto containers?
+
+**Where:** the in-app agent chat. Attach the CI/PL file.
+
+Yes. Upload the factory's commercial invoice / packing list and ask, for example, "Load this packing list onto containers." The agent:
+- finds the saved import template that matches the file
+- shows what it would load onto which containers, and asks before applying
+- asks you when the file has something the template doesn't cover
+
+The first time, it can build a template from a sample file. If you don't have permission to approve templates, the new one is saved as a draft until someone approves it.
+
+## Shipment settings
+
+**Where:** Settings → **Shipments**. You need permission to edit orders.
+- **Orders follow shipment status**: orders read **In transit** or **Part in transit** once their shipment has left. Receipts still decide **Part received** and **Received**.
+- **Search by SKU only**: the Shipments search box searches SKUs.

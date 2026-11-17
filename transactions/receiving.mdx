@@ -1,0 +1,84 @@
+---
+title: Receiving
+description: "Where: Transactions → Receiving tab, or an order → Report a receipt. Receive a purchase order or transfer, record a partial delivery, enter lot codes and expiry dates, check condition on arrival, handle short and over-received lines, and receive a whole order at once."
+---
+
+# Receiving
+
+Receiving records goods arriving at a location against an open purchase order, transfer or production run. Each receipt adds stock at the location where it arrived, and the order's **Received** and **Open** quantities update.
+
+<Info>
+  Receiving is on accounts with the new order screens. You need permission to receive orders. Warehouse staff with only receiving access open Transactions straight on the **Receiving** tab and see nothing else. If you don't see **Receiving**, ask your admin or Tether.
+</Info>
+
+## How do I receive a purchase order?
+
+**Where:** Transactions → **Receiving** tab → **Receive** (one line) or **Receive order** (all lines).
+
+1. Go to **Transactions** → **Receiving**. The list shows every open line waiting for stock: **Order**, **Destination**, **Expected**, **Ordered**, **Received** and **Outstanding**.
+2. Narrow it with **Due today**, **This week** or **All open**, the **Destination** and **Shipment** filters, or **Search by order, supplier, SKU or destination…**.
+3. Click **Receive order** to receive every line of the order at once. A line that isn't in this delivery can be set to **0** to leave it open. Click **Receive N lines**.
+4. Or click **Receive** on one line (see the next section).
+
+You can also receive from the order itself: open the order and click **Report a receipt**. If several lines are open, pick **Which line arrived?** first.
+
+## How do I receive one line?
+
+**Where:** Transactions → Receiving → **Receive**, or order page → **Report a receipt**, or the line's **Receive** on the order's **Lines** tab.
+
+1. **Receiving at**: where the goods arrived. It defaults to the line's destination.
+2. **How many arrived?**: enter the quantity and **Unit**.
+3. For lot-tracked SKUs, add the lots (see below).
+4. **Arrived on**: the date it arrived.
+5. Fill the condition checks if your organization uses them.
+6. Check **This will post**, then click **Post receipt**.
+
+## How do I record a partial delivery?
+
+**Where:** the receive dialog → **How many arrived?**.
+
+Enter only what arrived. The line stays open for the rest, and the receive dialog asks **N short — what happens to the rest?**:
+
+| Choice | Effect |
+|---|---|
+| **Still coming** | The line stays open. Optionally set an **Expected by** date. |
+| **Write it off** | Noted on the order now. Stock is not written off yet. |
+| **Return to supplier** | Records the return. **Reason for returning** is required. |
+
+Click **Post and record**, or **Post, decide later** to post now and decide later. When nothing more is coming, close the line or order. See [How do I close a PO short?](/transactions/detail-view#how-do-i-close-a-po-short).
+
+## How do I enter a lot code when receiving?
+
+**Where:** the receive dialog → lot rows.
+
+For lot-tracked SKUs, each receipt needs at least one lot row:
+- **Lot code**
+- **Expiration date** (Tether doesn't suggest one)
+- **Supplier lot code**, if the supplier has its own
+- **Lot quantity**: split the delivery across several lots by adding rows. Use **Remove lot row** to delete one.
+
+The lot then appears on the Lots page with the order it came from.
+
+## Condition on arrival
+
+**Where:** the receive dialog → **On arrival**.
+
+If your organization has a receiving checklist, its checks show under **On arrival**. A check you leave unticked receives the lot **On hold**, with your notes as the reason. Add details under **Notes (optional)**, for example "Two cases crushed on the left side of the pallet."
+
+## What if more arrived than was ordered?
+
+**Where:** the receive dialog.
+
+You can still post. If the receipt takes the line over the order's receipt tolerance (on the order's **Terms** tab), Tether warns you and flags the line, but it still posts. **% received** on the order then reads above 100%.
+
+Other warnings you may see:
+- The goods arrived somewhere other than the line's destination. You can correct the order to that location. This moves no stock.
+- The source would go negative (for transfers). You can still post.
+- The date is far in the past. Confirm it, then post again.
+- Someone else reported against the line while you were counting. Check their receipt first.
+
+## How do I receive a container or shipment?
+
+**Where:** Transactions → **Shipments** → the shipment → **Receive shipment**.
+
+If your organization uses shipments, receive everything on a container at once. See [Shipments](/transactions/shipments#how-do-i-receive-a-shipment).

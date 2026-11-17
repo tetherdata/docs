@@ -1,0 +1,43 @@
+---
+title: Report production
+description: "Where: Transactions → Report production, or a production line's Report production button. Record a finished production run: units produced (any unit, e.g. kg), the lot made, components and lots used, loss, preview and post. Reverse a production report that was posted by mistake."
+---
+
+# Report production
+
+**Report production** records a run that has already happened: one output, one count, one date. Posting it adds the finished goods to stock and takes the components out, lot by lot.
+
+<Info>
+  On accounts with the new order screens. You need permission to receive and fulfill orders. If you don't see **Report production**, ask your admin or Tether.
+</Info>
+
+## How do I record a finished production run?
+
+**Where:** Transactions → **Report production**. Or open a production order → **Lines** → **Report production** on the run (this pre-fills the run). It's also linked from **Receiving** and from **Run, lots & WIP lots** in the order editor.
+
+1. **The run**:
+   - Choose the SKU produced.
+   - Enter **Units produced**. If the SKU has unit conversions, pick the unit (for example kg) and Tether shows the conversion.
+   - **Lot made**: type a **New lot code**, or carry the lot from the lots used.
+   - **Date it ran** and **Where it ran**.
+   - Optionally a **Reference** (for example the co-packer's own run number).
+   - Tick **This run is more than a month old** for old runs.
+2. **Components used**: Tether lists what the BOM says next to **Actually used**, **Variance**, **On hand** and **In WIP**. Change **Actually used** to what really went in. Add a missing component with **Add a component**.
+3. Check the lots. Tether proposes **Lots used, earliest expiry first**. If you don't know the lot, choose **Lot not known: use Unallocated stock**.
+4. **Loss**: enter what **Went in** and what was **Lost**, with a **Reason**.
+5. Click **Preview effect** to see **What this will move** (SKU, from, to, quantity).
+6. Click **Post report** (or **Confirm and post** when the components were pre-filled).
+
+If your production settings use staging, a **Staging and leftovers** card lets you say material was already staged into WIP, and return unused staged material to on-hand.
+
+If the run happened before your opening stock count, Tether asks whether it's **already in the opening count** or **isn't in the opening count**, so it isn't counted twice.
+
+## How do I reverse a production report?
+
+**Where:** Report production for the run → **Already reported against this run** → **Reverse**.
+
+1. Open **Report production** for the same run (for example from the production order's line).
+2. Under **Already reported against this run**, click **Reverse** on the report.
+3. Answer **Why is it being reversed?** (for example "Posted twice") and click **Reverse report**.
+
+Reversing needs permission to adjust inventory as well as to receive and fulfill orders. You can also ask the in-app agent: "Reverse the production report for run 123". It shows what it will undo first. A report can't be reversed once its output has moved on, for example shipped or used in another run.

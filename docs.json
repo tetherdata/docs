@@ -114,7 +114,16 @@
               "transactions/types",
               "transactions/creating",
               "transactions/detail-view",
+              "transactions/receiving",
+              "transactions/shipments",
+              "transactions/report-production",
               "transactions/workflow"
+            ]
+          },
+          {
+            "group": "Sales",
+            "pages": [
+              "sales/orders"
             ]
           },
           {
@@ -135,6 +144,7 @@
             "group": "Integrations",
             "pages": [
               "integrations/setup",
+              "integrations/order-sending",
               "integrations/sync-sessions",
               "integrations/troubleshooting"
             ]
@@ -151,7 +161,8 @@
               "administration/user-access",
               "administration/terminology",
               "administration/inventory-settings",
-              "administration/periods"
+              "administration/periods",
+              "administration/document-templates"
             ]
           },
           {

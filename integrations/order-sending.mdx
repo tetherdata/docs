@@ -1,0 +1,120 @@
+---
+title: Sending orders to your warehouse
+sidebarTitle: Sending orders to warehouses
+description: "How Tether sends sales orders to ShipStation, ShipFusion, Extensiv 3PL Central and Amazon FBA. How it is switched on, how each line's warehouse is chosen, what Held by Tether and each held reason mean, how to Resend, Confirm and send lots, Mark shipped, and tracking written back to Shopify. Where: Sales → Orders."
+---
+
+# Sending orders to your warehouse
+
+Tether can send your sales orders to the warehouse or 3PL that ships them. It reads new orders from your store, picks a warehouse with the stock for each line, sends the order, and writes the tracking back to your store when the warehouse ships. You work with the results on **Sales → Orders**. See [Sales orders](/sales/orders).
+
+## Which warehouses can Tether send orders to?
+
+**Where:** set up by Tether. You see the results on Sales → Orders.
+
+Tether can send orders to:
+- **ShipStation**
+- **ShipFusion**
+- **Extensiv 3PL Central**
+- **Amazon FBA**
+
+## How do I send orders to ShipStation (or another warehouse)?
+
+**Where:** there is no self-serve screen. Ask Tether to switch it on.
+
+Tether turns order sending on for each warehouse connection. To start, contact Tether support and tell us:
+1. Which warehouse system to send to (for example ShipStation) and which warehouses in it.
+2. Which stores or channels the orders come from.
+3. The order Tether should try your warehouses in, and whether an order may be split across warehouses (see below).
+4. Whether orders should go out **as soon as they're saved**, or **only after someone confirms the lots** (for lot-tracked items).
+
+Once it's on, new orders flow without any action from you. The warehouse connection itself (credentials, stock feed) appears under Settings → Data Ingestion like your other [integrations](/integrations/setup).
+
+## How does Tether choose a warehouse for each line?
+
+**Where:** your connection's routing rules, set up by Tether.
+
+Each connection has an ordered list of warehouses an order may ship from. For each line, Tether tries the warehouses in that order. The first warehouse whose stock can cover the line gets it. Tether first subtracts stock already promised to the order's earlier lines and to Tether's other open sends.
+
+Your rules also decide whether an order may be split:
+
+| Rule | What happens |
+|---|---|
+| One warehouse for the whole order | One warehouse must cover every line, or the order is held. |
+| Each line on its own | Each line goes to the first warehouse that covers it. Covered lines ship and the rest are held. |
+| Whole order first, then split | The first warehouse that covers everything takes the order. If none can, lines are placed one by one. |
+
+A split order goes to the warehouses as `#1620689`, `#1620689(1)` and so on. Once a line has been sent, changing the rules never moves it.
+
+To change the warehouse order or the split rule, contact Tether.
+
+## Why is this order Held by Tether?
+
+**Where:** Sales → Orders → **Status** = **Held by Tether** → **Held reason**. On the order page, the line's Location reads **Held · *reason***.
+
+**Held by Tether** means Tether hasn't sent the order (or some of its lines) to a warehouse, or a send didn't go through. **On hold** is different: that's your store's own hold.
+
+Filter **Status** to **Held by Tether**, then use **Held reason** to group them. Each reason shows how many orders it covers.
+
+## Held reasons and how to clear them
+
+**Where:** Sales → Orders → **Held by Tether** → the order → the held line.
+
+| Held reason (on screen) | What it means | How to clear it |
+|---|---|---|
+| **No stock** (also **Lot on hold**, **Lot expired**; filter: **No shippable stock**) | No warehouse on the list has enough shippable stock. | Clears by itself when the next stock update shows enough stock. |
+| **Lots proposed — waiting for confirmation** | Your org confirms lots before orders go out. | Click **Confirm and send (N)** or **Hold lots**. See below. |
+| **Missing** *field* (for example **Missing street address**, **Missing recipient phone**; filter: **Missing required field**) | The warehouse needs a field the order doesn't have. | Fill it in on the order's **Recipient** section. You can edit it until the order is sent. |
+| **Invalid value** | A field has a value the warehouse won't accept. | Correct it in your channel or on the order. |
+| **Not set up at the** *warehouse* | The item has no code at that warehouse. | Set the item up at the warehouse, then it sends. |
+| **More than one code at the** *warehouse* | The warehouse has more than one item for that code. | Clean up the duplicate at the warehouse. |
+| **Unmatched item** | Tether can't match the order's item to a SKU. | Map the item. See [Sync troubleshooting](/integrations/troubleshooting). |
+| **Item on an archived SKU** | The line's SKU is archived. | Restore the SKU or fix the order in your channel. |
+| **Rejected by the** *warehouse* | The warehouse refused the order. Tether won't retry it on its own. | Correct the order in your channel, then click **Resend**. |
+| **Cancelled at the** *warehouse* | Someone cancelled it in the warehouse system. | If it should still ship, click **Resend**. |
+| **Couldn't connect to** *warehouse* | A login or connection problem. | Tether retries. If it persists, check the connection's credentials or contact Tether. |
+| **Couldn't reach** *warehouse* | Tether's attempts to send ran out with no answer. | Contact Tether. The order may already be at the warehouse. |
+| **Cancelled in** *channel* | The order was cancelled in your store, but a copy is still at the warehouse. | Cancel it at the warehouse if it shouldn't ship. |
+| **Marked shipped in** *channel* **— cancelling at the** *warehouse* | Someone marked it shipped, so Tether is cancelling the warehouse copy. | Nothing to do. |
+| **Refunded in** *channel* **after sending** / **Removed at the** *warehouse* | A line changed after it was sent. | Check with the warehouse whether it shipped. |
+| *Warehouse* **connection switched off** | Sending to that warehouse is off. | Clears when the connection is switched back on. |
+
+## How do I resend an order the warehouse rejected?
+
+**Where:** Sales → Orders → the order → the held line → **Resend**.
+
+1. Correct the order in your channel first (for example, fix the address in Shopify).
+2. On the order page, click **Resend** on the line marked **Rejected by the** *warehouse* or **Cancelled at the** *warehouse*.
+3. Confirm. After a rejection, Tether places the order again: at that warehouse if it has the stock, otherwise at the next one on the list, or it holds the order for stock. After a cancellation, Tether sends it to the same warehouse again.
+
+Only users allowed to send orders to warehouses see **Resend**, and only on lines that can safely go again.
+
+## How do I confirm lots and send held orders?
+
+**Where:** Sales → Orders → **Status** = **Held by Tether** → tick orders → **Confirm and send (N)**.
+
+If your org tracks lots and confirms them before sending, new orders wait as **Lots proposed — waiting for confirmation**, and the Held view shows a **Lots** column with Tether's proposed lots.
+1. Filter to **Held by Tether**.
+2. Check the **Lots** column, then tick the orders.
+3. Click **Confirm and send (N)**. Tether confirms the lots and sends the orders.
+
+To choose different lots for one order, open it and use **Hold lots**. If you edit an order after confirming, it waits for confirmation again. You need permission to allocate lots and to send orders.
+
+## Can I mark orders shipped that were labelled outside Tether?
+
+**Where:** Sales → Orders → tick orders → **Mark shipped (N)**.
+
+Yes. **Mark shipped** records the shipment in Shopify so the order reads as fulfilled there and in Tether, and Tether never sends it to a warehouse. A **Reason** is required. For one order you can add a carrier and tracking number. Steps: [How do I mark an order as shipped?](/sales/orders#how-do-i-mark-an-order-as-shipped)
+
+## Does tracking go back to Shopify?
+
+**Where:** automatic once Tether switches it on for your store connection.
+
+Yes. When the warehouse reports a shipment, Tether matches it to the order it sent and writes a fulfillment with tracking to the store the order came from: Shopify, or Amazon. Tracking also shows in the **Tracking** column on Sales → Orders. Tracking write-back is switched on per store connection, separately from sending, so tracking still flows if sending is turned off.
+
+## Ask the agent
+
+The in-app agent can do the same work. Try:
+- "Which orders are held by Tether, and why?"
+- "Confirm the proposed lots and send today's held orders."
+- "Send manual order 1042 to the warehouse."
