@@ -1,0 +1,107 @@
+---
+title: Engine runs
+description: "Where: Settings → Supply planning → Engine runs. When the purchase or transfer engine last ran, which engine run your recommendations come from (the Current run), when recommendations refresh, why the engine didn't run, why engine recommendations differ from Tether's plan, how to run the plan again, and the Recommendation comparison page."
+---
+
+Most organizations get their purchase, transfer and production recommendations from Tether's solve (the planner). Some also have a **recommendation engine**: a set of ordering rules, run outside the solve, that sizes purchase or transfer orders the way your team does. An engine reads Tether's latest plan, computes its orders, and uploads them as an **engine run**.
+
+When Tether switches an order type (for example purchases) to an engine, the recommendations you see for that type come from the engine's **Current** run instead of from the solve. The solve still runs; it just doesn't supply those recommendations.
+
+<Note>
+Recommendation engines are set up per organization by Tether. If you don't see **Engine runs** under Settings → Supply planning, your organization doesn't use one, and all your recommendations come from Tether's solve.
+</Note>
+
+## See when the engine last ran
+
+**Where:** Settings → Supply planning → **Engine runs**.
+
+The list shows every run your engines uploaded, newest first:
+
+| Column | What it shows |
+|---|---|
+| **Engine** | The engine's name. A **Current** badge marks the run your recommendations come from. |
+| **Orders of** | Which order type the run sizes: purchase or transfer. |
+| **Rules version** | The version of the engine's rules that produced the run. |
+| **Plan quality** | How good the Tether plan the run was sized on was, for example "optimal (gap 0.0%)". "time_limited" (in amber) means the solve stopped at its time limit before proving its plan was the best; the gap says how close it got. |
+| **Kind** | **live** (a run that can serve recommendations) or **comparison** (a run made only to compare against). |
+| **Decision day** | The day the run decided orders for. |
+| **Orders** | How many orders the run carries. |
+| **Uploaded** | When the run was uploaded. |
+| **By** | Who or what uploaded it. |
+
+Search runs by engine, rules version, order type, kind or uploader. Click **Load older runs** to see further back.
+
+## Which engine run are my recommendations from?
+
+**Where:** Settings → Supply planning → Engine runs → the run with the **Current** badge.
+
+Each engine has one current run. On the Purchases and Transfers pages, the recommendations come from that run. An engine plans every week of the horizon, but only the orders in its **decision day's week** (and any overdue ones) are the ones to act on; later weeks show what the engine projects.
+
+On the planning pages you can switch between the engine's recommendations and Tether's:
+
+- **Where:** Purchases → **Table settings** → **Recommendations** → **Engine run** or **Tether's plan**.
+- **Where:** other planning pages → **Table settings** → **Scenario** → **Engine run**.
+
+## When do purchase recommendations refresh?
+
+**Where:** Settings → Supply planning → **Engine runs** (the **Uploaded** column), and a planning page → **Plan status** ("next solve").
+
+Without an engine, recommendations refresh each time a solve finishes, on your organization's schedule or when someone clicks **Run now**. With an engine, they refresh when the engine uploads a new run. Tether sets each engine's schedule. An engine can run:
+
+- **At a set time each day**, in a timezone Tether sets for the engine.
+- **After every completed solve**, so its orders follow the newest plan.
+- Both, or only when Tether starts it.
+
+When you have more than one engine (for example a purchase engine and a transfer engine that builds on the purchases), they run as a chain, in order. Only one run happens at a time.
+
+## Why didn't the engine run last night?
+
+**Where:** any planning page → **Plan status** (the info icon at the top of the page).
+
+When an engine's current run doesn't reflect the latest solve, the Plan status panel shows a warning such as **Purchase recs not updated since Oct 5, 2026**: the scheduled run didn't produce new recommendations for the latest solve, so you're seeing the older run's. **Transfer recs built on an older purchase run** means the purchase engine has re-run since the transfer engine last read it.
+
+Common reasons a scheduled run is missing:
+
+- **A run was already in progress.** A scheduled or after-solve run that arrives while another is running is skipped, not queued.
+- **An earlier step in the chain failed.** The steps after it are skipped.
+- **No new solve completed**, for an engine that runs after each solve. See [Solve history](/supply-planning/settings#see-when-the-planner-last-ran).
+
+There's no button in the app to re-run an engine. Ask Tether to run it, or to change its schedule.
+
+## Why do my recommendations differ from Tether's plan?
+
+**Where:** Purchases or Transfers → **Table settings** → **Recommendations** (or **Scenario**) → **Engine run** or **Tether's plan**.
+
+On an organization that uses an engine, the Purchases or Transfers page shows the engine's orders, while Tether's plan (the solve) may propose different quantities or dates. They differ because:
+
+- **The engine applies your team's ordering rules**, which may round, batch or time orders differently from the solve.
+- **The engine run may be older than the plan.** Check the Plan status panel for an out-of-date warning.
+- **The plan the engine read was time-limited.** The Plan status panel and the **Plan quality** column say so.
+
+Switch **Table settings → Recommendations** (or **Scenario**) between **Engine run** and **Tether's plan** to compare them, or use Recommendation comparison below.
+
+When you accept an engine recommendation and a newer run proposes a different quantity for the same line, Tether asks which quantity to use. It also warns you when the current run no longer recommends the line.
+
+## Run the plan again
+
+**Where:** Supply Chain → **Connected Planning** → **Table settings** → **Run now**.
+
+**Run now** starts a new solve against your current data and policies. It can take several minutes; the page refreshes when it finishes. Engines set to run after each solve then run on the new plan. You can also ask the [agent](/agent/chat) to "run the plan again".
+
+Committed edits show on the planning pages straight away, but recommendations refresh only when the next solve (and, where you use one, the next engine run) finishes.
+
+## Recommendation comparison
+
+**Where:** Settings → Supply planning → **Recommendation comparison**.
+
+This page puts a week's recommendations side by side, one row per line: what each engine run that decided that week recommended, beside your own sheet and what was decided. Every column says what it held constant.
+
+- Choose **Transfers** or **Purchases**.
+- Pick the week with the arrows or the **Week of** date. **This week** jumps back.
+- Accept or reject the current run's open orders straight from the list, as on the planning pages.
+
+If no engine run decided in that week, the page says so.
+
+## Who can see these pages
+
+Engine runs and Recommendation comparison appear under Settings → Supply planning for people with access to both the supply network and planning. Accepting or rejecting from Recommendation comparison needs permission to act on recommendations. **Engine tuning**, also on that tab bar, is for Tether staff.

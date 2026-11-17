@@ -1,0 +1,89 @@
+---
+title: Supply planning settings
+description: "Where: Settings → Supply planning. Make approving a PO create and send it to NetSuite or your connected system (Plan approval), change how long rejected recommendations stay hidden, roll back to a previous plan (Current plan), see when the planner last ran and whether a solve failed (Solve history), automatic re-planning, and past plan versions through the agent."
+---
+
+**Where:** Settings → **Supply planning**.
+
+The Supply planning entry opens a tab bar with the pages that control how planning runs and let you check on it:
+
+| Tab | What it's for | Who sees it |
+|---|---|---|
+| **Plan approval** | What approving a planned order does, and how long rejections hide a recommendation | People who can configure planning |
+| **Current plan** | Which solve every planning page reads | People who can configure planning |
+| **Solve history** | Every solve, when it ran and whether it worked | Anyone who works in planning |
+| **Engine runs** | Runs from your recommendation engines. See [Engine runs](/supply-planning/engine-runs) | Planning users, on organizations with engines |
+| **Recommendation comparison** | A week's engine recommendations side by side. See [Engine runs](/supply-planning/engine-runs#recommendation-comparison) | Planning users, on organizations with engines |
+| **Never list** | Recommendations rejected for good, and where to lift them. See [Why no recommendation?](/supply-planning/why-no-recommendation) | Planning users |
+| **Data issues** | Findings from the planner's data audit. See [Data issues](/supply-planning/data-issues) | Planning users |
+| **Engine tuning** | Tuning engine rules | Tether staff |
+
+You see only the tabs you have access to. Configuring planning needs the `planning:configure` permission; Solve history needs `planning:access`. See [Roles & permissions](/roles-permissions).
+
+## Make approving a PO create the order in NetSuite
+
+**Where:** Settings → Supply planning → **Plan approval** → **Order types**.
+
+For each order type (purchase order, production run, transfer), the page shows whether **Approval required** is on, and a switch: **Approval creates the order**.
+
+- **On**: approving a row on the [Supply Plan](/supply-planning/execution-plan) (the execution plan) offers **Create & submit**. Tether creates the order and sends it to your connected system, such as NetSuite, when one is set up for that order type.
+- **Off**: approving only marks the row approved. Leave it off if you enter orders in your ERP yourself, or every order would exist twice.
+
+Creating a production run from an approval isn't available yet, so that switch stays off. To change whether approval is required at all, ask Tether.
+
+## Change how long rejected recommendations stay hidden
+
+**Where:** Settings → Supply planning → **Plan approval** → **Rejected recommendations**.
+
+Enter a whole number of days in **Ask again after (days)** and click **Save**. This is how long a recommendation rejected as **Not this time** or **Done another way** stays hidden before it can come back. It's the default the reject dialog opens with; planners can still pick another date when they reject. It doesn't affect **Never**, which hides a recommendation until it's lifted from the Never list. See [Why no recommendation?](/supply-planning/why-no-recommendation#1-was-it-rejected-or-put-on-the-never-list)
+
+## Roll back to a previous plan
+
+**Where:** Settings → Supply planning → **Current plan**.
+
+The current plan is the one every planning page, recommendation and report reads. By default it's **Latest successful solve**. If a solve produced a plan you don't trust, choose an earlier one from the list (**Solved** with its date and time). The page shows who chose it and when.
+
+The next successful solve takes over again automatically. To go back to the newest plan straight away, choose **Latest successful solve**.
+
+## See when the planner last ran
+
+**Where:** Settings → Supply planning → **Solve history** → **Solves** tab.
+
+Solve history lists every solve your organization has run, newest first. Filter by **All time**, **Today**, **Yesterday** or **Last 7 days**.
+
+| Column | What it shows |
+|---|---|
+| **Decided** | When the solve ran |
+| **Trigger** | Who or what started it (a person, the agent or a Tether service), with the job type and priority |
+| **Status** | completed, failed, running, or another state |
+| **Duration** | How long it took |
+| **Lens** | Which kind of plan it produced |
+| **Config stamp** | The planner settings it ran with |
+| **Result plan** | The plan it produced, if any |
+| **Checks** | The results of checks run on that plan |
+
+Click a row to open the solve's detail. The **Plans** tab lists the plans themselves, with their label, lens and vintage.
+
+Every planning page also shows when the plan was made: click **Plan status** (the info icon at the top of the page) to see "Plan as of …", edits since, and **next solve** when one is scheduled.
+
+## Run the plan again
+
+**Where:** Supply Chain → **Connected Planning** → **Table settings** → **Run now**.
+
+Run now starts a new solve with your current data and policies. You can also ask the [agent](/agent/chat) to run the plan. Solves also run on your organization's schedule. See [Engine runs](/supply-planning/engine-runs#run-the-plan-again).
+
+## Automatic re-planning
+
+**Where:** Settings → **Automatic Re-planning**.
+
+When **Automatic re-planning** is on, every policy, network or catalog change triggers a new solve. When it's off (the default), the planner runs only when someone starts it or on its schedule. Frequent edits with it on can queue many long solves. This setting is managed by Tether; ask if you want it changed.
+
+## Look up past plans with the agent
+
+**Where:** Agent → **Chat Sessions**, or the chat panel.
+
+Tether keeps a record of each plan your team committed to. There's no page for these yet; ask the [agent](/agent/chat):
+
+- "What did the plan say for SKU ABC-123 on October 1?"
+- "What changed between last week's plan and this week's?"
+- "List the plan versions from this month."
