@@ -1,270 +1,97 @@
 ---
-title: Transactions Overview
-description: Understanding and managing transactions in Tether
+title: Transactions overview
+description: "Where: sidebar Transactions → Transactions. The list of purchase orders, transfers, production orders and sales orders: view tabs (Transactions, Drafts, Case files, Receiving, Line Items, Timeline), New order / Import orders / Report production, filters (Status incl. Received, Kind, Type, Source, Destination, dates), case files and review lists."
 ---
 
-# Transactions Overview
+# Transactions overview
 
-Transactions are the orders that flow through your supply chain—purchase orders from suppliers, transfers between warehouses, and production orders. Tether helps you create, track, and manage these transactions from creation to completion.
+A transaction (order) is any planned or actual movement of stock: a **purchase** from a supplier, a **transfer** between your locations, a **production** run, or a **sale**. The **Transactions** page lists them all and is where you create, receive and track orders.
 
-<Note>
-  Transaction management is available to Admin users.
-</Note>
+## The Transactions page
 
-## What is a Transaction?
+**Where:** sidebar **Transactions** → **Transactions**.
 
-A transaction represents an order or movement in your supply chain:
+The sidebar group **Transactions** holds:
+- **Transactions**: the order list (this page).
+- **Shipments**: containers and other shipments. Only shown if your organization uses shipments. See [Shipments](/transactions/shipments).
+- **Review lists**: only shown if your organization uses them. See [Review lists](#what-are-review-lists).
 
-| Transaction Type | Description |
-|-----------------|-------------|
-| **Purchase Order** | Order sent to a supplier |
-| **Transfer Order** | Movement between warehouses |
-| **Production Order** | Internal manufacturing |
+### Header buttons
 
-## The Transactions Dashboard
+What you see depends on your account:
 
-Navigate to **Transactions** in the sidebar to access the transactions dashboard.
+| Account | Buttons |
+|---|---|
+| Most accounts (new order screens) | **Report production**, **Import orders**, **New order** |
+| Older accounts | **Create Draft Transaction** |
 
-### Dashboard Layout
+Buttons only show if you can create transactions. **Report production** also needs permission to receive and fulfill orders. See [Creating orders](/transactions/creating) and [Report production](/transactions/report-production).
 
-| Component | Description |
-|-----------|-------------|
-| **Transaction List** | All transactions with status and details |
-| **Filters** | Narrow by status, type, date range |
-| **Type Tabs** | Switch between purchase, transfer, and production orders |
-| **Create Button** | Start new transactions |
+### View tabs
 
-### Transaction List Columns
+| Tab | What it shows | Who sees it |
+|---|---|---|
+| **Transactions** | One row per order. | Everyone |
+| **Drafts** | Orders saved with **Save draft** and not yet applied. | Accounts with the new order screens |
+| **Case files** | Groups of orders filed together. See below. | Accounts with the new order screens |
+| **Receiving** | Open lines waiting for stock, to receive against. See [Receiving](/transactions/receiving). | Users who can receive orders |
+| **Line Items** | One row per order line: SKU, quantity, source, destination, dates. | Everyone |
+| **Timeline** | Quantities arriving (or leaving) over time, by location or by SKU. | Everyone |
 
-| Column | Description |
-|--------|-------------|
-| **Name** | Transaction identifier |
-| **Type** | Purchase, Transfer, or Production |
-| **Status** | Current state in workflow |
-| **Source** | Supplier or source warehouse |
-| **Destination** | Destination warehouse |
-| **Order Date** | When order was/should be placed |
-| **Line Items** | Number of SKUs |
-| **Total** | Order value |
+Your organization can hide **Drafts**, **Case files** or **Receiving**. Users who can receive but not create orders see only the **Receiving** tab.
 
-## Transaction Status
+## How do I see only open purchase orders?
 
-Transactions move through a lifecycle:
+**Where:** Transactions → **Transactions** tab → filters **Kind** and **Status**.
 
-| Status | Description |
-|--------|-------------|
-| **Draft** | Created but not submitted—no steps exist yet |
-| **In Progress** | Submitted and being processed—at least one step exists |
-| **Completed** | All steps completed, inventory fully updated |
-| **Archived** | Terminal state for historical records |
+1. Set **Kind** to **Purchase**.
+2. Set **Status** to **In Progress**. The list starts filtered to **Draft** and **In Progress**; remove **Draft** to see only orders that are open.
 
-### Status Flow
+**Status** values: **Draft**, **In Progress**, **Received** (everything has arrived), **Completed**, **Archived**.
 
-```
-Draft → In Progress → Completed → Archived
-```
+Other filters:
+- **Kind**: **Purchase**, **Transfer**, **Production**, **Sale**.
+- **Type**: your organization's own order types, such as "ITR". Only shown if you have any. See [Order types](/transactions/types).
+- **Source** and **Destination**: suppliers and locations.
+- SKU and SKU group.
+- Dates: **Start date**, **Completion date**, **Promised arrival**, **Closed**.
 
-## Transaction Sources
+Columns include **Name**, **Reference**, **Internal notes**, **Type**, **Status**, **Source**, **Destination**, **Value** and **Created by**. On accounts with the new order screens you also get **Lines**, **Ordered**, **Received** and **On order**.
 
-### Creation Source
+## Where do I receive a shipment?
 
-| Source | Meaning |
-|--------|---------|
-| **System Recommended** | Generated by the supply planning solver based on inventory needs. Replaced automatically when a new plan is generated. |
-| **User Created** | Manually created by a user, or converted from a system recommendation. These are never overwritten by the system. |
+**Where:** Transactions → **Receiving** tab, or the order page → **Report a receipt**.
 
-## Transaction Components
+See [Receiving](/transactions/receiving). If your organization uses shipments, you can also receive a whole container from **Transactions → Shipments**. See [Shipments](/transactions/shipments#how-do-i-receive-a-shipment).
 
-### Line Items
+## What's the Timeline view on Transactions?
 
-Each transaction contains line items specifying:
+**Where:** Transactions → **Timeline** tab.
 
-- SKU being ordered
-- Quantity
-- Unit cost (for purchase orders)
-- Expected delivery date
+**Timeline** pivots order quantities over time so you can see what lands when. Use the toggle to show rows by location or by SKU. In **Table settings** you can choose:
+- **Measure**: **Units** or **Value**.
+- **Anchor**: **Arrival** or **Departure**.
+- **Granularity**: **Day**, **Week** or **Month**.
+- **Group by**, **Filters** and **Export**.
 
-### Steps
+Use **Date range** to set the window.
 
-Each transaction contains steps that track workflow progress. Steps are typed based on the activity they represent:
+## What are case files?
 
-| Step Type | Used For | Inventory States |
-|-----------|----------|-----------------|
-| **Purchase** | Tracking supplier purchase progress | In Process → Completed Purchase |
-| **Production** | Tracking manufacturing progress | In Production → Completed Production |
-| **Shipment** | Tracking movement from source to destination | In Transit → Completed Shipment |
+**Where:** Transactions → **Case files** tab. Also the **Case file** card on an order's **Overview** tab.
 
-Steps have their own statuses: **Draft**, **In Progress**, **Completed**, or **Cancelled**.
+A case file groups orders that belong together, for example a PO and the transfer that moves its goods on. Adding an order to a case file or removing it is filing only. It never moves stock.
+- The tab lists **Reference**, **Intent**, **Orders**, **Last computed status** and the opened, closed or archived date.
+- Click **Check live** to recompute the status from current stock movements.
+- Search with **Search by reference or intent…**.
+- An archived case file is kept as a read-only record.
 
-### Artifacts
+## What are review lists?
 
-Transactions use an artifact system for business documents. Each transaction has a **root artifact** that defines its type, plus additional artifacts created during the workflow:
+**Where:** Transactions → **Review lists**. Only shown if your organization uses them.
 
-| Artifact Type | Purpose |
-|---------------|---------|
-| **Purchase Order** | Root artifact for purchase transactions |
-| **Production Order** | Root artifact for production transactions |
-| **Transaction Initiation** | Root artifact that initiates a transaction |
-| **Sales Order** | Root artifact for sales transactions |
-| **Shipping Plan** | Defines a shipment—creates a shipment step |
-| **Production Report** | Updates production step progress |
-| **Purchase Report** | Updates purchase step progress |
-| **Shipment Receipt** | Updates shipment step progress |
-| **Receipt** | General receipt documentation |
-| **Inventory Adjustment** | Records inventory adjustments |
-| **Stock Take Form** | Documents physical inventory counts |
-| **Packing List** | Shipping documentation |
-| **Quality Certificate** | Inspection documentation |
+A review list is a shared, versioned page of recommendations for your team to look over together. Each list has a **Version** and a **Notes** panel, where you can comment on one recommendation (**This recommendation**) or on the whole review (**This review as a whole**). Use **Filter by tag** to find lists, and **New review list** to start one (give it a **Name** and **Tags**). Tether publishes the versions. If a banner says "This version is newer than the one customers see", you're looking at a draft.
 
-## Working with Transactions
+## Opening an order
 
-### Creating Transactions
-
-<Steps>
-  <Step title="Click Create Transaction">
-    From the transactions dashboard, click **Create**
-  </Step>
-
-  <Step title="Select Type">
-    Choose Purchase, Transfer, or Production
-  </Step>
-
-  <Step title="Enter Details">
-    Fill in required information:
-    - Supplier (for purchase) or source warehouse (for transfer)
-    - Destination warehouse
-    - Expected dates
-  </Step>
-
-  <Step title="Add Line Items">
-    Add SKUs and quantities
-  </Step>
-
-  <Step title="Save">
-    Save as draft or submit immediately
-  </Step>
-</Steps>
-
-### Viewing Transaction Details
-
-Click on any transaction to see:
-
-- **Overview**: Basic transaction information and line items
-- **Steps & Inventory**: Workflow step progress and inventory state tracking (hidden for drafts)
-- **Documents**: Artifacts attached to the transaction
-- **Inventory Impact**: How the transaction affects warehouse inventory levels
-- **Analysis**: Cost variance and quantity analysis—planned vs. reported (hidden for drafts)
-
-### Editing Transactions
-
-| Status | Editable? |
-|--------|-----------|
-| **Draft** | Yes—full editing |
-| **In Progress** | Limited—some fields locked |
-| **Completed** | No—read only |
-| **Archived** | No—read only |
-
-## Filtering Transactions
-
-### By Status
-
-Filter to see transactions in specific states:
-
-- Drafts needing attention
-- In-progress orders to track
-- Completed for reference
-- Archived for historical records
-
-### By Type
-
-Focus on specific transaction types:
-
-- Only purchase orders
-- Only transfers
-- Only production
-
-### By Date Range
-
-View transactions within time periods:
-
-- This week's orders
-- This month
-- Custom date range
-
-### By Warehouse
-
-See transactions for specific locations:
-
-- Orders coming to a warehouse
-- Transfers from a warehouse
-
-## Transaction Alerts
-
-Tether highlights transactions needing attention:
-
-| Alert | Meaning |
-|-------|---------|
-| **Urgent** | Needs immediate action |
-| **Important** | Action needed soon |
-| **Overdue** | Past expected date |
-| **At Risk** | May miss expected date |
-
-## Integration with Supply Planning
-
-Transactions connect to supply planning:
-
-1. **Recommendations** appear on the [Transfer](/supply-planning/transfers), [Production](/supply-planning/production), and [Purchase](/supply-planning/purchases) planning pages
-2. **Accepting** a recommendation adds it to the [execution plan](/supply-planning/execution-plan) and converts it to a transaction
-3. **Submit** starts the transaction workflow
-4. **Complete** updates inventory
-
-See [Working with recommendations](/supply-planning/recommendations) for more on recommendations.
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Review Drafts Regularly">
-    Check draft transactions:
-    - Submit or delete old drafts
-    - Update drafts with new information
-    - Don't let drafts accumulate
-  </Accordion>
-
-  <Accordion title="Track In-Progress Orders">
-    Monitor active transactions:
-    - Update step status as orders progress
-    - Note delays or issues
-    - Communicate with suppliers
-  </Accordion>
-
-  <Accordion title="Complete Promptly">
-    When orders arrive:
-    - Complete transactions promptly
-    - Verify quantities match
-    - Update inventory accurately
-  </Accordion>
-
-  <Accordion title="Document Everything">
-    Maintain good records:
-    - Attach relevant documents
-    - Note issues or variances
-    - Keep contact records
-  </Accordion>
-</AccordionGroup>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Transaction Types" icon="list" href="/transactions/types">
-    Learn about purchase, transfer, and production orders
-  </Card>
-  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
-    Create new transactions
-  </Card>
-  <Card title="Transaction Details" icon="file-lines" href="/transactions/detail-view">
-    Navigate transaction detail pages
-  </Card>
-  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
-    Understand transaction lifecycle
-  </Card>
-</CardGroup>
+Click any row to open the order. Most accounts get the order page with **Overview**, **Lines**, **Activity**, **Documents** and **Terms** tabs. Older accounts get the step-based page. See [The order page](/transactions/detail-view).

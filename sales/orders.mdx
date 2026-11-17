@@ -1,0 +1,139 @@
+---
+title: Sales orders
+description: "Where: Sales → Orders. Find, filter and search sales orders; see why an order is Held by Tether; mark orders shipped; print a pick list; add a note; resend an order; refund; create a manual sales order; Settings → Sales orders (Build by, Automatic lots, Printing reserves lots)."
+---
+
+# Sales orders
+
+The **Sales Orders** page lists every sales order Tether knows about: orders from your store or marketplace (Shopify, Amazon and others) and orders you enter in Tether yourself. From here you can see what has shipped, what Tether is holding back from your warehouse and why, and act on single orders or many at once.
+
+<Info>
+  **Where:** sidebar **Sales** → **Orders**. You need permission to read sales orders. If you don't see **Orders**, ask your admin for access.
+</Info>
+
+## How do I filter orders by status?
+
+**Where:** Sales → Orders → **Status** filter.
+
+1. Open **Status** in the filter bar.
+2. Pick one or more values. An order matches if it has **any** of them. You can also switch a value to **exclude** to hide orders with that status.
+
+| Status | Meaning |
+|---|---|
+| **Fulfilled** | Everything on the order has shipped. |
+| **Partially Fulfilled** | Some lines or units have shipped. |
+| **Unfulfilled** | Nothing has shipped yet. |
+| **Cancelled** | The order was cancelled. |
+| **Withdrawn** | The order was removed, for example because a history load wrote it by mistake. |
+| **On hold** | Your store or channel put the order on hold. This is the channel's own hold, not Tether's. |
+| **No fulfillment recorded** | No shipment has been recorded against the order at all. |
+| **Held by Tether** | Tether has not sent the order (or a line of it) to your warehouse. See [Why is this order held?](#why-is-this-order-held-by-tether) |
+
+Other filters: your sales channel, channel tags (each tag gets its own filter and column), the order's Location (including **No Location yet**), **Placed by** (**Tether** or **Another system**), SKU, and a **Requested delivery** date range.
+
+## How do I find orders for one customer?
+
+**Where:** Sales → Orders → **Search orders...** box.
+
+Type into **Search orders...**. Search matches:
+- any part of the order number, with or without `#`
+- the order's ID in the source system, or any number another system holds for it, such as the customer PO
+- from 3 characters up, the ship-to name, the customer name and the channel name
+
+To see customer details as columns, turn on the hidden columns **Customer**, **Tracking**, **Customer PO** and **Invoice number** from the table settings.
+
+## Why is this order Held by Tether?
+
+**Where:** Sales → Orders → **Status** = **Held by Tether** → **Held reason** filter. On the order page, each line's Location reads **Held · *reason***.
+
+When Tether sends orders to your warehouse (ShipStation, ShipFusion, Extensiv 3PL Central or Amazon FBA), it holds an order it can't send yet. Pick **Held by Tether** in **Status**, then use **Held reason** to see how many orders are held for each reason. The common reasons are **No stock**, **Lots proposed — waiting for confirmation**, **Missing street address** (or another field), **Not set up at the warehouse** and **Rejected by the warehouse**.
+
+What each reason means and how to clear it is on [Sending orders to your warehouse](/integrations/order-sending#held-reasons-and-how-to-clear-them).
+
+## How do I release a held order?
+
+**Where:** Sales → Orders → **Held by Tether** → the order.
+
+How you release an order depends on why it is held:
+- **No stock**: the hold clears by itself when the next stock update shows enough stock at a warehouse.
+- **Missing a field**: fill in the field in the order's **Recipient** section. The order goes out once it's complete.
+- **Lots proposed — waiting for confirmation**: tick the orders and click **Confirm and send (N)**, or use **Hold lots** on one order.
+- **Rejected by the warehouse** or **Cancelled at the warehouse**: fix the order in your channel, then click **Resend** on the line.
+
+Full list: [Held reasons and how to clear them](/integrations/order-sending#held-reasons-and-how-to-clear-them).
+
+## How do I resend an order the warehouse rejected?
+
+**Where:** Sales → Orders → the order → the held line → **Resend**.
+
+1. Fix the problem in your channel first, for example correct the address in Shopify.
+2. On the order page, click **Resend** on the line marked **Rejected by the warehouse** or **Cancelled at the warehouse**.
+3. Read the confirmation and confirm.
+   - After a rejection, Tether places the order again: at the same warehouse if it has the stock, otherwise at the next warehouse on its list, or it holds the order for stock.
+   - After a cancellation at the warehouse, Tether sends the order to that warehouse again. Only do this if the order is still open in your channel.
+
+**Resend** only appears for users allowed to send orders to warehouses, and only on lines that can safely be sent again.
+
+## How do I mark an order as shipped?
+
+**Where:** Sales → Orders → tick orders → **Mark shipped (N)**, or open one order → **Mark shipped**.
+
+Use this for orders that already left on a label printed outside Tether. Tether records the shipment in Shopify, so the order reads as fulfilled there and in Tether, and it is never sent to your warehouse.
+
+1. Tick one or more orders in the list and click **Mark shipped (N)**. For one order, you can also open it and click **Mark shipped**.
+2. Enter a **Reason** (required), for example "Shipped via Cin7, tracking not sent".
+3. For a single order you can add **Carrier (optional)** and **Tracking number (optional)**.
+4. Optionally tick **Email the customer that their order shipped**.
+5. Confirm. The order shows **Marked shipped by** *name*, time and reason.
+
+**Mark shipped** shows only on Shopify orders that still have something to ship. If some orders can't be marked, Tether lists them after you confirm.
+
+## How do I print a pick list?
+
+**Where:** Sales → Orders → the order → **Print pick list**.
+
+Open the order and click **Print pick list**. The pick list shows case sizes, and the **Build by** date if your org sets one. If you track lots and **Automatic lots** is on, it prints each line's lots and best-by dates. You need access to products for the button to work.
+
+## Where do I add a note to an order?
+
+**Where:** Sales → Orders → the order → **Notes**.
+
+Open the order and edit **Notes** (it shows **None** when empty). Anyone who can edit sales orders can add or clear a note on any order. The order's invoice number and customer PO sit on the **Order Number** card. On orders created in Tether, edit them with **Edit invoice number and customer PO**.
+
+## How do I create a manual sales order?
+
+**Where:** Sales → Orders → **Create Manual Order**.
+
+1. Click **Create Manual Order**. The order form opens with **Kind** set to **Sell — sales order**.
+2. Choose your sales channel and **Ship from** location.
+3. Leave **Order number** blank to have Tether assign one on save. Optionally fill **Customer PO**, **Your invoice number**, **Order date** and **Requested delivery**.
+4. Fill in the **Recipient** card (name, address, phone, email).
+5. Add lines with **Add line**.
+6. Click **Preview & apply**, check the changes, and click **Apply**.
+
+Turn on **Historical order** to record a past order for demand forecasting only. Historical orders don't affect inventory.
+
+After you create it, a manual order has extra buttons:
+- **Submit Order** commits inventory. After that the order can no longer be edited.
+- **Fulfill** records the shipment.
+- **Assign to** *warehouse* sends it to a connected warehouse.
+- **Refund** is for fulfilled orders. Tick **Restock** per line to put units back.
+- **Cancel Order**, **Edit Order** and **Delete**: Edit and Delete only work before you submit.
+
+## Sales order settings
+
+**Where:** Settings → **Sales orders**. You need permission to edit orders.
+
+| Setting | What it does |
+|---|---|
+| **Build by** (**Days before requested delivery**) | How many days before the requested delivery an order must be built. Each order and its pick list show the **Build by** date. Leave it empty to show none. |
+| **Automatic lots** | Each order takes the lots with the soonest best-by date. Orders have no **Hold lots** or **Split lot**, and the pick list prints each line's lots. |
+| **Printing reserves lots** | Printing a pick list holds the printed lots for that order until it's fulfilled. Fulfilling records exactly those lots, and cancelling the order releases them. Only applies when **Automatic lots** is on. |
+
+## Ask the agent
+
+The in-app agent can do the same work. Try:
+- "Which orders are held by Tether, and why?"
+- "Confirm the proposed lots and send the held orders."
+- "Fulfill manual order 1042."
+- "Submit / cancel order 1042."

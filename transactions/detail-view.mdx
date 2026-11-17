@@ -1,301 +1,111 @@
 ---
-title: Transaction Detail View
-description: Navigating and using transaction detail pages
+title: The order page
+description: "Where: Transactions → click an order. The order page tabs (Overview, Lines, Activity, Documents, Terms); edit quantities on the Lines tab; Edit order; download the PO PDF to send your supplier; close an order short, cancel, write off; reopen; archive and restore; correct the supplier; see the history of changes."
 ---
 
-# Transaction Detail View
+# The order page
 
-The transaction detail view provides comprehensive information about a single transaction. This guide explains each tab and how to use them effectively.
+Click an order on **Transactions** to open its page. Most accounts get the order page described here. Older accounts get the step-based page instead. See [Older accounts: the step-based page](#older-accounts-the-step-based-page).
 
-## Accessing Transaction Details
+## What's on the order page
 
-Click on any transaction in the transactions list to open its detail view.
+**Where:** Transactions → click an order.
 
-## Detail View Layout
+The header shows the order's reference and badges such as **Received**, **Closed**, **Archived** or **No destination**. An order with no destination isn't counted as on order and can't be received until you set one. A band shows how far the order has got: **Ordered**, **Shipped**, **Received**, **Closed**.
 
-The transaction detail page includes:
+Header buttons:
+- **Report a receipt**: record goods arriving. See [Receiving](/transactions/receiving).
+- **Edit order**: open the full order editor.
+- **⋯** (**More order actions**): **All orders**, **Reopen order**, **Close order…**, **Correct supplier…**, **Archive…** / **Restore**.
 
-- **Header**: Name, status, type, and quick actions
-- **Tabs**: Different aspects of the transaction
-- **Action Buttons**: Status-appropriate actions
+| Tab | What it shows |
+|---|---|
+| **Overview** | Header fields: **Reference**, **Type**, **Status**, **Source**, **Destination**, **Ordered date**, **Expected arrival**, **Incoterms**, **Ship to**, **Internal notes**, **Instructions** and more. Also the **Case file** card. |
+| **Lines** | Each line with **Ordered**, **Shipped**, **Received**, **Open** and **% received**, plus dates, lot and destination. |
+| **Activity** | Everything recorded on the order, with a **Show** filter. |
+| **Documents** | The order's paperwork (PO PDF and others) to view or export. |
+| **Terms** | Purchase orders: **Payment terms**, **Receipt tolerance**, **Confirm by** and the due schedule. |
 
-## Header Section
+**Close order**, **Reopen order** and **Terms** aren't on every account. If you don't see them, ask Tether to turn them on.
 
-### Key Information
+## How do I edit quantities on an order?
 
-| Element | Description |
-|---------|-------------|
-| **Transaction Name** | Auto-generated or custom name |
-| **Status Badge** | Current status (Draft, In Progress, etc.) |
-| **Type Badge** | Purchase, Transfer, or Production |
-| **Source/Supplier** | Where goods come from |
-| **Destination** | Where goods are going |
-| **Dates** | Key dates (order, expected, etc.) |
+**Where:** order page → **Lines** tab → click a cell. Or **Edit order** in the header.
 
-### Quick Actions
+1. On the **Lines** tab, click the cell you want to change (for example **Ordered** or **Expected arrival**) and type the new value. Changed cells are marked and can be reverted one by one.
+2. A bar shows **N unsaved changes**. Nothing is written to the order until you save.
+3. Click **Save changes**, or **Discard** to throw them away.
 
-Available actions depend on status:
+For bigger changes, such as adding lines, changing the supplier or splitting a line across warehouses, click **Edit order**. That opens the full editor with **Preview & apply**. See [Creating orders](/transactions/creating#how-do-i-edit-an-order).
 
-| Status | Available Actions |
-|--------|-------------------|
-| **Draft** | Edit, Submit, Delete |
-| **In Progress** | Update Steps, Add Documents |
-| **Completed** | View Only, Export, Archive |
-| **Archived** | View Only |
+On the Lines tab:
+- Switch between **Line list** and **Size run** (if your PO template uses size runs). **Export** downloads the size run as **CSV** or **Excel (.xlsx)**.
+- Use **Search lines** to find a SKU.
+- **% received** can go above 100% when more arrived than was ordered.
 
-## Tabs Overview
+## How do I download the PO PDF to send to my supplier?
 
-The detail view organizes information into tabs. Some tabs are only visible once the transaction leaves Draft status.
+**Where:** order page → **Documents** tab → **Export** → **PDF**.
 
-| Tab | Visibility | Description |
-|-----|-----------|-------------|
-| **Overview** | Always | General info, line items, and metadata |
-| **Steps & Inventory** | Non-draft only | Step progress and inventory state per step |
-| **Documents** | Always | Artifacts and uploaded documents |
-| **Inventory Impact** | Always | How this transaction affects inventory levels |
-| **Analysis** | Non-draft only | Cost variance and quantity analysis |
+1. Open the order and go to **Documents**.
+2. On the document's row, click **View** to see it, or **Export** → **PDF** (or **CSV**).
+3. If your organization has more than one template, pick one under **Template** first.
 
-### Overview Tab
+The tab says why a template was picked, for example because the order's type prints as that template. If a PO is split across shipments, the PDF prints the whole-order page first, then one page per shipment. To change what the PDF looks like, see [Document templates](/administration/document-templates).
 
-General transaction information and line items:
+## How do I close a PO short?
 
-- **Basic Details**: Name, reference number, dates
-- **Source/Destination**: Supplier or warehouse information
-- **Line Items**: Products in the transaction with SKU, quantity, unit cost, and totals
-- **Summary Metrics**: Total items, total value
-- **Notes**: Any comments or instructions
-- **Metadata**: Created date, created by, last modified
+**Where:** order page → **⋯** → **Close order…**.
 
-### Steps & Inventory Tab
+1. Click **⋯** → **Close order…**. The dialog says how many units are still expected.
+2. Under **What happened to the rest?**, choose:
 
-<Note>
-  This tab only appears once a transaction has been submitted (status is **In Progress** or later).
-</Note>
+| Choice | Use it when | Effect |
+|---|---|---|
+| **It all arrived: receive the N still expected, then close** | Everything came but wasn't recorded | Receives the rest today at each line's destination |
+| **Close short** | You accept what arrived and stop waiting | Not counted against the supplier |
+| **Cancel** | The order was withdrawn or the supplier failed | Counted against the supplier |
+| **Write off** | Goods were lost in transit | Writes the units off from stock |
+| **Superseded** | You re-ordered elsewhere | Not counted against the supplier |
 
-Tracks the real-time progress of each step within the transaction. Steps correspond to the three step types: **Purchase**, **Shipment**, and **Production**.
+3. Optionally add a **Note**, then click **Close order**.
 
-#### Step List
+The order page then shows the reason, who closed it and when. To close just one line, use the line's **Close** menu on the **Lines** tab. It has the same choices. If the order is on a shipment, closing short also takes the missing units off the shipment.
 
-Each step shows:
-- **Step type** (Purchase, Shipment, or Production)
-- **Status** (Draft, In Progress, Completed, or Cancelled)
-- **Inventory state** for that step (e.g., In Process, In Transit, In Production)
-- **Source and destination** warehouses or suppliers
+## How do I reopen a closed order?
 
-#### Updating Steps via Artifacts
+**Where:** order page → **⋯** → **Reopen order**. For one line: **Lines** tab → **Reopen**.
 
-Steps are advanced by submitting step-modifying artifacts:
+Click **⋯** → **Reopen order**. The order goes back to open, and its remaining quantity counts as on order again. To reopen a single closed line, use **Reopen** on that line.
 
-| Step Type | Artifact to Submit | Effect |
-|-----------|-------------------|--------|
-| **Purchase** | Purchase Report | Updates purchase step progress |
-| **Shipment** | Shipment Receipt | Updates shipment step progress |
-| **Production** | Production Report | Updates production step progress |
+## How do I archive or restore an order?
 
-New steps can also be initiated by submitting a **Shipping Plan** artifact, which creates a new Shipment step.
+**Where:** order page → **⋯** → **Archive…** / **Restore**, or the **⋯** menu on the Transactions list.
 
-### Documents Tab
+Archiving takes an order off the working list without changing inventory. You can restore it any time. If units are still expected, the button reads **Stop expecting them (cancel), then archive**. Use **Delete** (Transactions list row menu) only for orders nothing has been posted against.
 
-Lists all artifacts associated with the transaction:
+## How do I correct the supplier on a PO?
 
-#### Artifact Types
+**Where:** order page → **⋯** → **Correct supplier…**.
 
-| Type | Description |
-|------|-------------|
-| **Purchase Order** | Root artifact for purchase transactions |
-| **Production Order** | Root artifact for production transactions |
-| **Sales Order** | Root artifact for sales transactions |
-| **Shipping Plan** | Creates a shipment step when submitted |
-| **Transaction Initiation** | Step-based transaction initiation |
-| **Production Report** | Updates production step progress |
-| **Purchase Report** | Updates purchase step progress |
-| **Shipment Receipt** | Updates shipment step progress |
-| **Receipt** | General receipt document |
-| **Packing List** | Shipping documentation |
-| **Quality Certificate** | Quality assurance documentation |
-| **Stock Take Form** | Inventory count documentation |
-| **Inventory Adjustment** | Inventory adjustment record |
+Pick the right supplier and give a **Reason**, then click **Correct supplier**. This also updates lots already received from the order, including the lot page, trace and recall report.
 
-Each artifact has a status (**Draft** or **Submitted**) and can be viewed or submitted from this tab.
+## How do I see the history of changes to an order?
 
-### Inventory Impact Tab
+**Where:** order page → **Activity** tab.
 
-Shows how this transaction affects inventory across warehouses:
+**Activity** lists everything recorded on the order: edits, receipts, closes and reopens, with who and when. Use **Show** to narrow it down.
 
-- **Per-SKU impact**: How each line item affects sellable, committed, reserved, and in-transit quantities
-- **Source warehouse**: Quantities being deducted or committed
-- **Destination warehouse**: Quantities incoming or added
+## How do I attach or find documents on an order?
 
-### Analysis Tab
+**Where:** order page → **Documents** tab.
 
-<Note>
-  This tab only appears once a transaction has been submitted (status is **In Progress** or later).
-</Note>
+**Documents** lists the paperwork attached to the order, with **Document**, **Reference** and **Created**. Rows marked **View only** can be viewed but not exported. Invoices show here for reference only.
 
-Provides cost and quantity analytics with two sub-tabs:
+There's no upload button on the tab. To attach a supplier invoice, packing list or receipt to an order, ask the in-app agent, for example: "Attach this invoice to PO 1234." The agent shows what it will attach and asks you to confirm.
 
-#### Cost Variance
+## Older accounts: the step-based page
 
-Compares expected vs. actual costs:
-- **Planned cost** vs. **Actual cost** per line item
-- **Variance** amount and percentage
-- **Landed cost** breakdown (unit cost + shipping + duties/taxes)
+**Where:** Transactions → click an order (accounts without the new order screens).
 
-#### Quantity Analysis
-
-Compares expected vs. actual quantities:
-- **Ordered** vs. **Received** quantities
-- **Shortages** and **overages**
-- **Completion percentage** per line item
-
-## Working with Different Statuses
-
-### Draft Transactions
-
-When in draft status:
-
-- All fields are editable
-- Can add/remove line items
-- Can change supplier/warehouse
-- Not affecting inventory
-
-### In Progress Transactions
-
-When submitted:
-
-- Limited editing (quantity adjustments)
-- Can update steps
-- Can add documents
-- Can add notes
-- Inventory is affected
-
-### Completed Transactions
-
-When finished:
-
-- Read-only
-- Full history available
-- Can export data
-- Used for reference
-
-### Archived Transactions
-
-When archived (terminal state):
-
-- Read-only
-- Full history preserved
-- No further status changes possible
-- Maintained for records and audit
-
-## Common Actions
-
-### Editing Transaction Details
-
-<Steps>
-  <Step title="Click Edit">
-    From the Overview tab, click **Edit**
-  </Step>
-
-  <Step title="Make Changes">
-    Modify available fields
-  </Step>
-
-  <Step title="Save">
-    Save your changes
-  </Step>
-</Steps>
-
-### Receiving Partial Quantities
-
-When not all items arrive:
-
-<Steps>
-  <Step title="Go to Steps & Inventory">
-    Open the **Steps & Inventory** tab
-  </Step>
-
-  <Step title="Submit a Shipment Receipt">
-    Submit a Shipment Receipt artifact with the actual received quantities
-  </Step>
-
-  <Step title="Note Discrepancy">
-    Add notes about shortage
-  </Step>
-
-  <Step title="Decide Next Steps">
-    - Wait for remainder
-    - Create backorder
-    - Close as short
-  </Step>
-</Steps>
-
-### Cancelling Steps
-
-Individual steps can be cancelled without affecting the entire transaction:
-
-<Steps>
-  <Step title="Go to Steps & Inventory">
-    Open the **Steps & Inventory** tab
-  </Step>
-
-  <Step title="Cancel the Step">
-    Mark the relevant step as Cancelled
-  </Step>
-
-  <Step title="Inventory Reverts">
-    Committed or in-transit inventory associated with the step is released
-  </Step>
-</Steps>
-
-<Note>
-  Transactions do not have a "Cancelled" status. Instead, cancel individual steps as needed. Once all steps are completed or cancelled, the transaction moves to **Completed** and can then be **Archived**.
-</Note>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Keep Steps Updated">
-    Update steps as they complete:
-    - Provides accurate tracking
-    - Helps team visibility
-    - Improves lead time data
-  </Accordion>
-
-  <Accordion title="Attach Documents">
-    Keep relevant documents attached:
-    - POs for reference
-    - Invoices for accounting
-    - Shipping docs for disputes
-  </Accordion>
-
-  <Accordion title="Add Notes">
-    Document important information:
-    - Special handling instructions
-    - Communication with suppliers
-    - Issues encountered
-  </Accordion>
-
-  <Accordion title="Monitor Inventory Impact">
-    Check the Inventory Impact tab to:
-    - Verify correct warehouse effects
-    - Track committed and in-transit quantities
-    - Understand how each step changes inventory
-  </Accordion>
-</AccordionGroup>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Workflow" icon="timeline" href="/transactions/workflow">
-    Understand the full transaction lifecycle
-  </Card>
-  <Card title="Creating Transactions" icon="plus" href="/transactions/creating">
-    Create new transactions
-  </Card>
-  <Card title="Transaction Types" icon="list" href="/transactions/types">
-    Learn about different transaction types
-  </Card>
-  <Card title="Transactions Overview" icon="file-invoice" href="/transactions/overview">
-    Return to transactions overview
-  </Card>
-</CardGroup>
+Older accounts see tabs **Overview**, **Steps & Inventory**, **Documents**, **Inventory Impact** and **Analysis**. **Steps & Inventory** and **Analysis** only appear when the order has steps. Progress is recorded by updating steps. See [Order lifecycle](/transactions/workflow#older-accounts-steps).
