@@ -1,0 +1,184 @@
+---
+title: Policies
+description: "Where: Supply Chain → Policies. Set a minimum order quantity (MOQ), order multiple, lead time, safety stock or coverage days, ordering cadence, capacity, and which sites can buy, store, make or ship a SKU. Every supply-chain rule is a policy scoped to SKUs and locations, never a field edited on the SKU. Also: Quick Add, hard vs soft, which policy wins, and the Coverage map."
+---
+
+A policy is a rule the planner follows when it builds the plan and sizes its recommendations: a minimum order quantity (MOQ), an order multiple, a lead time, how many days of stock to hold, where a SKU can be bought, stored or made, which lanes stock can move along, and so on. Some teams call these constraints, rules or supply-chain settings.
+
+**Every supply-chain rule in Tether is a policy.** You don't type an MOQ, a lead time or a safety-stock figure into a field on the SKU or the location. You add a policy and scope it to the SKUs, SKU groups and locations it applies to. A SKU's or a location's **Policies** tab shows the policies that already apply to it.
+
+<Note>
+Policies are on organizations that use **Products** and **Locations** (the newer catalog). If you don't see **Supply Chain → Policies** in the sidebar, ask Tether to turn it on.
+</Note>
+
+## Where to find your policies
+
+**Where:** Supply Chain → **Policies**. The page has two tabs: **Policies** (the list) and **Coverage map**.
+
+The list is grouped into collapsible sections. Use **Group by** to switch between:
+
+- **Capability**: Storage Policies, Production Policies, Purchase Policies, Sales Policies, Network Rules, Demand Policies.
+- **Domain**: Connectivity, Capabilities, Supply Planning, Product Catalog, Demand.
+
+To narrow the list, filter by **Location**, **SKU group**, **SKU**, **Type** (the kind of rule), **Domain** or **Enforcement** (Hard or Soft). When you filter by a location, SKU or SKU group, choose **Direct** for policies scoped straight to it, or **All** for every policy that reaches it, including ones scoped to a group it belongs to. The status toggle shows **All**, **Enabled** or **Disabled** policies. Click a policy to see what it does, and **Edit** it from there.
+
+You can also see the policies on one item:
+
+- **Where:** Products → SKUs → a SKU → **Policies** tab.
+- **Where:** Supply Chain → Locations → a location → **Policies** tab.
+
+## Set a SKU's MOQ, lead time or order multiple from the SKU
+
+**Where:** Products → SKUs → a SKU → **Purchasing** tab. (For a supplier: Supply Chain → Locations → the supplier → **Purchasing** tab.)
+
+The Purchasing tab lists the suppliers the SKU can be bought from, one row each, with columns for **Lead** (days), **Cadence**, **MOQ** and **Increment** (order multiple), plus the supplier's price. Edit a cell to change it. Each cell is a policy: editing it adds or updates the policy for that SKU at that supplier, so it shows up on the Policies page too. A marker beside a value says whether it was set here or inherited from a broader policy, such as one on the SKU's group; hover it to see which.
+
+The **Production**, **Storage** and **Sales** tabs on a SKU work the same way for where it's made, stored and sold.
+
+## Set a minimum order quantity, lead time or other rule
+
+**Where:** Supply Chain → Policies → **Create Policy**. You need permission to edit policies.
+
+<Steps>
+  <Step title="Details">
+    Enter a **Policy name** and, optionally, a **Priority** (used only when two policies set the same thing for the same SKU and location; see [Which policy wins](#which-policy-wins-when-two-policies-overlap)).
+  </Step>
+  <Step title="Declarations">
+    Click **Add Declaration**, pick the **Type** (for example **Require Minimum** for an MOQ), choose **Enforcement** (**Hard** or **Soft**) and fill in its values. One policy can hold several declarations.
+  </Step>
+  <Step title="Scope">
+    Choose what the policy applies to: a location, a location pair (a lane from one location to another), a SKU, a SKU group, a production line, a BOM or a forecast group. Some types require a particular scope; a checklist shows which ones are still missing.
+  </Step>
+  <Step title="Save">
+    Click **Create Policy** (or **Update Policy** when editing). Tether checks the policy first and warns you about problems, such as a scope that doesn't fit the type.
+  </Step>
+</Steps>
+
+The next solve uses the new policy. Recommendations don't change until then. See [Supply planning settings](/supply-planning/settings#see-when-the-planner-last-ran) for when the planner runs.
+
+### Quick Add for common rules
+
+**Where:** Supply Chain → Policies → **Quick Add**.
+
+Quick Add creates a one-declaration policy in a few clicks. It offers:
+
+| Quick Add card | What you enter |
+|---|---|
+| Coverage Target | **Target days**, **Safety days**, **Max days** of supply |
+| Order Cadence | Weekly, Biweekly, Monthly or Quarterly |
+| Hold Period | **Hold Days** |
+| Capacity Bound | **Capacity** and **Unit** |
+| Allow Sales | **Sales Availability**: Allowed (sellable and forecast), Denied (not sellable here) or Excluded (sellable, but not forecast) |
+| Priority | Supplier **Priority** |
+| Spend Cap | **Amount** and **Currency** |
+| Minimum Order | The MOQ, on a supplier → receiving location lane |
+
+The policy is named after the card, for example "Minimum Order — Quick Add". Rename it from the list if you like.
+
+## Set safety stock days for a location
+
+**Where:** Supply Chain → Policies → **Quick Add** → **Coverage Target**.
+
+Safety stock, the target level and the maximum (overstock) level are one policy, a **Coverage Target**, measured in days of supply (or in units).
+
+<Steps>
+  <Step title="Open Quick Add">
+    Click **Quick Add** and pick **Coverage Target**.
+  </Step>
+  <Step title="Enter the days">
+    Fill in **Target days**, **Safety days** and, optionally, **Max days**.
+  </Step>
+  <Step title="Choose where it applies">
+    Pick the location, and the SKU or SKU group if it shouldn't apply to every SKU there. Save.
+  </Step>
+</Steps>
+
+To set it in units instead of days, use **Create Policy** with the **Set Coverage Target** type and set **Basis** to **Units**. A SKU and location with no coverage target shows **Not set** on the planning pages and isn't judged at all.
+
+## Common rules and the policy type that sets each
+
+**Where:** Supply Chain → Policies → Create Policy → Declarations → **Type**.
+
+The **Type** list uses the names in the middle column. A policy card in the list may show the shorter name in brackets.
+
+| What you want to set | Policy type (card name) | Scope it to |
+|---|---|---|
+| Minimum order quantity (MOQ) for a supplier | **Require Minimum** (Minimum Order) | The supplier, or the supplier → receiving location lane, plus the SKU or SKU group |
+| Minimum order across several SKUs (a combined PO minimum, in units or value) | **Require Aggregate Minimum** (Aggregate Minimum) | SKU group and supplier |
+| Order multiple, case pack or buy unit (order in multiples of N) | **Set Order Increment** (Order Increment) | The supplier or lane, plus the SKU or SKU group |
+| Supplier lead time (order to ship) | **Set Purchase Lead** (Purchase Lead) | The supplier, plus the SKU or SKU group |
+| Production lead time | **Set Production Lead Time** | Location or production line, optionally a SKU |
+| Days after receipt before stock can be used | **Set Staging Lead** (Staging Lead) | Location or lane, optionally a SKU |
+| Safety stock, target and maximum days of supply (or units) | **Set Coverage Target** (Coverage Target) | Location, plus the SKU or SKU group |
+| How often you order | **Set Order Cadence** (Order Cadence) | The supplier or lane, or a SKU or SKU group |
+| Which supplier to prefer | **Set Priority** (Priority) | The supplier, plus the SKU or SKU group; priority 1 is bought from first |
+| Whether a SKU can be bought from a supplier | **Allow Purchase** | SKU or SKU group, plus the supplier |
+| Whether a SKU can be stored at a location | **Allow Storage** | SKU or SKU group, plus the location |
+| Which line or co-man makes a SKU | **Assign Production** (Production Assignment) | SKU or SKU group, plus the production line or location |
+| Whether stock can move between two locations | **Allow Flow** (Flow Rule) | The lane (from → to), optionally a SKU or SKU group |
+| What a lane ships in (pallet, case, container) | **Set Shipment Units** (Shipment Units) | A lane, or your whole organization. Display only: it changes how loads are counted, never the quantities recommended |
+| Production, purchase or lane capacity | **Set Capacity Bound** (Capacity Bound) | Location, lane or production line |
+| Storage space at a location | **Set Storage Capacity** | Location |
+| Purchasing budget | **Set Spend Cap** (Spend Cap) | Location or supplier |
+| Hold stock for a number of days | **Set Hold** (Hold Period) | Location, optionally a SKU |
+| No new production inside N days | **Set Production Fence** | Location or production line |
+| Line hours, run days, run length, switchover, throughput | **Line Run Hours / Day**, **Line Run Days**, **Min Run Length**, **Switchover Time**, **Throughput Rate** | Production line |
+| Purchase, production or transit cost | **Set Purchase Cost**, **Set Production Cost**, **Set Transit Cost** | SKU plus the supplier or location; transit cost on a lane |
+
+<Note>
+In the **Type** list, **Require Minimum** is described as "Set a minimum inventory quantity". The planner applies it as a minimum order quantity on whatever it's scoped to (a purchase lane, or a production run). Scope it to the supplier lane to set a supplier MOQ.
+</Note>
+
+The Type list also has catalog and demand types: Allow Sales, Set Price, Set Demand Aggregation, Set Substitution, Set Variant Preference, Set BOM Ranking, Set Co-Production, Set Yield Rate, Set Fulfillment Distribution, Set Forecast Method, Set Demand Adjustment, Set Forecast Carry Forward, Set Demand Disaggregation and Set Return Rate.
+
+## Hard and soft rules
+
+**Where:** Create Policy → Declarations → **Enforcement**.
+
+- **Hard**: the plan must obey the rule.
+- **Soft**: the plan tries to obey the rule, and may break it when keeping it would cost more than breaking it.
+
+Filter the list by **Enforcement** to see which rules are which.
+
+## Which policy wins when two policies overlap
+
+When two enabled policies set the same value (a coverage target, a minimum, an order increment or a lead time) for the same SKU at the same location:
+
+1. The one with the **more specific scope** wins. A policy scoped to one SKU at one location beats one scoped to a SKU group or to every SKU at the location.
+2. If both are equally specific, the **higher Priority** number wins.
+
+For yes/no rules such as **Allow Purchase**, a "no" (deny) wins over a "yes".
+
+A disabled policy never applies. To check which policy is in force for one SKU, ask the agent (see below).
+
+## Turn policies on or off, or delete them
+
+**Where:** Supply Chain → Policies → tick the policies → **Enable All**, **Disable All** or **Delete**.
+
+Disabling keeps the policy so you can turn it back on later. **Delete** removes the policy and the rules it puts on the plan; it can't be undone, and the next solve runs without it.
+
+## Coverage map: what your policies actually reach
+
+**Where:** Supply Chain → Policies → **Coverage map** tab.
+
+Pick a SKU (**Select SKU…**) to trace it through your network: where it can be bought, made and stored, the lanes it can move along, and which sales channels it can reach under the policies you have. For a SKU with a BOM, pick a component to trace the level below. Switch between **Reachable only** and **All channels**, and turn **Explanations on** to see what each figure means on hover. Links on the map open the policy that allows or blocks each step.
+
+Use it when a recommendation is missing because a SKU has no supplier, no lane, or no storage at a location. See [Why didn't Tether recommend a purchase, transfer or production run?](/supply-planning/why-no-recommendation).
+
+## Which policy is making Tether round this order up?
+
+**Where:** a recommendation or order drawer → quantity field → **Off MOQ / multiple — round:**.
+
+Tether rounds order quantities to a supplier's **Minimum Order** (Require Minimum) and **Order Increment** (Set Order Increment) policies. When a quantity sits between two allowed values, the drawer offers **Round down to …** and **Round up to …**; nothing changes until you pick one. To see which policy sets the minimum or multiple, filter the Policies list by the SKU and supplier, or ask the agent: "Which policy is making Tether round this order up?"
+
+## Ask the agent about policies
+
+**Where:** Agent → **Chat Sessions**, or the chat panel.
+
+The [agent](/agent/chat) can read and change policies for you. It always shows what it will change first and waits for you to confirm. Try:
+
+- "Which policy sets the MOQ for SKU ABC-123 from Acme Packaging?"
+- "Which policy is making Tether round this order up?"
+- "What would change if I set safety stock to 14 days at the Reno warehouse?"
+- "Set a minimum order of 500 units for the Bottles group from Acme Packaging."
+- "Explain the Coverage Target policy for the Dallas DC."
