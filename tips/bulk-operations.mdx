@@ -1,322 +1,61 @@
 ---
-title: Bulk Operations
-description: Work efficiently with multiple items at once
+title: Bulk actions
+description: "Every place Tether lets you change many things at once. Answers: Can I update many inventory counts at once? How do I mark many orders as shipped? Can I import orders from a CSV or spreadsheet? How do I create many SKUs at once? Where: Inventory → Edit quantities / Upload Inventory, Sales → Orders → Mark shipped, the agent for spreadsheets of purchase orders."
 ---
 
-# Bulk Operations
+# Bulk actions
 
-Bulk operations let you work with multiple items simultaneously, saving time on repetitive tasks.
+Tether has no single bulk-edit mode. Each page that supports changing many things at once has its own control, listed here.
 
-## What Are Bulk Operations?
+## Can I update many inventory counts at once?
 
-Bulk operations apply actions to multiple items at once:
+**Where:** **Inventory** → **Dashboard** → **Inventory** tab → **Table Settings** → **Edit quantities**, or **Upload Inventory**.
 
-| Without Bulk | With Bulk |
-|--------------|-----------|
-| Edit items one by one | Edit all selected at once |
-| Slow and tedious | Fast and efficient |
-| Risk of inconsistency | Consistent changes |
+- **Edit quantities**: turn it on in **Table Settings**, type counts into the **On Hand** column for as many rows as you need, and submit them together. If your organization uses adjustment approval, they go to an approver; approvers' own changes apply at once.
+- **Upload Inventory**: the button at the top of the page opens **Upload Inventory Data**. Upload a CSV (there's a template to download), give a **Reason for Upload**, and Tether applies the quantities. This button is hidden for roles that can't change stock directly and for the stock-counting view.
+- **Counts** tab: run a physical count across many SKUs and post it in one go (organizations using the movement ledger).
 
-## Selecting Multiple Items
+See [Inventory adjustments](/inventory/adjustments).
 
-### Selection Methods
+## How do I mark many orders as shipped?
 
-| Method | How | Use When |
-|--------|-----|----------|
-| **Click** | Single click on row | Select one item |
-| **Shift + Click** | Click first, shift-click last | Select range |
-| **Cmd/Ctrl + Click** | Click while holding modifier | Select specific items |
-| **Select All** | Checkbox in header or Cmd/Ctrl + A | Select all visible |
+**Where:** **Sales** → **Orders** → tick the orders → **Mark shipped**.
 
-### Selection Tips
+Tick the Shopify orders you've shipped in the order list. A bar appears beneath the list with **Mark shipped (*n*)**. Give one reason for all of them and confirm. Tether answers each order on its own and lists any it couldn't mark, with why. A single order also has its own **Mark shipped** button.
 
-- Selection persists while filtering
-- Selected count shown in toolbar
-- Clear selection with Esc or button
+## Can I import orders from a CSV or spreadsheet?
 
-## Available Bulk Operations
+**Where:** **New chat** → attach the spreadsheet → ask the agent to import it.
 
-### SKU Operations
+For a spreadsheet of purchase orders, attach it in agent chat and ask, for example, "Import these POs". The agent reads every row, groups lines by the PO-number column, asks which statuses or warehouses to include if that's unclear, and shows you a preview of which POs are ready, already imported, or failing (with the reason) before anything is saved.
 
-| Operation | Description |
-|-----------|-------------|
-| **Bulk Edit** | Change fields for multiple SKUs |
-| **Add to Collection** | Add SKUs to a collection |
-| **Remove from Collection** | Remove from collection |
-| **Change Status** | Activate/archive multiple |
-| **Export** | Export selected SKUs |
+**Transactions** → **Import orders** is a different tool: it takes a single order document in JSON format (as produced by an integration) and previews the change before you apply it. It's available on organizations using the movement ledger.
 
-### Forecast Operations
+## Can I edit many order lines at once?
 
-| Operation | Description |
-|-----------|-------------|
-| **Bulk Edit** | Adjust forecasts together |
-| **Percentage Change** | Apply % increase/decrease |
-| **Copy Values** | Copy from one period to others |
-| **Reset** | Revert to model values |
+**Where:** open an order → **Lines** tab.
 
-### Transaction Operations
+Edit as many lines as you like. Unsaved changes are counted on the **Lines** tab badge, and you save them together.
 
-| Operation | Description |
-|-----------|-------------|
-| **Bulk Submit** | Submit multiple drafts |
-| **Bulk Cancel** | Cancel multiple transactions |
-| **Create from Recommendations** | Create multiple orders |
+## How do I create many SKUs at once?
 
-### Inventory Operations
+**Where:** **Products** → **SKU Groups** → a SKU group → **Bulk Create SKUs**.
 
-| Operation | Description |
-|-----------|-------------|
-| **Bulk Update** | Update stock levels |
-| **Adjust Quantities** | Make adjustments |
-| **Transfer** | Create bulk transfers |
+Creates every variant of the group (for example, every size and color) in one step. You can also ask the agent to create SKUs from a spreadsheet.
 
-## Performing Bulk Edits
+## Lots
 
-### Basic Bulk Edit
+**Where:** **Inventory** → **Lots**.
 
-<Steps>
-  <Step title="Select Items">
-    Use selection methods to choose items
-  </Step>
+- **Assign lots (*n*)**: assigns lots to all stock that has no lot yet, in one dialog.
+- **Reallocate lot**: moves a lot's quantities across positions in one step.
 
-  <Step title="Click Bulk Action">
-    Click the bulk action button or menu
-  </Step>
+## Many safety stock or replenishment values at once
 
-  <Step title="Choose Operation">
-    Select the operation to perform
-  </Step>
+**Where:** **Settings** → **Forecasting** → **Inventory & Forecast** → **Replenishment Settings** (older organizations).
 
-  <Step title="Configure">
-    Set values for the bulk operation
-  </Step>
+Select rows and apply one value with the bulk fields. On organizations using Locations, set a policy once on a location or SKU group instead. See [Inventory & Forecast settings](/administration/inventory-settings).
 
-  <Step title="Review">
-    Review items that will be affected
-  </Step>
+## Download many rows
 
-  <Step title="Apply">
-    Confirm and execute the operation
-  </Step>
-</Steps>
-
-### Bulk Edit Fields
-
-When bulk editing, you can typically change:
-
-| Field Type | Behavior |
-|------------|----------|
-| **Set Value** | Same value for all selected |
-| **Increment** | Add/subtract amount |
-| **Percentage** | Increase/decrease by % |
-| **Clear** | Remove value from all |
-
-## Bulk Operations by Feature
-
-### SKUs: Bulk Edit
-
-<Steps>
-  <Step title="Go to SKUs">
-    Navigate to the SKU list
-  </Step>
-
-  <Step title="Select SKUs">
-    Choose the SKUs to edit
-  </Step>
-
-  <Step title="Click Edit">
-    Open bulk edit panel
-  </Step>
-
-  <Step title="Set Values">
-    Change desired fields:
-    - Status
-    - Collection
-    - Dimensions
-  </Step>
-
-  <Step title="Apply">
-    Save changes to all selected
-  </Step>
-</Steps>
-
-### Forecasts: Percentage Adjustment
-
-<Steps>
-  <Step title="Go to Forecasts">
-    Navigate to demand forecasting
-  </Step>
-
-  <Step title="Select Rows">
-    Choose SKU/channel combinations
-  </Step>
-
-  <Step title="Choose Percentage">
-    Click percentage adjustment
-  </Step>
-
-  <Step title="Enter Value">
-    Enter percentage (e.g., +10% or -5%)
-  </Step>
-
-  <Step title="Apply">
-    Apply to all selected periods
-  </Step>
-</Steps>
-
-### Transactions: Create from Recommendations
-
-<Steps>
-  <Step title="Go to a planning page">
-    Navigate to **Supply Chain** → **Purchase**, **Transfer**, or **Production**
-  </Step>
-
-  <Step title="Review recommendations">
-    Choose the recommended movements you want to act on
-  </Step>
-
-  <Step title="Accept">
-    Accept each recommendation to commit it to the [execution plan](/supply-planning/execution-plan)
-  </Step>
-
-  <Step title="Order">
-    Use **Place order** (or the **Order** row action) to convert committed movements into transactions
-  </Step>
-</Steps>
-
-## Bulk Export
-
-### Exporting Selected Items
-
-<Steps>
-  <Step title="Select Items">
-    Choose items to export
-  </Step>
-
-  <Step title="Click Export">
-    Open export menu
-  </Step>
-
-  <Step title="Download">
-    CSV file downloads automatically
-  </Step>
-</Steps>
-
-### Export Options
-
-| Option | Description |
-|--------|-------------|
-| **Selected Only** | Only export selected items |
-| **All Visible** | Export filtered results |
-| **All Data** | Export everything |
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Review Before Applying">
-    Always check before bulk operations:
-    - Verify selection count
-    - Preview affected items
-    - Understand the change
-  </Accordion>
-
-  <Accordion title="Start Small">
-    Test with a few items first:
-    - Select small subset
-    - Apply operation
-    - Verify results
-    - Then do full set
-  </Accordion>
-
-  <Accordion title="Use Filters First">
-    Filter before selecting:
-    - Narrow to relevant items
-    - Easier to select all
-    - Reduces errors
-  </Accordion>
-
-  <Accordion title="Document Changes">
-    Keep track of bulk operations:
-    - Note what was changed
-    - When it was done
-    - Why the change
-  </Accordion>
-</AccordionGroup>
-
-## Undo and Recovery
-
-### Undoing Bulk Operations
-
-| Scenario | Recovery |
-|----------|----------|
-| **Recent Edit** | Cmd/Ctrl + Z may undo |
-| **Saved Changes** | Use edit log to track |
-| **Major Mistake** | Contact administrator |
-
-### Prevention
-
-- Double-check selections
-- Review before confirming
-- Start with smaller batches
-
-## Limitations
-
-### What Can't Be Bulk Edited
-
-| Item | Reason |
-|------|--------|
-| **Unique Fields** | Must be unique per item |
-| **System Fields** | Calculated automatically |
-| **Locked Records** | Protected from changes |
-
-### Size Limits
-
-| Limit | Value |
-|-------|-------|
-| **Selection** | Usually 1000+ items |
-| **Export** | Depends on data size |
-| **Processing** | Larger sets take longer |
-
-## Troubleshooting
-
-### Operation Takes Too Long
-
-**Possible causes:**
-- Large selection
-- Complex operation
-- Network latency
-
-**Solutions:**
-1. Wait for completion
-2. Try smaller batches
-3. Check network connection
-
-### Not All Items Updated
-
-**Possible causes:**
-- Validation errors
-- Permission issues
-- Data conflicts
-
-**Solutions:**
-1. Check error messages
-2. Review failed items
-3. Fix issues and retry
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Keyboard Shortcuts" icon="keyboard" href="/tips/shortcuts">
-    Speed up with shortcuts
-  </Card>
-  <Card title="Command Palette" icon="terminal" href="/tips/command-palette">
-    Quick commands
-  </Card>
-  <Card title="Exports" icon="download" href="/tips/exports">
-    Export data
-  </Card>
-  <Card title="Filtering" icon="filter" href="/product-catalog/skus/filtering">
-    Filter and find items
-  </Card>
-</CardGroup>
+Every table exports what it shows with **Table Settings** → **Export CSV**. See [Exporting data](/tips/exports).
