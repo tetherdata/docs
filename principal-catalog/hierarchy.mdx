@@ -1,0 +1,63 @@
+---
+title: "SKU group hierarchy"
+description: "Where: Settings → SKU Group Hierarchy, and a primary SKU group's Hierarchy card. Set up product categories like Category and Subcategory, edit the product hierarchy, and assign a category to a product. Formerly Product Hierarchy / Collection Hierarchy."
+---
+
+# SKU group hierarchy
+
+The SKU group hierarchy classifies your products into up to five levels, such as Category → Subcategory → Class. You set up the levels and their values once in Settings, then give each product (each primary SKU group) its values. The **Primary SKU Groups** list then shows each level as a column.
+
+<Note>
+The settings page is named after your SKU group term, for example **SKU Group Hierarchy**, or **Style Hierarchy** if your organization renamed SKU groups. Older docs called it "Product Hierarchy".
+</Note>
+
+## How do I set up product categories like Category and Subcategory?
+
+Where: Settings → **CATALOG** → **SKU Group Hierarchy** (`/settings/product-hierarchy`).
+
+The page lists five levels in a table with **Level**, **Label**, **Values** (how many values the level has) and **Enabled**. Unnamed levels show their default names, Category, Subcategory, Class, Subclass and Family, with a **default** badge.
+
+<Steps>
+  <Step title="Turn on the levels you need">
+    Switch **Enabled** on for each level you use. Turning a level off asks you to confirm with **Disable & clear**: it clears that level's value from every primary SKU group. The list of values is kept.
+  </Step>
+  <Step title="Name each level">
+    Click a level's label, type your name for it (for example "Department"), and click **Save**.
+  </Step>
+  <Step title="Add values">
+    Click **Edit values** on the level's row. In the dialog, type a value in **Add new value…** and click **Add**. You can also rename or delete values there.
+  </Step>
+</Steps>
+
+You see this page if your role has the `settings:product-hierarchy:access` permission. Editing levels and values also needs catalog write access; without it, the button reads **View values**.
+
+## How do I assign a category to a product?
+
+Where: Products → SKU Groups → a primary SKU group → **Hierarchy** card.
+
+<Steps>
+  <Step title="Open the product">
+    Go to **Products → SKU Groups**, stay on the **Primary SKU Groups** tab, and click the group.
+  </Step>
+  <Step title="Pick values">
+    The **Hierarchy** card at the top shows one picker per enabled level. Pick a value for each.
+  </Step>
+  <Step title="Save">
+    Click **Save**, or **Cancel** to drop your changes.
+  </Step>
+</Steps>
+
+The **Hierarchy** card appears only on primary SKU groups, and only once at least one level is enabled. Standard groups aren't classified.
+
+## Hierarchy, SKU groups and attributes
+
+| | SKU group hierarchy | SKU groups | Attributes |
+|---|---|---|---|
+| **What it is** | Categories a product belongs to | The product itself and its variants (or a flat list) | What tells variants apart |
+| **Example** | Apparel → Tops → T-Shirts | "Classic Tee" | Size: S, M, L |
+| **Set on** | A primary SKU group | Each SKU | A SKU, via the group's attributes |
+| **Where** | Settings → SKU Group Hierarchy | Products → SKU Groups | Products → Attributes |
+
+## Legacy catalog: Collection Hierarchy
+
+Organizations still on the [legacy catalog](/product-catalog/legacy-catalog) see **Settings → CATALOG → Collection Hierarchy** instead, which classifies collections. It is hidden once your organization moves to **Products**.
