@@ -1,175 +1,56 @@
 ---
-title: Channels Overview
-description: Managing sales channels in Tether
+title: Sales Channels
+description: "Where is the Channels page? How do I add a sales channel? Why is my Shopify store not listed as a channel? Where: Sales → Sales Channels (older setup) or Supply Chain → Locations, filtered to Sales (newer setup). Channels are not created with an Add Channel button."
+sidebarTitle: Overview
 ---
 
-# Channels Overview
+# Sales Channels
 
-Channels represent where you sell your products. Tether allows you to manage multiple sales channels, track performance by channel, and configure channel-specific settings.
+A sales channel is where you sell: a Shopify store, a marketplace, a wholesale account. Tether uses channels to group sales orders, forecast demand by channel and report performance.
 
-## What is a Channel?
+## Where is the Channels page?
 
-A channel is a sales avenue for your products. Each channel has a name, a type, a currency, and an active/inactive status. Channels are the foundation for organizing sales orders, demand forecasting, and performance analysis.
+Where: **Sales** → **Sales Channels** (older setup) or **Supply Chain** → **Locations** (newer setup).
 
 <Note>
-  Currently, Shopify is the only supported channel type. Additional channel types will be added in future releases.
+  **If your sidebar has no Sales Channels entry but has Supply Chain → Locations, your channels live there.** On that setup each channel is a location with the **Sales** capability; filter **Locations** by **Sales** to list them. Old links to `/channels` open that list, and a channel's link opens its location. See [Locations](/supply-chain/locations).
 </Note>
 
-## Why Track Channels?
+On the older setup, **Sales** → **Sales Channels** opens the channels list. It needs channel access (the Sales Rep role or higher).
 
-| Benefit | Description |
-|---------|-------------|
-| **Demand Forecasting** | Forecast by channel for accuracy |
-| **Inventory Allocation** | Know where demand comes from |
-| **Performance Analysis** | Compare channel performance |
-| **Hierarchy Organization** | Group channels for reporting |
-| **User Access** | Control who sees what data |
+## How do I add a sales channel?
 
-## The Channels Dashboard
+Where: **Supply Chain** → **Locations** → **+ Location** (tick **Sales**). There is no Add Channel button.
 
-Navigate to **Channels** in the sidebar to view the channels dashboard.
+Channels arrive from your supply network:
 
-### Summary Cards
+- **Newer setup (Locations):** **Supply Chain** → **Locations** → **+ Location**, give it a name and tick the **Sales** capability. Then set its **Channel type** and **Currency** on the location's **Overview** → **Channel configuration**.
+- **Older setup:** the Sales Channels list shows the channels your supply network already has; when it has none it says "Sales channels arrive from the supply network". Ask Tether to add a channel if you need one.
 
-The dashboard displays three summary cards at the top:
+## Why is my Shopify store not listed as a channel?
 
-| Card | Description |
-|------|-------------|
-| **Total Channels** | Count of all configured sales channels |
-| **Active Channels** | Count of channels currently accepting orders |
-| **Channel Types** | Count of distinct channel types in use |
+Where: **Settings** → **CATALOG** → **Channel Bindings**.
 
-### Channels Table
+Sales from a feed land on a channel only when the feed's store or marketplace code resolves to one. Tether resolves a binding first and the channel name second. If nothing matches:
 
-The main table displays your channels with the following columns:
+1. Make sure the channel exists (see above).
+2. Open **Settings** → **CATALOG** → **Channel Bindings**. **Unresolved values** counts the codes a feed sent that matched no channel.
+3. Under **Bindings**, bind the store's **External code** (and **Source**) to the right channel. Several codes can point at the same channel. A bound channel can be renamed without breaking its feed.
 
-| Column | Description |
-|--------|-------------|
-| **Name** | Channel display name (links to detail page) |
-| **Currency** | Channel currency (e.g., USD) |
-| **Hierarchy Fields** | Dynamic columns for each active hierarchy field |
-| **Actions** | Archive button to deactivate a channel |
+## The Sales Channels list (older setup)
 
-Hierarchy field values can be assigned directly from the table using inline dropdown selectors. See [Channel Hierarchy](/channels/hierarchy) for details.
+Where: **Sales** → **Sales Channels**.
 
-## Creating a Channel
+- Cards at the top: **Total Channels** and **Active Channels**.
+- The table: **Name** (links to the channel's page), **Currency**, and one column per active [channel hierarchy](/channels/hierarchy) field, where you pick each channel's value.
+- Header buttons: **Manage Hierarchy** (opens [Channel hierarchy](/channels/hierarchy)) and **Create Manual Order** (opens a new manual sales order).
 
-<Steps>
-  <Step title="Navigate to Channels">
-    Go to **Channels** in the sidebar
-  </Step>
+## Channel detail page (older setup)
 
-  <Step title="Click Add Channel">
-    Click the **Add Channel** button in the top right
-  </Step>
+Where: **Sales** → **Sales Channels** → a channel name.
 
-  <Step title="Enter Details">
-    Fill in the channel creation form:
+The header shows the channel name and an **Inactive** badge if it is inactive, with a **Create Manual Order** button that starts a manual order for this channel. Below are order counts (such as **Total Orders**) and the channel's sales orders. See [Managing channels](/channels/managing).
 
-    | Field | Required | Description |
-    |-------|----------|-------------|
-    | **Channel Name** | Yes | A descriptive name (e.g., "Shopify US", "Amazon Store") |
-    | **Channel Type** | Yes | Currently only Shopify is available |
-    | **Currency** | Yes | Currently only USD is supported |
-    | **Active Channel** | No | Toggle to set initial active status (defaults to on) |
-  </Step>
+## Channels and forecasting
 
-  <Step title="Create">
-    Click **Create Channel** to add the channel
-  </Step>
-</Steps>
-
-## Channel Status
-
-Channels have an active or inactive status controlled by the `is_active` flag:
-
-| Status | Behavior |
-|--------|----------|
-| **Active** | Channel is visible in active lists, available for orders and forecasting |
-| **Inactive (Archived)** | Channel is hidden from active use, historical data is preserved |
-
-You can archive a channel from the channels table by clicking the delete icon and confirming the action. Archiving sets the channel to inactive but preserves all historical data.
-
-## Channel Detail Page
-
-Click on a channel name in the table to open its detail page. The detail page shows:
-
-- **Channel header** with the channel name, type badge, currency badge, and active status
-- **Summary cards** showing total orders, manual orders, and integration orders
-- **Sales orders table** listing all orders for that channel with columns for order number, source (Manual or Integration), order date, warehouse, external ID, and creation date
-
-You can also create a manual sales order directly from the channel detail page by clicking **Create Manual Order**.
-
-## Channels and Forecasting
-
-Channels are essential for demand forecasting:
-
-### Forecast by Channel
-
-- Each SKU/channel combination can have its own forecast
-- Different channels may have different demand patterns
-- Promotions can be channel-specific
-
-### Channel Performance
-
-Track metrics per channel:
-
-- Sales volume
-- Forecast accuracy
-- Growth trends
-
-## Access Control
-
-Channel pages require the **Sales Rep** role or higher:
-
-| Role | Access |
-|------|--------|
-| **Admin** | All channels and settings |
-| **Sales Rep** | Channel dashboard, detail pages, and hierarchy |
-
-See [User Access](/administration/user-access) for configuration.
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Consistent Naming">
-    Use clear, consistent channel names:
-    - Include region: "Shopify US", "Shopify EU"
-    - Include purpose: "Wholesale B2B", "DTC Website"
-  </Accordion>
-
-  <Accordion title="Match Business Structure">
-    Create channels that match how you manage the business:
-    - Separate channels for separate P&Ls
-    - Group similar channels if managed together
-  </Accordion>
-
-  <Accordion title="Use Hierarchy Fields">
-    Organize channels with hierarchy fields for better reporting:
-    - Label fields by business dimension (e.g., "Region", "Business Model")
-    - Assign values consistently across channels
-  </Accordion>
-
-  <Accordion title="Plan for Growth">
-    Design for scalability:
-    - Room for new channels
-    - Consistent naming structure
-  </Accordion>
-</AccordionGroup>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Managing Channels" icon="gear" href="/channels/managing">
-    Configure channel settings
-  </Card>
-  <Card title="Channel Hierarchy" icon="sitemap" href="/channels/hierarchy">
-    Organize channels with hierarchy fields
-  </Card>
-  <Card title="Demand Forecasting" icon="chart-line" href="/demand-forecasting/dashboard">
-    Forecast by channel
-  </Card>
-  <Card title="Integration Setup" icon="plug" href="/integrations/setup">
-    Connect channels to external platforms
-  </Card>
-</CardGroup>
+Each SKU and channel pair can carry its own forecast, so channels with different demand patterns are planned separately. See [Demand forecasting](/demand-forecasting/dashboard).

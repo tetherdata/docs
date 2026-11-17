@@ -1,15 +1,19 @@
 ---
 title: Managing Channels
-description: Configure and maintain sales channels
+description: "How do I create a manual wholesale order? How do I archive a channel? What does a channel's page show? Where: Sales → Sales History → New Manual Order; Sales → Sales Channels → a channel (older setup) or Supply Chain → Locations → the sales location (newer setup)."
 ---
 
 # Managing Channels
 
-This guide covers channel configuration and maintenance tasks.
+This guide covers channel detail pages, manual orders and channel upkeep.
+
+<Note>
+  If your sidebar has **Supply Chain** → **Locations** and no **Sales Channels** entry, each channel is a sales location: links to a channel open its location page. See [Locations](/supply-chain/locations).
+</Note>
 
 ## Channel Detail View
 
-Click on a channel name from the channels table to open its detail page.
+Where: **Sales** → **Sales Channels** → a channel name (older setup).
 
 ### Channel Header
 
@@ -22,15 +26,9 @@ The detail page header shows:
 | **Currency Badge** | The channel's currency (e.g., USD) |
 | **Status Badge** | Shows "Inactive" if the channel is not active |
 
-### Summary Cards
+### Summary card
 
-Three cards provide a quick overview:
-
-| Card | Description |
-|------|-------------|
-| **Total Orders** | Count of all sales orders for this channel |
-| **Manual Orders** | Orders created manually in Tether |
-| **Integration Orders** | Orders synced from an external integration |
+**Total Orders**: all orders for this channel.
 
 ### Sales Orders Table
 
@@ -47,42 +45,22 @@ The detail page includes a full sales orders table with the following columns:
 
 The table supports sorting, filtering, pagination, row grouping, and a sidebar for column management.
 
-## Creating Manual Orders
+## How do I create a manual wholesale order?
 
-From the channel detail page, click **Create Manual Order** to create a new sales order assigned to this channel. You will be taken to the manual order creation form with the channel pre-selected.
+Where: **Sales** → **Sales History** → **New Manual Order**.
 
-## Archiving Channels
+You can also start one already set to a channel:
 
-To deactivate a channel without deleting its data:
+- **Older setup:** **Sales** → **Sales Channels** → a channel → **Create Manual Order**, or **Create Manual Order** at the top of the Sales Channels list.
+- **Locations setup:** **Supply Chain** → **Locations** → the sales location → **Orders** tab → **Create manual order**.
 
-<Steps>
-  <Step title="Go to Channels">
-    Navigate to the **Channels** dashboard
-  </Step>
+Each opens the manual sales order form. Orders you create this way show the source **Manual**.
 
-  <Step title="Find the Channel">
-    Locate the channel in the table
-  </Step>
+## How do I archive a channel?
 
-  <Step title="Click Archive">
-    Click the trash icon in the **Actions** column
-  </Step>
+Where: **Supply Chain** → **Locations** → the channel → **Overview** (Locations setup). The older Sales Channels pages have no archive control.
 
-  <Step title="Confirm">
-    In the confirmation dialog, click **Archive Channel** to proceed
-  </Step>
-</Steps>
-
-**Effects of archiving:**
-
-- Channel's `is_active` status is set to false
-- Channel is hidden from active channel lists
-- Historical data (orders, forecasts) is preserved
-- Channel can be identified in the system for future restoration
-
-<Note>
-  Archiving is a soft delete. The channel and all associated data remain in the system.
-</Note>
+There is no archive control on the Sales Channels list or a channel's page. On the Locations setup, a channel is a location: open **Supply Chain** → **Locations** → the channel → **Overview**, where you can remove its **Sales** capability or delete the location. Deleting removes it for everyone; ask Tether first if the channel has order history you want to keep reporting on.
 
 ## Channel Integration
 
@@ -111,7 +89,7 @@ See [Integration Setup](/integrations/setup) for detailed instructions.
 
 ## Channel Hierarchy Assignment
 
-Hierarchy field values can be assigned to channels directly from the channels table on the dashboard. Each active hierarchy field appears as a column with a dropdown selector.
+On the older setup, assign hierarchy values in the Sales Channels table: each active hierarchy field is a column with a dropdown. On the Locations setup, use the sales location's **Overview** → **Channel configuration** → **Hierarchy assignments**.
 
 See [Channel Hierarchy](/channels/hierarchy) for configuration details.
 
@@ -139,7 +117,7 @@ Each sales order tracks its source:
 ### Channel Not Showing in Forecasts
 
 **Possible causes:**
-- Channel is archived (inactive)
+- Channel is inactive
 - No sales orders on the channel
 - Forecast filters excluding the channel
 
