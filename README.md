@@ -1,43 +1,25 @@
-# Mintlify Starter Kit
+# Tether help docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+Source for [docs.tetherdata.io](https://docs.tetherdata.io), the help site for the Tether app. Built with [Mintlify](https://mintlify.com/docs). Changes merged to `main` deploy automatically.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+Tether's in-app agent answers user questions by searching this site, so these pages are also the agent's knowledge of the app. Write for both readers.
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+## Writing a page
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+Read [AGENTS.md](AGENTS.md) first. It covers the page structure (a `Where:` line in every how-to section), the current app terms, and how to move or remove a page safely. Screen names and button labels come from the app's code, not from memory.
 
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## Preview and check
 
 ```
 npm i -g mint
+mint dev            # preview at http://localhost:3000
+mint broken-links   # must pass before a PR
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## Keeping the docs current
 
-```
-mint dev
-```
+Each week's release notes name the docs page for each shipped feature, the wording it replaces, and the questions users will ask about it. One docs PR per week brings the pages up to date. Before that PR merges, each of those questions, searched on the docs site, should return the right page in the top three results.
 
-View your local preview at `http://localhost:3000`.
+## Help
 
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+Questions about Tether: help@tetherdata.io.

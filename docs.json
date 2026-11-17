@@ -170,7 +170,7 @@
       "anchors": [
         {
           "anchor": "Support",
-          "href": "mailto:support@tether.so",
+          "href": "mailto:help@tetherdata.io",
           "icon": "envelope"
         }
       ]
@@ -214,18 +214,18 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@tether.so"
+        "href": "mailto:help@tetherdata.io"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Open Tether",
-      "href": "https://app.tether.so"
+      "href": "https://app.tetherdata.io"
     }
   },
   "footer": {
     "socials": {
-      "linkedin": "https://linkedin.com/company/tether"
+      "linkedin": "https://www.linkedin.com/company/tetherdata"
     }
   }
 }
